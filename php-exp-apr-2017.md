@@ -8,21 +8,6 @@ NOTE to Susie: get corrected version of PDF to students
 ## PHP for Experienced Programmers CLASS NOTES: April 2017
 -----------------------------------------------------------------------------------------------------------------------
 NOTE: page numbers refer to the course PDF
-http://localhost:8080/#/3/8: s/be sat and sun for keys
-http://localhost:8080/#/3/14: M3Ex6 out of order
-http://localhost:8080/#/5/14: lots of redundant material
-http://localhost:8080/#/10/12: s/be $pdo->lastInsertId();
-http://localhost:8080/#/10/18: s/be first and last
-http://localhost:8080/#/9/17: parent ::
-http://localhost:8080/#/9/27: don't define code in abstract methods!
-http://localhost:8080/#/12/8: example should match XML example previous
-http://localhost:8080/#/12/16: need to swap "xml" for "json" in URL for 2nd example to work
-http://localhost:8080/#/13/1: no discussion of ? * or +
-http://localhost:8080/#/13/1: link s/be: http://php.net/manual/en/book.pcre.php
-http://localhost:8080/#/13/4: middle pattern s/be: /<p>(.*?)<\/p>/
-http://localhost:8080/#/13/5: \Z	Absolute end
-http://localhost:8080/#/13/10: 2nd should be does NOT contain alpha chars
-http://localhost:8080/#/13/13: need to escape inner "\"
 Move Composer in front of web services section + make it not optional
 Suggest to Cal this class to to 2.5 hours
 
