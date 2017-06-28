@@ -751,8 +751,6 @@ class PTO
 * this shows the use of exceptions:
 [https://github.com/dbierer/oauth.unlikelysource.org/blob/master/module/AuthOauth/src/AuthOauth/Adapter/GoogleAdapter.php](https://github.com/dbierer/oauth.unlikelysource.org/blob/master/module/AuthOauth/src/AuthOauth/Adapter/GoogleAdapter.php)
 
-// END -------------------------------------------------------------------------------
-
 ----------------------------------------------------------------------------------------------------------------------------
 ## Wed 14 Jun 2017 and Thu 15 Jun 2017
 [http://collabedit.com/xum9h](http://collabedit.com/xum9h)
@@ -761,7 +759,7 @@ class PTO
 * MongoDB examples:
 [https://github.com/dbierer/classic_php_examples/tree/master/mongoDB](https://github.com/dbierer/classic_php_examples/tree/master/mongoDB)
 
-``
+```
 // amanda
 SQL Statements Exercise
 Identify the result of each of the following SQL statements:
@@ -1453,7 +1451,7 @@ echo PHP_EOL;
   *  web/login_form_lab_config.php
   *  web/login_form_lab_setup.php
 
-* Here is the revised database structure:
+### Here is the revised database structure:
 ```
 CREATE TABLE `customers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1464,9 +1462,18 @@ CREATE TABLE `customers` (
   `password` varchar(254) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+INSERT INTO `customers` VALUES 
+(1,'George','Stevenson','[\"77777\",\"16795\",\"16787\",\"88899\",\"16786\"]','gstevenson@nationaltech.net','$2y$10$q/ZscFf8lHnw6HWZj.4hdOiaik1fhlpMRCTzDAjOpffnoXjZyzj4u'),
+(2,'Janet','Levitz','[\"16781\",\"16776\",\"16779\",\"16756\",\"16771\",\"16789\"]','jlevitz@northwestcomm.com','$2y$10$O9kfkbbNNBbWpsdvWupev.G1XA8jGatQuWGRcDZqYihlB1Cu5Ykva'),
+(3,'Jason','Flores','[\"16768\",\"16795\",\"16802\",\"16786\",\"16762\",\"16770\",\"16778\",\"15752\",\"16761\"]','jflores@nationaltech.net','$2y$10$n1vQcvaJTN5pRffs4asIB.Xx3reRjsfebVVtEF1xCRt7v8.vmD6/2'),
+(4,'Susan','Chu','[\"16756\"]','schu@consolidatedtelco.com','$2y$10$MjP9i3TkqvF.AJKcW3dIz.rvMeWtXbUL/Nhcpe89aKzKkMJ325qcW'),
+(5,'Thomas','White','[\"16755\",\"16762\",\"77767\",\"16782\",\"16805\",\"16765\"]','twhite@nationalmedia.net','$2y$10$oBkpuGd3c9HCAjs3RNoO9OcdhAHoaYnIpNVRuUCrmVmRrMD/ZxEse'),
+(6,'Mark','Whitney','[\"16754\",\"14665\",\"16804\",\"16772\",\"16789\",\"16789\",\"15755\",\"16797\",\"77777\",\"16755\",\"16768\"]','mwhitney@southerntech.com','$2y$10$71LtA9XnQd2EXOf1/6A1eO/mr1c0Y1IyD3uCI8hWeluOgtPX9thSW');
+
 ```
 
-* config file ```login_form_lab_config.php```
+### config file ```login_form_lab_config.php```
 ```
 <?php
 $config = [
@@ -1530,7 +1537,7 @@ $config = [
 return $config;
 ```
 
-* calling program ```login_form_lab.php```
+### calling program ```login_form_lab.php```
 ```
 <?php
 /*
@@ -1605,7 +1612,7 @@ echo $form->theWholeForm();
 
 ```
 
-* Autoloader class
+### Autoloader class
 ```
 <?php
 namespace Lab\AutoLoader;
@@ -1640,7 +1647,7 @@ class Loader
 }
 ```
 
-* Form generation and validation classes
+### Form generation and validation classes
 ```
 <?php
 namespace Lab\Login;
@@ -1787,6 +1794,7 @@ class FormGen
     }
 }
 ```
+```
 <?php
 namespace Lab\Login;
 
@@ -1896,7 +1904,8 @@ class FormValidator
 }
 ```
 
-* Database connection / table model classes
+### Database connection / table model classes
+
 ```
 <?php
 namespace Lab\Db;
@@ -1999,7 +2008,7 @@ class CustomerTable
 }
 ```
 
-* Authentication status / storage class
+### Authentication status / storage class
 ```
 <?php
 namespace Lab\Authentication;
