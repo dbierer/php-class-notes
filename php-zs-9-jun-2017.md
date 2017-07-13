@@ -47,7 +47,22 @@ NOTE: pages reference the PDF file
 ## Q & A
 --------------------------------------------------------------------------------------------------------------------
 * Q: How do I do the equivalent of zs-client.sh on the IBMi?
-* A: Still researching
+* A: This is the answer from the Zend Server team:
+```
+Here is correct syntax to run zs-client command in IBMi CL program. This zs-cleint.sh script restarts Zend Server Apache processes. It was tested and it works.
+ 
+SEU==>                                                                TESTZSCL
+ FMT **  ...+... 1 ...+... 2 ...+... 3 ...+... 4 ...+... 5 ...+... 6 ...+... 7 
+        *************** Beginning of data *************************************
+0001.00              PGM                                                       
+0007.00              CALL       PGM(QP2SHELL) PARM('/QOpenSys/usr/bin/sh' +    
+0008.00                           'cd /usr/local/zendphp7/bin/; +              
+0009.00                           zs-client.sh restartPhp +                    
+0010.00                           --target=zs_client_sanity')                  
+0011.01  EXIT:                                                                  
+0011.02              ENDPGM                                                    
+0012.00                            
+```
 
 * Q: How do I reset permissions for Apache logs?
 * A: The username used by the Zend Server GUI is "zend".  You can either add this user to the group owning the log files
