@@ -4,15 +4,37 @@
 * http://localhost:9090/#/2/5: s/be ´event´
 * http://localhost:9090/#/3/22: s/be onlinemarket.work
 * http://localhost:9090/#/3/19: there is no folder "Model"
-* http://localhost:9090/#/4/10: s/be <module_name>/src/Module.php (as per convention in  "autoload": { "psr-4": { in composer.json)
-http://localhost:9090/#/4/27: s/be ´SOME VALUE´
+* http://localhost:9090/#/4/10: s/be `<module_name>/src/Module.php` as per convention in composer.json.  Here is an example:
+```
+"autoload": {
+    "psr-4": {
+        "Application\\": "module/Application/src/",
+        "Guestbook\\": "module/Guestbook/src/",
+        "Login\\": "module/Login/src/",
+        "Events\\": "module/Events/src/"
+    }
+},
+```
+* http://localhost:9090/#/4/27: s/be ´SOME VALUE´
 
-* First Lab:
+## LABS
+### Important Note
+
+You need to disable Zend Server OpCache and PageCache ... otherwise changes you make might not be recognized right away as the opcode or output has been cached
+* From browser: `http://localhost:10081`
+* Administration
+* Components
+* Checkmark `Zend OPcache` and `Zend Page Cache`
+* Click on the `Disable` button at the top
+* Restart Zend Server
+
+### First Lab:
   * Need to add onlinemarket.work apache vhost link
   * Do not do steps 7 and 8
-  * Need to add a step assigning rights to ¨www-data¨
-  * Need to add entry for onlinemarket.work to /etc/hosts
-* Module Lab:
+  * Need to add a step assigning rights to `www-data`
+  * Need to add entry for onlinemarket.work to `/etc/hosts`
+  
+### Module Lab:
   * make sure you update security rights for new module 
     ```
     cd /home/vagrant/Zend/workspaces/DefaultWorkspace/onlinemarket.work
@@ -26,7 +48,7 @@ http://localhost:9090/#/4/27: s/be ´SOME VALUE´
 * A: If the repository from which Composer draws is based on github.com or bitbucket.org you do not have to install git.  Otherwise, if the packages uses something else (e.g. svn), you need to have that client installed.
 
 * Q: Is there a list of Module::get*Config() methods?
-* A: Yes: look here (https://docs.zendframework.com/zend-modulemanager/module-manager/)[https://docs.zendframework.com/zend-modulemanager/module-manager/] about the middle of the page
+* A: Yes: look here https://docs.zendframework.com/zend-modulemanager/module-manager/ about the middle of the page
 
 ## Wed 16 Aug 2017
 
