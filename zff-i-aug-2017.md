@@ -42,7 +42,17 @@ You need to disable Zend Server OpCache and PageCache ... otherwise changes you 
     ```
   * path for controller s/be: onlinemarket.work\module\Market\src\Controller\IndexController.php
   * s/be Market\config\module.config.php
-  
+
+  * If you get this message:
+    ```
+    Fatal error: Uncaught Zend\ModuleManager\Exception\RuntimeException: Module (NAME) could not be initialized
+    ```
+    * Make sure you do the following:
+        * there MUST be a file `/modules/NAME/src/Module.php` with a class `Module` using the module namespace
+        * add the module to the array in /config/modules.config.php
+        * add an entry in composer.json for autoloading
+        * run `composer update` or `composer dump-autoload`
+        
 ## Q & A
 * Q: Do you need git installed to use composer?
 * A: If the repository from which Composer draws is based on github.com or bitbucket.org you do not have to install git.  Otherwise, if the packages uses something else (e.g. svn), you need to have that client installed.
