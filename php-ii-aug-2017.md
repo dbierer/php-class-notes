@@ -1133,7 +1133,7 @@ echo "</pre>";
 
 
 # for Fri 18 Aug 2017
-* http://collabedit.com/vvec9]
+http://collabedit.com/vvec9
 
 ### PDO DSN String Syntax
 
@@ -1146,3 +1146,73 @@ echo "</pre>";
 Create a PHP script which displays all rows from the "customers" table off the "course" database using PDO
 Use OrderApp::config/config.php to see connection info
 
+### nichole
+```
+// BEGIN ---------------------------------------------------------------------------------------------------
+try {
+        $db = new PDO("mysql:unix_socket=/var/run/mysqld/mysqld.sock;dbname=course",'vagrant', 'vagrant', array(PDO::ATTR_PERSISTENT => true));
+    }
+    catch(Exception $e){
+        echo $e->getMessage();
+        exit();
+    }
+    $sql = "SELECT * from customers";
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+    $customers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    print_r($customers);
+// END -----------------------------------------------------------------------------------------------------
+```
+
+###shaleha
+```
+//BEGIN
+<?php
+
+$dsn = 'mysql:unix_socket=/var/run/mysqld/mysqld.sock;dbname=course';
+
+try
+{
+$db = new PDO($dsn, 'vagrant', 'vagrant');
+
+}
+catch (PDOException $e)
+{
+  print "Error!: " . $e->getMessage() . "<br/>";
+  die();
+}
+
+$sql = $db->prepare('SELECT * FROM customers');
+
+$sql->execute();
+
+/* FetchAll*/
+print(" FetchAll get all results:\n");
+$result = $sql->fetchAll(PDO::FETCH_ASSOC);
+echo "<pre>";
+print_r($result);
+echo "</pre>";
+//END----------------------------------------------------------
+```
+
+###banu
+```
+//BEGIN ---------------------------------------------------------------------------------------------------
+<?php
+
+try {
+    $pdo = new PDO('mysql:unix_socket=/var/run/mysqld/mysqld.sock;dbname=course', 'vagrant', 'vagrant');
+    $stmt = $pdo->query('SELECT id, firstname, lastname from customers');
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    echo "<pre>";
+    print_r($results);
+    echo "</pre>";
+}
+catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+    $logEntry = time() . '|' . get_class($e) . ':' . $e->getMessage() . PHP_EOL;
+    error_log($logEntry, 3, 'error_log.php'); 
+}
+//END ---------------------------------------------------------------------------------------------------
+```
