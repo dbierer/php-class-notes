@@ -1,5 +1,9 @@
 # ZFF-I NOTES
 
+NOTE TO SELF: find better example of delegator
+
+http://localhost:9090/#/5/45
+
 ## ERRATA
 * http://localhost:9090/#/2/5: s/be ´event´
 * http://localhost:9090/#/3/22: s/be onlinemarket.work
@@ -22,6 +26,8 @@
 * http://localhost:9090/#/5/33: already discussed this!
 * http://localhost:9090/#/5/41: drop template_map == too confusing
 * http://localhost:9090/#/5/22: suggest moving discussion of `url()` plugin before discussion of `redirect()` plugin as concepts are similar, but `url()` plugin is easier to understand
+* http://localhost:9090/#/6/16 - 23: initializers, abstract factories and delegators are covered extensively in the ZFF-II
+
 
 ## LABS
 ### Important Note
@@ -73,6 +79,9 @@ Fatal error: Uncaught Zend\ModuleManager\Exception\RuntimeException: Module (NAM
 * Q: Is there a list of Module::get*Config() methods?
 * A: Yes: look here https://docs.zendframework.com/zend-modulemanager/module-manager/ about the middle of the page
 
+* Q: Is there a tool to generate a template map?
+* A: /path/to/vendor/bin/templatemap_generator.php /path/to/module/MODULE_NAME
+
 ## Wed 16 Aug 2017
 
 ### Example of setting alternate template:
@@ -103,87 +112,5 @@ class IndexController extends AbstractActionController
     }
 }
 ```
-// PHP-II for Mon 21 Aug 2017
-http://collabedit.com/nvmpj
-
-## 3rd Party ORM Software
-* http://propelorm.org/
-* http://doctrine-project.org/
-
-```
-// example of fetching an array of User objects
-<?php 
-class User
-{
-    // here you would place useful methods
-}
-try {
-    $pdo = new PDO('mysql:unix_socket=/var/run/mysqld/mysqld.sock;dbname=course', 'vagrant', 'vagrant');
-    $stmt = $pdo->query('SELECT * FROM customers');
-    $stmt->setFetchMode(PDO::FETCH_CLASS, 'User');
-    echo "<pre>";
-    while ($results = $stmt->fetch()) {
-        print_r($results);
-    }
-    echo "</pre>";
-}
-catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
-    $logEntry = time() . '|' . get_class($e) . ':' . $e->getMessage() . PHP_EOL;
-    error_log($logEntry, 3, 'error_log.php'); 
-}
-
-## Web Stuff
-* http://php.net/manual/en/ref.sockets.php
-* Key Generation: http://php.net/manual/en/function.openssl-pbkdf2.php
-* Random Bytes if you don't have PHP 7: http://php.net/manual/en/function.openssl-random-pseudo-bytes.php
-
-```
-// example generating a token
-<?php 
-$bytes = random_bytes(16);
-echo base64_encode($bytes);
-echo '<br>';
-echo bin2hex($bytes);
-echo '<br>';
-
-$bytes = openssl_random_pseudo_bytes(16);
-echo base64_encode($bytes);
-echo '<br>';
-echo bin2hex($bytes);
-```
 
 
-## Homework
-
-### charles
-Prepared Statements Exercise
-Create a prepared statement script.
-Add a try/catch construct.
-Add a new customer record binding the customer parameters.
-
-// BEGIN ---------------------------------------------------------------------------------------------
-
-// END -----------------------------------------------------------------------------------------------
-
-### nichole
-
-Stored Procedure Exercise
-Create a stored procedure script.
-Add the SQL to the database.
-Call the stored procedure with parameters.
-
-// sample stored proc from sandbox/public/ModDB:
-```
-DROP PROCEDURE IF EXISTS course.newCustomer;
-DELIMITER $
-CREATE PROCEDURE course.newCustomer(
-    p_firstname varchar(50),
-    p_lastname varchar(50))
-BEGIN
-    insert into customers (firstname, lastname) values (p_firstname,p_lastname);
-    -- other statements ...
-END
-$
-DELIMITER ;
-```

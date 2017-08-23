@@ -1,6 +1,6 @@
 # PHP II NOTES
 
-Left Off With: http://localhost:8080/#/4/60
+Left Off With: http://localhost:8080/#/8/16
 
 ## ERRATA
 * http://localhost:8080/#/3/1: Settting
@@ -1216,3 +1216,257 @@ catch (PDOException $e) {
 }
 //END ---------------------------------------------------------------------------------------------------
 ```
+
+## PHP-II for Mon 21 Aug 2017
+http://collabedit.com/nvmpj
+
+## 3rd Party ORM Software
+* http://propelorm.org/
+* http://doctrine-project.org/
+
+```
+// example of fetching an array of User objects
+<?php 
+class User
+{
+    // here you would place useful methods
+}
+try {
+    $pdo = new PDO('mysql:unix_socket=/var/run/mysqld/mysqld.sock;dbname=course', 'vagrant', 'vagrant');
+    $stmt = $pdo->query('SELECT * FROM customers');
+    $stmt->setFetchMode(PDO::FETCH_CLASS, 'User');
+    echo "<pre>";
+    while ($results = $stmt->fetch()) {
+        print_r($results);
+    }
+    echo "</pre>";
+}
+catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+    $logEntry = time() . '|' . get_class($e) . ':' . $e->getMessage() . PHP_EOL;
+    error_log($logEntry, 3, 'error_log.php'); 
+}
+
+## Web Stuff
+* http://php.net/manual/en/ref.sockets.php
+* Key Generation: http://php.net/manual/en/function.openssl-pbkdf2.php
+* Random Bytes if you don't have PHP 7: http://php.net/manual/en/function.openssl-random-pseudo-bytes.php
+
+```
+// example generating a token
+<?php 
+$bytes = random_bytes(16);
+echo base64_encode($bytes);
+echo '<br>';
+echo bin2hex($bytes);
+echo '<br>';
+
+$bytes = openssl_random_pseudo_bytes(16);
+echo base64_encode($bytes);
+echo '<br>';
+echo bin2hex($bytes);
+```
+
+
+## Homework
+
+### charlie
+Prepared Statements Exercise
+Create a prepared statement script.
+Add a try/catch construct.
+Add a new customer record binding the customer parameters.
+
+```
+// BEGIN ---------------------------------------------------------------------------------------------
+
+<?php
+// charlie
+define('ERROR_PDO', 'Unable to access data [code 22]');
+$dsn = 'mysql:unix_socket=/var/run/mysqld/mysqld.sock;dbname=course';
+$username = 'vagrant';
+$password = 'vagrant';
+
+try {
+    $pdo = new PDO($dsn, $username, $password);
+    $statement = $pdo->prepare('INSERT INTO customers (firstname,lastname) VALUES (:firstname,:lastname)');
+    
+    $fname = 'Homer';
+    $lname = 'Simpson';
+    
+    $statement->bindParam(':firstname', $fname);
+    $statement->bindParam(':lastname', $lname);
+    
+    //$statement->execute();
+    
+} catch (PDOException $e) {
+    
+    echo '<p style="font-family: monospace; background: red; color: white; padding: 20px; font-size: 1.25em;">';
+    echo ERROR_PDO;
+    echo "</p>";
+    
+    $now = new DateTime();
+    $error_body = $e->getFile() . ' on line ' . $e->getLine() . ': ' . $e->getMessage();
+    error_log($now->format('M d Y H:i:s') . " " . $error_body, 3, 'error.log');
+}
+
+// END -----------------------------------------------------------------------------------------------
+```
+
+### nichole
+
+Stored Procedure Exercise
+Create a stored procedure script.
+Add the SQL to the database.
+Call the stored procedure with parameters.
+
+```
+// BEGIN 
+-----------------------------------------------------------------------------------------------------
+# Uppecase all first and last names that are inserted into the database
+DROP PROCEDURE IF EXISTS course.createCustomer;
+DELIMITER $
+CREATE PROCEDURE course.createCustomer(
+    p_firstname varchar(50),
+    p_lastname varchar(50))
+BEGIN
+    insert into customers (firstname, lastname) values (UPPER(p_firstname),UPPER(p_lastname));
+    
+END
+$
+DELIMITER ;
+
+
+// Now try it
+try {
+    $pdo = new PDO('mysql:unix_socket=/var/run/mysqld/mysqld.sock;dbname=course', 'root', 'vagrant');
+        $stmt = $pdo->prepare( 'CALL createCustomer (?,?)' );
+        $fname = 'Bart';
+        $lname = 'Simpson';
+        if ($stmt->execute([$fname, $lname])) {
+            echo "New user $fname $lname says "; 
+        } 
+}
+catch(Exception $e){
+    echo $e->getMessage();
+}
+// END -----------------------------------------------------------------------------------------------
+```
+
+### philip
+```
+<?php 
+/**
+ * file: pBrownTransAction.php
+ * Multiple SQL in Transaction
+ * User: philip
+ * Date: 2017 08 20
+ * 
+ */
+   
+<?php 
+try {
+    $pdo = new PDO("mysql:unix_socket=/var/run/mysqld/mysqld.sock;dbname=course",'vagrant', 'vagrant');
+    
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    $pdo->beginTransaction();
+    
+    //Query 1
+    $sql = "INSERT INTO customers (firstname, lastname) VALUES (?,?)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['Fred', 'Flintstone']);
+    //Query 2
+    $stmt->execute(['Wilma', 'Flintstone']);
+    
+    //Query 3 with Return
+    $sql = "SELECT * from customers";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    echo "Added <pre>";
+    print_r($results);
+    echo "</pre><br><br>";
+    
+    //Query 4 Delete 1
+    $sql = "DELETE FROM customers WHERE (firstname, lastname) = (?,?)";
+    $stmt = $pdo->prepare($sql);
+    //$stmt->execute(['Fred', 'Flintstone']);
+    //$stmt->execute(['Wilma', 'Flintstone']);
+
+    // this will cause the program run to fail ... which means Wilma Flintstone is not retained in the db
+    $sql = 'This is not an SQL statement';
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+
+    $pdo->commit();
+    
+} catch (PDOException $e) {
+    
+    $pdo->rollBack();
+    echo "Error: " . $e->getMessage();
+    $logEntry = time() . '|' . get_class($e) . ':' . $e->getMessage() . PHP_EOL;
+    error_log($logEntry, 3, 'error_log.php');
+    
+}
+
+
+
+$sql = "SELECT * from customers";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+echo "Removed <pre>";
+print_r($results);
+echo "</pre>";
+```
+
+## for Wed 23 Aug 2017
+http://collabedit.com/agv3r
+
+## Cookies
+see: https://github.com/dbierer/classic_php_examples/blob/master/web/cookie_counter.php
+
+### Session
+see: https://github.com/dbierer/classic_php_examples/blob/master/web/session_counter.php
+
+### Etag
+see: https://github.com/dbierer/classic_php_examples/blob/master/web/etag.php
+
+### Email
+see: http://www.postfix.org/
+
+### Composer
+see: https://packagist.org/
+see: https://getcomposer.org/
+
+### banu
+Form Class Exercise
+Build a Form class that abstracts form creation.
+Create a login form from the Form class.
+Write code to validated the login form elements.
+Optional: add unique hash
+Optional: CAPTCHA
+
+// BEGIN ----------------------------------------------------------
+
+// END ------------------------------------------------------------
+
+### charlie
+Cookie Exercise
+Write a class and method that sets a cookie for some data.
+Write a second method that processes the cookie.
+
+// BEGIN ----------------------------------------------------------
+
+// END ------------------------------------------------------------
+
+### philip
+Session Exercise
+Write a index.php file that receives login form post data. Hard code the post data if desired.
+Write a model class that interfaces the user database and authenticate the user.
+
+// BEGIN ----------------------------------------------------------
+
+// END ------------------------------------------------------------
+
+
