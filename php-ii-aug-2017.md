@@ -1446,8 +1446,191 @@ Create a login form from the Form class.
 Write code to validated the login form elements.
 Optional: add unique hash
 Optional: CAPTCHA
+// Unfortunately, I did not have enough time to implement optionals 
 
 // BEGIN ----------------------------------------------------------
+//config.php
+$config = [
+    'form' => [
+        'name' => 'loginForm',
+        'id' => 'loginForm',
+        'method' => 'post',
+        'action' => 'index.php',
+    ],
+    'elements' => [
+        'username' => [
+            'label' => 'Username: ',
+            'type' => 'text',
+            'id' => 'username',
+            'maxlength' => 10
+        ],
+        'password' => [
+            'label' => 'Password: ',
+            'type' => 'password',
+            'id' => 'password',
+            'maxlength' => 8
+        ],
+        'login' => [
+            'type' => 'submit',
+            'name' => 'login',
+            'value' => 'Login'
+        ],
+    ],
+    'filters' => [
+        'trim' => ['username', 'password'],
+        'stripTags' => ['username']
+     ],
+    'validators' => [
+        'minLength8' => ['username', 'password'],
+        'alnum' => ['username'],
+    ]
+];
+
+return $config;
+
+// Form Class
+<?php
+namespace Classes;
+
+class Form
+{
+    protected $config;
+    protected $output = '';
+    protected $messages;
+    
+    public function __construct(array $config) 
+    {
+        if (!isset($config['elements'])) {
+            throw new Exception('Missing config for form elements');
+        }
+        if (!isset($config['form'])) {
+            throw new Exception('Missing config for form tag');
+        }
+        
+        $this->config = $config;
+        $this->addElements($config['elements']);
+        $this->addFormTag($config['form']);
+    }
+    
+    public function addElements(array $elements) 
+    {
+        $html = '';
+        foreach ($elements as $name => $element) {
+            if (isset($element['label'])) {
+                $html .= '<label for = "' . $element['id'] . '">' . $element['label']. '</label>';
+            }
+            $html .= '<input name = "' . $name .'" ';
+            foreach ($element as $attribute => $value) {
+                $html .= $attribute . '="' . $value . '" ';
+            }
+            $html .= '/><br>';
+        }
+        $this->output .= $html;
+    }
+    
+    public function addFormTag(array $formTag) 
+    {
+        $html = '<form ';
+        foreach ($formTag as $attribute => $value) {
+            $html .= $attribute . '="' . $value . '" ';
+        }
+        $html .= '>';
+        $this->output = $html . $this->output . '</form>';
+    }
+    
+    public function __toString()
+    {
+        return $this->output;
+    }
+    
+    public function validate(array $data) 
+    {
+        $valid = TRUE;
+        if (isset($this->config['filters'])) {
+            $filters = $this->config['filters'];
+            foreach ($filters as $filter => $elements) {
+                foreach ($elements as $element) {
+                    if (isset($data[$element])) {
+                        $data[$element] = $this->{$filter}($data[$element]);
+                    }
+                }
+            }
+        }
+        if (isset($this->config['validators'])) {
+            $validators = $this->config['validators'];
+            foreach ($validators as $validator => $elements) {
+                foreach ($elements as $element) {
+                    if (isset($data[$element])) {
+                        $result = $this->{$validator}($element, $data[$element]);
+                        if (!$result) {
+                            $valid = FALSE;
+                        }
+                    }
+                }
+            }
+        }
+        return $valid;
+    }
+    
+    public function minLength8($field, $value)
+    {
+        if (strlen($value) < 8) {
+            $this->messages[] = $field . ' should be at least 8 characters!';
+            return FALSE;
+        }
+        return TRUE;
+    }
+    
+    public function alnum($field, $value)
+    {
+        if (!ctype_alnum($value)) {
+            $this->messages[] = $field . ' should be alphanumeric!';
+            return FALSE;
+        }
+        return TRUE;
+    }
+    
+    public function trim($value)
+    {
+        return trim($value);
+    }
+    
+    public function stripTags($value)
+    {
+        return strip_tags($value);
+
+    }
+    
+    public function getMessages()
+    {
+        return $this->messages;
+    }
+}
+
+//index.php
+<?php
+
+include __DIR__ . '/../Classes/Loader.php';
+$loader = new \Classes\Loader();
+
+use Classes\Form;
+
+// Generate form
+$config = include __DIR__ . '/../config/config.php';
+$loginForm = new Form($config);
+echo $loginForm;
+
+// Validate form
+$isValid = FALSE;
+if (isset($_POST['login'])) {
+    $isValid = $loginForm->validate($_POST);
+    
+    if ($isValid) {
+        echo 'Login information is valid';
+    } else {
+        echo implode('<br>', $loginForm->getMessages());
+    }
+}
 
 // END ------------------------------------------------------------
 
@@ -1458,6 +1641,40 @@ Write a second method that processes the cookie.
 
 // BEGIN ----------------------------------------------------------
 
+// Too much code for just this spot. See the following
+// https://git.psu.edu/cdm32/zend-training-php2/blob/master/public/index.php
+// https://git.psu.edu/cdm32/zend-training-php2/blob/master/src/charliemorris/CookieBaker.php
+// https://git.psu.edu/cdm32/zend-training-php2/blob/master/src/charliemorris/Database.php
+
+// brief explanation: I setup a tracking cookie to record the resource clicked and display it
+// to a user when the user returns to the site
+
+// This is the cookie class
+class CookieBaker
+{
+    public $client_ip;
+    protected $cookies = [];
+
+    public function __construct($client_ip)
+    {
+        $this->client_ip = hash('sha256', $client_ip);
+    }
+    
+    public function bakeCookie($key, $value)
+    {
+        setcookie("$this->client_ip-$key", $value, time()+60*60*24*3);
+        return $this;
+    }
+    
+    public function eatCookie($key)
+    {
+        if (isset($_COOKIE["$this->client_ip-$key"])) {
+            return $_COOKIE["$this->client_ip-$key"];
+        } 
+
+    }
+}
+
 // END ------------------------------------------------------------
 
 ### philip
@@ -1466,7 +1683,230 @@ Write a index.php file that receives login form post data. Hard code the post da
 Write a model class that interfaces the user database and authenticate the user.
 
 // BEGIN ----------------------------------------------------------
+### What a Mis-Mash, No Errors, but Won't Show Success Page - Good Luck
+<!-- 
+CREATE TABLE IF NOT EXISTS `users` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(250) NOT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
-// END ------------------------------------------------------------
+INSERT INTO `users` (`user_id`, 'name', 'email', `username`, `password`) VALUES  
+(1, 'Fred', 'fred@flintstones.gone', 'admin', 'admin'); 
+-->
 
 
+<?php
+
+session_start();
+
+define('HOST', 'localhost'); // Database host name ex. localhost
+define('USER', 'vagrant'); // Database user. ex. root ( if your on local server)
+define('PASSWORD', 'vagrant'); // Database user password  (if password is not set for user then keep it empty )
+define('DATABASE', 'course'); // Database Database name
+
+include __DIR__ . '/../Generic/Loader.php';
+$loader = new \Generic\Loader();
+
+use Classes\UserLogin;
+
+$app = new UserLogin();
+
+$login_error_message = '';
+
+// check Login request
+if (!empty($_POST['btnLogin'])) {
+    
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
+    
+    if ($username == "") {
+        $login_error_message = 'Username field is required!';
+    } else if ($password == "") {
+        $login_error_message = 'Password field is required!';
+    } else {
+        //echo 'else 2';
+        $user_id = $app->Login($username, $password); // check user login
+        if($user_id > 0)
+        {
+            //echo 'session';
+            $_SESSION['user_id'] = $user_id; // Set Session
+            header('Location: /');
+            exit;
+        }
+        else
+        {
+            $login_error_message = 'Invalid login details!';
+        }
+    }
+}
+
+?>
+
+
+<!doctype html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+
+ <h2>PHP Session Login</h2>
+
+<?php
+  if ($login_error_message != "") {
+      echo '<div class="alert alert-danger"><strong>Error: </strong> ' . $login_error_message . '</div>';
+  }
+?>
+
+  <?php echo (isset($_SESSION['user_id'])) ? 'Already Logged In!' : ''; ?>
+  <br>
+  <form action="index.php" method="post">
+      
+      <label for="">Username</label>
+      <input type="text" name="username" class="form-control"/>
+      <br>
+      
+      <label for="">Password</label>
+      <input type="password" name="password" class="form-control"/>
+      <br>
+      <input type="submit" name="btnLogin" class="btn btn-primary" value="Login"/>
+      
+  </form>                              
+
+</body>
+</html>
+
+<?php 
+namespace Classes;
+class UserLogin
+{
+    protected $db;    
+    public function __construct()
+    {
+        try {
+            $this->db = new PDO('mysql:host='.HOST.';dbname='.DATABASE.'', USER, PASSWORD);
+        } catch (PDOException $e) {
+            return "Error!: " . $e->getMessage();
+            die();
+        }
+    }
+    public function Login($username, $password)
+    {
+        try {
+            $query = $this->db->prepare("SELECT user_id FROM users WHERE (username=:username OR email=:username) AND password=:password");
+            $query->bindParam("username", $username, PDO::PARAM_STR);
+            $query->bindParam("password", $password, PDO::PARAM_STR);
+            $query->execute();
+            if ($query->rowCount() > 0) {
+                $result = $query->fetch(PDO::FETCH_OBJ);
+                return $result->user_id;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            exit($e->getMessage());
+        }
+    }    
+}
+
+
+## for Fri 25 Aug 2017
+http://collabedit.com/ubg2g
+
+NOTE TO SELF: use json_encode to encode an array of objects
+
+## Class Discussion
+### Passwords
+see: http://php.net/manual/en/function.password-hash.php
+
+### SOAP
+see: https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
+
+### JSON
+<?php
+include __DIR__ . '/../Generic/Loader.php';
+$loader = new \Generic\Loader();
+
+use Classes\Test;
+
+$test[] = new Test('Marge', 99.99);
+$test[] = new Test('Lisa', 88.88);
+$test[] = new Test('Crusty the Clown', -99.99);
+
+$string = serialize($test);
+echo $string;
+$obj = unserialize($string);
+echo '<br><pre>' . var_export($obj, TRUE) . '</pre>';
+/*
+$json = '[';
+foreach ($test as $item) {
+    $json .= json_encode($item);
+    $json .= ',';
+}
+$json .= substr($json, 0, -1) . ']';
+echo $json;
+*/
+
+<?php 
+namespace Classes;
+class Test
+{
+    protected $name;
+    protected $amount;
+    public function __construct($name, $amount)
+    {
+        $this->name = $name;
+        $this->amount = $amount;
+    }
+    /**
+     * @return the $name
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param field_type $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return the $amount
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    /**
+     * @param field_type $amount
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+    }
+
+}
+
+
+
+## Homework
+
+### for Everybody!!!
+Install Composer Exercise
+Install Composer in the course virtual machine.
+Install composer locally. Use the local link for instruction.
+Install composer globally . Use the global link for instruction.
+
+### for Everybody!!!
+Composer with OrderApp Exercise
+Add composer to the OrderApp project.
+Edit the composer.json file to match the JSON shown in the Order Application sample in the previous slide.
+Execute Composer and install the specified dependencies.

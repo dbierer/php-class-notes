@@ -2,6 +2,9 @@
 
 NOTE TO SELF: find better example of delegator
 
+For Fri 25 August: homework:
+Lab: Manipulating Views and Layouts
+
 http://localhost:9090/#/5/45
 
 ## ERRATA
@@ -27,7 +30,14 @@ http://localhost:9090/#/5/45
 * http://localhost:9090/#/5/41: drop template_map == too confusing
 * http://localhost:9090/#/5/22: suggest moving discussion of `url()` plugin before discussion of `redirect()` plugin as concepts are similar, but `url()` plugin is easier to understand
 * http://localhost:9090/#/6/16 - 23: initializers, abstract factories and delegators are covered extensively in the ZFF-II
+* http://localhost:9090/#/7/16: not sure if ´default´ is going to work for setTemplate()
 
+## Class Notes
+* If you want to deliver JSON from a controller action:
+  * Add the ZF component: `composer require zendframework/zend-json` 
+  * In the `module.config.php` under `view_manager => 'strategies' => ['ViewJsonStrategy'}`
+  * Controller returns `\Zend\View\Model\JsonModel` with the data supplied as constructor argument
+  * Don´t forget the ¨use¨ statement as well!!!
 
 ## LABS
 ### Important Note
@@ -114,3 +124,98 @@ class IndexController extends AbstractActionController
 ```
 
 
+### examples of nested views
+https://gist.github.com/anonymous/6563adab8e0cc1fb51dd92346a697018
+
+```
+<?php
+namespace Market\Controller;
+
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
+
+class IndexController extends AbstractActionController
+{
+    protected $someService;
+    protected $categories;
+    public function indexAction()
+    {
+        $this->layout('market/layout');
+        return new ViewModel(['someService' => $this->getSomeService(),
+                              'categories' => $this->getCategories()
+        ]);
+    }
+    public function requestAction()
+    {
+        $viewModel = new ViewModel(['request' => $this->getRequest()]);
+        $viewModel->setTerminal(TRUE);
+        return $viewModel;
+    }
+    public function paramsAction()
+    {
+        $status[] = $this->params()->fromQuery('status1', 'Unknown');
+        $status[] = $this->getRequest()->getQuery('status2', 'Unknown');
+        $viewModel = new ViewModel(['status' => $status]);
+        $childView = new ViewModel(['controller' => __CLASS__, 'action' => __FUNCTION__]);
+        $childView->setTemplate('alt/child');
+        $otherView = clone $childView;
+        $viewModel->addChild($childView, 'child');
+        $viewModel->addChild($otherView, 'otherChild');
+        return $viewModel;
+    }
+    public function stopAction()
+    {
+        $response = $this->getResponse();
+        $response->setContent('<h1>No Problem ... Be Happy!</h1>');
+        return $response;
+    }
+    /**
+     * @return the $someService
+     */
+    public function getSomeService()
+    {
+        return $this->someService;
+    }
+
+    /**
+     * @param field_type $someService
+     */
+    public function setSomeService($someService)
+    {
+        $this->someService = $someService;
+    }
+    /**
+     * @return the $categories
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    /**
+     * @param field_type $categories
+     */
+    public function setCategories($categories)
+    {
+        $this->categories = $categories;
+    }
+
+
+}
+
+// Market/view/alt/child.phtml
+<h2>Child</h2>
+Controller: <?php echo $this->controller; ?>
+Action:  <?php echo $this->action; ?>
+
+// Market/view/market/index/params.phtml
+<div class="col-lg-4">
+	<pre><?= var_export($this->status, TRUE); ?></pre>
+</div>
+<div class="col-lg-4">
+	<?php echo $this->child; ?>
+</div>
+<div class="col-lg-4">
+	<?php echo $this->otherChild; ?>
+</div>
+```
