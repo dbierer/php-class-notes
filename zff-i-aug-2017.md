@@ -5,7 +5,7 @@ NOTE TO SELF: find better example of delegator
 For Fri 25 August: homework:
 Lab: Manipulating Views and Layouts
 
-http://localhost:9090/#/5/45
+Left Off Here: http://localhost:9090/#/8/14
 
 ## ERRATA
 * http://localhost:9090/#/2/5: s/be ´event´
@@ -132,7 +132,7 @@ https://gist.github.com/anonymous/6563adab8e0cc1fb51dd92346a697018
 namespace Market\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Zend\View\Model\ {ViewModel, JsonModel};
 
 class IndexController extends AbstractActionController
 {
@@ -156,7 +156,7 @@ class IndexController extends AbstractActionController
         $status[] = $this->params()->fromQuery('status1', 'Unknown');
         $status[] = $this->getRequest()->getQuery('status2', 'Unknown');
         $viewModel = new ViewModel(['status' => $status]);
-        $childView = new ViewModel(['controller' => __CLASS__, 'action' => __FUNCTION__]);
+        $childView = new ViewModel(['controller' => __CLASS__, 'action' => __FUNCTION__, 'this' => 'that']);
         $childView->setTemplate('alt/child');
         $otherView = clone $childView;
         $viewModel->addChild($childView, 'child');
@@ -168,6 +168,14 @@ class IndexController extends AbstractActionController
         $response = $this->getResponse();
         $response->setContent('<h1>No Problem ... Be Happy!</h1>');
         return $response;
+    }
+    public function jsonAction()
+    {
+        $test = array();
+        $test[] = range('A', 'F');
+        $test[] = range(1,6);
+        $test[] = range('a', 'f');
+        return new JsonModel(['data' => $test]);
     }
     /**
      * @return the $someService
@@ -199,8 +207,6 @@ class IndexController extends AbstractActionController
     {
         $this->categories = $categories;
     }
-
-
 }
 
 // Market/view/alt/child.phtml
