@@ -31,6 +31,7 @@ Left Off Here: http://localhost:9090/#/8/14
 * http://localhost:9090/#/5/22: suggest moving discussion of `url()` plugin before discussion of `redirect()` plugin as concepts are similar, but `url()` plugin is easier to understand
 * http://localhost:9090/#/6/16 - 23: initializers, abstract factories and delegators are covered extensively in the ZFF-II
 * http://localhost:9090/#/7/16: not sure if ´default´ is going to work for setTemplate()
+* http://localhost:9090/#/5/??: location of factory should be Market\src\Controller\Factory\ViewControllerFactory.php ("\Factory\" path was omitted)
 
 ## Class Notes
 * If you want to deliver JSON from a controller action:
@@ -78,9 +79,10 @@ Fatal error: Uncaught Zend\ModuleManager\Exception\RuntimeException: Module (NAM
 ### Plugins Lab
 * Directory s/be: `Market\src\Controller\Plugin` not `plugin`
 
-### New Controllers and Factories Lab
+### Controllers and Factories Lab
 * Steps 8 + 17: I would drop the `template_map` in favor of `template_path_stack`
 * Steps 9 + 18: too early to discuss child_routes: I would recommend just single level routes at this stage
+* Location of the ViewControllerFactory should be `Market\src\Controller\Factory\ViewControllerFactory.php`
 
 ## Q & A
 * Q: Do you need git installed to use composer?
