@@ -1827,32 +1827,40 @@ see: https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client
 
 ### JSON
 <?php
-include __DIR__ . '/../Generic/Loader.php';
-$loader = new \Generic\Loader();
+spl_autoload_register(function ($class) {
+    $fn = __DIR__ . '/' . str_replace('\\', '/', $class) . '.php';
+    require $fn;
+});
 
-use Classes\Test;
+use Classes\ {TestPublic, TestProtected};
 
-$test[] = new Test('Marge', 99.99);
-$test[] = new Test('Lisa', 88.88);
-$test[] = new Test('Crusty the Clown', -99.99);
+$format = '<br><pre>%s</pre>' . PHP_EOL;
+$test[] = new TestProtected('Marge', 99.99);
+$test[] = new TestProtected('Lisa', 88.88);
+$test[] = new TestProtected('Crusty the Clown', -99.99);
+$test[] = new TestPublic('Homer', 99.99);
+$test[] = new TestPublic('Bart', 88.88);
+$test[] = new TestPublic('Mo', -99.99);
 
+// serialize works OK on either class
 $string = serialize($test);
-echo $string;
-$obj = unserialize($string);
-echo '<br><pre>' . var_export($obj, TRUE) . '</pre>';
-/*
-$json = '[';
-foreach ($test as $item) {
-    $json .= json_encode($item);
-    $json .= ',';
-}
-$json .= substr($json, 0, -1) . ']';
-echo $json;
-*/
+printf($format, $string);
 
-<?php 
+// unserialize works OK on either class
+$obj = unserialize($string);
+printf($format, var_export($obj, TRUE));
+
+// json_encode() only works when object properties are public!
+$json = json_encode($test);
+printf($format, $json);
+
+// json_decode() does not return original class!!!
+$native = json_decode($json);
+printf($format, var_export($native, TRUE));
+
+<?php
 namespace Classes;
-class Test
+class TestProtected
 {
     protected $name;
     protected $amount;
@@ -1895,6 +1903,50 @@ class Test
 
 }
 
+<?php
+namespace Classes;
+class TestPublic
+{
+    public $name;
+    public $amount;
+    public function __construct($name, $amount)
+    {
+        $this->name = $name;
+        $this->amount = $amount;
+    }
+    /**
+     * @return the $name
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param field_type $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return the $amount
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    /**
+     * @param field_type $amount
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+    }
+
+}
 
 
 ## Homework
