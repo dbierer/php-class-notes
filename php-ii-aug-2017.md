@@ -7,6 +7,8 @@ Left Off With: http://localhost:8080/#/8/16
 * http://localhost:8080/#/4/16: accessability  
 * http://localhost:8080/#/4/21: parent ::   ???
 * http://localhost:8080/#/4/59: s/be ¨use CarTruckTrait;¨
+* http://localhost:8080/#/11/11: text s/be ¨doesn´t contain any letters¨
+* http://localhost:8080/#/11/18: preg_filter() s/be preg_replace()
 
 ## for Wed 9 Aug 2017
 http://collabedit.com/xvyaq
@@ -1817,8 +1819,45 @@ class UserLogin
 http://collabedit.com/ubg2g
 
 NOTE TO SELF: use json_encode to encode an array of objects
+# Nichole thinks it didn't work because the attributes were protected. Changing the attributes to public makes the json_encode work. What's best practice in this situation? If we really wanted to
+have those attributes protected or private, can we override the default serialization for objects
+from that class? Or would we normally assume that protected attributes are already attributes we
+DO NOT want to be public, and only serialize public attributes?
 
 ## Class Discussion
+
+### mcyrpt is GONE!!!
+* see: https://wiki.php.net/rfc/mcrypt-viking-funeral
+
+### streams
+* see: http://php.net/manual/en/function.stream-context-create.php
+* see: http://php.net/manual/en/wrappers.php
+* see: http://php.net/manual/en/function.ssh2-exec.php
+
+### apigility
+* be sure to install ZIP extension:
+```
+sudo apt-get install php7.1-php
+```
+
+### Reflection
+<?php
+spl_autoload_register(function ($class) {
+    $fn = __DIR__ . '/../' . str_replace('\\', '/', $class) . '.php';
+    require $fn;
+});
+    
+use Classes\ {TestPublic, TestProtected};
+
+$format = '<br><pre>%s</pre>' . PHP_EOL;
+$test = new TestProtected('Marge', 99.99);
+printf($format, var_export(ReflectionObject::export($test), TRUE));
+
+
+
+* See also: from Charles to All Participants: http://kint-php.github.io/kint/ if anyone is curious
+* from Nichole to All Participants: psysh is like pry (Ruby debugger) psysh.org :) 
+
 ### Passwords
 see: http://php.net/manual/en/function.password-hash.php
 
@@ -1828,10 +1867,10 @@ see: https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client
 ### JSON
 <?php
 spl_autoload_register(function ($class) {
-    $fn = __DIR__ . '/' . str_replace('\\', '/', $class) . '.php';
+    $fn = __DIR__ . '/../' . str_replace('\\', '/', $class) . '.php';
     require $fn;
 });
-
+    
 use Classes\ {TestPublic, TestProtected};
 
 $format = '<br><pre>%s</pre>' . PHP_EOL;
@@ -1851,24 +1890,48 @@ $obj = unserialize($string);
 printf($format, var_export($obj, TRUE));
 
 // json_encode() only works when object properties are public!
-$json = json_encode($test);
+$json = json_encode($test, JSON_PRETTY_PRINT);
 printf($format, $json);
 
 // json_decode() does not return original class!!!
 $native = json_decode($json);
 printf($format, var_export($native, TRUE));
 
+// using extract
+printf($format, json_encode($test[0]->extract(), JSON_PRETTY_PRINT));
+
+$obj =(new TestProtected())->hydrate(['name' => 'Apo', 'amount' => 111.11]);
+printf($format, var_export($obj, TRUE));
+
 <?php
 namespace Classes;
-class TestProtected
+
+class Hydrator
 {
-    protected $name;
-    protected $amount;
+    public function hydrate(array $data)
+    {
+        foreach ($data as $key => $val) {
+            $this->$key = $val;
+        }
+        return $this;
+    }
+    public function extract()
+    {
+        return get_object_vars($this);
+    }
+}
+
+<?php
+namespace Classes;
+
+trait TestTrait
+{
     public function __construct($name, $amount)
     {
         $this->name = $name;
         $this->amount = $amount;
     }
+    
     /**
      * @return the $name
      */
@@ -1900,53 +1963,26 @@ class TestProtected
     {
         $this->amount = $amount;
     }
+}
 
+<?php
+namespace Classes;
+class TestProtected extends Hydrator
+{
+    use TestTrait;
+    protected $name;
+    protected $amount;
 }
 
 <?php
 namespace Classes;
 class TestPublic
 {
+    use TestTrait;
     public $name;
     public $amount;
-    public function __construct($name, $amount)
-    {
-        $this->name = $name;
-        $this->amount = $amount;
-    }
-    /**
-     * @return the $name
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param field_type $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * @return the $amount
-     */
-    public function getAmount()
-    {
-        return $this->amount;
-    }
-
-    /**
-     * @param field_type $amount
-     */
-    public function setAmount($amount)
-    {
-        $this->amount = $amount;
-    }
-
 }
+
 
 
 ## Homework

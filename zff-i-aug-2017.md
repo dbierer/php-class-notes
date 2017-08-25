@@ -1,14 +1,16 @@
 # ZFF-I NOTES
 
-NOTE TO SELF: find better example of delegator
+NOTE TO SELF: find out why template indices are found even though not in template_map?
 * https://github.com/dbierer/zf2a-may-2016/blob/master/security-units-1-2/module/Market/Module.php
-
+* 
 For Fri 25 August: homework:
 Lab: Manipulating Views and Layouts
 
-Left Off Here: http://localhost:9090/#/8/14
+ZF Ref: https://framework.zend.com/learn
 
 ## ERRATA
+
+### Slides
 * http://localhost:9090/#/2/5: s/be ´event´
 * http://localhost:9090/#/3/22: s/be onlinemarket.work
 * http://localhost:9090/#/3/19: there is no folder "Model"
@@ -31,8 +33,12 @@ Left Off Here: http://localhost:9090/#/8/14
 * http://localhost:9090/#/5/41: drop template_map == too confusing
 * http://localhost:9090/#/5/22: suggest moving discussion of `url()` plugin before discussion of `redirect()` plugin as concepts are similar, but `url()` plugin is easier to understand
 * http://localhost:9090/#/6/16 - 23: initializers, abstract factories and delegators are covered extensively in the ZFF-II
-* http://localhost:9090/#/7/16: not sure if ´default´ is going to work for setTemplate()
-* http://localhost:9090/#/5/??: location of factory should be Market\src\Controller\Factory\ViewControllerFactory.php ("\Factory\" path was omitted)
+* http://localhost:9090/#/7/16: 'default' does not work for `setTemplate()`
+* http://localhost:9090/#/5/??: location of factory should be `Market\src\Controller\Factory\ViewControllerFactory.php` ("\Factory\" path was omitted)
+* http://localhost:9090/#/8/26: this view template doesn´t work!
+
+### VM Source
+* `Market\Form\PostFilter` uses deprecated methods including `setAllowEmpty` and `addByName`
 
 ## Class Notes
 * If you want to deliver JSON from a controller action:
@@ -84,6 +90,9 @@ Fatal error: Uncaught Zend\ModuleManager\Exception\RuntimeException: Module (NAM
 * Steps 8 + 17: I would drop the `template_map` in favor of `template_path_stack`
 * Steps 9 + 18: too early to discuss child_routes: I would recommend just single level routes at this stage
 * Location of the ViewControllerFactory should be `Market\src\Controller\Factory\ViewControllerFactory.php`
+
+### Forms / Filters / Validators Lab
+* Form + Filter in one class: https://github.com/dbierer/zf3-examples/blob/master/guestbook/module/Login/src/Form/Login.php
 
 ## Q & A
 * Q: Do you need git installed to use composer?
