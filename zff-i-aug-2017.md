@@ -1,6 +1,7 @@
 # ZFF-I NOTES
 
 NOTE TO SELF: find better example of delegator
+* https://github.com/dbierer/zf2a-may-2016/blob/master/security-units-1-2/module/Market/Module.php
 
 For Fri 25 August: homework:
 Lab: Manipulating Views and Layouts
