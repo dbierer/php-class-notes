@@ -237,3 +237,124 @@ Action:  <?php echo $this->action; ?>
 	<?php echo $this->otherChild; ?>
 </div>
 ```
+
+## Mon 28 Aug
+
+```
+<?php
+// module/Model/src/Module.php
+namespace Model;
+
+use Zend\Db\Adapter\Adapter;
+class Module
+{
+    public function getServiceConfig()
+    {
+        return [
+            'services' => [
+                'model-primary-adapter-config' => [
+                    'driver' => 'PDO',
+                    'dsn' => 'mysql:hostname=localhost;dbname=onlinemarket',
+                    'username' => 'zend',
+                    'password' => 'password',
+                ],
+            ],
+            'factories' => [
+                'model-primary-adapter' => function ($container, $requestedName) {
+                    return new Adapter($container->get('model-primary-adapter-config'));
+                },
+            ],
+        ];        
+    }
+}
+```
+
+```
+<?php
+// /config/modules.config.php
+/**
+ * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
+ * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ */
+
+/**
+ * List of enabled modules for this application.
+ *
+ * This should be an array of module namespaces used in the application.
+ */
+return [
+    'Zend\Router',
+    'Zend\Validator',
+    'Market',
+    'Application',
+    'Model',
+];
+```
+
+```
+<!-- market/view/index.phtml -->
+<div class="col-lg-2">
+	<?php echo $this->htmllist($this->categories); ?>
+</div>
+
+<div class="col-lg-10">
+    <pre>
+    <?php var_dump($this->someService); ?>
+    <?php echo get_class($this); ?>
+    <?php foreach ($this->result as $row) var_dump($row); ?>
+    </pre>
+</div>
+```
+
+```
+<?php
+namespace Market\Controller;
+
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ {ViewModel, JsonModel};
+
+class IndexController extends AbstractActionController
+{
+    protected $someService;
+    protected $categories;
+    protected $adapter;
+    public function indexAction()
+    {
+        $result = $this->adapter->query('SELECT * FROM listings', []);
+        return new ViewModel(['someService' => $this->getSomeService(),
+                              'categories' => $this->getCategories(),
+                              'result' => $result
+        ]);
+    }
+}
+```
+
+```
+<?php
+namespace Market\Controller\Factory;
+use Interop\Container\ContainerInterface;
+use Zend\ServiceManager\Factory\FactoryInterface;
+class IndexControllerFactory implements FactoryInterface 
+{
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null) {
+        $controller = new $requestedName();
+        $controller->setSomeService($container->get('some-service'));
+        $controller->setCategories($container->get('categories'));
+        $controller->setAdapter($container->get('model-primary-adapter'));
+        return $controller;
+    }
+}
+```
+
+```
+// composer.json file
+	"autoload" : {
+		"psr-4" : {
+			"Application\\" : "module/Application/src/",
+			"Market\\" : "module/Market/src/",
+			"Model\\" : "module/Model/src/"
+		}
+	},
+```
+
