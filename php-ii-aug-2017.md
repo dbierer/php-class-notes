@@ -260,10 +260,10 @@ http://collabedit.com/qy2bf
 * http://www.php-fig.org/psr/psr-7/]
 
 ### nichole
-Create an Extensible Super Class Exercise
-Using the code created in the previous exercise, create an extensible superclass definition. Set the properties and methods that subclasses will need.
-Create one or more subclasses that extend the superclass with constants, properties and methods specific to the subclass
-Instantiate a couple of objects from the subclasses and execute the methods producing some output.
+* Create an Extensible Super Class Exercise
+* Using the code created in the previous exercise, create an extensible superclass definition. Set the properties and methods that subclasses will need.
+* Create one or more subclasses that extend the superclass with constants, properties and methods specific to the subclass
+* Instantiate a couple of objects from the subclasses and execute the methods producing some output.
 
 ```
 // BEGIN ---------------------------------------------------------------------------------------------------
@@ -331,10 +331,10 @@ if ($authClass->isAdminUser()){
 
 
 ### pedram
-Magic Methods Exercise
-Using the code from the previous exercises, add four magic methods.
-Add a magic constructor that accepts parameters and set those parameters into the class on instantiation.
-Create an index.php file, load the classes, create subclass object instances and execute method calls to the subclass objects.
+* Magic Methods Exercise
+* Using the code from the previous exercises, add four magic methods.
+* Add a magic constructor that accepts parameters and set those parameters into the class on instantiation.
+* Create an index.php file, load the classes, create subclass object instances and execute method calls to the subclass objects.
 
 // BEGIN ---------------------------------------------------------------------------------------------------
 
@@ -343,10 +343,10 @@ Create an index.php file, load the classes, create subclass object instances and
 // END -----------------------------------------------------------------------------------------------------
 
 ### philip
-Abstract Class Exercise
-Turn your superclass into an abstract class.
-Add a static property and method that builds another object.
-Call the static method and retrieve the object it builds.
+* Abstract Class Exercise
+* Turn your superclass into an abstract class.
+* Add a static property and method that builds another object.
+* Call the static method and retrieve the object it builds.
 
 // BEGIN ---------------------------------------------------------------------------------------------------
 ```
@@ -441,10 +441,10 @@ echo '</pre>';
 ```
 
 ### shaleha
-Interface Exercise
-Create an object interface with two methods.
-Implement the interface in your superclass.
-Add some code to the index.php file that calls one of the superclass methods implemented.
+* Interface Exercise
+* Create an object interface with two methods.
+* Implement the interface in your superclass.
+* Add some code to the index.php file that calls one of the superclass methods implemented.
 
 ```
 // BEGIN ---------------------------------------------------------------------------------------------------
@@ -669,12 +669,12 @@ echo '</pre>';
 ```
 
 ### banu
-Type Hint Exercise
-Create a new class with some properties and methods.
-Add a constructor.
-Type hint in the constructor for the interface created in the last exercise.
-Instantiate an object from one of your previous subclasses.
-Add it as a dependent object to the new object created in step one, and store it.
+* Type Hint Exercise
+* Create a new class with some properties and methods.
+* Add a constructor.
+* Type hint in the constructor for the interface created in the last exercise.
+* Instantiate an object from one of your previous subclasses.
+* Add it as a dependent object to the new object created in step one, and store it.
 
 ```
 // BEGIN ----------------------------------------------------------------------
@@ -779,10 +779,10 @@ echo new StudentReport('test');
 
 
 ### nichole
-Trait Exercise
-Create two traits, each with two methods, one of the methods named the same in both traits.
+* Trait Exercise
+* Create two traits, each with two methods, one of the methods named the same in both traits.
 
-Use the trait in a subclass created thus far. Specify a new visibility and deal with the naming conflict.
+* Use the trait in a subclass created thus far. Specify a new visibility and deal with the naming conflict.
 
 ```
 // BEGIN (Sorry for the formatting, not sure if line count is an issue? ----------------------------------------------------------------------
@@ -954,12 +954,12 @@ echo '<pre>' . var_export($days, TRUE) . '</pre>';
 
 
 ### philip
-Namespaces
-Namespace Exercise
+* Namespaces
+* Namespace Exercise
 
-Define namespaces for your classes defined in previous exercises.
-Use the namespace of one of your previously defined subclasses in another one of your previously defined subclasses, assign it an alias.
-In the subclass where the use statement resides, qualify a call to a method in the used subclass namespace.
+* Define namespaces for your classes defined in previous exercises.
+* Use the namespace of one of your previously defined subclasses in another one of your previously defined subclasses, assign it an alias.
+* In the subclass where the use statement resides, qualify a call to a method in the used subclass namespace.
 
 ```
 // BEGIN -------------------------------------------------------------
@@ -1030,14 +1030,14 @@ class Location
 ```
 
 ### shaleha
-Exception Exercise
-Add a constructor that accepts parameters.
-Call the parent constructor.
-Add some new functionality in the constructor
-Add a try/catch/catch/finally block in the index.php file.
-In the try portion, throw an instance of the Exceptions object, and an instance of your custom exception class.
-Handle both in the associated catch blocks.
-Log some data in the finally block.
+* Exception Exercise
+* Add a constructor that accepts parameters.
+* Call the parent constructor.
+* Add some new functionality in the constructor
+* Add a try/catch/catch/finally block in the index.php file.
+* In the try portion, throw an instance of the Exceptions object, and an instance of your custom exception class.
+* Handle both in the associated catch blocks.
+* Log some data in the finally block.
 
 ```
 // BEGIN -------------------------------------------------------------
@@ -1145,8 +1145,8 @@ http://collabedit.com/vvec9
 
 
 ### Everybody
-Create a PHP script which displays all rows from the "customers" table off the "course" database using PDO
-Use OrderApp::config/config.php to see connection info
+* Create a PHP script which displays all rows from the "customers" table off the "course" database using PDO
+* Use OrderApp::config/config.php to see connection info
 
 ### nichole
 ```
@@ -1222,7 +1222,7 @@ catch (PDOException $e) {
 ## PHP-II for Mon 21 Aug 2017
 http://collabedit.com/nvmpj
 
-## 3rd Party ORM Software
+### 3rd Party ORM Software
 * http://propelorm.org/
 * http://doctrine-project.org/
 
@@ -1249,7 +1249,7 @@ catch (PDOException $e) {
     error_log($logEntry, 3, 'error_log.php'); 
 }
 
-## Web Stuff
+### Web Stuff
 * http://php.net/manual/en/ref.sockets.php
 * Key Generation: http://php.net/manual/en/function.openssl-pbkdf2.php
 * Random Bytes if you don't have PHP 7: http://php.net/manual/en/function.openssl-random-pseudo-bytes.php
@@ -1273,10 +1273,10 @@ echo bin2hex($bytes);
 ## Homework
 
 ### charlie
-Prepared Statements Exercise
-Create a prepared statement script.
-Add a try/catch construct.
-Add a new customer record binding the customer parameters.
+* Prepared Statements Exercise
+* Create a prepared statement script.
+* Add a try/catch construct.
+* Add a new customer record binding the customer parameters.
 
 ```
 // BEGIN ---------------------------------------------------------------------------------------------
@@ -1316,10 +1316,10 @@ try {
 
 ### nichole
 
-Stored Procedure Exercise
-Create a stored procedure script.
-Add the SQL to the database.
-Call the stored procedure with parameters.
+* Stored Procedure Exercise
+* Create a stored procedure script.
+* Add the SQL to the database.
+* Call the stored procedure with parameters.
 
 ```
 // BEGIN 
@@ -1365,7 +1365,6 @@ catch(Exception $e){
  * 
  */
    
-<?php 
 try {
     $pdo = new PDO("mysql:unix_socket=/var/run/mysqld/mysqld.sock;dbname=course",'vagrant', 'vagrant');
     
@@ -1442,14 +1441,15 @@ see: https://packagist.org/
 see: https://getcomposer.org/
 
 ### banu
-Form Class Exercise
-Build a Form class that abstracts form creation.
-Create a login form from the Form class.
-Write code to validated the login form elements.
-Optional: add unique hash
-Optional: CAPTCHA
-// Unfortunately, I did not have enough time to implement optionals 
+* Form Class Exercise
+* Build a Form class that abstracts form creation.
+* Create a login form from the Form class.
+* Write code to validated the login form elements.
+* Optional: add unique hash
+* Optional: CAPTCHA
+* Unfortunately, I did not have enough time to implement optionals 
 
+```
 // BEGIN ----------------------------------------------------------
 //config.php
 $config = [
@@ -1489,7 +1489,9 @@ $config = [
 ];
 
 return $config;
+```
 
+```
 // Form Class
 <?php
 namespace Classes;
@@ -1608,7 +1610,9 @@ class Form
         return $this->messages;
     }
 }
+```
 
+```
 //index.php
 <?php
 
@@ -1635,18 +1639,20 @@ if (isset($_POST['login'])) {
 }
 
 // END ------------------------------------------------------------
+```
 
 ### charlie
-Cookie Exercise
-Write a class and method that sets a cookie for some data.
-Write a second method that processes the cookie.
+* Cookie Exercise
+* Write a class and method that sets a cookie for some data.
+* Write a second method that processes the cookie.
+* Too much code for just this spot. See the following
+  * https://git.psu.edu/cdm32/zend-training-php2/blob/master/public/index.php
+  * https://git.psu.edu/cdm32/zend-training-php2/blob/master/src/charliemorris/CookieBaker.php
+  * https://git.psu.edu/cdm32/zend-training-php2/blob/master/src/charliemorris/Database.php
 
+```
 // BEGIN ----------------------------------------------------------
 
-// Too much code for just this spot. See the following
-// https://git.psu.edu/cdm32/zend-training-php2/blob/master/public/index.php
-// https://git.psu.edu/cdm32/zend-training-php2/blob/master/src/charliemorris/CookieBaker.php
-// https://git.psu.edu/cdm32/zend-training-php2/blob/master/src/charliemorris/Database.php
 
 // brief explanation: I setup a tracking cookie to record the resource clicked and display it
 // to a user when the user returns to the site
@@ -1678,14 +1684,16 @@ class CookieBaker
 }
 
 // END ------------------------------------------------------------
+```
 
 ### philip
-Session Exercise
-Write a index.php file that receives login form post data. Hard code the post data if desired.
-Write a model class that interfaces the user database and authenticate the user.
+* Session Exercise
+* Write a index.php file that receives login form post data. Hard code the post data if desired.
+* Write a model class that interfaces the user database and authenticate the user.
 
 // BEGIN ----------------------------------------------------------
 ### What a Mis-Mash, No Errors, but Won't Show Success Page - Good Luck
+```
 <!-- 
 CREATE TABLE IF NOT EXISTS `users` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1699,8 +1707,10 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`user_id`, 'name', 'email', `username`, `password`) VALUES  
 (1, 'Fred', 'fred@flintstones.gone', 'admin', 'admin'); 
 -->
+```
 
 
+```
 <?php
 
 session_start();
@@ -1756,7 +1766,9 @@ if (!empty($_POST['btnLogin'])) {
 <body>
 
  <h2>PHP Session Login</h2>
+```
 
+```
 <?php
   if ($login_error_message != "") {
       echo '<div class="alert alert-danger"><strong>Error: </strong> ' . $login_error_message . '</div>';
@@ -1780,7 +1792,9 @@ if (!empty($_POST['btnLogin'])) {
 
 </body>
 </html>
+```
 
+```
 <?php 
 namespace Classes;
 class UserLogin
@@ -1813,16 +1827,11 @@ class UserLogin
         }
     }    
 }
+```
 
 
 ## for Fri 25 Aug 2017
 http://collabedit.com/ubg2g
-
-NOTE TO SELF: use json_encode to encode an array of objects
-# Nichole thinks it didn't work because the attributes were protected. Changing the attributes to public makes the json_encode work. What's best practice in this situation? If we really wanted to
-have those attributes protected or private, can we override the default serialization for objects
-from that class? Or would we normally assume that protected attributes are already attributes we
-DO NOT want to be public, and only serialize public attributes?
 
 ## Class Discussion
 
@@ -1841,6 +1850,7 @@ sudo apt-get install php7.1-php
 ```
 
 ### Reflection
+```
 <?php
 spl_autoload_register(function ($class) {
     $fn = __DIR__ . '/../' . str_replace('\\', '/', $class) . '.php';
@@ -1852,6 +1862,7 @@ use Classes\ {TestPublic, TestProtected};
 $format = '<br><pre>%s</pre>' . PHP_EOL;
 $test = new TestProtected('Marge', 99.99);
 printf($format, var_export(ReflectionObject::export($test), TRUE));
+```
 
 
 
@@ -1865,6 +1876,15 @@ see: http://php.net/manual/en/function.password-hash.php
 see: https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
 
 ### JSON
+* Nichole: it didn't work because the attributes were protected. Changing the attributes to public makes the json_encode work. What's best practice in this situation? If we really wanted to have those attributes protected or private, can we override the default serialization for objects from that class? Or would we normally assume that protected attributes are already attributes we DO NOT want to be public, and only serialize public attributes?
+* when using `json_encode()` to encode objects, only public properties will be encoded
+  * create a method `extract()` within the object class which calls `get_object_vars($this)` and encode that
+* when using `json_decode()` the original class will not be decoded
+  * creates an instance of `stdclass` instead
+* if you just need to flatten an object into a string for storage use `serialize()` and `unserialize()` instead
+
+
+```
 <?php
 spl_autoload_register(function ($class) {
     $fn = __DIR__ . '/../' . str_replace('\\', '/', $class) . '.php';
@@ -1903,6 +1923,8 @@ printf($format, json_encode($test[0]->extract(), JSON_PRETTY_PRINT));
 $obj =(new TestProtected())->hydrate(['name' => 'Apo', 'amount' => 111.11]);
 printf($format, var_export($obj, TRUE));
 
+```
+```
 <?php
 namespace Classes;
 
@@ -1920,7 +1942,9 @@ class Hydrator
         return get_object_vars($this);
     }
 }
+```
 
+```
 <?php
 namespace Classes;
 
@@ -1964,7 +1988,9 @@ trait TestTrait
         $this->amount = $amount;
     }
 }
+```
 
+```
 <?php
 namespace Classes;
 class TestProtected extends Hydrator
@@ -1982,19 +2008,20 @@ class TestPublic
     public $name;
     public $amount;
 }
+```
 
 
 
 ## Homework
 
 ### for Everybody!!!
-Install Composer Exercise
-Install Composer in the course virtual machine.
-Install composer locally. Use the local link for instruction.
-Install composer globally . Use the global link for instruction.
+* Install Composer Exercise
+* Install Composer in the course virtual machine.
+* Install composer locally. Use the local link for instruction.
+* Install composer globally . Use the global link for instruction.
 
 ### for Everybody!!!
-Composer with OrderApp Exercise
-Add composer to the OrderApp project.
-Edit the composer.json file to match the JSON shown in the Order Application sample in the previous slide.
-Execute Composer and install the specified dependencies.
+* Composer with OrderApp Exercise
+* Add composer to the OrderApp project.
+* Edit the composer.json file to match the JSON shown in the Order Application sample in the previous slide.
+* Execute Composer and install the specified dependencies.
