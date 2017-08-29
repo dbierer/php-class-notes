@@ -29,6 +29,7 @@ ZF Ref: https://framework.zend.com/learn
 * http://localhost:9090/#/4/44: s/be "escape" not "excape"
 * http://localhost:9090/#/5/10: need to add `CreateHttpNotFoundModel` to list of plugins
 * http://localhost:9090/#/5/11: delete this slide: AcceptableViewModelSelector is covered in ZFF-II
+* http://localhost:9090/#/5/??: RE: flashMessenger plugin: https://docs.zendframework.com/zend-mvc-plugin-flashmessenger/
 * http://localhost:9090/#/5/33: already discussed this!
 * http://localhost:9090/#/5/41: drop template_map == too confusing
 * http://localhost:9090/#/5/22: suggest moving discussion of `url()` plugin before discussion of `redirect()` plugin as concepts are similar, but `url()` plugin is easier to understand
@@ -85,6 +86,10 @@ Fatal error: Uncaught Zend\ModuleManager\Exception\RuntimeException: Module (NAM
 
 ### Plugins Lab
 * Directory s/be: `Market\src\Controller\Plugin` not `plugin`
+* To use the `flashMessenger()` plugin see: https://docs.zendframework.com/zend-mvc-plugin-flashmessenger/
+  * Need to add `zendframework\zend-mvc-plugin-flashmessenger` to the `composer.json` file
+  * Need to add `Zend\Mvc\Plugin\FlashMessenger` to `/config/modules.config.php`
+  * Refresh the composer autoloader
 
 ### Controllers and Factories Lab
 * Steps 8 + 17: I would drop the `template_map` in favor of `template_path_stack`
