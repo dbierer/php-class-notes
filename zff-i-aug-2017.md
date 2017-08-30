@@ -1,12 +1,11 @@
 # ZFF-I NOTES
 
-NOTE TO SELF: find out why template indices are found even though not in template_map?
-* https://github.com/dbierer/zf2a-may-2016/blob/master/security-units-1-2/module/Market/Module.php
-* 
-For Fri 25 August: homework:
-Lab: Manipulating Views and Layouts
+Q: Is there a diagram for ZF workflow?
+A: ???
+Please add code for module specific listener
 
-ZF Ref: https://framework.zend.com/learn
+## ZF Reference Manual
+* https://framework.zend.com/learn
 
 ## ERRATA
 
@@ -37,6 +36,10 @@ ZF Ref: https://framework.zend.com/learn
 * http://localhost:9090/#/7/16: 'default' does not work for `setTemplate()`
 * http://localhost:9090/#/5/??: location of factory should be `Market\src\Controller\Factory\ViewControllerFactory.php` ("\Factory\" path was omitted)
 * http://localhost:9090/#/8/26: this view template doesn´t work!
+* http://localhost:8080/#/10/26: links to docs should go to ref manual, not github!!!
+* http://localhost:8080/#/10/29: need to add `use Zend\Db\Sql\Like;` for this example to work!
+* http://localhost:8080/#/10/37: this example has things which are not used!
+* http://localhost:8080/#/11/29: class name s/be `Module` not Moduleb
 
 ### VM Source
 * `Market\Form\PostFilter` uses deprecated methods including `setAllowEmpty` and `addByName`
@@ -363,3 +366,119 @@ class IndexControllerFactory implements FactoryInterface
 	},
 ```
 
+## 30 Aug 2017
+
+### Zend\\Db
+* Example of `Zend\\Db\\Sql` with join: https://github.com/dbierer/zf3-examples/blob/master/guestbook/module/Events/src/TableModule/Model/RegistrationTable.php
+* Q: Any examples of using the profiler?
+* A: ???
+
+### Zend\\ModuleManager
+* Ties `module.config.php` keys to `get*Config()` methods in `Module` class:
+  * `Zend\\Mvc\\Service\\ModuleManagerFactory`
+* Documentation on keys vs. get*Config() methods: https://docs.zendframework.com/zend-modulemanager/module-manager/
+
+### Creating a Module Specific Listener:
+```
+<?php
+// Module.php
+namespace Market;
+
+use Zend\Mvc\MvcEvent;
+
+class Module
+{
+    public function getConfig()
+    {
+        return include __DIR__ . '/../config/module.config.php';
+    }
+    public function getServiceConfig()
+    {
+        return [
+            'services' => [
+                'some-service' => [2 => __FILE__],
+            ]
+        ];
+    }
+    public function onBootstrap(MvcEvent $e) {
+        $em = $e->getApplication()->getEventManager();
+        $em->attach(MvcEvent::EVENT_DISPATCH, array($this, 'myCall'));
+    }
+    
+    public function myCall(MvcEvent $e) {
+        $module = $e->getRouteMatch()->getParam('module');
+        if ($module == __NAMESPACE__) {
+            echo '<br>This is the Market Module';
+        }
+    }
+}
+
+// module.config.php
+<?php
+/**
+ * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
+ * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
+ * @license   http://framework.zend.com/license/new-bsd New BSD License
+ */
+
+namespace Application;
+
+use Zend\Router\Http\Literal;
+use Zend\Router\Http\Segment;
+use Zend\ServiceManager\Factory\InvokableFactory;
+
+return [
+    'router' => [
+        'routes' => [
+            'home' => [
+                'type' => Literal::class,
+                'options' => [
+                    'route'    => '/',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'index',
+                        'module'     => __NAMESPACE__,
+                    ],
+                ],
+            ],
+            'application' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/application[/:action]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'index',
+                        'module'     => __NAMESPACE__,
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'service_manager' => [
+        'services' => [
+            'some-service' => [3 => __FILE__],
+        ]
+    ],
+    'controllers' => [
+        'factories' => [
+            Controller\IndexController::class => InvokableFactory::class,
+        ],
+    ],
+    'view_manager' => [
+        'display_not_found_reason' => true,
+        'display_exceptions'       => true,
+        'doctype'                  => 'HTML5',
+        'not_found_template'       => 'error/404',
+        'exception_template'       => 'error/index',
+        'template_map' => [
+            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
+            'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
+            'error/404'               => __DIR__ . '/../view/error/404.phtml',
+            'error/index'             => __DIR__ . '/../view/error/index.phtml',
+        ],
+        'template_path_stack' => [
+            __DIR__ . '/../view',
+        ],
+    ],
+];
+```
