@@ -40,6 +40,7 @@ Please add code for module specific listener
 * http://localhost:8080/#/10/29: need to add `use Zend\Db\Sql\Like;` for this example to work!
 * http://localhost:8080/#/10/37: this example has things which are not used!
 * http://localhost:8080/#/11/29: class name s/be `Module` not Moduleb
+* http://localhost:8080/#/12/11: don´t need leading ":" for hostname route
 
 ### VM Source
 * `Market\Form\PostFilter` uses deprecated methods including `setAllowEmpty` and `addByName`
