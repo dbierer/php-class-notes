@@ -1134,7 +1134,7 @@ echo "</pre>";
 
 
 
-# for Fri 18 Aug 2017
+## for Fri 18 Aug 2017
 http://collabedit.com/vvec9
 
 ### PDO DSN String Syntax
@@ -1166,7 +1166,7 @@ try {
 // END -----------------------------------------------------------------------------------------------------
 ```
 
-###shaleha
+### shaleha
 ```
 //BEGIN
 <?php
@@ -1197,7 +1197,7 @@ echo "</pre>";
 //END----------------------------------------------------------
 ```
 
-###banu
+### banu
 ```
 //BEGIN ---------------------------------------------------------------------------------------------------
 <?php
@@ -1248,6 +1248,7 @@ catch (PDOException $e) {
     $logEntry = time() . '|' . get_class($e) . ':' . $e->getMessage() . PHP_EOL;
     error_log($logEntry, 3, 'error_log.php'); 
 }
+```
 
 ### Web Stuff
 * http://php.net/manual/en/ref.sockets.php
@@ -1324,7 +1325,7 @@ try {
 ```
 // BEGIN 
 -----------------------------------------------------------------------------------------------------
-# Uppecase all first and last names that are inserted into the database
+-- Uppercase all first and last names that are inserted into the database
 DROP PROCEDURE IF EXISTS course.createCustomer;
 DELIMITER $
 CREATE PROCEDURE course.createCustomer(
@@ -1336,8 +1337,10 @@ BEGIN
 END
 $
 DELIMITER ;
+```
 
 
+```
 // Now try it
 try {
     $pdo = new PDO('mysql:unix_socket=/var/run/mysqld/mysqld.sock;dbname=course', 'root', 'vagrant');
