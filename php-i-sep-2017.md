@@ -10,6 +10,7 @@
 * http://localhost:8080/#/7/16: should probably not use a *.csv for this example
 * http://localhost:8080/#/9/22: function is missing "}"
 
+
 # NOTES Wed 6 Sep 2017
 
 ## Data Types
@@ -55,6 +56,7 @@
   * Finish
 
 
+```
 // Build the crew
 $astronaut1 = ['firstName' => 'Mark', 'lastName' => 'Watney',
         'specialty' => 'Botanist'];
@@ -71,12 +73,10 @@ foreach($missions as $mission => $astronauts){
         }
     }
 }
+```
 
 # Mon 11 Sep 2017
 http://collabedit.com/wn2ug
-
-## ERRATA
-http://localhost:8080/#/4/36: missing single quote after 'IndexController'
 
 ## Example of Magic and Pre-Defined Constants:
 ```
@@ -129,9 +129,10 @@ switch ($colorChoice) {
         $color = 'black';
 }
 printf($message, $color, $color);
-
-// variation of the above
 ```
+
+```
+// variation of the above
 <?php
 ini_set('display_errors', 1);
 
@@ -272,7 +273,7 @@ echo  "The lab specialist is: {$mission ['STS395'][3]['firstName']} {$mission ['
 ## Homework for Weds: labs from module 4
 ### 1 == Dave
 Lab: Conditional If
-Will the following code work?
+* Will the following code work?
 ```
 // ans: YES
 $foo = 10;
@@ -283,12 +284,12 @@ if ( $foo > $bar )
     echo "The value for Foo has changed";
 ```
 Which statement runs as part of the conditional?
-// ans: just the 1st echo
+* ans: just the 1st echo
 
 ### 2 == Karen
 Lab: Conditional If-Else Equality
-What is the output from each if-else construct?
-// explanation: == equals value, === equals value and type, $valueA is a data type string, $valueB is an integer
+* What is the output from each if-else construct?
+* // explanation: == equals value, === equals value and type, $valueA is a data type string, $valueB is an integer
 
 ```
 $valueA = "50";
@@ -312,7 +313,7 @@ if ( $valueA === $valueB ) {
 
 ### 3 == Leonardo
 Lab: Conditional If-Else Exclusive OR
-What is the output from each if/else construct?
+* What is the output from each if/else construct?
 
 ```
 $valueA = 10;
@@ -335,9 +336,8 @@ if ( ( $valueA >= '5' ) xor ( $valueB === 20 ) ) {
 
 ### 4 == Mike
 Lab: Conditional If-ElseIf
-Assume that people work in an office from Monday through Friday, and are off work on Saturday and Sunday.
-
-Modify the code below to handle the response if the day is either Saturday or Sunday?
+* Assume that people work in an office from Monday through Friday, and are off work on Saturday and Sunday.
+* Modify the code below to handle the response if the day is either Saturday or Sunday?
 
 ```
 $dayOfWeek = "Monday";
@@ -367,7 +367,7 @@ if ($dayOfWeek == "Saturday") {
 
 ### 5 == Nathan
 Lab: Switch Construct
-An application needs to determine the country of origin for an astronaut applicant. Write a switch construct that evaluates multiple country use cases against a true boolean, and sets a variable based on the condition evaluated.
+* An application needs to determine the country of origin for an astronaut applicant. Write a switch construct that evaluates multiple country use cases against a true boolean, and sets a variable based on the condition evaluated.
 
 ```
 <?php
@@ -398,12 +398,12 @@ echo $message . $country;
 
 ### 6 == Patrik
 Lab: Foreach Loop
-An launch sequence application needs to iterate a launch checklist.
+* An launch sequence application needs to iterate a launch checklist.
 
-Build a launch checklist with the six items
-Iterate the launch checklist using a foreach loop, using keys and values.
-Conditionally test for a particular list item and build an output string.
-Echo the output.
+* Build a launch checklist with the six items
+* Iterate the launch checklist using a foreach loop, using keys and values.
+* Conditionally test for a particular list item and build an output string.
+* Echo the output.
 
 ```
 <?php
@@ -464,9 +464,9 @@ echo $output;
 
 ### 7 == Richard
 Lab: For Loop
-What does this code do?
+* What does this code do?
 
-// outputs prime numbers below 100
+* // outputs prime numbers below 100
 
 ```
 $max = 100;
@@ -487,11 +487,11 @@ for ($x = 5; $x < $max; $x++)
 ```
 
 Lab: While Loop
-An application has an invoicing system and must calculate a total for items in a list.
+* An application has an invoicing system and must calculate a total for items in a list.
 
-Construct an associative array of invoice items.
-Instead of a foreach loop, which is used with arrays, construct a while loop and use it to iterate the associative array of list items, and add a tax value to each.
-Output each updated values.
+* Construct an associative array of invoice items.
+* Instead of a foreach loop, which is used with arrays, construct a while loop and use it to iterate the associative array of list items, and add a tax value to each.
+* Output each updated values.
 
 ```
 <?php
@@ -528,18 +528,18 @@ print_r($items);
 ```
 
 Lab: Do...While Loop
-A new feature request has risen to top priority that requires showing a list of past purchases.
+* A new feature request has risen to top priority that requires showing a list of past purchases.
 
-Create an associative array with past purchase dates and amounts.
-Iterate the list using a do...while loop displaying the past purchases
+* Create an associative array with past purchase dates and amounts.
+* Iterate the list using a do...while loop displaying the past purchases
 
 
 # for Mon 18 Sep 2017
 http://collabedit.com/c42sa
 
 ## Examples
-https://github.com/dbierer/classic_php_examples/blob/master/basics/while_loop_example.php
-https://github.com/dbierer/classic_php_examples/blob/master/basics/do_while_example.php
+* https://github.com/dbierer/classic_php_examples/blob/master/basics/while_loop_example.php
+* https://github.com/dbierer/classic_php_examples/blob/master/basics/do_while_example.php
 
 ```
 <?php
@@ -604,10 +604,10 @@ var_dump($data);
 
 
 ## Lab: Defining and Calling a Function
-Define a function named getOrderTotal(...), which takes two arguments and returns the sum.
-Call the function and output the result.
+* Define a function named getOrderTotal(...), which takes two arguments and returns the sum.
+* Call the function and output the result.
 
-// done two different ways
+* // done two different ways
 
 ```
 <?php
@@ -638,11 +638,13 @@ echo getOrderTotalNow(99) . "<br><br>";
 
 
 ## M5Ex2: Recursive Function Exercise
-The Fibonacci sequence is a series of numbers in which each number is the sum of the previous two numbers, starting with 0.
+* The Fibonacci sequence is a series of numbers in which each number is the sum of the previous two numbers, starting with 0.
 
+```
 0, 1, 1, 2, 3, 5, 8, 13, 21, 34
+```
 
-Write a function that returns the nth number in a Fibbonacci sequence.
+* Write a function that returns the nth number in a Fibbonacci sequence.
 
 ```
 // non-recursive example:
@@ -707,7 +709,7 @@ echo '<br>' . PHP_EOL;
 
 
 ## Lab: Two Functions
-Build two functions, one to get an array element of configuration, and one that takes an array and builds an HTML select/option list.
+* Build two functions, one to get an array element of configuration, and one that takes an array and builds an HTML select/option list.
 
 ```
 getConfig('some config'), returns an array of allowed statuses
@@ -753,11 +755,10 @@ echo 'Hit count: ' . getCount('counter.txt') . PHP_EOL;
 
 ### Leonardo == lab 1 in module 6
 Lab: F-Type Functions
-Write an example of:
-
-Opening a file with error handling
-Write something to the file
-Close the file
+* Write an example of:
+    * Opening a file with error handling
+    * Write something to the file
+    * Close the file
 
 ```
 <?php
@@ -783,8 +784,8 @@ if($fh = fopen('testFile.txt', 'a+')){
 ### Mike == 2nd lab
 
 Lab: file_get_contents()
-Using file_get_contents(), get the contents of a file
-Display the result
+* Using file_get_contents(), get the contents of a file
+* Display the result
 
 ```
 // Nathan
@@ -812,9 +813,9 @@ echo $jack;
 ### Nathan == 3rd
 
 Lab: file_put_contents()
-Using file_put_contents(), create some string content.
-Over write the contents of a file.
-Test and echo for success.
+* Using file_put_contents(), create some string content.
+* Over write the contents of a file.
+* Test and echo for success.
 
 ```
 $page = file_get_contents("http://blog.portswigger.net");
@@ -827,9 +828,9 @@ echo file_get_contents('newFile.html');
 ### Patrik == 4th
 
 Lab: Write Array Lab
-Write an array of text strings to a file.
-Open the file using fopen().
-read and output the third character from each line.
+* Write an array of text strings to a file.
+* Open the file using fopen().
+* Read and output the third character from each line.
 
 ```
 <?php
@@ -974,19 +975,17 @@ if ($_POST) {
 ```
 
 ### Cookie / Session Examples
-https://github.com/dbierer/classic_php_examples/blob/master/web/cookie_counter.php
-https://github.com/dbierer/classic_php_examples/blob/master/web/session_counter.php
+* https://github.com/dbierer/classic_php_examples/blob/master/web/cookie_counter.php
+* https://github.com/dbierer/classic_php_examples/blob/master/web/session_counter.php
 
-Order for Homework:
-
-Karen
+### Karen
 Lab: Embedded PHP
-Build an standard HTML form with embedded PHP
-Account for
-form tag attributes
-input tags for both username and password
-dynamic attributes for each input tags
-a submit button
+* Build an standard HTML form with embedded PHP
+* Account for:
+    * form tag attributes
+    * input tags for both username and password
+    * dynamic attributes for each input tags
+    * a submit button
 
 ```
 <?php
@@ -1026,12 +1025,11 @@ $passwordAtt ='password'; ?>
 ```
 
 
-Leonardo
+### Leonardo
 
 Lab: PHP Form String
-Only using PHP, build a simple login form.
-
-Output the HTML to the browser
+* Only using PHP, build a simple login form.
+* Output the HTML to the browser
 
 ```
 // Starting Code
@@ -1125,27 +1123,29 @@ return $form;
 http://collabedit.com/97xxr
 
 ## MongoDB Examples
-https://github.com/dbierer/classic_php_examples/tree/master/mongoDB
+* https://github.com/dbierer/classic_php_examples/tree/master/mongoDB
 
 ## SQL
-https://www.w3schools.com/sql/
+* https://www.w3schools.com/sql/
 
 ## Poor Man or Woman's debugger:
 
+```
 echo __FILE__ . ':' . __LINE__ . ':' . var_export($var, TRUE); exit;
+```
 
 ## Security
-https://www.owasp.org/index.php/Main_Page
+* https://www.owasp.org/index.php/Main_Page
 
 ### Last Day Labs
 
 Lab: Secure Input Handling
-Create a script that takes input from a login form (username, password, and email address).
-Filter and validate all inputs
-Display a message for both invalid and valid input.
+* Create a script that takes input from a login form (username, password, and email address).
+* Filter and validate all inputs
+* Display a message for both invalid and valid input.
 
 Lab: Escaping Exercise
-Update the email sanitizing script you wrote in a previous exercise, escaping the output.
+* Update the email sanitizing script you wrote in a previous exercise, escaping the output.
 
 ```
 <?php
