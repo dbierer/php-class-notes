@@ -12,7 +12,11 @@ http://localhost:8080/#/2/59: [66] on page 66 PHP_INI_USER should have a X in .u
 http://localhost:8080/#/3/6: Question s/be "... SimpleXMLElement object ..."
 http://localhost:8080/#/3/10: Ans 4 s/be "... SimpleXMLElement object ..."
 http://localhost:8080/#/3/21: API class CANNOT by "SoapServer"!!!
-
+http://localhost:8080/#/4/41: too many spaces before 7.1.0!!!
+http://localhost:8080/#/4/43: get rid of "&"
+http://localhost:8080/#/5/3: no "<pre>" tag!!!
+http://localhost:8080/#/5/22: add SORT_NATURAL
+http://localhost:8080/#/5/30: 2nd bullet needs to be re-worded for better clarity
 ### DateTime
 https://www.convertunits.com/dates/daysfromnow/90
 
