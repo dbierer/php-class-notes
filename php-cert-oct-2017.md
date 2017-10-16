@@ -17,7 +17,18 @@ http://localhost:8080/#/4/43: get rid of "&"
 http://localhost:8080/#/5/3: no "<pre>" tag!!!
 http://localhost:8080/#/5/22: add SORT_NATURAL
 http://localhost:8080/#/5/30: 2nd bullet needs to be re-worded for better clarity
+http://localhost:8080/#/6/??: handls
+http://localhost:8080/#/6/8: s/be "readfile()"
 
 ### DateTime
 https://www.convertunits.com/dates/daysfromnow/90
+
+### Q & A
+
+from Francois Dupras to All Participants:
+and splat doesn't have to be the only params, you could use myfunc($a, $b, ...$c)
+from Francois Dupras to All Participants:
+can you do ...$c = array()?
+
+
 
