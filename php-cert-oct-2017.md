@@ -26,6 +26,11 @@ http://localhost:8080/#/8/34: not only non-existent but also non-visible will tr
 http://localhost:8080/#/8/36: "clones" s/be "cloned"
 http://localhost:8080/#/8/39: add one more $a; return $alpha[++$this->pos];
 http://localhost:8080/#/8/45: need to add strict_types + no need for ?? 0
+http://localhost:8080/#/9/15: ROLLBACK TRANSACTION???
+http://localhost:8080/#/9/24: correct ans is 4: NULL
+
+Mock #2: re: {one, 24, 26} as an answer: need to change echo statement to {} instead of() for answer to be correct
+General Note: code block screenshots are hard to read!
 
 ### DateTime
 https://www.convertunits.com/dates/daysfromnow/90
@@ -38,6 +43,7 @@ https://www.convertunits.com/dates/daysfromnow/90
 * from Francois to All Participants: Just about the note you took for the the null coalescing operator [...] It returns its first operand if it exists and is not NULL; otherwise it returns its second operand. [...] So $a ?? NULL would be acceptable
 * http://php.net/manual/en/language.oop5.late-static-bindings.php
 * http://php.net/manual/en/language.oop5.traits.php
+* from Mirela to All Participants: what happens if you start transaction and than again start transaction and the commit ?
 
 ### OOP DISCUSSION
 
@@ -66,6 +72,8 @@ echo PHP_EOL;
 echo MyClass::formatDate2($now); // Thursday, 25 May 2017
 echo PHP_EOL;
 
+### RE: ArrayObject
+* See: http://php.net/manual/en/class.serializable.php
 
-
-
+### DATABASE
+* http://php.net/manual/en/ini.list.php
