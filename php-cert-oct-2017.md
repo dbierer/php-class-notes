@@ -23,7 +23,7 @@ http://localhost:8080/#/6/??: handls
 http://localhost:8080/#/6/8: s/be "readfile()"
 http://localhost:8080/#/8/25: interfaces can also define (public) constants
 http://localhost:8080/#/8/34: not only non-existent but also non-visible will trigger these
-http://localhost:8080/#/8/36: "clones" not right
+http://localhost:8080/#/8/36: "clones" s/be "cloned"
 http://localhost:8080/#/8/39: add one more $a; return $alpha[++$this->pos];
 http://localhost:8080/#/8/45: need to add strict_types + no need for ?? 0
 
