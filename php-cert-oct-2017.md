@@ -28,6 +28,11 @@ http://localhost:8080/#/8/39: add one more $a; return $alpha[++$this->pos];
 http://localhost:8080/#/8/45: need to add strict_types + no need for ?? 0
 http://localhost:8080/#/9/15: ROLLBACK TRANSACTION???
 http://localhost:8080/#/9/24: correct ans is 4: NULL
+http://localhost:8080/#/11/11: missing $_FILES!!!
+http://localhost:8080/#/11/12: question numbering is off!!!
+http://localhost:8080/#/11/26: no closing paren on last table item
+http://localhost:8080/#/11/30: no closing paren on 1st item
+http://localhost:8080/#/11/36: numbering is out of sequence
 
 Mock #2: re: {one, 24, 26} as an answer: need to change echo statement to {} instead of() for answer to be correct
 General Note: code block screenshots are hard to read!
@@ -44,6 +49,8 @@ https://www.convertunits.com/dates/daysfromnow/90
 * http://php.net/manual/en/language.oop5.late-static-bindings.php
 * http://php.net/manual/en/language.oop5.traits.php
 * from Mirela to All Participants: what happens if you start transaction and than again start transaction and the commit ?
+* from Francois Dupras to All Participants: eval('system(...)')
+* from Francois Dupras to All Participants: I just thought it should be mentioned near system and such command
 
 ### OOP DISCUSSION
 
@@ -77,3 +84,6 @@ echo PHP_EOL;
 
 ### DATABASE
 * http://php.net/manual/en/ini.list.php
+
+### PHP AS CGI BINARY
+* http://php.net/manual/en/security.cgi-bin.attacks.php
