@@ -1,10 +1,5 @@
 # PHP Certification Test Prep Notes October 2017
 
-* NOTE TO SELF: see if you can find ans key
-* ANOTHER NOTE TO SELF: see if you can find solid docs on what exactly is a "standard" extension
-* YET ANOTHER TO SELF: docs on when Throwable / Error can be caught and when not
-* YET ANOTHER YET ANOTHER NOTE: find docs on when static methods no longer can be used in object context in PHP 7.x?
-* YOU KNOW WHAT: make code archive available Friday
 
 ## ERRATA (updated PDF with corrections provided)
 * http://localhost:8080/#/2/15: Quiz #5: correct ans is 3 + 6
@@ -52,6 +47,21 @@ https://www.convertunits.com/dates/daysfromnow/90
 * A: You can use `SAVE TRANSACTION` to establish a "transaction savepoint" ... but support for this feature is not universal which is why it will not be on the test
 * Q: from Francois Dupras to All Participants: eval('system(...)') should be mentioned near system and such command
 * A: Agreed! Added to the slide on "Code Injection"
+* Q: NOTE TO SELF: see if you can find solid docs on what exactly is a "standard" extension
+* A: OK ... here is a list of extensions which is categorized: http://php.net/manual/en/extensions.membership.php
+    * Anything on the list under *Core* is built directly into the language.
+    * *Bundled* extensions are extensions which are commonly included with most installations.
+    * *External* extensions are also included with most PHP installations, but depend on external libraries.
+    * *pecl* extensions are installed from `pecl.php.net` and most require external libraries
+    * Of the last 3: only the ones we covered in class will be on the test.
+* Q: ANOTHER TO SELF: docs on when Throwable / Error can be caught and when not
+* A: Best discussion on this I've seen so far is here: https://stackoverflow.com/questions/40361353/what-happens-with-set-error-handler-on-php7-now-that-all-errors-are-exceptions
+  * This is the key point:
+```
+Fatal errors still exist for certain conditions, such as running out of memory, and still behave as before by immediately halting script execution.
+An uncaught exception will also continue to be a fatal error in PHP 7. This means if an exception thrown from an error that was fatal in PHP 5.x goes uncaught,
+it will still be a fatal error in PHP 7.
+```
 
 ### OOP DISCUSSION
 * http://php.net/manual/en/language.oop5.late-static-bindings.php
