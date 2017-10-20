@@ -6,8 +6,8 @@ YET ANOTHER TO SELF: docs on when Throwable / Error can be caught and when not
 YET ANOTHER YET ANOTHER NOTE: find docs on when static methods no longer can be used in object context in PHP 7.x?
 YOU KNOW WHAT: make code archive available Friday
 
-## ERRATA
-Quiz #5: correct ans is 6
+## ERRATA (updated PDF with corrections provided)
+http://localhost:8080/#/2/15: Quiz #5: correct ans is 3 + 6
 http://localhost:8080/#/2/38: [] also ".=" as well as "**="
 http://localhost:8080/#/2/51: [60] 2nd case s/be "Value2"
 http://localhost:8080/#/2/59: [66] on page 66 PHP_INI_USER should have a X in .user.ini as per http://php.net/manual/en/configuration.changes.modes.php
