@@ -1,6 +1,10 @@
 # Apache Fundamentals Notes November 2017
 
 ## Q&A
-* Which MPM is better, Event or Worker
+* Q: Which MPM is better, Event or Worker?
 * A: see https://linuxtechme.wordpress.com/2014/11/04/mpm/
 
+* Q: What is APSX?
+* A: apxs - APache eXtenSion tool; a tool for building and installing extension modules 
+  See: https://httpd.apache.org/docs/trunk/programs/apxs.html
+  
