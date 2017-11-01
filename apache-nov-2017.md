@@ -7,4 +7,8 @@
 * Q: What is APSX?
 * A: apxs - APache eXtenSion tool; a tool for building and installing extension modules 
   See: https://httpd.apache.org/docs/trunk/programs/apxs.html
-  
+  
+## ERRATA
+* 52: must Linux s/be most Linux
+* 52: bad char in code
+
