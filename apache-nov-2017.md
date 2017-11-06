@@ -33,6 +33,7 @@
 ## ERRATA
 * 52: must Linux s/be most Linux
 * 52: bad char in code
+* 129: missing 1st example: `Header echo ^TS`shown on next slide
 * http://localhost:8888/#/2/7: s/ not be "MPMs server"
 * http://localhost:8888/#/4/28: s/be "-h" not "- h" and "-V" not "- V" etc.
 * http://localhost:8888/#/5/5: mod_cache *not* shown above"!
