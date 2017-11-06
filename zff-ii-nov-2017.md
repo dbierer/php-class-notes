@@ -21,6 +21,8 @@
 * http://localhost:9999/#/3/8: 'MyClass' needs to be at same level as 'service_manager'
 * http://localhost:9999/#/4/16: in the relationship diagram, Attendee s/have a link to "registration_id"
 * http://localhost:9999/#/4/28: drop "@Annotation" from "@ANO\@Annotation\Name("registration")"
+* http://localhost:9999/#/4/32: Need to change module name from "Doctrine" to "MyDoctrine"!!!
+* http://localhost:9999/#/4/32: Add instruction to install Doctrine Module for ZF!!!
 
 ## LAB NOTES:
 * Doctrine Lab: PLEASE change modules/Doctrine/config/module.config.php::router=>routes=>events to router=>routes=>doctrine
