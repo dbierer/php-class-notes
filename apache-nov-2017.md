@@ -30,15 +30,22 @@ NOTE TO SELF: scrub last names
 * A: http://httpd.apache.org/docs/2.4/mod/mod_log_config.html
 
 * Q: from Christopher to All Participants: How can we see what ./configure flags a distribution used when building their verison of Apache?
+
 * Q: from Francois to All Participants: do why it was installed as apache2 instead of httpd? is that the prefix argument?
+
 * Q: from Christopher to All Participants: I can do httpd -V and get some info, but not all of the flags.
+
 * Q: re: the “SetHandler” directive: what handlers are available?
 * A: see:https://httpd.apache.org/docs/current/handler.html
+
 * Q: how do I set PHP as a “handler” for *.php requests?
 * A: see:http://php.net/manual/en/install.unix.apache2.php
 
 * Q: How many sub-patterns?
-* A: 9 ????
+* A: $1 up to $9
+
+* Q: What is an IPv4 mapped IPv6 address?
+* A: see: https://tools.ietf.org/html/rfc5156 and https://en.m.wikipedia.org/wiki/IPv6#IPv4-mapped_IPv6_addresses
 
 ## ERRATA
 * 52: must Linux s/be most Linux
@@ -89,5 +96,5 @@ NOTE TO SELF: scrub last names
 * from self: http://localhost:8888/#/7/36: more practical examples for this entire section
 * from Maroun to All Participants: I would like to see example which covers the whole flow, how you set header and how it affects the request in browser and how the response looks like
 * from self: practical use cases encompassing the whole thing
-* from self: Headers chapter: convert screenshots of code examples to text + get the order straight
+* from self: Headers chapter: convert screenshots of code examples to text blocks which can be copied + get the order straight
 * from Francois to All Participants: course feedback -- personally, I think you should talk about mod_alias first and then go with "if you need more, here is what you can do with mod_rewrite" because at this point, I'm not sure what mod_rewrite can do that alias can't (except rewrite condition I guess).
