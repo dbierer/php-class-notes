@@ -34,6 +34,7 @@
 * 52: must Linux s/be most Linux
 * 52: bad char in code
 * 129: missing 1st example: `Header echo ^TS`shown on next slide
+* 185 URL-path is is omitted: remove duplicate "is"
 * http://localhost:8888/#/2/7: s/ not be "MPMs server"
 * http://localhost:8888/#/4/28: s/be "-h" not "- h" and "-V" not "- V" etc.
 * http://localhost:8888/#/5/5: mod_cache *not* shown above"!
@@ -47,7 +48,8 @@
 ## GENERAL NOTES
 * RE: Dynamic Shared Objects: http://httpd.apache.org/docs/2.4/dso.html
 * RE: RewriteMap: http://httpd.apache.org/docs/2.4/mod/mod_rewrite.html#mapfunc
-
+* RE: config section / httpd.conf: need to talk about <Location> and <Directory> directives
+ 
 ## FEEDBACK
 * from Francois Dupras to All Participants:
 the steps of this entire modules is weird, I had to go back and forth a few times
@@ -57,4 +59,5 @@ the steps of this entire modules is weird, I had to go back and forth a few time
 * from self: http://localhost:8888/#/7/36: more practical examples for this entire section
 * from Maroun Sleiman to All Participants: I would like to see example which covers the whole flow, how you set header and how it affects the request in browser and how the response looks like
 * from self: practical use cases encompassing the whole thing
+* from self: Headers chapter: convert screenshots of code examples to text + get the order straigbht
 
