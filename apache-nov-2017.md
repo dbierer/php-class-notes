@@ -190,17 +190,24 @@ Include /usr/local/apache2/conf/extra/class.conf
 ```
   * Here is the contents of `class.conf`:
 ```
+# allows use of .htaccess in the class directory
 <Directory "/usr/local/apache2/htdocs/class">
   AllowOverride all
 </Directory>
+# any URL which starts with "/whatever" will be mapped to "/var/www/whatever"
 Alias "/whatever" "/var/www/whatever"
+# the web server is given access to this directory, which is outside the document root
 <Directory "/var/www/whatever">
   Require all granted
 </Directory>
+# the URL "/something/zend" is captured by this Location section
 <Location "/something/zend">
   RewriteEngine On
+  # check to see if "/something/zend" is an actual directory on the filesystem
   RewriteCond %{REQUEST_FILENAME} -d
+  # if so, just load [L] any content
   RewriteRule .* - [L]
+  # otherwise, redirect to the zend website [R] == redirect
   RewriteRule .* http://zend.com/ [R]
 </Location>
 ```
