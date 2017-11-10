@@ -47,6 +47,9 @@ NOTE TO SELF: scrub last names
 * Q: What is an IPv4 mapped IPv6 address?
 * A: see: https://tools.ietf.org/html/rfc5156 and https://en.m.wikipedia.org/wiki/IPv6#IPv4-mapped_IPv6_addresses
 
+* Q: What is `mod_vhost_alias`?
+* A: Provides the ability to dynamically create large numbers of vhosts automatically.  See: https://httpd.apache.org/docs/2.4/mod/mod_vhost_alias.html
+
 ## ERRATA
 * 52: must Linux s/be most Linux
 * 52: bad char in code
@@ -132,3 +135,31 @@ These conditions make successful exploitation somewhat difficult. Environments t
   * Create ScriptAlias for server side includes
   * Create html with ssi date
   * Don’t do PHP
+  
+## EXAMPLES
+* Created user `apache` using this command: `useradd apache`
+* Modified `/usr/local/apache2/conf/httpd.conf` as follows:
+  * Set user and group to `apache`
+  * Added at end: `Include /usr/local/apache2/conf/extra/test.conf`
+* Created the following:
+  * `/usr/local/apache2/htdocs/test/index.html`
+  * `/usr/local/apache2/htdocs/notest/index.html`
+  * `/home/apache2/test/index.html`
+* Create file: `/usr/local/apache2/conf/extra/test.conf` as follows:
+```
+<Location "/test">
+  Header merge Cache-Control no-cache
+  Header merge Cache-Control no-store
+  Header unset ETag
+  SetEnvIf TestReqHeader ABC HAVE_TestReqHeader
+  Header set TestRespHeader "%D %t XYZ" env=HAVE_TestReqHeader
+  Header set TestXXX "Hey ... how is it going Joe?"
+</Location>
+Alias "/home" "/home/apache/test"
+<Directory "/home/apache/test">
+  Require all granted
+</Directory>
+<Location "/unlikely">
+  Redirect temp "https://unlikelysource.com/"
+</Location>
+```
