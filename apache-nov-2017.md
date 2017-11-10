@@ -183,3 +183,24 @@ Alias "/home" "/home/apache/test"
   Redirect temp "https://unlikelysource.com/"
 </Location>
 ```
+* Example from in-class practical 10-Nov-2017:
+  * Added this to `/usr/local/apache2/conf/httpd.conf`:
+```
+Include /usr/local/apache2/conf/extra/class.conf
+```
+  * Here is the contents of `class.conf`:
+```
+<Directory "/usr/local/apache2/htdocs/class">
+  AllowOverride all
+</Directory>
+Alias "/whatever" "/var/www/whatever"
+<Directory "/var/www/whatever">
+  Require all granted
+</Directory>
+<Location "/something/zend">
+  RewriteEngine On
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule .* - [L]
+  RewriteRule .* http://zend.com/ [R]
+</Location>
+```
