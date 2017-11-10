@@ -26,6 +26,17 @@ NOTE TO SELF: scrub last names
 
 * Q: from Francois to All Participants: with --with-expat=MPM why MPM?
 
+* Q: from Francois: how do I enable HTTP2 support? 
+* A: see: https://httpd.apache.org/docs/2.4/howto/http2.html; and rebuild Apache with 
+```
+--enable-http2          HTTP/2 protocol handling in addition to HTTP
+                          protocol handling. Implemented by mod_http2. This
+                          module requires a libnghttp2 installation. See
+                          --with-nghttp2 on how to manage non-standard
+                          locations. This module is usually linked shared and
+                          requires loading.
+```
+
 * Q: Log format codes docs?
 * A: http://httpd.apache.org/docs/2.4/mod/mod_log_config.html
 
