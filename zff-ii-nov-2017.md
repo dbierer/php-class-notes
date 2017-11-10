@@ -1,7 +1,7 @@
 # ZFF II Notes November 2017
 
 ## TO DO
-* Create repo for onlinemarket.complete
+* Get the latest onlinemarket.work version to students after class ends
 
 ## BETA NOTES
 * Include discussion on recorded sessions
@@ -23,6 +23,11 @@
 * http://localhost:9999/#/4/28: drop "@Annotation" from "@ANO\@Annotation\Name("registration")"
 * http://localhost:9999/#/4/32: Need to change module name from "Doctrine" to "MyDoctrine"!!!
 * http://localhost:9999/#/4/32: Add instruction to install Doctrine Module for ZF!!!
+* http://localhost:9999/#/6/56: Dup OFB
+* http://localhost:9999/#/6/58: Paddng -- typo!!!
+* http://localhost:9999/#/7/6: dup slide
+* http://localhost:9999/#/7/4: needs to be re-written
 
 ## LAB NOTES:
 * Doctrine Lab: PLEASE change modules/Doctrine/config/module.config.php::router=>routes=>events to router=>routes=>doctrine
+* Auth/Password Lab: missing Application\Model\AbstractModel ==> copy this from the guestbook project

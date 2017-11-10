@@ -1,6 +1,7 @@
 # Apache Fundamentals Notes November 2017
 
-NOTE TO SELF: scrub last names
+WHERE WE LEFT OFF: http://localhost:8888/#/9/14
+NOTE TO SELF: how to you specify # instances
 
 ## Q&A
 * Q: Which MPM is better, Event or Worker?
@@ -26,8 +27,8 @@ NOTE TO SELF: scrub last names
 
 * Q: from Francois to All Participants: with --with-expat=MPM why MPM?
 
-* Q: from Francois: how do I enable HTTP2 support? 
-* A: see: https://httpd.apache.org/docs/2.4/howto/http2.html; and rebuild Apache with 
+* Q: from Francois: how do I enable HTTP2 support?
+* A: see: https://httpd.apache.org/docs/2.4/howto/http2.html; and rebuild Apache with
 ```
 --enable-http2          HTTP/2 protocol handling in addition to HTTP
                           protocol handling. Implemented by mod_http2. This
@@ -61,6 +62,9 @@ NOTE TO SELF: scrub last names
 * Q: What is `mod_vhost_alias`?
 * A: Provides the ability to dynamically create large numbers of vhosts automatically.  See: https://httpd.apache.org/docs/2.4/mod/mod_vhost_alias.html
 
+* Q: from Francois to All Participants: how would you "enable" an apache instance with a different conf file so that it start automatically at boot?
+  systemctl enable httpd, can you say systemctl enable httpd -f /new-file.conf?
+
 ## ERRATA
 * 52: must Linux s/be most Linux
 * 52: bad char in code
@@ -90,10 +94,13 @@ NOTE TO SELF: scrub last names
 * http://localhost:8080/index.html#/9/39: `--with-ssl=` flag is incorrect; s/be:
 ```
 --with-ssl=/usr/local/src/httpd-2.4.x/srclib/openssl
-```  
-  
+```
+* http://localhost:8888/#/9/5: from Francois to All Participants: why is this slide here (in http vs https)?
+  * maybe move to security or config section
+
 
 ## GENERAL NOTES
+* RE: HTTP2 ... suggest adding this to the section on Modules, or make it a new course section
 * RE: Dynamic Shared Objects: http://httpd.apache.org/docs/2.4/dso.html
 * RE: RewriteMap: http://httpd.apache.org/docs/2.4/mod/mod_rewrite.html#mapfunc
   * also: http://httpd.apache.org/docs/2.4/rewrite/rewritemap.html#txt
@@ -125,7 +132,7 @@ NOTE TO SELF: scrub last names
 These conditions make successful exploitation somewhat difficult. Environments that are already at above-average risk for MITM attacks (such as public WiFi) remove some of those challenges.
     * Solution
       * There is currently no fix for the vulnerability SSL 3.0 itself, as the issue is fundamental to the protocol; however, disabling SSL 3.0 support in system/application configurations is the most viable solution currently available.
-      * Some of the same researchers that discovered the vulnerability also developed a fix for one of the prerequisite conditions; TLS_FALLBACK_SCSV is a protocol extension that prevents MITM attackers from being able to force a protocol downgrade.          
+      * Some of the same researchers that discovered the vulnerability also developed a fix for one of the prerequisite conditions; TLS_FALLBACK_SCSV is a protocol extension that prevents MITM attackers from being able to force a protocol downgrade.
     * OpenSSL has added support for TLS_FALLBACK_SCSV to their latest versions and recommend the following upgrades: [5]
       * OpenSSL 1.0.1 users should upgrade to 1.0.1j.
       * OpenSSL 1.0.0 users should upgrade to 1.0.0o.
@@ -139,7 +146,7 @@ These conditions make successful exploitation somewhat difficult. Environments t
     * Before a client and server can begin to exchange information protected by TLS, they must securely exchange or agree upon an encryption key and a cipher to use when encrypting data (see Cipher). Among the methods used for key exchange/agreement are: public and private keys generated with RSA (denoted TLS_RSA in the TLS handshake protocol), Diffie-Hellman (TLS_DH), ephemeral Diffie-Hellman (TLS_DHE), Elliptic Curve Diffie-Hellman (TLS_ECDH), ephemeral Elliptic Curve Diffie-Hellman (TLS_ECDHE), anonymous Diffie-Hellman (TLS_DH_anon),[1] pre-shared key (TLS_PSK)[29] and Secure Remote Password (TLS_SRP).[30]
     * The TLS_DH_anon and TLS_ECDH_anon key agreement methods do not authenticate the server or the user and hence are rarely used because those are vulnerable to Man-in-the-middle attack. Only TLS_DHE and TLS_ECDHE provide forward secrecy.
 * RE: Generating Certificates: see this tutorial: https://jamielinux.com/docs/openssl-certificate-authority/index.html
-  
+
 
 ## FEEDBACK
 * from Francois to All Participants: the steps of this entire modules is weird, I had to go back and forth a few times
@@ -155,7 +162,8 @@ These conditions make successful exploitation somewhat difficult. Environments t
   * Create ScriptAlias for server side includes
   * Create html with ssi date
   * Don’t do PHP
-  
+* from Francois to All Participants: I know you did not write these examples, but you know we are not supposed to use port 81-83? anything under 1024 (if I remember correctly) are reserved for specific apps
+
 ## EXAMPLES
 * Created user `apache` using this command: `useradd apache`
 * Modified `/usr/local/apache2/conf/httpd.conf` as follows:
