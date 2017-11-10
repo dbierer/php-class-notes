@@ -74,6 +74,13 @@ NOTE TO SELF: scrub last names
 * http://localhost:8888/#/7/48: should make clear that this is a separate subject: i.e. enabling mod_rewrite + move this unit before discussion on config
 * http://localhost:8888/#/7/60: from Francois to All Participants: locationmatch saves as <NUMBER> but reads as MATCH_NUMBER, is that normal or an error?
 * http://localhost:8888/#/7/71: text and screenshot do not match
+* http://localhost:8080/index.html#/9/36: Link is broken: use this: https://jamielinux.com/docs/openssl-certificate-authority/appendix/root-configuration-file.html
+* http://localhost:8080/index.html#/9/39: move the openSSL directory to httpd-xxx/srclib/openssl ... don't worry about the version
+* http://localhost:8080/index.html#/9/39: `--with-ssl=` flag is incorrect; s/be:
+```
+--with-ssl=/usr/local/src/httpd-2.4.x/srclib/openssl
+```  
+  
 
 ## GENERAL NOTES
 * RE: Dynamic Shared Objects: http://httpd.apache.org/docs/2.4/dso.html
@@ -120,6 +127,8 @@ These conditions make successful exploitation somewhat difficult. Environments t
   * Elliptic Curve Cryptography: https://en.m.wikipedia.org/wiki/Elliptic-curve_cryptography
     * Before a client and server can begin to exchange information protected by TLS, they must securely exchange or agree upon an encryption key and a cipher to use when encrypting data (see Cipher). Among the methods used for key exchange/agreement are: public and private keys generated with RSA (denoted TLS_RSA in the TLS handshake protocol), Diffie-Hellman (TLS_DH), ephemeral Diffie-Hellman (TLS_DHE), Elliptic Curve Diffie-Hellman (TLS_ECDH), ephemeral Elliptic Curve Diffie-Hellman (TLS_ECDHE), anonymous Diffie-Hellman (TLS_DH_anon),[1] pre-shared key (TLS_PSK)[29] and Secure Remote Password (TLS_SRP).[30]
     * The TLS_DH_anon and TLS_ECDH_anon key agreement methods do not authenticate the server or the user and hence are rarely used because those are vulnerable to Man-in-the-middle attack. Only TLS_DHE and TLS_ECDHE provide forward secrecy.
+* RE: Generating Certificates: see this tutorial: https://jamielinux.com/docs/openssl-certificate-authority/index.html
+  
 
 ## FEEDBACK
 * from Francois to All Participants: the steps of this entire modules is weird, I had to go back and forth a few times
