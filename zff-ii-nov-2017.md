@@ -1,5 +1,7 @@
 # ZFF II Notes November 2017
 
+LEFT OFF: http://localhost:9999/#/8/59
+
 ## TO DO
 * Get the latest onlinemarket.work version to students after class ends
 
@@ -27,6 +29,13 @@
 * http://localhost:9999/#/6/58: Paddng -- typo!!!
 * http://localhost:9999/#/7/6: dup slide
 * http://localhost:9999/#/7/4: needs to be re-written
+* http://localhost:9999/#/7/6: needs to be re-written
+* http://localhost:9999/#/7/8: extra "," has to be removed
+* http://localhost:9999/#/7/23: s/be REST not SOAP
+* http://localhost:9999/#/8/9: route s/be "/post" not "/login"
+* http://localhost:9999/#/8/25: get rid of debugging code!!!
+* http://localhost:9999/#/8/28: 'listeners' key needs to be at top level
+* http://localhost:9999/#/8/52: dup slide
 
 ## LAB NOTES:
 * Doctrine Lab: PLEASE change modules/Doctrine/config/module.config.php::router=>routes=>events to router=>routes=>doctrine

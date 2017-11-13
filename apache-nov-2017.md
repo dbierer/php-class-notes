@@ -1,7 +1,8 @@
 # Apache Fundamentals Notes November 2017
 
-WHERE WE LEFT OFF: http://localhost:8888/#/9/14
-NOTE TO SELF: how to you specify # instances
+NEED TO INCLUDE *ALL* SLIDES in PDF
+WHERE WE LEFT OFF: http://localhost:8888/#/11/6
+
 
 ## Q&A
 * Q: Which MPM is better, Event or Worker?
@@ -65,6 +66,14 @@ NOTE TO SELF: how to you specify # instances
 * Q: from Francois to All Participants: how would you "enable" an apache instance with a different conf file so that it start automatically at boot?
   systemctl enable httpd, can you say systemctl enable httpd -f /new-file.conf?
 
+* Q: List of SSL hardware acceleration available?
+
+* Q: from Christopher to All Participants: What is the difference between aNull and eNull?
+* A: from James to All Participants: eNULL = ciphers offering no encryption, aNULL = cipher suites offering no authentication
+
+* Q: How to you specify # instances?
+
+
 ## ERRATA
 * 52: must Linux s/be most Linux
 * 52: bad char in code
@@ -73,6 +82,11 @@ NOTE TO SELF: how to you specify # instances
 * 196: last screenshot `ScriptAlias` directive needs to be swapped with the screenshot on p. 197
 * 216: update to php7
 * 225: "Servers that are heaving on serving" s/be "Servers that are heavy on serving"
+* 249: img needs width
+* 272: img needs width
+* 276: img too big
+* 293: need ref for more detail
+* 316: usemod_cache
 * http://localhost:8888/#/2/7: s/ not be "MPMs server"
 * http://localhost:8888/#/4/28: s/be "-h" not "- h" and "-V" not "- V" etc.
 * http://localhost:8888/#/5/5: mod_cache *not* shown above"!
@@ -89,6 +103,7 @@ NOTE TO SELF: how to you specify # instances
 * http://localhost:8888/#/7/48: should make clear that this is a separate subject: i.e. enabling mod_rewrite + move this unit before discussion on config
 * http://localhost:8888/#/7/60: from Francois to All Participants: locationmatch saves as <NUMBER> but reads as MATCH_NUMBER, is that normal or an error?
 * http://localhost:8888/#/7/71: text and screenshot do not match
+* http://localhost:8888/#/8/13: “NameVirtualHost” directive has been deprecated
 * http://localhost:8080/index.html#/9/36: Link is broken: use this: https://jamielinux.com/docs/openssl-certificate-authority/appendix/root-configuration-file.html
 * http://localhost:8080/index.html#/9/39: move the openSSL directory to httpd-xxx/srclib/openssl ... don't worry about the version
 * http://localhost:8080/index.html#/9/39: `--with-ssl=` flag is incorrect; s/be:
@@ -97,25 +112,49 @@ NOTE TO SELF: how to you specify # instances
 ```
 * http://localhost:8888/#/9/5: from Francois to All Participants: why is this slide here (in http vs https)?
   * maybe move to security or config section
+* http://localhost:8888/#/9/18: need to update this chart + browser versions
+* http://localhost:8888/#/9/22: SSL v3 date not mentioned; v2 mentioned 2x
+* http://localhost:8888/#/9/27: Listen s/be on its own line
+* http://localhost:8888/#/9/28: from Christopher to All Participants: That SSLHonorCipherOrder on should be on a new line
+* http://localhost:8888/#/9/29: missing # on 1st line
+* http://localhost:8888/#/9/29: might be better to default to a higher level of security, and then "allow" lower levels in certain non-sensitive areas of the website
+* http://localhost:8888/#/9/36: correct link: https://jamielinux.com/docs/openssl-certificate-authority/appendix/root-configuration-file.html
+* http://localhost:8888/#/9/42: rewrite this a bit: from Christopher to All Participants: I think you meant configure it to use the certificate and key
+* http://localhost:8888/#/9/55: assumes you've created an Apache user
+* http://localhost:8888/#/10/4-6: just pull linger_close() discussion out: confuses more then helps
+* http://localhost:8888/#/10/7: dup slide from config section (?verify)
+* http://localhost:8888/#/10/12: need to add references
 
+RE: forward proxy: The client must be specially configured to use the forward proxy to access other sites.
+RE: PHP installation: these instructions are good for Centos: https://www.webhostinghero.com/centos-apache2-mariadb10-php7-setup/
+Here is a ref to installing PHP and using a PHP-FPM worker:
+https://blacksaildivision.com/php-install-from-source
+https://wiki.apache.org/httpd/PHP-FPM
 
 ## GENERAL NOTES
+
 * RE: HTTP2 ... suggest adding this to the section on Modules, or make it a new course section
 * RE: Dynamic Shared Objects: http://httpd.apache.org/docs/2.4/dso.html
 * RE: RewriteMap: http://httpd.apache.org/docs/2.4/mod/mod_rewrite.html#mapfunc
   * also: http://httpd.apache.org/docs/2.4/rewrite/rewritemap.html#txt
 * RE: config section / httpd.conf: need to talk about <Location> and <Directory> directives
+* RE: configuration sections: http://httpd.apache.org/docs/2.4/sections.html
+
 * RE: mod_alias: stackoverflow.com regex summary: https://stackoverflow.com/questions/22937618/reference-what-does-this-regex-mean
 * RE: mod_redirect: valid HTTP status codes:https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
 * RE: mod_rewrite: examples of rewrite conditions: https://httpd.apache.org/docs/2.0/misc/rewriteguide.html
   * NOTE: is based on Apache 2.0 and needs to be updated
-* RE: configuration sections: http://httpd.apache.org/docs/2.4/sections.html
+
+
 * RE: Proxy* directives:
   * ProxyPass : Maps remote servers into the local server URL-space : http://httpd.apache.org/docs/2.4/mod/mod_proxy.html#proxypass
   * ProxyPassReverse: Adjusts the URL in HTTP response headers sent from a reverse proxied server : http://httpd.apache.org/docs/2.4/mod/mod_proxy.html#proxypassreverse
   * ProxyPreserveHost: Use incoming Host HTTP request header for proxy request : http://httpd.apache.org/docs/2.4/mod/mod_proxy.html#proxypreservehost
+  * from Francois to All Participants: One thing that wasn't clear in the pdf, to get multiple instance running you need to change either ServerRoot or set different PidFile in each config file.
+
 * RE: mod_rewrite: probably one of the most used features, but see if it can be made more concise, but add great examples
   * Remove sections which are straight out of the docs: add a reference to the docs
+
 * RE: TLS Security etc.
   * TLS: https://en.m.wikipedia.org/wiki/Transport_Layer_Security
   * Good security overview: https://en.m.wikipedia.org/wiki/Transport_Layer_Security#Security
@@ -145,7 +184,10 @@ These conditions make successful exploitation somewhat difficult. Environments t
   * Elliptic Curve Cryptography: https://en.m.wikipedia.org/wiki/Elliptic-curve_cryptography
     * Before a client and server can begin to exchange information protected by TLS, they must securely exchange or agree upon an encryption key and a cipher to use when encrypting data (see Cipher). Among the methods used for key exchange/agreement are: public and private keys generated with RSA (denoted TLS_RSA in the TLS handshake protocol), Diffie-Hellman (TLS_DH), ephemeral Diffie-Hellman (TLS_DHE), Elliptic Curve Diffie-Hellman (TLS_ECDH), ephemeral Elliptic Curve Diffie-Hellman (TLS_ECDHE), anonymous Diffie-Hellman (TLS_DH_anon),[1] pre-shared key (TLS_PSK)[29] and Secure Remote Password (TLS_SRP).[30]
     * The TLS_DH_anon and TLS_ECDH_anon key agreement methods do not authenticate the server or the user and hence are rarely used because those are vulnerable to Man-in-the-middle attack. Only TLS_DHE and TLS_ECDHE provide forward secrecy.
+
 * RE: Generating Certificates: see this tutorial: https://jamielinux.com/docs/openssl-certificate-authority/index.html
+
+* RE: Module 9 Web Arch == focus on High Availability and get rid of config stuff
 
 
 ## FEEDBACK
@@ -163,6 +205,12 @@ These conditions make successful exploitation somewhat difficult. Environments t
   * Create html with ssi date
   * Don’t do PHP
 * from Francois to All Participants: I know you did not write these examples, but you know we are not supposed to use port 81-83? anything under 1024 (if I remember correctly) are reserved for specific apps
+* from Francois to All Participants: have cert and vhost first and multi instance and proxy after to me cert and vhost is something we do all the time so I think it should be first
+* from self: combine multi-instance w/ proxy course chapters
+* from self: add lab using separate config for each instance
+* from Christopher Young to All Participants: I would offer everyone one word of warning...
+apachectl configtest doesn't catch all SSL related errors that would stop your server from starting up
+You can have properly stuctured configuration but if your cert and key are messed up, it won't point it out
 
 ## EXAMPLES
 * Created user `apache` using this command: `useradd apache`
