@@ -4,6 +4,10 @@ LEFT OFF: http://localhost:9999/#/8/59
 
 ## TO DO
 * Get the latest onlinemarket.work version to students after class ends
+* Complete the Cache Lab::clear cache
+
+## Q & A
+* Q: from Charles to All Participants: can you get an unclickable where you are crumb?
 
 ## BETA NOTES
 * Include discussion on recorded sessions
@@ -36,6 +40,7 @@ LEFT OFF: http://localhost:9999/#/8/59
 * http://localhost:9999/#/8/25: get rid of debugging code!!!
 * http://localhost:9999/#/8/28: 'listeners' key needs to be at top level
 * http://localhost:9999/#/8/52: dup slide
+* http://localhost:9999/#/9/30: drop ref to translation
 
 ## LAB NOTES:
 * Doctrine Lab: PLEASE change modules/Doctrine/config/module.config.php::router=>routes=>events to router=>routes=>doctrine

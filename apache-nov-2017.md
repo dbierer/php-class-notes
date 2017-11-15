@@ -84,6 +84,12 @@ WHERE WE LEFT OFF: http://localhost:8888/#/11/6
 * A: See: https://httpd.apache.org/docs/2.4/mod/mod_proxy_balancer.html#stickyness
   * When a request is proxied to some back-end, then all following requests from the same user should be proxied to the same back-end. Many load balancers implement this feature via a table that maps client IP addresses to back-ends. This approach is transparent to clients and back-ends, but suffers from some problems: unequal load distribution if clients are themselves hidden behind proxies, stickyness errors when a client uses a dynamic IP address that changes during a session and loss of stickyness, if the mapping table overflows.
 
+* Q: from Christopher to All Participants: Does that module also rewrite CSS and JS?
+* A: Need to set mod_proxy_html::ProxyHTMLExtended flag to ¨on¨
+
+* Q: from Maroun Sleiman to All Participants: RE: stickyness: depends where you are saving the sessions right?
+* A:
+
 
 ## ERRATA
 * 52: must Linux s/be most Linux
@@ -139,6 +145,19 @@ WHERE WE LEFT OFF: http://localhost:8888/#/11/6
 * http://localhost:8888/#/10/4-6: just pull linger_close() discussion out: confuses more then helps
 * http://localhost:8888/#/10/7: dup slide from config section (?verify)
 * http://localhost:8888/#/10/12: need to add references
+* http://localhost:8888/#/9/32: no need to download openssl -- use existing version
+* http://localhost:8888/#/11/14: should also mention mod_proxy_http2 + the link has a space in it!!!
+* http://localhost:8888/#/12/3: remove this slide
+* http://localhost:8888/#/12/5: need example of syntax of loading using APXS
+* http://localhost:8888/#/13/4 + 5: syntax s/be :
+```
+<Location "/server-status">
+    SetHandler server-status
+    Require host example.com
+</Location>
+```
+* http://localhost:8888/#/13/6: "such as" instead of "should you like"
+* http://localhost:8888/#/13/8: what other tools????
 
 RE: forward proxy: The client must be specially configured to use the forward proxy to access other sites.
 RE: PHP installation: these instructions are good for Centos: https://www.webhostinghero.com/centos-apache2-mariadb10-php7-setup/
@@ -171,13 +190,13 @@ https://wiki.apache.org/httpd/PHP-FPM
 
 * RE: Module 9 Web Arch == focus on High Availability and get rid of config stuff
 
+* RE: Any mention of Apache Tomcat (i.e. mod_jk), move to separate course module, optional, at the end
+
+* RE: monitoring tools: kibana, zenoss, solarwinds, nagios, apachetop, iftop, tcpdump, apache bench
+
 ## SSL etc.
 * To find the VM version of openssl: `rpm -q openssl`
 * To find where openssl is installed: `whereis openssl`
-* To compile Apache with built-in ssl:
-```
-./configure --with-included-apr --with-ssl=/usr/lib64/openssl
-```
 * To get a list of modules which are loaded: `apachectl -M`
 * If you get an error `configure: WARNING: OpenSSL version is too old`
   * install the openssl development package: `yum install openssl-devel`
@@ -219,6 +238,11 @@ These conditions make successful exploitation somewhat difficult. Environments t
 
 * RE: Generating Certificates: see this tutorial: https://jamielinux.com/docs/openssl-certificate-authority/index.html
 
+* RE: php etc.
+```
+./configure --enable-modules="php ssl rewrite deflate security" --with-included-apr --enable-http2 --enable-so --enable-proxy --enable-proxy-fcgi
+```
+
 
 ## FEEDBACK
 * from Francois to All Participants: the steps of this entire modules is weird, I had to go back and forth a few times
@@ -238,9 +262,14 @@ These conditions make successful exploitation somewhat difficult. Environments t
 * from Francois to All Participants: have cert and vhost first and multi instance and proxy after to me cert and vhost is something we do all the time so I think it should be first
 * from self: combine multi-instance w/ proxy course chapters
 * from self: add lab using separate config for each instance
-* from Christopher Young to All Participants: I would offer everyone one word of warning...
+* from Christopher to All Participants: I would offer everyone one word of warning...
 apachectl configtest doesn't catch all SSL related errors that would stop your server from starting up
 You can have properly stuctured configuration but if your cert and key are messed up, it won't point it out
+* from Francois to All Participants: one think I trully did not get is the "Copy and Paste the user-cli.crt output" and "Paste Into user-cli.crt on the Client" what is the client? is it if you have multiple servers?
+* from Francois to All Participants: I just redid the entire lab this morning and I still get "SSL error:unable to get local issuer certificate"
+* from Maroun to All Participants: the private use to be pem and the public key crt
+* from Francois to All Participants: ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:9000/var/www/$1
+* from Todd to All Participants: Setting up a PHP server with RP is easier to digest.  Java/Tomcat just adds complication and causes things to get fuzzy
 
 ## EXAMPLES
 * Created user `apache` using this command: `useradd apache`
