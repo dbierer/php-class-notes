@@ -73,10 +73,22 @@ WHERE WE LEFT OFF: http://localhost:8888/#/11/6
 
 * Q: How to you specify # instances?
 
+* Q: What is the difference between SCGI and CGI?
+* A: See: http://python.ca/scgi/protocol.txt
+  * The SCGI protocol is a replacement for the Common Gateway Interface
+    (CGI) protocol.  It is a standard for applications to interface with
+    HTTP servers.  It is similar to FastCGI but is designed to be easier
+    to implement.
+
+* Q: What is "stickyness" in regards to `mod_proxy_balancer`?
+* A: See: https://httpd.apache.org/docs/2.4/mod/mod_proxy_balancer.html#stickyness
+  * When a request is proxied to some back-end, then all following requests from the same user should be proxied to the same back-end. Many load balancers implement this feature via a table that maps client IP addresses to back-ends. This approach is transparent to clients and back-ends, but suffers from some problems: unequal load distribution if clients are themselves hidden behind proxies, stickyness errors when a client uses a dynamic IP address that changes during a session and loss of stickyness, if the mapping table overflows.
+
 
 ## ERRATA
 * 52: must Linux s/be most Linux
 * 52: bad char in code
+* 78: Shared (Dynamic) vs Static Libraries: img needs width
 * 129: missing 1st example: `Header echo ^TS`shown on next slide
 * 185 URL-path is is omitted: remove duplicate "is"
 * 196: last screenshot `ScriptAlias` directive needs to be swapped with the screenshot on p. 197
@@ -87,6 +99,9 @@ WHERE WE LEFT OFF: http://localhost:8888/#/11/6
 * 276: img too big
 * 293: need ref for more detail
 * 316: usemod_cache
+* 330: Mod Cluster: out of place???
+* 331: Advantages of mod_cluster: out of place???
+* 365: mod_cluster and Load Balancing 4: funny chars in <code> block
 * http://localhost:8888/#/2/7: s/ not be "MPMs server"
 * http://localhost:8888/#/4/28: s/be "-h" not "- h" and "-V" not "- V" etc.
 * http://localhost:8888/#/5/5: mod_cache *not* shown above"!
@@ -145,7 +160,6 @@ https://wiki.apache.org/httpd/PHP-FPM
 * RE: mod_rewrite: examples of rewrite conditions: https://httpd.apache.org/docs/2.0/misc/rewriteguide.html
   * NOTE: is based on Apache 2.0 and needs to be updated
 
-
 * RE: Proxy* directives:
   * ProxyPass : Maps remote servers into the local server URL-space : http://httpd.apache.org/docs/2.4/mod/mod_proxy.html#proxypass
   * ProxyPassReverse: Adjusts the URL in HTTP response headers sent from a reverse proxied server : http://httpd.apache.org/docs/2.4/mod/mod_proxy.html#proxypassreverse
@@ -155,7 +169,25 @@ https://wiki.apache.org/httpd/PHP-FPM
 * RE: mod_rewrite: probably one of the most used features, but see if it can be made more concise, but add great examples
   * Remove sections which are straight out of the docs: add a reference to the docs
 
-* RE: TLS Security etc.
+* RE: Module 9 Web Arch == focus on High Availability and get rid of config stuff
+
+## SSL etc.
+* To find the VM version of openssl: `rpm -q openssl`
+* To find where openssl is installed: `whereis openssl`
+* To compile Apache with built-in ssl:
+```
+./configure --with-included-apr --with-ssl=/usr/lib64/openssl
+```
+* To get a list of modules which are loaded: `apachectl -M`
+* If you get an error `configure: WARNING: OpenSSL version is too old`
+  * install the openssl development package: `yum install openssl-devel`
+* Excellent tutorial on installing httpd with ssl: https://www.rodneybeede.com/Building_Apache_2_4_for_Linux_with_mod_ssl.html
+  * Oriented towards Ubuntu/Debian Linux so you'll need to adjust for Redhat/Fedora/CentOS
+    * i.e. instead of `sudo apt-get install xxx` you would change to root (`su`) and then: `yum install xxx`
+* This configure command seems to work:
+```
+./configure --with-included-apr --with-expat-lib --enable-ssl=shared --enable-mods-shared=all
+```
   * TLS: https://en.m.wikipedia.org/wiki/Transport_Layer_Security
   * Good security overview: https://en.m.wikipedia.org/wiki/Transport_Layer_Security#Security
   * HEARTBLEED: Status of different versions:
@@ -186,8 +218,6 @@ These conditions make successful exploitation somewhat difficult. Environments t
     * The TLS_DH_anon and TLS_ECDH_anon key agreement methods do not authenticate the server or the user and hence are rarely used because those are vulnerable to Man-in-the-middle attack. Only TLS_DHE and TLS_ECDHE provide forward secrecy.
 
 * RE: Generating Certificates: see this tutorial: https://jamielinux.com/docs/openssl-certificate-authority/index.html
-
-* RE: Module 9 Web Arch == focus on High Availability and get rid of config stuff
 
 
 ## FEEDBACK
