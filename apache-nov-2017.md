@@ -87,9 +87,12 @@ WHERE WE LEFT OFF: http://localhost:8888/#/11/6
 * Q: from Christopher to All Participants: Does that module also rewrite CSS and JS?
 * A: Need to set mod_proxy_html::ProxyHTMLExtended flag to ¨on¨
 
-* Q: from Maroun Sleiman to All Participants: RE: stickyness: depends where you are saving the sessions right?
+* Q: from Maroun to All Participants: RE: stickyness: depends where you are saving the sessions right?
 * A:
 
+* Q: What is suExec?
+* A: see: http://httpd.apache.org/docs/2.4/suexec.html
+   * provides users of the Apache HTTP Server the ability to run CGI and SSI programs under user IDs different from the user ID of the calling web server
 
 ## ERRATA
 * 52: must Linux s/be most Linux
@@ -108,6 +111,8 @@ WHERE WE LEFT OFF: http://localhost:8888/#/11/6
 * 330: Mod Cluster: out of place???
 * 331: Advantages of mod_cluster: out of place???
 * 365: mod_cluster and Load Balancing 4: funny chars in <code> block
+* 370: add description of suexec
+
 * http://localhost:8888/#/2/7: s/ not be "MPMs server"
 * http://localhost:8888/#/4/28: s/be "-h" not "- h" and "-V" not "- V" etc.
 * http://localhost:8888/#/5/5: mod_cache *not* shown above"!
@@ -158,12 +163,18 @@ WHERE WE LEFT OFF: http://localhost:8888/#/11/6
 ```
 * http://localhost:8888/#/13/6: "such as" instead of "should you like"
 * http://localhost:8888/#/13/8: what other tools????
+* http://localhost:8888/#/14/23: Disable Directory Browser Listing: replace 2.2 syntax w/ `Require all granted`
+* http://localhost:8888/#/14/25: Run Apache as Non-Privileged User: get rid of # in code block
+* http://localhost:8888/#/14/26: Non-Privileged User Continued: s/be "apache:apache" (no "A")
+* http://localhost:8888/#/14/28: Limiting HTTP Request Methods: here is the correct syntax for the example:
+```
+<LimitExcept POST GET HEAD>
+  Require valid-user
+</LimitExcept>
+```
+* http://localhost:8888/#/14/50: mod_security Core Rule Installation: Depends on your "PREFIX" setting when installing Apache.  In our case replace "/opt/apache/" with "/usr/local/apache2/"
+* http://localhost:8888/#/14/54: mod_security Logging: Depends on your "PREFIX" setting when installing Apache.  In our case replace "/opt/apache/" with "/usr/local/apache2/"
 
-RE: forward proxy: The client must be specially configured to use the forward proxy to access other sites.
-RE: PHP installation: these instructions are good for Centos: https://www.webhostinghero.com/centos-apache2-mariadb10-php7-setup/
-Here is a ref to installing PHP and using a PHP-FPM worker:
-https://blacksaildivision.com/php-install-from-source
-https://wiki.apache.org/httpd/PHP-FPM
 
 ## GENERAL NOTES
 
@@ -193,6 +204,31 @@ https://wiki.apache.org/httpd/PHP-FPM
 * RE: Any mention of Apache Tomcat (i.e. mod_jk), move to separate course module, optional, at the end
 
 * RE: monitoring tools: kibana, zenoss, solarwinds, nagios, apachetop, iftop, tcpdump, apache bench
+
+* RE: forward proxy: The client must be specially configured to use the forward proxy to access other sites.
+* RE: PHP installation: these instructions are good for Centos: https://www.webhostinghero.com/centos-apache2-mariadb10-php7-setup/
+  * Here is a ref to installing PHP and using a PHP-FPM worker:
+  * https://blacksaildivision.com/php-install-from-source
+  * https://wiki.apache.org/httpd/PHP-FPM
+
+* RE: Security
+  * suEXEC: http://httpd.apache.org/docs/2.4/suexec.html
+  * CGIWrap: https://github.com/cgiwrap/cgiwrap (last update Nov 2015!)
+  * Suhosin: https://suhosin.org/stories/index.html
+    * Two parts: a patch to the PHP core + a PHP extension which adds security functionality
+  * `LimitExcept` is the inverse of `Limit`
+    * See: http://httpd.apache.org/docs/2.4/mod/core.html#limit
+    * See: http://httpd.apache.org/docs/2.4/mod/core.html#limitexcept
+  * "Slow Loris" attack: Slowloris tries to keep many connections to the target web server open and hold them open as long as possible. It accomplishes this by opening connections to the target web server and sending a partial request. Periodically, it will send subsequent HTTP headers, adding to—but never completing—the request. Affected servers will keep these connections open, filling their maximum concurrent connection pool, eventually denying additional connection attempts from clients
+    * See: https://en.wikipedia.org/wiki/Slowloris_(computer_security)
+  * EPEL rpm repository == Extra Packages for Enterprise Linux
+    * see: https://fedoraproject.org/wiki/EPEL
+  * `readline` == The "readline" library will read a line from the terminal and return it
+  * mod_security: https://www.modsecurity.org/
+  * mod_security_crs: https://modsecurity.org/crs/
+    * crs == Core Rule Set
+  * ap_expr == Apache Expression Parser
+    * see: https://httpd.apache.org/docs/current/expr.html
 
 ## SSL etc.
 * To find the VM version of openssl: `rpm -q openssl`
@@ -238,7 +274,7 @@ These conditions make successful exploitation somewhat difficult. Environments t
 
 * RE: Generating Certificates: see this tutorial: https://jamielinux.com/docs/openssl-certificate-authority/index.html
 
-* RE: php etc.
+* RE: php etc.: configure command as per Francois
 ```
 ./configure --enable-modules="php ssl rewrite deflate security" --with-included-apr --enable-http2 --enable-so --enable-proxy --enable-proxy-fcgi
 ```
@@ -262,14 +298,13 @@ These conditions make successful exploitation somewhat difficult. Environments t
 * from Francois to All Participants: have cert and vhost first and multi instance and proxy after to me cert and vhost is something we do all the time so I think it should be first
 * from self: combine multi-instance w/ proxy course chapters
 * from self: add lab using separate config for each instance
-* from Christopher to All Participants: I would offer everyone one word of warning...
-apachectl configtest doesn't catch all SSL related errors that would stop your server from starting up
-You can have properly stuctured configuration but if your cert and key are messed up, it won't point it out
+* from Christopher to All Participants: I would offer everyone one word of warning... apachectl configtest doesn't catch all SSL related errors that would stop your server from starting up You can have properly stuctured configuration but if your cert and key are messed up, it won't point it out
 * from Francois to All Participants: one think I trully did not get is the "Copy and Paste the user-cli.crt output" and "Paste Into user-cli.crt on the Client" what is the client? is it if you have multiple servers?
 * from Francois to All Participants: I just redid the entire lab this morning and I still get "SSL error:unable to get local issuer certificate"
 * from Maroun to All Participants: the private use to be pem and the public key crt
 * from Francois to All Participants: ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:9000/var/www/$1
 * from Todd to All Participants: Setting up a PHP server with RP is easier to digest.  Java/Tomcat just adds complication and causes things to get fuzzy
+
 
 ## EXAMPLES
 * Created user `apache` using this command: `useradd apache`
