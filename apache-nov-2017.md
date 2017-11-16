@@ -94,6 +94,9 @@ WHERE WE LEFT OFF: http://localhost:8888/#/11/6
 * A: see: http://httpd.apache.org/docs/2.4/suexec.html
    * provides users of the Apache HTTP Server the ability to run CGI and SSI programs under user IDs different from the user ID of the calling web server
 
+* Q: from Francois to All Participants: could you proxy using verb?
+* A:
+
 ## ERRATA
 * 52: must Linux s/be most Linux
 * 52: bad char in code
@@ -174,8 +177,17 @@ WHERE WE LEFT OFF: http://localhost:8888/#/11/6
 ```
 * http://localhost:8888/#/14/50: mod_security Core Rule Installation: Depends on your "PREFIX" setting when installing Apache.  In our case replace "/opt/apache/" with "/usr/local/apache2/"
 * http://localhost:8888/#/14/54: mod_security Logging: Depends on your "PREFIX" setting when installing Apache.  In our case replace "/opt/apache/" with "/usr/local/apache2/"
-
-
+* http://localhost:8888/#/14/7: MaxRequestWorkers: re: performance tuning: might have already discussed???
+* http://localhost:8888/#/14/18: Protect Server Files: out of place!
+* http://localhost:8888/#/14/20: Limit Access: probably meant ¨Require all denied¨ for 2nd example: if this refers to the public website, that´s ok ... but need to rewrite to make more clear that is the case
+* http://localhost:8888/#/14/23: Disable Directory Browser Listing: uses 2.2 syntax: replace with Require all granted
+* http://localhost:8888/#/14/26: Non-Privileged User Continued: probably should say ¨document root¨ not installation directory
+* http://localhost:8888/#/14/27: Directory Permissions: from Francois to All Participants: they are mixing dir and file, either talk about the file httpd.conf or talk about the conf folder, but don't mix files and folder permission
+* http://localhost:8888/#/14/33: no space in []
+* http://localhost:8888/#/14/37: s/be libxml2-devel
+* http://localhost:8888/#/14/39: check that syntax is correct?  also no ./configure???
+* http://localhost:8888/#/14/42: s/be expat-devel
+* http://localhost:8888/#/14/53: Core Rules: Sllowed s/be Allowed
 ## GENERAL NOTES
 
 * RE: HTTP2 ... suggest adding this to the section on Modules, or make it a new course section
@@ -211,6 +223,16 @@ WHERE WE LEFT OFF: http://localhost:8888/#/11/6
   * https://blacksaildivision.com/php-install-from-source
   * https://wiki.apache.org/httpd/PHP-FPM
 
+* RE: mod_status
+```
+<Location "/server-status">
+    SetHandler server-status
+    Require local
+    Require ip 192.168.175.1
+</Location>
+```
+
+
 * RE: Security
   * suEXEC: http://httpd.apache.org/docs/2.4/suexec.html
   * CGIWrap: https://github.com/cgiwrap/cgiwrap (last update Nov 2015!)
@@ -229,6 +251,8 @@ WHERE WE LEFT OFF: http://localhost:8888/#/11/6
     * crs == Core Rule Set
   * ap_expr == Apache Expression Parser
     * see: https://httpd.apache.org/docs/current/expr.html
+  * OS level tool `fail2ban` is when you have IP trying to login with SSH + can work with weblogs
+  * mod_evasive -- info on that
 
 ## SSL etc.
 * To find the VM version of openssl: `rpm -q openssl`
@@ -273,10 +297,11 @@ These conditions make successful exploitation somewhat difficult. Environments t
     * The TLS_DH_anon and TLS_ECDH_anon key agreement methods do not authenticate the server or the user and hence are rarely used because those are vulnerable to Man-in-the-middle attack. Only TLS_DHE and TLS_ECDHE provide forward secrecy.
 
 * RE: Generating Certificates: see this tutorial: https://jamielinux.com/docs/openssl-certificate-authority/index.html
-
-* RE: php etc.: configure command as per Francois
+* RE: Firewall settings:
 ```
-./configure --enable-modules="php ssl rewrite deflate security" --with-included-apr --enable-http2 --enable-so --enable-proxy --enable-proxy-fcgi
+firewall-cmd --zone=public --add-port=443/tcp --permanent
+firewall-cmd --reload
+iptables -L
 ```
 
 
@@ -304,6 +329,8 @@ These conditions make successful exploitation somewhat difficult. Environments t
 * from Maroun to All Participants: the private use to be pem and the public key crt
 * from Francois to All Participants: ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:9000/var/www/$1
 * from Todd to All Participants: Setting up a PHP server with RP is easier to digest.  Java/Tomcat just adds complication and causes things to get fuzzy
+* from Todd to All Participants: Not sure if I'm ahead, but I'm really suprised not to see anything on chroot/jail of Apache.  I know this is more of a Linux feature.  You might also consider adding an exposure slide to docker/containers, but that is a whole different subject docker/containers would be a whole different class (we did a section docker in the PHP III)!
+* from Francois + self: consider changing references to /opt for consistency
 
 
 ## EXAMPLES
@@ -360,4 +387,11 @@ Alias "/whatever" "/var/www/whatever"
   # otherwise, redirect to the zend website [R] == redirect
   RewriteRule .* http://zend.com/ [R]
 </Location>
+```
+
+## HTTP2
+* from Francois to All Participants: this is basically what I recreated to see for myself http://www.http2demo.io/
+* configure command as per Francois:
+```
+./configure --enable-modules="php ssl rewrite deflate security" --with-included-apr --enable-http2 --enable-so --enable-proxy --enable-proxy-fcgi
 ```
