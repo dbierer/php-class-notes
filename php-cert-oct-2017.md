@@ -45,7 +45,7 @@ https://www.convertunits.com/dates/daysfromnow/90
 * A: OK thanks!
 * Q: from Mirela to All Participants: what happens if you start transaction and than again start transaction and the commit ?
 * A: You can use `SAVE TRANSACTION` to establish a "transaction savepoint" ... but support for this feature is not universal which is why it will not be on the test
-* Q: from Francois Dupras to All Participants: eval('system(...)') should be mentioned near system and such command
+* Q: from Francois to All Participants: eval('system(...)') should be mentioned near system and such command
 * A: Agreed! Added to the slide on "Code Injection"
 * Q: NOTE TO SELF: see if you can find solid docs on what exactly is a "standard" extension
 * A: OK ... here is a list of extensions which is categorized: http://php.net/manual/en/extensions.membership.php
