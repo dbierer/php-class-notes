@@ -1,7 +1,6 @@
 # Apache Fundamentals Notes November 2017
 
 NEED TO INCLUDE *ALL* SLIDES in PDF
-WHERE WE LEFT OFF: http://localhost:8888/#/11/6
 
 
 ## Q&A
@@ -97,6 +96,27 @@ WHERE WE LEFT OFF: http://localhost:8888/#/11/6
 * Q: from Francois to All Participants: could you proxy using verb?
 * A:
 
+* Q: Why would TransferLog be used over CustomLog (or vice-versa)?
+* A: *TransferLog* is used to change the log file name only, not the log format.
+     This is useful if you want to define a uniform log format for all log files (for several VHosts, for example) in one place using "LogFormat".
+     *CustomLog* is useful to customize the log format as well, for example if you need additional information for one VHost.
+  * See: https://httpd.apache.org/docs/2.4/mod/mod_log_config.html#comments_section
+
+* Q: RE: `SetEnvIf` what are "aspects of the request"?
+* A: See: https://httpd.apache.org/docs/2.4/mod/mod_setenvif.html#setenvif
+| Aspect      | Notes |
+|-------------|-------|
+| Remote_Host | the hostname (if available) of the client making the request |
+| Remote_Addr | the IP address of the client making the request |
+| Server_Addr | the IP address of the server on which the request was received (only with versions later than 2.0.43) |
+| Request_Method | the name of the method being used (GET, POST, et cetera) |
+| Request_Protocol | the name and version of the protocol with which the requst was made (e.g., "HTTP/0.9", "HTTP/1.1", etc.) |
+| Request_URI | the resource requested on the HTTP request line -- generally the portion of the URL following the scheme and host portion without the query string. See the RewriteCond directive of mod_rewrite for extra information on how to match your query string |
+
+
+* Q: Do I need to enable and configure `mod_session` in order to use $_SESSION in PHP?
+* A: No: PHP uses its own mechanism which bypasses the one used by `mod_session`
+
 ## ERRATA
 * 52: must Linux s/be most Linux
 * 52: bad char in code
@@ -188,6 +208,10 @@ WHERE WE LEFT OFF: http://localhost:8888/#/11/6
 * http://localhost:8888/#/14/39: check that syntax is correct?  also no ./configure???
 * http://localhost:8888/#/14/42: s/be expat-devel
 * http://localhost:8888/#/14/53: Core Rules: Sllowed s/be Allowed
+* http://localhost:8888/#/14/69: mod_setenvif 2: Attributes can be one of 4 things: s/be "Attributes can be one of 3 things:"
+  * Bullet starting with "Hostname, IP of client, IP of the server," s/be under bullet above
+* http://localhost:8888/#/16/11: mod_cache 4: Allows concent to be cached s/be "Allows content to be cached"
+
 ## GENERAL NOTES
 
 * RE: HTTP2 ... suggest adding this to the section on Modules, or make it a new course section
@@ -232,7 +256,6 @@ WHERE WE LEFT OFF: http://localhost:8888/#/11/6
 </Location>
 ```
 
-
 * RE: Security
   * suEXEC: http://httpd.apache.org/docs/2.4/suexec.html
   * CGIWrap: https://github.com/cgiwrap/cgiwrap (last update Nov 2015!)
@@ -254,12 +277,26 @@ WHERE WE LEFT OFF: http://localhost:8888/#/11/6
   * OS level tool `fail2ban` is when you have IP trying to login with SSH + can work with weblogs
   * mod_evasive -- info on that
 
+* RE: mod_log_config
+  * Format codes: https://httpd.apache.org/docs/2.4/mod/mod_log_config.html
+  * NCSA = National Center for Supercomputing Applications
+  * In the example shown:
+```
+LogFormat "%h %l %u %t \"%r\" %>s %b" common
+CustomLog "logs/access_log" common
+```
+    * "common" is the format nickname
+
+* RE: mod_setenvif
+  * For more info on expressions: http://httpd.apache.org/docs/2.4/expr.html
+
 ## SSL etc.
 * To find the VM version of openssl: `rpm -q openssl`
 * To find where openssl is installed: `whereis openssl`
 * To get a list of modules which are loaded: `apachectl -M`
 * If you get an error `configure: WARNING: OpenSSL version is too old`
   * install the openssl development package: `yum install openssl-devel`
+* Tutorial on creating certificates for mod_ssl on Centos 7: https://www.digitalocean.com/community/tutorials/how-to-create-an-ssl-certificate-on-apache-for-centos-7
 * Excellent tutorial on installing httpd with ssl: https://www.rodneybeede.com/Building_Apache_2_4_for_Linux_with_mod_ssl.html
   * Oriented towards Ubuntu/Debian Linux so you'll need to adjust for Redhat/Fedora/CentOS
     * i.e. instead of `sudo apt-get install xxx` you would change to root (`su`) and then: `yum install xxx`
@@ -304,6 +341,140 @@ firewall-cmd --reload
 iptables -L
 ```
 
+### Procedure without using Intermediate Certs
+#### Set up directory structure
+* There already exists a directory structure: `/etc/pki/CA`
+```
+cd /etc/pki/CA
+mkdir csr
+touch index.txt
+echo 1000 > serial
+```
+* Create `openssl.cnf` using example from https://jamielinux.com/docs/openssl-certificate-authority/_downloads/root-config.txt
+#### Root Key and Certificate
+* Create root key:
+```
+openssl genrsa -aes256 -out private/ca.key.pem 4096
+chmod 400 private/ca.key.pem
+```
+  * Use `password` for the password
+* Create the root certificate:
+```
+openssl req -config openssl.cnf -key private/ca.key.pem -new -x509 -days 7300 -sha256 -extensions v3_ca -out certs/ca.cert.pem
+chmod 444 certs/ca.cert.pem
+```
+  * Answer the prompts
+  * use `password` for the password
+* Verify the root certificate: `openssl x509 -noout -text -in certs/ca.cert.pem`
+
+#### Sign server and client certificates
+* Create server key:
+```
+openssl genrsa -aes256 -out private/test.local.key.pem 2048
+chmod 400 private/test.local.key.pem
+```
+  * Use `password` for the password
+* Create signing request:
+```
+openssl req -config openssl.cnf -key private/test.local.key.pem -new -sha256 -out csr/test.local.csr.pem
+```
+  * Answer the prompts
+  * Use `password` for the password
+* Create certificate:
+```
+openssl ca -config openssl.cnf -extensions server_cert -days 375 -notext -md sha256 -in csr/test.local.csr.pem -out certs/test.local.cert.pem
+chmod 444 certs/test.local.cert.pem
+```
+  * Use `password` for the password
+* Verify the certificate:
+```
+openssl x509 -noout -text -in certs/test.local.cert.pem
+```
+#### Deploy the certificate
+* Modify `/usr/local/apache2/conf/httpd.conf` as follows:
+  * Remove the comment in front of this line (towards the end): `Include conf/extra/httpd-ssl.conf`
+  * Enable these modules:
+    * mod_socache_dbm
+    * mod_log_config
+    *
+
+  * Make sure `mod_ssl` is *not* loaded in this file!
+* Modify `/usr/local/apache2/conf/extra/httpd-ssl.conf` as follows:
+  * Add this line towards the top: `LoadModule ssl_module modules/mod_ssl.so`
+  * Change the VirtualHost block starting tag to this: `&lt;VirtualHost *:443&gt;`
+  * Modify the server name as follows: `ServerName test.local:443`
+  * Edit the location of the SSL certificate file: `SSLCertificateFile "/etc/pki/CA/certs/test.local.cert.pem"`
+  * Edit the location of the SSL key file: `SSLCertificateKeyFile "/etc/pki/CA/private/test.local.key.pem"`
+* Make sure the firewall allows HTTPS on port 443:
+```
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+iptables -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+iptables -L -n
+iptables-save | sudo tee /etc/sysconfig/iptables
+```
+  * See: https://www.digitalocean.com/community/tutorials/how-to-set-up-a-basic-iptables-firewall-on-centos-6
+  * See: https://crm.vpscheap.net/knowledgebase.php?action=displayarticle&id=29 (common iptables rules)
+* Restart the server and fix any errors which might show up: `apachectl restart`
+* Test using Lynx: `lynx https://test.local`
+* Test from your browser outside the VM
+
+### Setting up PHP using FastCGI
+* See: https://github.com/dbierer/php-class-notes/blob/master/httpd-with-http2-and-fcgi.md
+* Install PHP using the `--enable-fpm` configure switch
+    * `php-fpm` is now included with any core installation of PHP
+* Recompile Apache using these flags (in addition to any other flags you've been using): `--enable-proxy --enable-proxy-fcgi`
+* Enable these modules:
+    * mod_proxy
+    * mod_proxy_fcgi
+* Sample vhost config file (many thanks to Francois!):
+```
+<VirtualHost *:80>
+    ServerAdmin webmaster@example.com
+    DocumentRoot "/var/www"
+    ServerName test.local
+    ErrorLog "logs/test.local-error_log"
+    CustomLog "logs/test.local-access_log" common
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerAdmin webmaster@test.local
+    DocumentRoot "/var/www"
+    ServerName php.test.local
+    ServerAlias php.test.local
+    ErrorLog "logs/php.test.local-error_log"
+    CustomLog "logs/php.test.local-access_log" common
+    <Directory "/var/www">
+        Options Indexes FollowSymLinks
+        DirectoryIndex index.php
+        AllowOverride All
+        Require all granted
+    </Directory>
+    ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://localhost:9000/var/www/$1
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerAdmin webmaster@test.local
+    DocumentRoot "/var/www"
+    ServerName php.test.local
+    ServerAlias php.test.local
+    ErrorLog "logs/php.test.local-error_log"
+    CustomLog "logs/php.test.local-access_log" common
+    <Directory "/var/www">
+        Options Indexes FollowSymLinks
+        DirectoryIndex index.php
+        AllowOverride All
+        Require all granted
+    </Directory>
+    ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://localhost:9000/var/www/$1
+    SSLEngine on
+    SSLCertificateFile "/etc/pki/CA/certs/test.local.cert.pem"
+    SSLCertificateKeyFile "/etc/pki/CA/private/test.local.key.pem"
+    <FilesMatch "\.(cgi|shtml|phtml|php)$">
+        SSLOptions +StdEnvVars
+    </FilesMatch>
+</VirtualHost>
+```
 
 ## FEEDBACK
 * from Francois to All Participants: the steps of this entire modules is weird, I had to go back and forth a few times
@@ -388,6 +559,8 @@ Alias "/whatever" "/var/www/whatever"
   RewriteRule .* http://zend.com/ [R]
 </Location>
 ```
+
+
 
 ## HTTP2
 * from Francois to All Participants: this is basically what I recreated to see for myself http://www.http2demo.io/
