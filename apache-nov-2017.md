@@ -211,6 +211,14 @@ NEED TO INCLUDE *ALL* SLIDES in PDF
 * http://localhost:8888/#/14/69: mod_setenvif 2: Attributes can be one of 4 things: s/be "Attributes can be one of 3 things:"
   * Bullet starting with "Hostname, IP of client, IP of the server," s/be under bullet above
 * http://localhost:8888/#/16/11: mod_cache 4: Allows concent to be cached s/be "Allows content to be cached"
+* http://localhost:8888/#/14/66: redundant???
+* http://localhost:8888/#/15/10: need reference as to how to find driver complied into apr-util + what is PKCS
+* http://localhost:8888/#/15/14: 1st line s/be a comment
+* http://localhost:8888/#/15/20: remove and/or consolidate content with earlier discussion on this subject
+* http://localhost:8888/#/15/29: s/ not be "sued"
+* http://localhost:8888/#/16/6: need more info on what this chart tells us
+* http://localhost:8888/#/16/12: s/be stale not state
+* http://localhost:8888/#/16/13: change for linux!!!
 
 ## GENERAL NOTES
 
@@ -502,6 +510,14 @@ iptables-save | sudo tee /etc/sysconfig/iptables
 * from Todd to All Participants: Setting up a PHP server with RP is easier to digest.  Java/Tomcat just adds complication and causes things to get fuzzy
 * from Todd to All Participants: Not sure if I'm ahead, but I'm really suprised not to see anything on chroot/jail of Apache.  I know this is more of a Linux feature.  You might also consider adding an exposure slide to docker/containers, but that is a whole different subject docker/containers would be a whole different class (we did a section docker in the PHP III)!
 * from Francois + self: consider changing references to /opt for consistency
+* from self: simple tool to simulate web attack to see mod_security in action??? maybe a simple PHP script for example. or possibly `nmap`
+* from the group: consensus: move access logging to the beginning + consolidate with logging chapter
+* from self: section on Security: drop "Best Practices"
+* from group: for mod_session_dbd pre-install mysql w/ a users table already in place
+* from Francois: scan for any Windoze examples and modify for linux
+* from Francois to All Participants: feedback : no need to go in that level of details about encryption (in my opinion) all I need to know is how to configure my Apache with a certificate, not all the history and type of encryption, and that include the abbreviation and the list of encryption support in old browser (like IE6), I don't think it is that relevant
+* from Francois to All Participants: Examples are not details, ex: "openssl req -newkey rsa:2048 -nodes -keyform PEM -keyout test-local.key -x509 -days 3650 -outform PEM -out test-local.crt" I would like to know what each paramaters does. If I'm just going to search for this information for myself, there is no need for me to pay for a course...
+* from Francois to All Participants: A lot of wasting time, for example the million videos. What was the point of this example/discussion. I found it irrelevant for this course. I want to learn to configure Apache not to use cloud services
 
 
 ## EXAMPLES

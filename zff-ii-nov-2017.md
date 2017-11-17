@@ -8,6 +8,8 @@ LEFT OFF: http://localhost:9999/#/8/59
 
 ## Q & A
 * Q: from Charles to All Participants: can you get an unclickable where you are crumb?
+* Q: where are the pre-defined validation errors translations?
+
 
 ## BETA NOTES
 * Include discussion on recorded sessions
@@ -21,6 +23,7 @@ LEFT OFF: http://localhost:9999/#/8/59
   check for compatibility issues between your OS, vagrant and VirtualBox
 * Events\Controller\SignupController should NOT have ServiceLocatorAwareInterface!
 * Doctrine Lab: PLEASE change modules/Doctrine/config/module.config.php::router=>routes=>events to router=>routes=>doctrine
+* Guestbook: no ability to upload an avatar during registration!!!
 
 ## ERRATA
 * http://localhost:9999/#/3/23: delegator assignment needs to be array
@@ -41,7 +44,8 @@ LEFT OFF: http://localhost:9999/#/8/59
 * http://localhost:9999/#/8/28: 'listeners' key needs to be at top level
 * http://localhost:9999/#/8/52: dup slide
 * http://localhost:9999/#/9/30: drop ref to translation
-
+* http://localhost:9999/#/9/55: remove ref to translatable routes
+* http://localhost:9999/#/9/59: used in any customer view helper s/be used in any custom view helper
 ## LAB NOTES:
 * Doctrine Lab: PLEASE change modules/Doctrine/config/module.config.php::router=>routes=>events to router=>routes=>doctrine
 * Auth/Password Lab: missing Application\Model\AbstractModel ==> copy this from the guestbook project
