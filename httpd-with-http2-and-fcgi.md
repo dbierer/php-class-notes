@@ -30,7 +30,28 @@ You should also take note of the listening option you want, the default is to us
 listen = 127.0.0.1:9000
 ```
 
-If everything goes well, you should be able to start the php-fpm using this command: ```php-fpm start```
+If everything goes well, you should be able to start the php-fpm using this command, BUT this will not allow you to stop the process without using the kill command.
+```
+php-fpm
+```
+
+If you want to create a service for PHP-FPM on systemd (CentOS 7), create the following file ```/lib/systemd/system/php-fpm.service``` with the content as follow:
+```
+[Unit]
+Description=The PHP 7.1 FastCGI Process Manager
+After=network.target
+
+[Service]
+Type=simple
+PIDFile=/var/run/php-fpm.pid
+ExecStart=/usr/local/sbin/php-fpm --nodaemonize --fpm-config /usr/local/etc/php-fpm.conf
+ExecReload=/bin/kill -USR2 $MAINPID
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Then you can use ```systemctl start php-fpm``` to start your service, you can also use ```systemctl enable php-fpm``` to get php-fpm to start automatically on boot.
 
 ## Configuring Apache
 To be able to use FastCGI you have to setup a proxy for your Apache to the php-fpm executable, you can do this in a vhost. My vhost configuration for PHP looks like this:
@@ -89,8 +110,7 @@ I set my as a separate include file called http2.conf with only this
 LoadModule http2_module modules/mod_http2.so
 Protocols h2 http/1.1
 ```
-The flag ```Protocols h2 http/1.1``` tells the server to try HTTP/2 first (h2) and if it fails fallback to HTTP/1.1. You can activate 
-HTTP/2 without HTTPS by adding h2c in the list of protocols, but I beleive Firefox is the only browser supporting it.
+The flag ```Protocols h2 http/1.1``` tells the server to try HTTP/2 first (h2) and if it fails fallback to HTTP/1.1. You can activate HTTP/2 without HTTPS by adding ```h2c``` in the list of protocols, but I beleive Firefox is the only browser supporting it and I wasn't able to make this work.
 
 After you restart Apache, you can inspect the header received from https://php.test.local and the protocol should be HTTP/2.
 
