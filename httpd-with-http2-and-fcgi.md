@@ -97,7 +97,7 @@ To be able to use FastCGI you have to setup a proxy for your Apache to the php-f
 </VirtualHost>
 ```
 
-For the FastCGI, the important line is ```ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:9000/var/www/$1``` This tells Apache to forward incoming request from your vhost (php.test.local in my case) to the php-fpm using the ip/port defined in your www.conf earlier.
+For the FastCGI, the important line is ```ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:9000/var/www/$1``` This tells Apache to forward incoming request from your vhost (php.test.local in my case) to the php-fpm using the ip/port defined in your ```www.conf``` earlier.
 
 I have included the SSL certificate information since it is necessary for HTTP/2 in most browsers.
 
