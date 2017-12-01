@@ -1,7 +1,5 @@
 # ZFF II Notes November 2017
 
-LEFT OFF: http://localhost:9999/#/8/59
-
 ## TO DO
 * Get the latest onlinemarket.work version to students after class ends
 * Complete the Cache Lab::clear cache
@@ -9,7 +7,6 @@ LEFT OFF: http://localhost:9999/#/8/59
 ## Q & A
 * Q: from Charles to All Participants: can you get an unclickable where you are crumb?
 * Q: where are the pre-defined validation errors translations?
-
 
 ## BETA NOTES
 * Include discussion on recorded sessions
@@ -24,6 +21,7 @@ LEFT OFF: http://localhost:9999/#/8/59
 * Events\Controller\SignupController should NOT have ServiceLocatorAwareInterface!
 * Doctrine Lab: PLEASE change modules/Doctrine/config/module.config.php::router=>routes=>events to router=>routes=>doctrine
 * Guestbook: no ability to upload an avatar during registration!!!
+* guestbook/admin Zend Expressive app: PHP Fatal error:  Interface 'Webimpress\HttpMiddlewareCompatibility\MiddlewareInterface' not found in /home/vagrant/Zend/workspaces/DefaultWorkspace/guestbook/admin/vendor/zendframework/zend-stratigility/src/MiddlewarePipe.php on line 34
 
 ## ERRATA
 * http://localhost:9999/#/3/23: delegator assignment needs to be array
@@ -46,6 +44,10 @@ LEFT OFF: http://localhost:9999/#/8/59
 * http://localhost:9999/#/9/30: drop ref to translation
 * http://localhost:9999/#/9/55: remove ref to translatable routes
 * http://localhost:9999/#/9/59: used in any customer view helper s/be used in any custom view helper
+* http://localhost:9999/#/10/12: zend-expressive of zend-stratigility  s/be zend-expressive or zend-stratigility
+* http://localhost:9999/#/10/50: both Request and Request  s/be both Request and Response
+* http://localhost:9999/#/10/58: s/be ../guestbook/admin not manage
+
 ## LAB NOTES:
 * Doctrine Lab: PLEASE change modules/Doctrine/config/module.config.php::router=>routes=>events to router=>routes=>doctrine
 * Auth/Password Lab: missing Application\Model\AbstractModel ==> copy this from the guestbook project
