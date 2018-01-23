@@ -1,11 +1,5 @@
 # ZFF II Notes November 2017
 
-LEFT OFF: http://localhost:9999/#/8/59
-
-## TO DO
-* Get the latest onlinemarket.work version to students after class ends
-* Complete the Cache Lab::clear cache
-
 ## Q & A
 * Q: from Charles to All Participants: can you get an unclickable where you are crumb?
 
@@ -19,8 +13,6 @@ LEFT OFF: http://localhost:9999/#/8/59
 * If you installed VirtualBox and vagrant, but get a message after running ¨vagrant up¨
   to the effect that you are missing a provider and that you need to install VirtualBox,
   check for compatibility issues between your OS, vagrant and VirtualBox
-* Events\Controller\SignupController should NOT have ServiceLocatorAwareInterface!
-* Doctrine Lab: PLEASE change modules/Doctrine/config/module.config.php::router=>routes=>events to router=>routes=>doctrine
 
 ## ERRATA
 * http://localhost:9999/#/3/23: delegator assignment needs to be array
@@ -30,7 +22,7 @@ LEFT OFF: http://localhost:9999/#/8/59
 * http://localhost:9999/#/4/32: Need to change module name from "Doctrine" to "MyDoctrine"!!!
 * http://localhost:9999/#/4/32: Add instruction to install Doctrine Module for ZF!!!
 * http://localhost:9999/#/6/56: Dup OFB
-* http://localhost:9999/#/6/58: Paddng -- typo!!!
+* http://localhost:9999/#/6/58: Paddng --typo!!!
 * http://localhost:9999/#/7/6: dup slide
 * http://localhost:9999/#/7/4: needs to be re-written
 * http://localhost:9999/#/7/6: needs to be re-written
@@ -45,3 +37,5 @@ LEFT OFF: http://localhost:9999/#/8/59
 ## LAB NOTES:
 * Doctrine Lab: PLEASE change modules/Doctrine/config/module.config.php::router=>routes=>events to router=>routes=>doctrine
 * Auth/Password Lab: missing Application\Model\AbstractModel ==> copy this from the guestbook project
+* Events\Controller\SignupController should NOT have ServiceLocatorAwareInterface!
+* Doctrine Lab: PLEASE change modules/Doctrine/config/module.config.php::router=>routes=>events to router=>routes=>doctrine
