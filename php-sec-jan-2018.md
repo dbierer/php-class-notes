@@ -1,4 +1,29 @@
-# PHP SECURITY v3
+# PHP Security Notes -- Jan 2018
+* Collabedit: http://collabedit.com/uacb8
+
+## Homework for Wed 24 Jan 2018
+* SQL Injection Lab
+* Zed Proxy Attack Lab
+
+## ERRATA
+* http://localhost:8888/#/3/9: founden
+* http://localhost:8888/#/3/15: execute([(int) $_REQUEST['topic']) missing "]"
+* http://localhost:8888/#/3/31: Even if the attack is from a botnet, an excessive number of failed login attempts warns you of a potential brute force attack
+
+## Suggestions
+* Create a Docker config for course VMs
+* Revise instructions vis a vis changes to the default editor
+* RAM: modify Vagrantfile OR use the VirtualBox GUI
+* Need to modify Vagrantfile as follows:
+  * Change: `s.path = "https://s3.amazonaws.com/zend-training/provisions/provision_environment_test.sh"`
+  * To: `s.path = "https://s3.amazonaws.com/zend-training/provisions/provision_environment.sh"`
+  * This is the error message:
+```
+==> default: Running provisioner: shell...An error occurred while downloading the remote file.
+The errormessage, if any, is reproduced below. Please fix this error and tryagain.
+The requested URL returned error:
+403 Forbidden
+```
 
 ## OWASP
 * Top 10 for 2017: https://www.owasp.org/images/7/72/OWASP_Top_10-2017_%28en%29.pdf.pdf
@@ -144,6 +169,7 @@
 * http://codecurmudgeon.com/wp/sql-injection-hall-of-shame/
 
 ## BRUTE FORCE:
+* Designing Secure Passwords: https://xkcd.com/936/
 * Mar 2017: WordPress "Attack Landscape": https://www.wordfence.com/blog/2017/04/march-2017-wordpress-attack-report/
 * May 2017: KnockKnock Brute Force Attack: https://www.skyhighnetworks.com/cloud-security-blog/skyhigh-discovers-ingenious-new-attack-scheme-on-office-365/
 * Jul 2017: Good article on detecting a brute force attack: https://blogs.technet.microsoft.com/pie/2017/07/19/good-news-everyone-we-are-under-brute-force-attack/
