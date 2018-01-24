@@ -5,6 +5,11 @@
 * SQL Injection Lab
 * Zed Proxy Attack Lab
 
+## Homework for Thu 25 Jan 2018
+* XSS: Tidy Lab
+* XSS: Security Portal Lab
+* Insecure Direct Object References Lab
+
 ## ERRATA
 * http://localhost:8888/#/3/9: founden
 * http://localhost:8888/#/3/15: execute([(int) $_REQUEST['topic']) missing "]"
