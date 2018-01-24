@@ -10,6 +10,7 @@
 * http://localhost:8888/#/3/15: execute([(int) $_REQUEST['topic']) missing "]"
 * http://localhost:8888/#/3/31: Even if the attack is from a botnet, an excessive number of failed login attempts warns you of a potential brute force attack
 
+
 ## Suggestions
 * Create a Docker config for course VMs
 * Revise instructions vis a vis changes to the default editor
@@ -188,7 +189,19 @@ The requested URL returned error:
 * https://tools.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-20160407-cic
 
 ## CSRF:
+* Jan 2018: phpMyAdmin: https://tools.cisco.com/security/center/viewAlert.x?alertId=56498
+* Nov 2017: MS Sharepoint Enterprise Server: https://www.symantec.com/security_response/vulnerability.jsp?bid=101754
+* May 2017: Magento: https://www.helpnetsecurity.com/2017/05/09/defeating-magento-security/
 * https://threatpost.com/bangladesh-bank-hackers-accessed-swift-system-to-steal-cover-tracks/117637/
+* Jul 2016: PayPal: https://threatpost.com/paypal-fixes-csrf-vulnerability-in-paypal-me/119435/
+
+## BROKEN AUTH AND SESSION MANAGEMENT
+* Examples are either too numerous to list, or are not disclosed by victim organizations
+* Aug 2017: Siemens: https://threatpost.com/siemens-fixes-session-hijacking-bug-in-logo-warns-of-man-in-the-middle-attacks/127728/
+* Nov 2017: Session Re-Play Attacks: https://www.bleepingcomputer.com/news/technology/popular-websites-are-recording-your-every-move/
+* May 2017: WiFi (outside scope of course): http://ieeexplore.ieee.org/document/8102284/
+* Jul 2017: DJT Sessions Attacks: https://www.washingtonpost.com/world/national-security/trump-launches-new-attacks-on-sessions/2017/07/26/e2e10a8e-720b-11e7-8839-ec48ec4cae25_story.html?utm_term=.737b9d23a704
+
 
 ## OTHER:
 * http://www.cyberciti.biz/tips/php-security-best-practices-tutorial.html
