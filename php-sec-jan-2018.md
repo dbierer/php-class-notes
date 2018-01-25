@@ -1,6 +1,6 @@
 # PHP Security Notes -- Jan 2018
 * Collabedit: http://collabedit.com/uacb8
-* Last Page: http://localhost:8888/#/3/68
+* Last Page: http://localhost:8888/#/3/107
 
 ## Homework for Wed 24 Jan 2018
 * SQL Injection Lab
@@ -11,11 +11,17 @@
 * XSS: Security Portal Lab
 * Insecure Direct Object References Lab
 
+## Homework for Fri 26 Jan 2018
+* CSRF Lab
+* Security Misconfiguration Lab
+* Sensitive Data Exposure Lab
+* Missing Function Level Access Control
+
 ## ERRATA
 * http://localhost:8888/#/3/9: founden
 * http://localhost:8888/#/3/15: execute([(int) $_REQUEST['topic']) missing "]"
 * http://localhost:8888/#/3/31: Even if the attack is from a botnet, an excessive number of failed login attempts warns you of a potential brute force attack
-
+* http://localhost:8888/#/3/92: distruction
 
 ## Suggestions
 * Create a Docker config for course VMs
@@ -99,6 +105,8 @@ The requested URL returned error:
 * 3: Create a profile of the user including User Agent + Language + IP Address etc.
 * 4: Implement session protection + XSS measures
 * 5: DO NOT use md5 for your hash!!!  Use something like password_hash()
+  * Sodium Library: http://php.net/manual/en/function.sodium-crypto-kdf-keygen.php
+  * OpenSSL: http://php.net/manual/en/function.openssl-pbkdf2.php
 
 * LAB: quick test: download form, make a change, submit manually, and see that you've change the password
 
@@ -128,8 +136,11 @@ The requested URL returned error:
 * 3: Make sure measures are in place when you store or transfer this data
 * 4: Don't store or transmit sensitive data in plain text
 * 5: Keep crypto software up to date
-* 6: DO NOT use mcrypt!!!! Use openssl_encrypt() or openssl_decrypt()
-    See: https://wiki.php.net/rfc/mcrypt-viking-funeral
+* 6: DO NOT use mcrypt!!!! Use openssl_encrypt() / openssl_decrypt()
+    or the sodium* functions
+    * See: https://wiki.php.net/rfc/mcrypt-viking-funeral
+    * See: http://php.net/manual/en/book.openssl.php
+    * See: http://php.net/manual/en/book.sodium.php
 
 ## Command Injection
 * 1: Do you really need to run system(), exec() etc.?  Maybe another way
@@ -607,6 +618,12 @@ Are your cookies really safe?<div style="visibility:hidden;"><img name="x" src="
 
 
 ## Q & A
+* Q: from Mehedee: what's the recommended way to store sensitive data?
+* A: Encrypt using either the openssl* functions of sodium* functions.
+    * See: https://wiki.php.net/rfc/mcrypt-viking-funeral
+    * See: http://php.net/manual/en/book.openssl.php
+    * See: http://php.net/manual/en/book.sodium.php
+
 * Q: Brute force detector lab setup?
 * A: Need to create a table "bfdetect"
 ```
@@ -951,4 +968,20 @@ phpinfo(INFO_VARIABLES);
 ?>
 </body>
 </html>
+```
+
+## IDOR
+```
+<?php
+//Code to authenticate and authorize access...
+
+$key = strip_tags($_GET['img'] ?? 'a');
+$allowResources = ['a' => 'img00011', 'b' => 'img00012']; // Add as required
+//$key = array_search($image, $allowResources);
+
+if (isset($allowResources[$key])) {
+	$html .= '<img src="vulnerabilities/idor/source/img/' . $allowResources[$key] . '.png">';
+} else {
+    $html .= '<pre>Unauthorized</pre>';
+}
 ```
