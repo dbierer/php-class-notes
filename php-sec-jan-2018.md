@@ -1,5 +1,6 @@
 # PHP Security Notes -- Jan 2018
 * Collabedit: http://collabedit.com/uacb8
+* Last Page: http://localhost:8888/#/3/68
 
 ## Homework for Wed 24 Jan 2018
 * SQL Injection Lab
@@ -193,13 +194,6 @@ The requested URL returned error:
 * https://nakedsecurity.sophos.com/2016/01/13/ebay-xss-bug-left-users-vulnerable-to-almost-undetectable-phishing-attacks/
 * https://tools.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-20160407-cic
 
-## CSRF:
-* Jan 2018: phpMyAdmin: https://tools.cisco.com/security/center/viewAlert.x?alertId=56498
-* Nov 2017: MS Sharepoint Enterprise Server: https://www.symantec.com/security_response/vulnerability.jsp?bid=101754
-* May 2017: Magento: https://www.helpnetsecurity.com/2017/05/09/defeating-magento-security/
-* https://threatpost.com/bangladesh-bank-hackers-accessed-swift-system-to-steal-cover-tracks/117637/
-* Jul 2016: PayPal: https://threatpost.com/paypal-fixes-csrf-vulnerability-in-paypal-me/119435/
-
 ## BROKEN AUTH AND SESSION MANAGEMENT
 * Examples are either too numerous to list, or are not disclosed by victim organizations
 * Aug 2017: Siemens: https://threatpost.com/siemens-fixes-session-hijacking-bug-in-logo-warns-of-man-in-the-middle-attacks/127728/
@@ -207,6 +201,36 @@ The requested URL returned error:
 * May 2017: WiFi (outside scope of course): http://ieeexplore.ieee.org/document/8102284/
 * Jul 2017: DJT Sessions Attacks: https://www.washingtonpost.com/world/national-security/trump-launches-new-attacks-on-sessions/2017/07/26/e2e10a8e-720b-11e7-8839-ec48ec4cae25_story.html?utm_term=.737b9d23a704
 
+## CSRF:
+* Jan 2018: phpMyAdmin: https://tools.cisco.com/security/center/viewAlert.x?alertId=56498
+* Nov 2017: MS Sharepoint Enterprise Server: https://www.symantec.com/security_response/vulnerability.jsp?bid=101754
+* May 2017: Magento: https://www.helpnetsecurity.com/2017/05/09/defeating-magento-security/
+* https://threatpost.com/bangladesh-bank-hackers-accessed-swift-system-to-steal-cover-tracks/117637/
+* Jul 2016: PayPal: https://threatpost.com/paypal-fixes-csrf-vulnerability-in-paypal-me/119435/
+
+## SECURITY MISCONFIGURATION
+* Oct 2017: WannaCry and NotPetya worms: http://www.silicon.co.uk/security/misconfiguration-industrial-accidental-cyber-attacks-222561?inf_by=5a69f33f671db81a178b4a4c
+* Aug 2017: Open port Power Quality Engineering: https://www.helpnetsecurity.com/2017/08/09/critical-infrastructure-data/
+* Nov 2017: Amazon Web Services: https://findbiometrics.com/aws-s3-misconfiguration-opens-door-mitm-attacks-411294/
+* http://arstechnica.com/security/2016/05/faulty-* https-settings-leave-dozens-of-visa-sites-vulnerable-to-forgery-attacks/
+
+## SENSITIVE DATA EXPOSURE
+* Websites still infected!!!  From Google type this: inurl:"jos_users" inurl:"index.php"
+  Look for "www.RiskPrep.com"
+  See: https://blog.sucuri.net/2015/10/joomla-sql-injection-attacks-in-the-wild.html
+* Equifax Attack: https://motherboard.vice.com/en_us/article/ne3bv7/equifax-breach-social-security-numbers-researcher-warning
+
+## MISSING FUNCTION LEVEL ACCESS CONTROL
+* Dec 2017: Remote Privilege Escalation: CouchDB: https://www.mysonicwall.com/sonicalert/searchresults.aspx?ev=article&id=1107
+
+## USING COMPONENTS WITH KNOWN VULNERABILITIES
+* CVE Details: WordPress: https://www.cvedetails.com/vendor/2337/Wordpress.html
+* Web App Exploits: https://www.exploit-db.com/webapps/
+* Example: PHPFreeChat 1.7 - Denial of Service: https://www.exploit-db.com/exploits/43852/
+
+## UNVALIDATED REDIRECTS AND FORWARDS
+* Tools: https://www.owasp.org/index.php/Unvalidated_Redirects_and_Forwards_Cheat_Sheet
+* Jun 2017: Piwigo: https://www.wizlynxgroup.com/security-research-advisories/vuln/WLX-2017-007
 
 ## OTHER:
 * http://www.cyberciti.biz/tips/php-security-best-practices-tutorial.html
@@ -222,9 +246,6 @@ The requested URL returned error:
 * http://resources.infosecinstitute.com/14-popular-web-application-vulnerability-scanners/
 * https://panopticlick.eff.org/
 * https://www.torproject.org/
-
-## INSECURE CONFIG:
-* http://arstechnica.com/security/2016/05/faulty-* https-settings-leave-dozens-of-visa-sites-vulnerable-to-forgery-attacks/
 
 ## PHP:
 * http://www.cvedetails.com/vulnerability-list/vendor_id-74/product_id-128/PHP-PHP.html
@@ -392,6 +413,51 @@ A replay attack is a form of network attack in which a valid data transmission i
 ## CSRF FAQ
 * http://www.cgisecurity.com/csrf-faq.html
 * Google Gmail CSRF Hack: http://directwebremoting.org/blog/joe/2007/01/01/csrf_attacks_or_how_to_avoid_exposing_your_gmail_contacts.html
+
+
+## "MANUAL" SETUP PROCEDURE FOR SECURITYTRAINING WEBSITE
+0. Create an entry in the hosts file:
+```
+sudo echo "127.1.1.1  securitytraining" >>/etc/hosts
+```
+1. Create a file from the command line as follows:
+```
+sudo gedit /etc/apache2/sites-available/securitytraining.conf
+```
+2. Put this into its contents:
+```
+<VirtualHost *:80>
+    ServerName securitytraining
+    DocumentRoot /home/vagrant/Zend/workspaces/DefaultWorkspace/securitytraining
+    <Directory /home/vagrant/Zend/workspaces/DefaultWorkspace/securitytraining/>
+        Options Indexes FollowSymlinks MultiViews
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+```
+3. Activate the virtual host:
+```
+sudo a2ensite securitytraining
+```
+4. Restart Apache:
+```
+sudo service apache2 restart
+```
+5. Configure the database:
+```
+mysql -u root -p
+```
+  Enter "vagrant" when prompted for the password
+6. Create the database and restore from backup, from the `mysql` prompt:
+```
+CREATE DATABASE security;
+USE security;
+source /home/vagrant/Zend/workspaces/DefaultWorkspace/securitytraining/data/sql/security.sql
+SELECT * FROM users;
+exit
+```
+
 
 -- 39 ------------------------------
 Note: the HTML for the 3rd party site has been hacked
