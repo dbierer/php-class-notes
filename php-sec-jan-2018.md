@@ -205,6 +205,9 @@ The requested URL returned error:
 * https://nakedsecurity.sophos.com/2016/01/13/ebay-xss-bug-left-users-vulnerable-to-almost-undetectable-phishing-attacks/
 * https://tools.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-20160407-cic
 
+## INSECURE DIRECT OBJECT REFERENCE
+* SweetsComplete Demo: not logged in: able to get to "sweetscomplete.com/index.php?page=admin" which then allows admin functionality
+
 ## BROKEN AUTH AND SESSION MANAGEMENT
 * Examples are either too numerous to list, or are not disclosed by victim organizations
 * Aug 2017: Siemens: https://threatpost.com/siemens-fixes-session-hijacking-bug-in-logo-warns-of-man-in-the-middle-attacks/127728/
@@ -233,6 +236,7 @@ The requested URL returned error:
 
 ## MISSING FUNCTION LEVEL ACCESS CONTROL
 * Dec 2017: Remote Privilege Escalation: CouchDB: https://www.mysonicwall.com/sonicalert/searchresults.aspx?ev=article&id=1107
+* SweetsComplete Demo: not logged in: able to get to "sweetscomplete.com/index.php?page=admin" which then allows admin functionality
 
 ## USING COMPONENTS WITH KNOWN VULNERABILITIES
 * CVE Details: WordPress: https://www.cvedetails.com/vendor/2337/Wordpress.html
@@ -240,8 +244,10 @@ The requested URL returned error:
 * Example: PHPFreeChat 1.7 - Denial of Service: https://www.exploit-db.com/exploits/43852/
 
 ## UNVALIDATED REDIRECTS AND FORWARDS
-* Tools: https://www.owasp.org/index.php/Unvalidated_Redirects_and_Forwards_Cheat_Sheet
 * Jun 2017: Piwigo: https://www.wizlynxgroup.com/security-research-advisories/vuln/WLX-2017-007
+* Tools: https://www.owasp.org/index.php/Unvalidated_Redirects_and_Forwards_Cheat_Sheet
+* SweetsComplete Demo: not logged in: able to get to `sweetscomplete.com/index.php?page=admin` which then allows admin functionality
+  * Click on "Edit" and are redirected to `sweetscomplete.com/index.php?page=change` without any attempt to validate or check authorization
 
 ## OTHER:
 * http://www.cyberciti.biz/tips/php-security-best-practices-tutorial.html
@@ -275,10 +281,10 @@ The requested URL returned error:
 * http://www.sophos.com/en-us/security-news-trends/reports/security-threat-report/blackhole-exploit.aspx
 * http://www.avgthreatlabs.com/webthreats/
 
-HELP FOR HACKED SITES:
+## HELP FOR HACKED SITES:
 * http://www.google.com/webmasters/hacked/
 
-PHP EXPLOITS:
+## PHP EXPLOITS:
 * http://www.joomlaexploit.com/
 * http://blog.resellerclub.com/2013/04/12/global-attack-on-wordpress-sites/
 * http://www.zionsecurity.com/blog/2013/02/analysis-automated-attack-against-php-web-sites
@@ -699,10 +705,11 @@ CREATE TABLE `bfdetect` (
    See: http://www.symantec.com/security_response/writeup.jsp?docid=2002-061310-4234-99
    Recommendation: train users *not* to open suspicious attachments (which is the usual form of delivery)
 
-## CLASS CODE EXAMPLES
+# CLASS CODE EXAMPLES
 
+## XSS STORED LAB
+* Alternate Solution:
 ```
-// xss stored solution
 <?php
 
 //Code to authenticate and authorize access...
@@ -735,8 +742,9 @@ if(isset($_POST['btnSign']))
 }
 ```
 
+## CSRF LAB:
+* Alternate Solution:
 ```
-// CSRF solution
 <?php
 /**
  * A Secure Version Script
@@ -821,8 +829,27 @@ if (isset($_POST['Change'])) {
 }
 ```
 
+## INSECURE DIRECT OBJECT REFERENCE LAB
+* Alternate Solution:
 ```
-// insecure configuration lab
+<?php
+//Code to authenticate and authorize access...
+
+$key = strip_tags($_GET['img'] ?? 'a');
+
+// here we use a "mapping" which further obscures the actual direct object reference
+$allowResources = ['a' => 'img00011', 'b' => 'img00012']; // Add as required
+
+if (isset($allowResources[$key])) {
+    $html .= '<img src="vulnerabilities/idor/source/img/' . $allowResources[$key] . '.png">';
+} else {
+    $html .= '<pre>Unauthorized</pre>';
+}
+```
+
+## INSECURE CONFIGURATION LAB
+* Alternate Solution:
+```
 <?php
 
 $config = include __DIR__ . '/protected/dir/sensitive.config.php';
@@ -871,8 +898,9 @@ if (!empty($_POST['username']) && !empty($_POST['password'])) {
 }
 ```
 
+## SECURE FILE UPLOAD
+* Alternate Solution:
 ```
-// secure file upload
 <?php
 // TODO: redefine / override the php.ini setting for tmp files
 // Initialize Variables
@@ -968,20 +996,4 @@ phpinfo(INFO_VARIABLES);
 ?>
 </body>
 </html>
-```
-
-## IDOR
-```
-<?php
-//Code to authenticate and authorize access...
-
-$key = strip_tags($_GET['img'] ?? 'a');
-$allowResources = ['a' => 'img00011', 'b' => 'img00012']; // Add as required
-//$key = array_search($image, $allowResources);
-
-if (isset($allowResources[$key])) {
-	$html .= '<img src="vulnerabilities/idor/source/img/' . $allowResources[$key] . '.png">';
-} else {
-    $html .= '<pre>Unauthorized</pre>';
-}
 ```
