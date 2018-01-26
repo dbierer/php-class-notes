@@ -22,6 +22,12 @@
 * http://localhost:8888/#/3/15: execute([(int) $_REQUEST['topic']) missing "]"
 * http://localhost:8888/#/3/31: Even if the attack is from a botnet, an excessive number of failed login attempts warns you of a potential brute force attack
 * http://localhost:8888/#/3/92: distruction
+* http://localhost:8888/#/4/9: create_function() deprecated in PHP 7.2
+* http://localhost:8888/#/4/14: allow_url_include (no "s")
+* http://localhost:8888/#/3/???: remote command injection: lots of strange quotes instead of straight quotes
+* CSRF LAB:
+  * Check to see why attack is not working!
+  * The solution has extra ) on line 74
 
 ## Suggestions
 * Create a Docker config for course VMs
@@ -47,13 +53,15 @@ The requested URL returned error:
 
 * DEMO: nmap -A -T4 ip.add.re.ss
 
-## SQL Injection Suggested Protection:
+## Solutions
+
+### SQL Injection Suggested Protection:
 * 1: use prepared statements to enhance protection against sql injection
 * 2: filter and validate all inputs
 * 3: treat the database with suspicion as it could have been compromised
 * LAB: solution should use prepared statements!!!
 
-## Brute Force Suggested Protection:
+### Brute Force Suggested Protection:
 * 0: Any suggested protection may be evaded if the attack is launched from a "botnet"
 * 1: Tracking failed login attempts + some kind of redirection or slowdown if X # failed attempts
 * 2: CAPTCHA
@@ -69,7 +77,7 @@ The requested URL returned error:
 * 7: if a high level of abuse is noted, extreme measures are called for: i.e. total lockout at IP level
 
 
-## XSS:
+### XSS:
 * 1: escape, validate, filter all input
 * 2: htmlspecialchars() on output (esp. suspect data)
 * 3: use prepared statements + SQL injection protection to prevent stored XSS
@@ -89,7 +97,7 @@ The requested URL returned error:
 
 * LAB NOTE: solution for XSS_R s/be $_POST not $_GET
 
-## Insecure Direct Object Reference / Missing Function Level Access Control
+### Insecure Direct Object Reference / Missing Function Level Access Control
 * 1: When building the SELECT, encrypt the database key which is exposed to the form
 * 2: Implement proper access control for valuable company resources ("objects")
 * 3: Redirect and log the "illegal" attempt (i.e. enforce the access control)
@@ -97,7 +105,7 @@ The requested URL returned error:
 * 5: Proper session protection + proper logout procedure
 * 6: Modify the names of the resources to make them less predictable
 
-## CSRF
+### CSRF
 * 1: Use hard-to-predict tokens for each unique form access
     I.e. use open ssl pbkdf functionality: http://php.net/manual/en/function.openssl-pbkdf2.php
 * 2: Potential programming problem: what if valid user opens same form in 2 windows?
@@ -110,7 +118,7 @@ The requested URL returned error:
 
 * LAB: quick test: download form, make a change, submit manually, and see that you've change the password
 
-## Session Protection:
+### Session Protection:
 * 1: Run session_regenerate_id() frequently to keep validity of session ID short
     but still maintain the session
 * 2: Have the session ID go through cookies (instead of URL)
@@ -121,7 +129,7 @@ The requested URL returned error:
 * 5: Keep sessions as short as possible (but keep usability in mind!)
 * 6: Be cautious about fixed session IDs (i.e. "remember me")!!!
 
-## Security Misconfig
+### Security Misconfig
 * 1: Keep all open source + other software updated
 * 2: Improperly configured filesystem rights
 * 3: Leaving defaults in place
@@ -129,8 +137,17 @@ The requested URL returned error:
 * 5: use apachectl -l and apachectl -M to see which modules are loaded
     look for ssl_module especially
 * 6: php.ini settings: allow_url_include = off; open_basedir = /set/this/to/something; doc_root = /set/to/something
+* 7: Error/Exception handling
+  * Set up your code to catch PHP 7 Errors using try {} catch (Error $e) {}
+  * Define a fallback Exception handler
+    * See: http://php.net/manual/en/function.set-exception-handler.php
+  * Define a custom error handler as a final fallback
+    * See: http://php.net/manual/en/function.set-error-handler.php
+* 8: Apache config
+  * `Directory` directive: http://httpd.apache.org/docs/2.4/mod/core.html#directory
+  * `RewriteCond` and `RewriteRule`: http://httpd.apache.org/docs/2.4/mod/mod_rewrite.html
 
-## Insufficient Crypto Handling of Sensitive Data
+### Insufficient Crypto Handling of Sensitive Data
 * 1: Don't use old/weak crypto methods (i.e. md5 or sha1)
 * 2: Need to determine what is "sensitive data" for your app
 * 3: Make sure measures are in place when you store or transfer this data
@@ -142,14 +159,15 @@ The requested URL returned error:
     * See: http://php.net/manual/en/book.openssl.php
     * See: http://php.net/manual/en/book.sodium.php
 
-## Command Injection
+### Command Injection
 * 1: Do you really need to run system(), exec() etc.?  Maybe another way
 * 2: Use escapeshellcmd/args()
 * 3: php.ini setting "disable_functions = xxx" if you want to block usage of these
-* 4: Filtering / validation i.e. filter_var with one of the flags
-    Typecasting
+* 4: Filtering / validation i.e. filter_var with one of the flags and Typecasting
+* 5: php.ini `open_basedir` directive for protecting higher directory levels
+* 6. Proper filesystem rights settings
 
-## Remote Code Injection
+### Remote Code Injection
 * 1: Don't mix user input with these commands: include, require, eval()
 * 2: Set php.ini allow_url_include = off
 * 3: Possibly refactor your code so you don't need the user to supply actual PHP filenames
@@ -157,6 +175,12 @@ The requested URL returned error:
     Whitelist allowed pages w/ name mappings that the user can choose
     Don't let the user see the actual php file they're going to be using
 * 4: Be sure to initiate proper access control / authorization
+* 5: Use web server rewrite engine to map a URL to an actual PHP file
+
+### SECURE FILE UPLOADS
+* 1: http://php.net/manual/en/ini.core.php#ini.file-uploads
+
+# Examples of Threats / Attacks
 
 ## LATEST THREATS:
 * http://researchcenter.paloaltonetworks.com/2017/04/unit42-new-iotlinux-malware-targets-dvrs-forms-botnet/
@@ -405,6 +429,8 @@ The requested URL returned error:
 * http://developer.yahoo.com/security/
 * http://phpsec.org/projects/guide/2.html
 * http://stackoverflow.com/questions/3012315/php-security-best-practices
+
+# Misc Topics
 
 ## Topic: Building Security into Your PHP Applications
 * http://www.zend.com/webinar/Framework/70170000000bEs9-webinar-secure-application-development-with-the-ZF-20100505.flv
