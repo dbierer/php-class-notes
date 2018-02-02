@@ -139,3 +139,14 @@ Bringing machine 'default' up with 'virtualbox' provider...
     </p>
 </div>
 ```
+
+### TRANSLATION LAB:
+* Need to replace the contents of the files shown here:
+  * `onlinemarket.work/module/Translation/language/de.php`
+```
+// not ready yet!
+```
+  * `onlinemarket.work/module/Translation/language/es.php`
+```
+// not ready yet!
+```
