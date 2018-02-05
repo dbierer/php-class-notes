@@ -1,5 +1,25 @@
 # ZEND FRAMEWORK FUNDAMENTALS I -- Course Notes
 
+## ERRATA
+* http://localhost:9999/#/3/5: 5 elements
+* http://localhost:9999/#/3/20: there is no "onlinemarket.work" link on localhost
+  * Optional: add this link to `/var/www/index.html`
+  * Need to just type this into the browser
+```
+http://onlinemarket.work/
+```
+* http://localhost:9999/#/4/6: missing `<module>/src/Module.php`
+
+
+## Homework
+* For Web 7 Feb 2017
+  * Lab: New Project
+
+## AUTOLOADING FOR ZF 2
+* see: https://github.com/dbierer/zf2.unlikelysource.org/blob/master/init_autoloader.php#L29
+* see: https://github.com/dbierer/zf2.unlikelysource.org/blob/master/module/QandA/Module.php
+
+
 ## DAY ZERO
 * Sample out for `vagrant up`
 ```

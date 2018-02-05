@@ -1,5 +1,28 @@
 # ZEND FRAMEWORK FUNDAMENTALS II -- Course Notes
 
+Left off with: http://localhost:8888/#/3/9
+
+## Homework
+* Homework for Wed 7 Feb 2018
+  * Lab: Abstract Factories
+  * Lab: Delegators
+
+## Service Container
+### Abstract Factory
+* Example: see in guestbook: AuthOauth\Factory\AdapterAbstractFactory
+### Reflect Abstract Factory
+* Example: see in guestbook: module.config.php
+```
+    TableModule\Model\EventTable::class        => ReflectionBasedAbstractFactory::class,
+    TableModule\Model\AttendeeTable::class     => ReflectionBasedAbstractFactory::class,
+    TableModule\Model\RegistrationTable::class => ReflectionBasedAbstractFactory::class,
+```
+### Config Abstract Factory
+* Example: see guestbook: `/module/Events/config/module.config.php` lines 189 and 202 - 213
+### Delegators
+* Example: see guestbook: `/module/Events/config/module.config.php` lines 189 and 202 - 213
+* Also in guestbook: `\Doctrine\Factory\SignupDelegatorFactory`
+
 ## DAY ZERO
 * Sample out for `vagrant up`
 ```
@@ -67,6 +90,7 @@ Bringing machine 'default' up with 'virtualbox' provider...
 ```
 
 ## VM UPDATES
+* Look at the ACL for Guestbook: logged in admin but can't see Admin Area under Events
 * *IMPORTANT* please replace `onlinemarket.work/module/Market/view/partials/item.phtml` with this:
 ```
 <?php
