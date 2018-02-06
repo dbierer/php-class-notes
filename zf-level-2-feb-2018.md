@@ -174,3 +174,7 @@ Bringing machine 'default' up with 'virtualbox' provider...
 ```
 // not ready yet!
 ```
+
+### GUESTBOOK PROJECT UPDATES:
+* `AccessControl\Listener\AclListenerAggregate` lines 59 - 60 change to this:
+```
