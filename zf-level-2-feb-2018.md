@@ -163,6 +163,32 @@ Bringing machine 'default' up with 'virtualbox' provider...
     </p>
 </div>
 ```
+### AccessControl Redirect Issue
+#### Notes
+* Not a fatal problem
+* Messes up screen redrawing
+* Affects:
+  * guestbook
+  * onlinemarket.work
+  * onlinemarket.complete
+#### Solution
+* In these 3 files:
+  * `guestbook/module/AccessControl/src/Listener/AclListenerAggregate.php`:
+  * `onlinemarket.work/module/AccessControl/src/Listener/AclListenerAggregate.php`:
+  * `onlinemarket.completemodule/AccessControl/src/Listener/AclListenerAggregate.php`:
+* Change this:
+```
+$match->setParam('controller', self::DEFAULT_CONTROLLER);
+$match->setParam('action', self::DEFAULT_ACTION);
+```
+* To this:
+```
+// this does the equivalent of a forward:
+$response = $e->getResponse();
+$response->getHeaders()->addHeaderLine('Location', '/');
+$response->setStatusCode(302);
+return $response;
+```
 
 ### TRANSLATION LAB:
 * Need to replace the contents of the files shown here:
