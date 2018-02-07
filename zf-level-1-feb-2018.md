@@ -21,6 +21,16 @@ http://onlinemarket.work/
 * see: https://github.com/dbierer/zf2.unlikelysource.org/blob/master/module/QandA/Module.php
 
 
+## LAB NOTES
+* Creating the Project:
+  * From Bryant: When installing ZF, Composer gives me a list of "Do not inject", "config/modules.config.php", and "config/development.config.php.dist".
+    Which answer is the correct one?  I would have thought "both", but that isn't a choice.
+  * The best answer, IMHO, is #1.  What happens in that case is that Composer automatically updates the list of modules to be loaded.
+    In the case of ZF3, some modules are not automatically initialized if they're outside the "standard" ones included in the skeleton application.
+    Because in the lab you were instructed to add other modules to composer.json, which are not part of the defaults for the skeleton app,
+    Composer wants to make sure these modules are properly initialized.
+
+
 ## VM NOTES
 
 ### guestbook project
