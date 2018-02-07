@@ -3,9 +3,29 @@
 Left off with: http://localhost:8888/#/3/9
 
 ## Homework
+* Fri 9 Feb 2018
+  * Lab: Doctrine
+  * Lab: Shared Manager
 * Homework for Wed 7 Feb 2018
   * Lab: Abstract Factories
   * Lab: Delegators
+
+## Errata
+* http://localhost:8888/#/3/16: there *is* no Table Module unit!!
+* http://localhost:8888/#/3/32: to check your work:
+```
+http://onlinemarket.work/doctrine/admin
+http://onlinemarket.work/doctrine/signup
+```
+* http://localhost:8888/#/4/4: "return"???
+
+## Event Manager
+* Shared Manager is not automatically associated with a "local" event in ZF 3
+  * When creating an event manager instance, use the pre-defined Service Manager service `EventManager`
+  * This uses a pre-defined factory which injects the existing Shared Manager into the new instance
+
+## Data Modeling
+* See: https://www.infoq.com/minibooks/domain-driven-design-quickly
 
 ## Service Container
 ### Abstract Factory

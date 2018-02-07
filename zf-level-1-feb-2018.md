@@ -1,5 +1,10 @@
 # ZEND FRAMEWORK FUNDAMENTALS I -- Course Notes
 
+## Homework
+* For Web 7 Feb 2017
+  * Lab: New Project
+
+
 ## ERRATA
 * http://localhost:9999/#/3/5: 5 elements
 * http://localhost:9999/#/3/20: there is no "onlinemarket.work" link on localhost
@@ -11,14 +16,34 @@ http://onlinemarket.work/
 * http://localhost:9999/#/4/6: missing `<module>/src/Module.php`
 
 
-## Homework
-* For Web 7 Feb 2017
-  * Lab: New Project
-
 ## AUTOLOADING FOR ZF 2
 * see: https://github.com/dbierer/zf2.unlikelysource.org/blob/master/init_autoloader.php#L29
 * see: https://github.com/dbierer/zf2.unlikelysource.org/blob/master/module/QandA/Module.php
 
+
+## VM NOTES
+
+### guestbook project
+* Need to update the database structure:
+  * From the browser go to `http://localhost/`
+  * Select `phpMyAdmin`
+  * Select `guestbook`
+  * Select `SQL`
+  * Paste in the following:
+```
+CREATE TABLE `entry` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `website` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
+* To test:
+  * From the browser: `http://guestbook/guestbook`
+  * Enter the requested info and post
+  * Check to make sure your entry has been posted
 
 ## DAY ZERO
 * Sample out for `vagrant up`
@@ -98,26 +123,3 @@ Bringing machine 'default' up with 'virtualbox' provider...
     default: [DONE: Provisioning cleanup]
 ```
 
-## VM NOTES
-
-### guestbook project
-* Need to update the database structure:
-  * From the browser go to `http://localhost/`
-  * Select `phpMyAdmin`
-  * Select `guestbook`
-  * Select `SQL`
-  * Paste in the following:
-```
-CREATE TABLE `entry` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `website` varchar(255) NOT NULL,
-  `message` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-```
-* To test:
-  * From the browser: `http://guestbook/guestbook`
-  * Enter the requested info and post
-  * Check to make sure your entry has been posted
