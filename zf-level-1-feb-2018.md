@@ -1,19 +1,35 @@
 # ZEND FRAMEWORK FUNDAMENTALS I -- Course Notes
 
+Left Off With: http://localhost:9999/#/5/6
+
+NOTE TO SELF: rephrase http: refs to PDF page #
+
 ## Homework
 * For Web 7 Feb 2017
   * Lab: New Project
 
 
+## Q & A
+* Q: Is there a good step-by-step list for creating resources (i.e. modules, controllers, etc.) in ZF 3?
+* A: ???
+
+* Q: Can you please rephrase the examples on this slide: http://localhost:9999/#/4/29
+
+
 ## ERRATA
 * http://localhost:9999/#/3/5: 5 elements
 * http://localhost:9999/#/3/20: there is no "onlinemarket.work" link on localhost
-  * Optional: add this link to `/var/www/index.html`
+  * Optional: add this link to `/var/www/html/index.html`
   * Need to just type this into the browser
 ```
 http://onlinemarket.work/
 ```
 * http://localhost:9999/#/4/6: missing `<module>/src/Module.php`
+* http://localhost:9999/#/4/10: add explanation about  `module/NAME_OF_MODULE/config/module.config.php` vs. `/config/modules.config.php`
+* http://localhost:9999/#/4/18: "layout" s/be "template"
+* http://localhost:9999/#/4/29: these examples need a little help
+* http://localhost:9999/#/4/30: s/be Zend\View\Helper\AbstractHtmlElement
+* http://localhost:9999/#/4/34: RoutMatch
 
 
 ## AUTOLOADING FOR ZF 2
@@ -29,7 +45,27 @@ http://onlinemarket.work/
     In the case of ZF3, some modules are not automatically initialized if they're outside the "standard" ones included in the skeleton application.
     Because in the lab you were instructed to add other modules to composer.json, which are not part of the defaults for the skeleton app,
     Composer wants to make sure these modules are properly initialized.
-
+  * Ref for the skeleton app: https://framework.zend.com/downloads/skeleton-app
+* Lab: Create a New Module
+  * In the `Module.php` you'll need to add a method `getConfig()` which returns the value from `Market/config/module.config.php` file
+  * In `Market/config/module.config.php` file
+    * Make sure the module namespace is at the top:
+```
+namespace Market;
+```
+    * Activate the new controller as follows:
+```
+use Zend\ServiceManager\Factory\InvokableFactory;
+return [
+    // NOTE there is other config you need to do: i.e. adding a route
+    //      look into `Application/config/module.config.php` for clues
+    'controllers' => [
+       'factories' => [
+          Controller\IndexController::class => InvokableFactory::class,
+        ],
+    ],
+];
+```
 
 ## VM NOTES
 
