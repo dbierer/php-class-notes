@@ -1,12 +1,17 @@
 # ZEND FRAMEWORK FUNDAMENTALS II -- Course Notes
 
-Left off with: http://localhost:8888/#/3/32
+Left off with: http://localhost:8888/#/5/24
+
+## NOTE To SELF:
+* http://localhost:8888/#/4/15: has SharedEventManagerInterface been changed recently?
 
 ## Homework
+* Mon 12 Feb 2018
+  * Lab: Listener Aggregates
 * Fri 9 Feb 2018
   * Lab: Doctrine
   * Lab: Shared Manager
-* Homework for Wed 7 Feb 2018
+* Wed 7 Feb 2018
   * Lab: Abstract Factories
   * Lab: Delegators
 
@@ -18,11 +23,16 @@ http://onlinemarket.work/doctrine/admin
 http://onlinemarket.work/doctrine/signup
 ```
 * http://localhost:8888/#/4/4: "return"???
+* http://localhost:8888/#/5/9: bindRequiresDn needs an argument in the table
 
 ## Event Manager
 * Shared Manager is not automatically associated with a "local" event in ZF 3
   * When creating an event manager instance, use the pre-defined Service Manager service `EventManager`
   * This uses a pre-defined factory which injects the existing Shared Manager into the new instance
+* Listener Aggregate Lab
+  * Just have the listener log using `error_log()` PHP function
+  * Probably stick to the `Events` module; otherwise if you use `MyDoctrine` have the repository trigger
+  * `error_log()` by default goes to `/var/log/apache2/error.log`
 
 ## Data Modeling
 * See: https://www.infoq.com/minibooks/domain-driven-design-quickly

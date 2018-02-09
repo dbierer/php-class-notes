@@ -1,11 +1,22 @@
 # ZEND FRAMEWORK FUNDAMENTALS I -- Course Notes
 
-Left Off With: http://localhost:9999/#/5/6
+Left Off With: http://localhost:9999/#/6
 
 NOTE TO SELF: rephrase http: refs to PDF page #
 
 ## Homework
-* For Web 7 Feb 2017
+* Mon 12 Feb 2018
+  * Lab: Using a Built-in Controller Plugin
+    * Modify Step 2 as follows:
+    `Within the indexAction() method, write an if statement that tests on a user being logged in based on the value of a $_GET param "isLoggedIn"`
+  * Lab: Using a Custom Controller Plugin
+    * Directory s/be "Plugin" (note: uppercase "P")
+  * Lab: New Controllers and Factories
+    * Only need to define `template_path_stack` once per module!
+
+* Fri 9 Feb 2018
+  * Lab: MVC Basics Lab == New Module
+* Web 7 Feb 2018
   * Lab: New Project
 
 
@@ -30,7 +41,10 @@ http://onlinemarket.work/
 * http://localhost:9999/#/4/29: these examples need a little help
 * http://localhost:9999/#/4/30: s/be Zend\View\Helper\AbstractHtmlElement
 * http://localhost:9999/#/4/34: RoutMatch
-
+* http://localhost:9999/#/5/17: should add documentation on $options
+* http://localhost:9999/#/5/18: p. 118: missing "''" for 'routes'; would go into `module.config.php` file of some unspecified module
+* http://localhost:9999/#/5/29: s/be "Plugin"
+* http://localhost:9999/#/5/43: only need to do this once! (remove this slide)
 
 ## AUTOLOADING FOR ZF 2
 * see: https://github.com/dbierer/zf2.unlikelysource.org/blob/master/init_autoloader.php#L29
