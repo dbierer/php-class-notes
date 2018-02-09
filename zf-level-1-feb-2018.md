@@ -67,6 +67,38 @@ return [
 ];
 ```
 
+## Updated New Module Lab:
+
+### Lab: Create a New Module
+In this lab, we're going to create a new module *Market*:
+* Create a bare minimum module *Market* following the guidelines discussed.
+* Enable the module.
+* Configure the module for autoloading. Don't forget to run either <code>composer update</code> or <code>composer dump-autoload</code> after changes are made.
+
+IMPORTANT: do not forget to update the filesystem permissions if needed!
+HINT: Reference the <i>onlinemarket.complete</i> or <i>guestbook</i> projects if you get stuck.
+
+### Lab: Create a New Controller
+In this lab, we're going to create a new controller *Market\Controller\IndexController*:
+* Create a PHP file which defines a controller class *Market\Controller\IndexController*
+* Define a public method *indexAction()* which returns an instance of *Zend\View\Model\ViewModel* containing an array of sample data.
+* In the Market module's configuration file *Market/config/module.config.php* do the following:
+    * Register the controller using <code>InvokableFactory</code>
+    * Add a route to the new controller and action
+
+### Lab: Create a View Template
+In this lab, we're going to create a view template which matches the *IndexController::indexAction()*
+* Create a directory structure */path/to/onlinemarket.work/module/Market/view/market/index*
+* Create a template file *index.phtml* in the newly created folder
+* Echo the values of the variables passed by the view model
+* Modify *index.phtml* and escape the output variables using the *escapeHtml()* view helper, i.e. *$this->escapeHtml()*
+* Allow the view manager to locate your new templates by updating the *module.config.php::view_manager::template_path_stack*
+
+You can now test your changes from the browser included in the VM by entering this URL: *http://onlinemarket.work/market*
+
+If everything looks good, great!, you're ready to move forward, otherwise check everything again and test.
+
+
 ## VM NOTES
 
 ### guestbook project
