@@ -1,10 +1,32 @@
 # ZEND FRAMEWORK FUNDAMENTALS I -- Course Notes
 
-Left Off With: http://localhost:9999/#/6
+Left Off With: http://localhost:9999/#/7/8
 
 NOTE TO SELF: rephrase http: refs to PDF page #
 
 ## Homework
+* Wed 14 Feb 2018
+  * Lab: Creating and Accessing a Service
+    * Step 3: consider creating a trait w/ property and method for categories
+    * Array of categories for your use:
+```
+'barter',
+'beauty',
+'clothing',
+'computer',
+'entertainment',
+'free',
+'garden',
+'general',
+'health',
+'household',
+'phones',
+'property',
+'sporting',
+'tools',
+'transportation',
+'wanted'
+```
 * Mon 12 Feb 2018
   * Lab: Using a Built-in Controller Plugin
     * Modify Step 2 as follows:
@@ -13,7 +35,6 @@ NOTE TO SELF: rephrase http: refs to PDF page #
     * Directory s/be "Plugin" (note: uppercase "P")
   * Lab: New Controllers and Factories
     * Only need to define `template_path_stack` once per module!
-    *
 
 * Fri 9 Feb 2018
   * Lab: MVC Basics Lab == New Module
@@ -22,6 +43,9 @@ NOTE TO SELF: rephrase http: refs to PDF page #
 
 
 ## Q & A
+* Q: from Bryant to All Participants: What happens if you set 'may_terminate' => FALSE?  Is 'may_terminate' a required field.
+* A: ???
+
 * Q: Is there a good step-by-step list for creating resources (i.e. modules, controllers, etc.) in ZF 3?
 * A: ???
 
@@ -44,7 +68,7 @@ use Market\Controller;
 echo PostController::class; // produces: 'Market\Controller\PostController
 ```
   * So, if in the `module.config.php` file you have this:
-``
+```
 use Market;
 ```
   * then this command:
@@ -100,6 +124,14 @@ http://onlinemarket.work/
 * http://localhost:9999/#/5/18: p. 118: missing "''" for 'routes'; would go into `module.config.php` file of some unspecified module
 * http://localhost:9999/#/5/29: s/be "Plugin"
 * http://localhost:9999/#/5/43: only need to do this once! (remove this slide)
+* http://localhost:9999/#/6/7: Order is:
+  * "application.config.php" should be 1st on this list
+  * for each module:
+      * "Module.php" get*Config()
+      * "module.config.php"
+  * config/autoload/*global.php
+  * config/autoload/*local.php
+* http://localhost:9999/#/6/25: s/be a normal factory!!!
 
 ## AUTOLOADING FOR ZF 2
 * see: https://github.com/dbierer/zf2.unlikelysource.org/blob/master/init_autoloader.php#L29

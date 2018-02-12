@@ -1,11 +1,14 @@
 # ZEND FRAMEWORK FUNDAMENTALS II -- Course Notes
 
-Left off with: http://localhost:8888/#/5/24
+Left off with: http://localhost:8888/#/6
 
 ## NOTE To SELF:
 * http://localhost:8888/#/4/15: has SharedEventManagerInterface been changed recently?
 
 ## Homework
+* Wed 14 Feb 2018
+  * Lab: Authentication and Password Hashing
+  * Lab: BlockCipher Lab
 * Mon 12 Feb 2018
   * Lab: Listener Aggregates
 * Fri 9 Feb 2018
@@ -14,6 +17,11 @@ Left off with: http://localhost:8888/#/5/24
 * Wed 7 Feb 2018
   * Lab: Abstract Factories
   * Lab: Delegators
+
+## Q & A
+* Q: How can I check if my passwords are good?
+* A: See: from Marcin to All Participants: in your free time you can check strenght of your password and time it takes on this site http://password-checker.online-domain-tools.com/
+
 
 ## Errata
 * http://localhost:8888/#/3/16: there *is* no Table Module unit!!
@@ -24,34 +32,37 @@ http://onlinemarket.work/doctrine/signup
 ```
 * http://localhost:8888/#/4/4: "return"???
 * http://localhost:8888/#/5/9: bindRequiresDn needs an argument in the table
-* LAB: LISTENER AGGREGATE
-  * When signing up for an event got this error:
+* http://localhost:8888/#/5/40: could make more efficient create Bcrypt() in __construct()
+* http://localhost:8888/#/5/42: code block runs off page
 ```
-Call to a member function filter() on null
+namespace Login;
+// other use statements not shown
+use Zend\Db\Adapter\Adapter;
+use Zend\Authentication\Adapter\DbTable\CallbackCheckAdapter;
+class Module {
+    // other methods not shown
+    public function getServiceConfig() {
+        return [ 'factories' => [
+            // other services not shown
+            'login-db-adapter' => function ($container) {
+                return new Adapter($container->get('local-db-config'));
+            },
+            'login-auth-adapter' => function ($container) {
+                return new CallbackCheckAdapter(
+                    $container->get('login-db-adapter'),
+                    UsersTable::$tableName,
+                    UsersTable::$identityCol,
+                    UsersTable::$passwordCol,
+                    function ($hash, $password) {
+                        if (strlen($hash) == 32) return $hash == md5($password);
+                        else return \Login\Security\Password::verify($password, $hash);
+                    });
+            },
+],];}
+}
 ```
-  * Need to inject the events data filter into the SignupController:
-    * In `Events\Controller\SignupController` add the following:
-```
-    protected $filter;
-    public function setFilter($filter)
-    {
-        $this->filter = $filter;
-    }
-```
-    * In `Events\Module` add `setFilter` to the factory which produces the SignupController as follow:
-```
-    Controller\SignupController::class => function ($container, $requestedName) {
-        $controller = new $requestedName();
-        $controller->setEventTable($container->get(Model\EventTable::class));
-        $controller->setRegTable($container->get(Model\RegistrationTable::class));
-        $controller->setAttendeeTable($container->get(Model\AttendeeTable::class));
-        //***vvv*** ADD THIS ***vvv*****
-        $controller->setFilter($container->get('events-reg-data-filter'));
-        //***^^^*** ADD THIS ***^^^*****
-        return $controller;
-    },
-```
-
+* http://localhost:8888/#/5/56: choosig!!!
+* http://localhost:8888/#/5/74: missing "Lab:"
 
 ## Event Manager
 * Shared Manager is not automatically associated with a "local" event in ZF 3
@@ -80,72 +91,6 @@ Call to a member function filter() on null
 ### Delegators
 * Example: see guestbook: `/module/Events/config/module.config.php` lines 189 and 202 - 213
 * Also in guestbook: `\Doctrine\Factory\SignupDelegatorFactory`
-
-## DAY ZERO
-* Sample out for `vagrant up`
-```
-$ vagrant up
-Bringing machine 'default' up with 'virtualbox' provider...
-==> default: Importing base box 'datashuttle/RWZ-Ubuntu-16.04LTS-DTP'...
-==> default: Matching MAC address for NAT networking...
-==> default: Checking if box 'datashuttle/RWZ-Ubuntu-16.04LTS-DTP' is up to date                                ...
-==> default: Setting the name of the VM: ZFF2 - Provisioning
-==> default: Clearing any previously set network interfaces...
-==> default: Preparing network interfaces based on configuration...
-    default: Adapter 1: nat
-==> default: Forwarding ports...
-    default: 80 (guest) => 8084 (host) (adapter 1)
-    default: 22 (guest) => 2222 (host) (adapter 1)
-==> default: Running 'pre-boot' VM customizations...
-==> default: Booting VM...
-==> default: Waiting for machine to boot. This may take a few minutes...
-    default: SSH address: 127.0.0.1:2222
-    default: SSH username: vagrant
-    default: SSH auth method: private key
-    default:
-    default: Vagrant insecure key detected. Vagrant will automatically replace
-    default: this with a newly generated keypair for better security.
-    default:
-    default: Inserting generated public key within guest...
-    default: Removing insecure key from the guest if it's present...
-    default: Key inserted! Disconnecting and reconnecting using new SSH key...
-==> default: Machine booted and ready!
-==> default: Checking for guest additions in VM...
-    default: The guest additions on this VM do not match the installed version o                                f
-    default: VirtualBox! In most cases this is fine, but in rare cases it can
-    default: prevent things such as shared folders from working properly. If you                                 see
-    default: shared folder errors, please make sure the guest additions within t                                he
-    default: virtual machine match the version of VirtualBox you have installed                                 on
-    default: your host and reload your VM.
-    default:
-    default: Guest Additions Version: 5.1.30
-    default: VirtualBox Version: 5.2
-==> default: Setting hostname...
-==> default: Mounting shared folders...
-    default: /home/vagrant/Shared => D:/VM/ZF-Level-2
-==> default: Running provisioner: shell...
-    default: Running: C:/Users/george/AppData/Local/Temp/vagrant-shell20180130-4                                012-h9fjsf.sh
-    default: Provisioning course projects...
-    default: [DONE: Provisioning course project(s)]
-==> default: Running provisioner: shell...
-    default: Running: C:/Users/george/AppData/Local/Temp/vagrant-shell20180130-4                                012-qodn2a.sh
-    default: Provisioning virtual hosts for the project...
-    default: [DONE: Provisioning virtual hosts]
-==> default: Running provisioner: shell...
-    default: Running: C:/Users/george/AppData/Local/Temp/vagrant-shell20180130-4                                012-ws6ezu.sh
-    default: Provisioning course DB as necessary
-    default: Bootstrap the course MySql database...
-    default: [DONE: Provisioning course MySQL DB]
-==> default: Running provisioner: shell...
-    default: Running: C:/Users/george/AppData/Local/Temp/vagrant-shell20180130-4                                012-1fh2eak.sh
-    default: Provisioning environment...
-    default: [DONE: Provisioning environment]
-==> default: Running provisioner: shell...
-    default: Running: C:/Users/george/AppData/Local/Temp/vagrant-shell20180130-4                                012-1smdm5x.sh
-    default: Provisioning general cleanup detail...
-    default: [DONE: Provisioning cleanup]
-
-```
 
 ## VM UPDATES
 * Look at the ACL for Guestbook: logged in admin but can't see Admin Area under Events
@@ -224,6 +169,35 @@ Bringing machine 'default' up with 'virtualbox' provider...
 
 ## LAB NOTES
 
+### LAB: LISTENER AGGREGATE
+  * When signing up for an event got this error:
+```
+Call to a member function filter() on null
+```
+  * Need to inject the events data filter into the SignupController:
+    * In `Events\Controller\SignupController` add the following:
+```
+    protected $filter;
+    public function setFilter($filter)
+    {
+        $this->filter = $filter;
+    }
+```
+    * Better yet: use a trait ... because you'll need to also inject the event manager in the RegistrationTable model class.
+    * In `Events\Module` add `setFilter` to the factory which produces the SignupController as follow:
+```
+    Controller\SignupController::class => function ($container, $requestedName) {
+        $controller = new $requestedName();
+        $controller->setEventTable($container->get(Model\EventTable::class));
+        $controller->setRegTable($container->get(Model\RegistrationTable::class));
+        $controller->setAttendeeTable($container->get(Model\AttendeeTable::class));
+        //***vvv*** ADD THIS ***vvv*****
+        $controller->setFilter($container->get('events-reg-data-filter'));
+        //***^^^*** ADD THIS ***^^^*****
+        return $controller;
+    },
+```
+
 ### AccessControl Redirect Issue
 #### Notes
 * Not a fatal problem
@@ -264,4 +238,83 @@ return $response;
 
 ### GUESTBOOK PROJECT UPDATES:
 * `AccessControl\Listener\AclListenerAggregate` lines 59 - 60 change to this:
+  * From this:
 ```
+$match->setParam('controller', self::DEFAULT_CONTROLLER);
+$match->setParam('action', self::DEFAULT_ACTION);
+```
+  * To this:
+```
+// this does the equivalent of a forward:
+$response = $e->getResponse();
+$response->getHeaders()->addHeaderLine('Location', '/');
+$response->setStatusCode(302);
+return $response;
+```
+
+## DAY ZERO
+* Sample out for `vagrant up`
+```
+$ vagrant up
+Bringing machine 'default' up with 'virtualbox' provider...
+==> default: Importing base box 'datashuttle/RWZ-Ubuntu-16.04LTS-DTP'...
+==> default: Matching MAC address for NAT networking...
+==> default: Checking if box 'datashuttle/RWZ-Ubuntu-16.04LTS-DTP' is up to date                                ...
+==> default: Setting the name of the VM: ZFF2 - Provisioning
+==> default: Clearing any previously set network interfaces...
+==> default: Preparing network interfaces based on configuration...
+    default: Adapter 1: nat
+==> default: Forwarding ports...
+    default: 80 (guest) => 8084 (host) (adapter 1)
+    default: 22 (guest) => 2222 (host) (adapter 1)
+==> default: Running 'pre-boot' VM customizations...
+==> default: Booting VM...
+==> default: Waiting for machine to boot. This may take a few minutes...
+    default: SSH address: 127.0.0.1:2222
+    default: SSH username: vagrant
+    default: SSH auth method: private key
+    default:
+    default: Vagrant insecure key detected. Vagrant will automatically replace
+    default: this with a newly generated keypair for better security.
+    default:
+    default: Inserting generated public key within guest...
+    default: Removing insecure key from the guest if it's present...
+    default: Key inserted! Disconnecting and reconnecting using new SSH key...
+==> default: Machine booted and ready!
+==> default: Checking for guest additions in VM...
+    default: The guest additions on this VM do not match the installed version o                                f
+    default: VirtualBox! In most cases this is fine, but in rare cases it can
+    default: prevent things such as shared folders from working properly. If you                                 see
+    default: shared folder errors, please make sure the guest additions within t                                he
+    default: virtual machine match the version of VirtualBox you have installed                                 on
+    default: your host and reload your VM.
+    default:
+    default: Guest Additions Version: 5.1.30
+    default: VirtualBox Version: 5.2
+==> default: Setting hostname...
+==> default: Mounting shared folders...
+    default: /home/vagrant/Shared => D:/VM/ZF-Level-2
+==> default: Running provisioner: shell...
+    default: Running: C:/Users/george/AppData/Local/Temp/vagrant-shell20180130-4                                012-h9fjsf.sh
+    default: Provisioning course projects...
+    default: [DONE: Provisioning course project(s)]
+==> default: Running provisioner: shell...
+    default: Running: C:/Users/george/AppData/Local/Temp/vagrant-shell20180130-4                                012-qodn2a.sh
+    default: Provisioning virtual hosts for the project...
+    default: [DONE: Provisioning virtual hosts]
+==> default: Running provisioner: shell...
+    default: Running: C:/Users/george/AppData/Local/Temp/vagrant-shell20180130-4                                012-ws6ezu.sh
+    default: Provisioning course DB as necessary
+    default: Bootstrap the course MySql database...
+    default: [DONE: Provisioning course MySQL DB]
+==> default: Running provisioner: shell...
+    default: Running: C:/Users/george/AppData/Local/Temp/vagrant-shell20180130-4                                012-1fh2eak.sh
+    default: Provisioning environment...
+    default: [DONE: Provisioning environment]
+==> default: Running provisioner: shell...
+    default: Running: C:/Users/george/AppData/Local/Temp/vagrant-shell20180130-4                                012-1smdm5x.sh
+    default: Provisioning general cleanup detail...
+    default: [DONE: Provisioning cleanup]
+
+```
+
