@@ -8,11 +8,12 @@ NOTE TO SELF: rephrase http: refs to PDF page #
 * Mon 12 Feb 2018
   * Lab: Using a Built-in Controller Plugin
     * Modify Step 2 as follows:
-    `Within the indexAction() method, write an if statement that tests on a user being logged in based on the value of a $_GET param "isLoggedIn"`
+    * Within the `indexAction()` method, write an `if` statement that tests on a user being logged in based on the value of a `$_GET` param `isLoggedIn`
   * Lab: Using a Custom Controller Plugin
     * Directory s/be "Plugin" (note: uppercase "P")
   * Lab: New Controllers and Factories
     * Only need to define `template_path_stack` once per module!
+    *
 
 * Fri 9 Feb 2018
   * Lab: MVC Basics Lab == New Module
@@ -25,6 +26,60 @@ NOTE TO SELF: rephrase http: refs to PDF page #
 * A: ???
 
 * Q: Can you please rephrase the examples on this slide: http://localhost:9999/#/4/29
+
+* Q: I have a question regarding the preferred "construction" of factory controller key/value pairs in `module.config.php`.
+  * So far, I've seen them written in 3 (slightly) different ways:
+```
+    Controller\PostController::class => InvokableFactory::class,
+    PostController::class => Controller\Factory\PostControllerFactory::class,
+    Controller\PostController::class => Controller\Factory\PostController::class,
+```
+  * Could you explain which one you prefer and why?
+* A: `::class` is a PHP construct.  This operator was introduced in PHP 5.5, and is used to produce a "fully qualified" (i.e. namespace + name) class name.
+  The documentation reference is here: http://php.net/manual/en/migration55.new-features.php#migration55.new-features.class-name
+  See also a great article explaining it here: https://stackoverflow.com/questions/30770148/what-is-class-in-php
+  *   Example:
+```
+use Market\Controller;
+echo PostController::class; // produces: 'Market\Controller\PostController
+```
+  * So, if in the `module.config.php` file you have this:
+``
+use Market;
+```
+  * then this command:
+```
+echo Controller\PostController::class;
+```
+  * will produce: `Market\Controller\PostController`
+  * Likewise, if you have this statement:
+```
+use Market\Controller;
+```
+  * then this command:
+```
+echo PostController::class;
+```
+  * will produce the same thing: `Market\Controller\PostController`
+  * Now ... to address the difference between the factories:
+  * `InvokableFactory::class` is included with ZF and simply produces an instance of the class.
+  This works OK if the instance you wish to produce has no dependencies.
+  For example, a Controller class which does not use any other services, can be built using `InvokableFactory::class`.
+  * On the other hand, if there are any external classes needed by the controller (e.g. the controller needs to do a database lookup,
+  and thus needs a model class which gives it access to the database), then you'll need to define a custom factory class which creates
+  the controller and either provides the dependencies as constructor arguments, or uses a "setXXX()" method to inject the needed object.
+  * There is no requirement for a custom factory class to either have the word "Factory" in its classname, nor is there a need to have this
+  class reside in a "Factory" namespace.  On the other hand, it is considered a best practice to identify the class as a factory class by
+  doing either of these two things.
+
+* Q: Is there a quick way to generate basic factories?
+* A: You can use the command line tool `vendor/bin/generate-factory-for-class`.
+  * So, to create the `IndexControllerFactory` for example:
+```
+cd ~/Zend/workspaces/DefaultWorkspace/onlinemarket.work
+vendor/bin/generate-factory-for-class "Market\\Controller\\IndexController"
+```
+  * You can then use `>` to redirect output to the appropriate factory class.
 
 
 ## ERRATA

@@ -24,6 +24,34 @@ http://onlinemarket.work/doctrine/signup
 ```
 * http://localhost:8888/#/4/4: "return"???
 * http://localhost:8888/#/5/9: bindRequiresDn needs an argument in the table
+* LAB: LISTENER AGGREGATE
+  * When signing up for an event got this error:
+```
+Call to a member function filter() on null
+```
+  * Need to inject the events data filter into the SignupController:
+    * In `Events\Controller\SignupController` add the following:
+```
+    protected $filter;
+    public function setFilter($filter)
+    {
+        $this->filter = $filter;
+    }
+```
+    * In `Events\Module` add `setFilter` to the factory which produces the SignupController as follow:
+```
+    Controller\SignupController::class => function ($container, $requestedName) {
+        $controller = new $requestedName();
+        $controller->setEventTable($container->get(Model\EventTable::class));
+        $controller->setRegTable($container->get(Model\RegistrationTable::class));
+        $controller->setAttendeeTable($container->get(Model\AttendeeTable::class));
+        //***vvv*** ADD THIS ***vvv*****
+        $controller->setFilter($container->get('events-reg-data-filter'));
+        //***^^^*** ADD THIS ***^^^*****
+        return $controller;
+    },
+```
+
 
 ## Event Manager
 * Shared Manager is not automatically associated with a "local" event in ZF 3
@@ -193,6 +221,9 @@ Bringing machine 'default' up with 'virtualbox' provider...
     </p>
 </div>
 ```
+
+## LAB NOTES
+
 ### AccessControl Redirect Issue
 #### Notes
 * Not a fatal problem
