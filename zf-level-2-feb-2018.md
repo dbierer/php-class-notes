@@ -1,11 +1,13 @@
 # ZEND FRAMEWORK FUNDAMENTALS II -- Course Notes
 
-Left off with: http://localhost:8888/#/6
+Left off with: http://localhost:8888/#/7
 
 ## NOTE To SELF:
 * http://localhost:8888/#/4/15: has SharedEventManagerInterface been changed recently?
 
 ## Homework
+* Fri 16 Feb 2018
+  * Lab: AbstractRestfulController
 * Wed 14 Feb 2018
   * Lab: Authentication and Password Hashing
     * Don't forget to install the `zend-authentication` and `zend-crypt` components!

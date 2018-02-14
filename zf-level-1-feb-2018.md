@@ -1,10 +1,18 @@
 # ZEND FRAMEWORK FUNDAMENTALS I -- Course Notes
 
-Left Off With: http://localhost:9999/#/7/8
+Left Off With: http://localhost:9999/#/8/24
 
 NOTE TO SELF: rephrase http: refs to PDF page #
 
-## Homework
+## GENERAL NOTES
+* To view PHP errors:
+```
+tail /var/log/apache2/error.log
+```
+
+## HOMEWORK
+* Fri 16 Feb 2018
+  * Lab: Manipulating Views and Layouts
 * Wed 14 Feb 2018
   * Lab: Creating and Accessing a Service
     * Step 3: consider creating a trait w/ property and method for categories
@@ -43,6 +51,12 @@ NOTE TO SELF: rephrase http: refs to PDF page #
 
 
 ## Q & A
+* Q: What is the full namespace name for @ANO?
+* A:
+
+* Q: How do I use a template system like Twig with ZF?
+* A:
+
 * Q: from Bryant to All Participants: What happens if you set 'may_terminate' => FALSE?  Is 'may_terminate' a required field?
 * A: `may_terminate` is a switch which, if set TRUE, allows the parent route only to be considered a match.
   If set to FALSE, the route listener has to match *both* parent *and* child before returning a valid match.
@@ -137,6 +151,9 @@ http://onlinemarket.work/
   * config/autoload/*global.php
   * config/autoload/*local.php
 * http://localhost:9999/#/6/25: s/be a normal factory!!!
+* http://localhost:9999/#/8/5: s/be Zend\Form\Form
+* http://localhost:9999/#/8/9: missing "use" alias for @ANO
+* http://localhost:9999/#/8/23: form or postForm? need to be consistent
 
 ## AUTOLOADING FOR ZF 2
 * see: https://github.com/dbierer/zf2.unlikelysource.org/blob/master/init_autoloader.php#L29
