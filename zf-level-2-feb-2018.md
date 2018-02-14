@@ -8,6 +8,12 @@ Left off with: http://localhost:8888/#/6
 ## Homework
 * Wed 14 Feb 2018
   * Lab: Authentication and Password Hashing
+    * Don't forget to install the `zend-authentication` and `zend-crypt` components!
+    * If you get this error: `Fatal error: Class 'Login\Model\AbstractModel' not found` you need to add this "use" statement to the `Login\Model\User` class:
+```
+use Application\Model\AbstractModel;
+```
+    * If you get this error: `A plugin by the name "flashMessenger" was not found` you need to install the `zend-mvc-plugin-flashmessenger` component
   * Lab: BlockCipher Lab
 * Mon 12 Feb 2018
   * Lab: Listener Aggregates

@@ -43,13 +43,17 @@ NOTE TO SELF: rephrase http: refs to PDF page #
 
 
 ## Q & A
-* Q: from Bryant to All Participants: What happens if you set 'may_terminate' => FALSE?  Is 'may_terminate' a required field.
-* A: ???
+* Q: from Bryant to All Participants: What happens if you set 'may_terminate' => FALSE?  Is 'may_terminate' a required field?
+* A: `may_terminate` is a switch which, if set TRUE, allows the parent route only to be considered a match.
+  If set to FALSE, the route listener has to match *both* parent *and* child before returning a valid match.
+  * See: https://stackoverflow.com/questions/20785532/what-is-may-terminate-in-zend-framework-2
 
 * Q: Is there a good step-by-step list for creating resources (i.e. modules, controllers, etc.) in ZF 3?
-* A: ???
-
-* Q: Can you please rephrase the examples on this slide: http://localhost:9999/#/4/29
+* A: Here is the "official" guide:
+  * Modues: https://docs.zendframework.com/tutorials/getting-started/modules/
+  * Controllers/Routing: https://docs.zendframework.com/tutorials/getting-started/routing-and-controllers/
+  * Database: https://docs.zendframework.com/tutorials/getting-started/database-and-models/
+  * Forms: https://docs.zendframework.com/tutorials/getting-started/forms-and-actions/
 
 * Q: I have a question regarding the preferred "construction" of factory controller key/value pairs in `module.config.php`.
   * So far, I've seen them written in 3 (slightly) different ways:
@@ -122,6 +126,7 @@ http://onlinemarket.work/
 * http://localhost:9999/#/4/34: RoutMatch
 * http://localhost:9999/#/5/17: should add documentation on $options
 * http://localhost:9999/#/5/18: p. 118: missing "''" for 'routes'; would go into `module.config.php` file of some unspecified module
+* http://localhost:9999/#/5/28: s/be `return new ViewModel(['categories' => $this->categories]);`
 * http://localhost:9999/#/5/29: s/be "Plugin"
 * http://localhost:9999/#/5/43: only need to do this once! (remove this slide)
 * http://localhost:9999/#/6/7: Order is:
@@ -167,6 +172,12 @@ return [
     ],
 ];
 ```
+* Lab: Creating and Accessing a Service:
+  * The suggestion for `IndexController::indexAction()` should include the following:
+```
+return new ViewModel(['categories' => $this->categories]);
+```
+  * Note the array syntax, where the array key `categories` becomes a variable in the view template
 
 ## Updated New Module Lab:
 
