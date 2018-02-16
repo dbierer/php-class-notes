@@ -6,8 +6,17 @@ Left off with: http://localhost:8888/#/7
 * http://localhost:8888/#/4/15: has SharedEventManagerInterface been changed recently?
 
 ## Homework
+* Tue 20 Feb 2018
+  * Lab: Cache
+    * Need to assign filesystem rights to "www-data" to the cache directory
+```
+chown www-data:vagrant /home/vagrant/Zend/workspaces/DefaultWorkspace/onlinemarket.work/data/cache
+```
+  * Lab: ACL
+    * Don't forget to check the time on your VM before setting the ACL time assertion
 * Fri 16 Feb 2018
   * Lab: AbstractRestfulController
+    * Use the `ListingsTable` and get listings from the Online Market
 * Wed 14 Feb 2018
   * Lab: Authentication and Password Hashing
     * Don't forget to install the `zend-authentication` and `zend-crypt` components!
@@ -71,6 +80,10 @@ class Module {
 ```
 * http://localhost:8888/#/5/56: choosig!!!
 * http://localhost:8888/#/5/74: missing "Lab:"
+* http://localhost:8888/#/6/34: Generate an API which draws from `ListingsTable`
+* http://localhost:8888/#/7/5: should also include "if" statement the checks to see if cache is available
+* http://localhost:8888/#/7/27: probably could have just injected the cache-adapter: no need for service manager!
+* http://localhost:8888/#/7/40: probably should set a specific start/stop time
 
 ## Event Manager
 * Shared Manager is not automatically associated with a "local" event in ZF 3

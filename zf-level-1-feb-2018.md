@@ -1,6 +1,6 @@
 # ZEND FRAMEWORK FUNDAMENTALS I -- Course Notes
 
-Left Off With: http://localhost:9999/#/8/24
+Left Off With: http://localhost:9999/#/9/18
 
 NOTE TO SELF: rephrase http: refs to PDF page #
 
@@ -11,6 +11,35 @@ tail /var/log/apache2/error.log
 ```
 
 ## HOMEWORK
+* Tue 20 Feb 2018
+  * Lab: Forms
+    * form layout == form view template
+    * for PostController: if "$form->isValid()" returns false, DO NOT redirect!!!
+      Let it "drop through" and re-display the form.
+    * Good to know the database structure:
+```
+ CREATE TABLE `listings` (
+  `listings_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `category` char(16) NOT NULL,
+  `title` varchar(128) NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_expires` timestamp NULL DEFAULT NULL,
+  `description` varchar(4096) DEFAULT NULL,
+  `photo_filename` varchar(1024) DEFAULT NULL,
+  `contact_name` varchar(255) DEFAULT NULL,
+  `contact_email` varchar(255) DEFAULT NULL,
+  `contact_phone` varchar(32) DEFAULT NULL,
+  `city` varchar(128) DEFAULT NULL,
+  `country` char(2) NOT NULL,
+  `price` decimal(12,2) NOT NULL,
+  `delete_code` char(16) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`listings_id`),
+  KEY `title` (`title`),
+  KEY `category` (`category`),
+  KEY `delete_code` (`delete_code`)
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8
+```
+
 * Fri 16 Feb 2018
   * Lab: Manipulating Views and Layouts
 * Wed 14 Feb 2018
@@ -51,11 +80,14 @@ tail /var/log/apache2/error.log
 
 
 ## Q & A
+* Q: Will ObjectProperty hydrator work w/ protected props?
+* A: ???
+
 * Q: What is the full namespace name for @ANO?
-* A:
+* A: ???
 
 * Q: How do I use a template system like Twig with ZF?
-* A:
+* A: ???
 
 * Q: from Bryant to All Participants: What happens if you set 'may_terminate' => FALSE?  Is 'may_terminate' a required field?
 * A: `may_terminate` is a switch which, if set TRUE, allows the parent route only to be considered a match.
@@ -124,7 +156,7 @@ vendor/bin/generate-factory-for-class "Market\\Controller\\IndexController"
   * You can then use `>` to redirect output to the appropriate factory class.
 
 
-## ERRATA
+## NOTES ON SLIDES
 * http://localhost:9999/#/3/5: 5 elements
 * http://localhost:9999/#/3/20: there is no "onlinemarket.work" link on localhost
   * Optional: add this link to `/var/www/html/index.html`
@@ -154,6 +186,12 @@ http://onlinemarket.work/
 * http://localhost:9999/#/8/5: s/be Zend\Form\Form
 * http://localhost:9999/#/8/9: missing "use" alias for @ANO
 * http://localhost:9999/#/8/23: form or postForm? need to be consistent
+* http://localhost:9999/#/8/32: s/be public???
+* http://localhost:9999/#/8/39: assumes InputFilter has been assigned to this form
+* http://localhost:9999/#/8/40: "layout" == "view template"
+* http://localhost:9999/#/8/52: remove the "else" which does a redirect if "isValid()" === FALSE
+* http://localhost:9999/#/9/2: registeration
+* http://localhost:9999/#/9/17: re-instate trigger / listener diagram
 
 ## AUTOLOADING FOR ZF 2
 * see: https://github.com/dbierer/zf2.unlikelysource.org/blob/master/init_autoloader.php#L29
