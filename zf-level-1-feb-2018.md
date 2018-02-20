@@ -1,6 +1,6 @@
 # ZEND FRAMEWORK FUNDAMENTALS I -- Course Notes
 
-Left Off With: http://localhost:9999/#/9/18
+Left Off With: http://localhost:9999/#/10/6
 
 NOTE TO SELF: rephrase http: refs to PDF page #
 
@@ -11,6 +11,8 @@ tail /var/log/apache2/error.log
 ```
 
 ## HOMEWORK
+* Wed 21 Feb 2018
+  * Lab: Events
 * Tue 20 Feb 2018
   * Lab: Forms
     * form layout == form view template
@@ -199,6 +201,8 @@ http://onlinemarket.work/
 
 
 ## LAB NOTES
+* Forms Lab:
+  * Discrepancy between "expiredDays" and "expireDays"
 * Creating the Project:
   * From Bryant: When installing ZF, Composer gives me a list of "Do not inject", "config/modules.config.php", and "config/development.config.php.dist".
     Which answer is the correct one?  I would have thought "both", but that isn't a choice.

@@ -1,11 +1,14 @@
 # ZEND FRAMEWORK FUNDAMENTALS II -- Course Notes
 
-Left off with: http://localhost:8888/#/7
+Left off with: http://localhost:8888/#/8/30
 
 ## NOTE To SELF:
 * http://localhost:8888/#/4/15: has SharedEventManagerInterface been changed recently?
 
 ## Homework
+* Wed 21 Feb 2018
+  * Lab: OAuth2
+  * Lab: Navigation
 * Tue 20 Feb 2018
   * Lab: Cache
     * Make sure `cache_dir` is *inside* the `options` array!
