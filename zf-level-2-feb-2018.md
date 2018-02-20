@@ -8,12 +8,25 @@ Left off with: http://localhost:8888/#/7
 ## Homework
 * Tue 20 Feb 2018
   * Lab: Cache
+    * Make sure `cache_dir` is *inside* the `options` array!
     * Need to assign filesystem rights to "www-data" to the cache directory
 ```
 chown www-data:vagrant /home/vagrant/Zend/workspaces/DefaultWorkspace/onlinemarket.work/data/cache
 ```
   * Lab: ACL
     * Don't forget to check the time on your VM before setting the ACL time assertion
+    * Need to install the component: `zendframework/zend-permissions-acl`
+    * VERY IMPORTANT: make sure you enable rights in `module/Login/config/module.config.php`
+    * If you get stuck logged in and can't logout, wipe out the login custom identity storage:
+```
+rm /home/vagrant/Zend/workspaces/DefaultWorkspace/onlinemarket.work/data/auth/*
+```
+    * Search for `//*** ACL LAB` using this command:
+```
+cd /home/vagrant/Zend/workspaces/DefaultWorkspace/onlinemarket.work
+grep -rn . -e "//\*\*\* ACL"
+```
+
 * Fri 16 Feb 2018
   * Lab: AbstractRestfulController
     * Use the `ListingsTable` and get listings from the Online Market
