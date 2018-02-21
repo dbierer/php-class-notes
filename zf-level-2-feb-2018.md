@@ -1,11 +1,15 @@
 # ZEND FRAMEWORK FUNDAMENTALS II -- Course Notes
 
-Left off with: http://localhost:8888/#/8/30
+Left off with: http://localhost:8888/#/9
 
 ## NOTE To SELF:
 * http://localhost:8888/#/4/15: has SharedEventManagerInterface been changed recently?
 
 ## Homework
+* Fri 23 Feb 2018
+  * Lab: File Uploads
+  * Lab: I18n Formatting
+  * Lab: Translation
 * Wed 21 Feb 2018
   * Lab: OAuth2
   * Lab: Navigation
@@ -130,6 +134,8 @@ class Module {
 * Also in guestbook: `\Doctrine\Factory\SignupDelegatorFactory`
 
 ## VM UPDATES
+* Error when switching locale after signing into guestbook: OpenSSL error
+* Guestbook and Online Market Complete both are not formatting dates & numbers based on locale
 * Look at the ACL for Guestbook: logged in admin but can't see Admin Area under Events
 * *IMPORTANT* please replace `onlinemarket.work/module/Market/view/partials/item.phtml` with this:
 ```
@@ -234,6 +240,9 @@ Call to a member function filter() on null
         return $controller;
     },
 ```
+### Navigation
+* Info on setting view partials:
+  https://docs.zendframework.com/zend-navigation/helpers/menu/#rendering-a-custom-menu-using-a-partial-view-script
 
 ### AccessControl Redirect Issue
 #### Notes

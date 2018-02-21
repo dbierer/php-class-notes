@@ -1,6 +1,6 @@
 # ZEND FRAMEWORK FUNDAMENTALS I -- Course Notes
 
-Left Off With: http://localhost:9999/#/10/6
+Left Off With: http://localhost:9999/#/11
 
 NOTE TO SELF: rephrase http: refs to PDF page #
 
@@ -11,6 +11,8 @@ tail /var/log/apache2/error.log
 ```
 
 ## HOMEWORK
+* Fri 23 Feb 2018
+  * Lab: Database Persistence
 * Wed 21 Feb 2018
   * Lab: Events
 * Tue 20 Feb 2018
@@ -82,6 +84,10 @@ tail /var/log/apache2/error.log
 
 
 ## Q & A
+* Q: How do you create a JOIN across different databases?
+* A: Create multiple adapters, but the username and password has to be the same for all affected databases.
+     All databases have to be on the same database server.
+
 * Q: Will ObjectProperty hydrator work w/ protected props?
 * A: ???
 
@@ -194,6 +200,22 @@ http://onlinemarket.work/
 * http://localhost:9999/#/8/52: remove the "else" which does a redirect if "isValid()" === FALSE
 * http://localhost:9999/#/9/2: registeration
 * http://localhost:9999/#/9/17: re-instate trigger / listener diagram
+* http://localhost:9999/#/10/26: s/be "EqualTo"
+* http://localhost:9999/#/10/28:
+```
+$select->from('products')
+       ->where(
+        (new Where())->greaterThanOrEqualTo('qty_oh', 10)
+                     ->lessThan('cost', 100)
+        );
+```
+* http://localhost:9999/#/10/40: need to format the code more clearly!
+```
+$result = $userTableGateway->update(
+    ['id' => 3,'email' => 'someonenew@example.com'],  // this is the update data
+    ['email' => 'someNewUser@example.com']            // this generates the WHERE clause
+);
+```
 
 ## AUTOLOADING FOR ZF 2
 * see: https://github.com/dbierer/zf2.unlikelysource.org/blob/master/init_autoloader.php#L29
@@ -237,6 +259,15 @@ return [
 return new ViewModel(['categories' => $this->categories]);
 ```
   * Note the array syntax, where the array key `categories` becomes a variable in the view template
+
+## DATABASE STUFF
+```
+$list = $this->adapter->query('SELECT * FROM listings', []);
+$sql = new \Zend\Db\Sql\Sql($this->adapter);
+$select = $sql->select()->where('price < 100')->from('listings')->order('category');
+$statement = $sql->prepareStatementForSqlObject($select);
+$results = $statement->execute();
+```
 
 ## Updated New Module Lab:
 
