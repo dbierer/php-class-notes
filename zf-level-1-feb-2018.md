@@ -261,12 +261,59 @@ return new ViewModel(['categories' => $this->categories]);
   * Note the array syntax, where the array key `categories` becomes a variable in the view template
 
 ## DATABASE STUFF
+* Zend\Db\Sql\Examples
+  * See: https://gist.github.com/ralphschindler/3949548
+  * Simple SELECT ... WHERE example:
 ```
 $list = $this->adapter->query('SELECT * FROM listings', []);
 $sql = new \Zend\Db\Sql\Sql($this->adapter);
 $select = $sql->select()->where('price < 100')->from('listings')->order('category');
 $statement = $sql->prepareStatementForSqlObject($select);
 $results = $statement->execute();
+```
+  * More examples (located in Market\Controller\IndexController::adapterAction())
+    * Assumes $this->adapter has been injected via a ServiceManager factory
+```
+// hard coded SQL example:
+$sql     = 'SELECT e.name, r.registration_time, '
+         . 'CONCAT(r.first_name, \' \', r.last_name) AS full_name '
+         . 'FROM event AS e '
+         . 'JOIN registration AS r ON e.id = r.event_id '
+         . 'WHERE r.first_name LIKE :name '
+         . 'ORDER BY e.id, r.registration_time';
+$results = $this->adapter->query($sql, ['name' => 'D%']);
+echo '<pre>' . var_dump($results->toArray()) . '</pre>';
+
+// using "createStatement()"
+$results = [];
+$sql = 'SELECT e.name, r.registration_time, '
+     . 'CONCAT(r.first_name, \' \', r.last_name) AS full_name '
+     . 'FROM event AS e '
+     . 'JOIN registration AS r ON e.id = r.event_id '
+     . 'WHERE r.first_name LIKE ? '
+     . 'ORDER BY e.id, r.registration_time';
+$statement = $this->adapter->createStatement($sql);
+$results   = $statement->execute(['D%']);
+echo '<pre>' . var_dump(iterator_to_array($results)) . '</pre>';
+
+// using Zend\Db\Sql
+$zdbSql = new Sql($this->adapter);
+$concat = new Expression("CONCAT(r.first_name,' ',r.last_name)");
+$where  = new Where();
+$where->greaterThanOrEqualTo('r.registration_time', '2017')
+      ->and->nest()->like('r.first_name', 'D%')->or->like('r.first_name', 'S%')->unnest();
+$select = $zdbSql->select();
+$select->from(['e' => 'event'])
+       ->columns(['name'])
+       ->join(['r' => 'registration'],
+               'e.id = r.event_id',
+               ['registration_time', 'fullName' => $concat],
+               Select::JOIN_INNER)
+       ->where($where)
+       ->order('e.id ASC, r.registration_time ASC');
+echo $select->getSqlString($this->adapter->getPlatform());
+$result = $zdbSql->prepareStatementForSqlObject($select)->execute();
+echo '<pre>' . var_dump(iterator_to_array($result)) . '</pre>';
 ```
 
 ## Updated New Module Lab:
