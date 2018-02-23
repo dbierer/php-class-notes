@@ -88,14 +88,19 @@ tail /var/log/apache2/error.log
 * A: Create multiple adapters, but the username and password has to be the same for all affected databases.
      All databases have to be on the same database server.
 
-* Q: Will ObjectProperty hydrator work w/ protected props?
-* A: ???
+* Q: Will the `ObjectProperty` hydrator work w/ protected props?
+* A: No: it uses the PHP `get_object_vars()` function.  Only public properties of the object being hydrated are visible.
 
 * Q: What is the full namespace name for @ANO?
-* A: ???
+* A: You can only use `@ANO` as a prefix for your form property annotations if you add this statement in the beginning of your file:
+```
+use Zend\Form\Annotation AS ANO
+```
 
 * Q: How do I use a template system like Twig with ZF?
-* A: ???
+* A: Add to the `module.config.php` key `view_helpers => strategies` a "Twig" strategy.  This can be provided by one of these two modules:
+  * https://github.com/ZF-Commons/ZfcTwig
+  * https://github.com/OxCom/zf3-twig
 
 * Q: from Bryant to All Participants: What happens if you set 'may_terminate' => FALSE?  Is 'may_terminate' a required field?
 * A: `may_terminate` is a switch which, if set TRUE, allows the parent route only to be considered a match.

@@ -10,6 +10,9 @@ Left off with: http://localhost:8888/#/9
   * Lab: File Uploads
   * Lab: I18n Formatting
   * Lab: Translation
+    * Posted completed translation files here:https://github.com/dbierer/zf-level-2-feb-2018/tree/master/doug/module/Translation/language
+    * Finished I18N + TRANSLATION labs
+    * Did not finish FILE UPLOADS lab: look at onlinemarket.complete for solution
 * Wed 21 Feb 2018
   * Lab: OAuth2
   * Lab: Navigation
