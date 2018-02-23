@@ -1,7 +1,5 @@
 # ZEND FRAMEWORK FUNDAMENTALS I -- Course Notes
 
-Left Off With: http://localhost:9999/#/11
-
 NOTE TO SELF: rephrase http: refs to PDF page #
 
 ## GENERAL NOTES
@@ -84,6 +82,16 @@ tail /var/log/apache2/error.log
 
 
 ## Q & A
+* Q: How can I configure ZF to run from the command line?
+* A: https://docs.zendframework.com/zend-console/routes/
+
+* Q: It appears we must *always* use `may_terminate => TRUE` otherwise child_routes do not work???
+* A: ???
+
+* Q: Where is there a list of all the Module::get*Config() methods?
+* A: Look for the table in the middle of this page:
+  https://framework.zend.com/manual/2.4/en/modules/zend.module-manager.module-manager.html
+
 * Q: How do you create a JOIN across different databases?
 * A: Create multiple adapters, but the username and password has to be the same for all affected databases.
      All databases have to be on the same database server.
@@ -221,6 +229,8 @@ $result = $userTableGateway->update(
     ['email' => 'someNewUser@example.com']            // this generates the WHERE clause
 );
 ```
+* http://localhost:9999/#/11/14: redundant slide?  In fact: this section appears to have many redundant slides
+* http://localhost:9999/#/13/30: ureates?
 
 ## AUTOLOADING FOR ZF 2
 * see: https://github.com/dbierer/zf2.unlikelysource.org/blob/master/init_autoloader.php#L29

@@ -4,6 +4,7 @@ Left off with: http://localhost:8888/#/9
 
 ## NOTE To SELF:
 * http://localhost:8888/#/4/15: has SharedEventManagerInterface been changed recently?
+* Get Guestbook running 100% and post to the class repo
 
 ## Homework
 * Fri 23 Feb 2018
@@ -58,6 +59,14 @@ use Application\Model\AbstractModel;
   * Lab: Abstract Factories
   * Lab: Delegators
 
+## Middleware
+* Example of simple "pipe" is in guestbook/stratigility
+  * Just cd to that directory and run this:
+```
+php -S localhost:8888
+```
+  * And then run `http://localhost:8888` from your browser
+
 ## Q & A
 * Q: How can I check if my passwords are good?
 * A: See: from Marcin to All Participants: in your free time you can check strenght of your password and time it takes on this site http://password-checker.online-domain-tools.com/
@@ -107,6 +116,8 @@ class Module {
 * http://localhost:8888/#/7/5: should also include "if" statement the checks to see if cache is available
 * http://localhost:8888/#/7/27: probably could have just injected the cache-adapter: no need for service manager!
 * http://localhost:8888/#/7/40: probably should set a specific start/stop time
+* http://localhost:8888/#/9/12: expressive of stratigility s/be "or"
+* http://localhost:8888/#/9/52: s/be Request and Response
 
 ## Event Manager
 * Shared Manager is not automatically associated with a "local" event in ZF 3
