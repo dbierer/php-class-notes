@@ -73,51 +73,32 @@ php -S localhost:8888
 
 
 ## Errata
-* http://localhost:8888/#/3/16: there *is* no Table Module unit!!
-* http://localhost:8888/#/3/32: to check your work:
+(PDF Page : Presentation URL: Comment)
+* 066:http://localhost:8888/#/3/16: there *is* no Table Module unit!!
+* 082:http://localhost:8888/#/3/32: to check your work:
 ```
 http://onlinemarket.work/doctrine/admin
 http://onlinemarket.work/doctrine/signup
 ```
-* http://localhost:8888/#/4/4: "return"???
-* http://localhost:8888/#/5/9: bindRequiresDn needs an argument in the table
-* http://localhost:8888/#/5/40: could make more efficient create Bcrypt() in __construct()
-* http://localhost:8888/#/5/42: code block runs off page
+* 088:http://localhost:8888/#/4/4: identifier of "application-identifier-database"
+* 113:http://localhost:8888/#/5/9: bindRequiresDn needs an argument in the table
+* 144:http://localhost:8888/#/5/40: the reason why we need to create a new Bcrypt() instance (instead of injecting it) is that it's a *static* call!
+* 146:http://localhost:8888/#/5/42: code block runs off page in HTML (but is OK in PDF!)
+* 159:http://localhost:8888/#/5/56: "choosig" s/b "choosing"
+* 177:http://localhost:8888/#/5/74: missing "Lab:"
+* 214:http://localhost:8888/#/6/34: Generate an API which draws from `ListingsTable`
+* 221:http://localhost:8888/#/7/5: need to add something like this:
 ```
-namespace Login;
-// other use statements not shown
-use Zend\Db\Adapter\Adapter;
-use Zend\Authentication\Adapter\DbTable\CallbackCheckAdapter;
-class Module {
-    // other methods not shown
-    public function getServiceConfig() {
-        return [ 'factories' => [
-            // other services not shown
-            'login-db-adapter' => function ($container) {
-                return new Adapter($container->get('local-db-config'));
-            },
-            'login-auth-adapter' => function ($container) {
-                return new CallbackCheckAdapter(
-                    $container->get('login-db-adapter'),
-                    UsersTable::$tableName,
-                    UsersTable::$identityCol,
-                    UsersTable::$passwordCol,
-                    function ($hash, $password) {
-                        if (strlen($hash) == 32) return $hash == md5($password);
-                        else return \Login\Security\Password::verify($password, $hash);
-                    });
-            },
-],];}
-}
+if ($data = $cacheService->getItem($cacheKey)) return new ViewModel(['data' => $data]);
+// core logic code start
+// ...
+// core logic code end
+return new ViewModel(['data' => $data]);
 ```
-* http://localhost:8888/#/5/56: choosig!!!
-* http://localhost:8888/#/5/74: missing "Lab:"
-* http://localhost:8888/#/6/34: Generate an API which draws from `ListingsTable`
-* http://localhost:8888/#/7/5: should also include "if" statement the checks to see if cache is available
-* http://localhost:8888/#/7/27: probably could have just injected the cache-adapter: no need for service manager!
-* http://localhost:8888/#/7/40: probably should set a specific start/stop time
-* http://localhost:8888/#/9/12: expressive of stratigility s/be "or"
-* http://localhost:8888/#/9/52: s/be Request and Response
+* 243:http://localhost:8888/#/7/27: probably could have just injected the cache-adapter: no need to inject the service manager!
+* 256:http://localhost:8888/#/7/40: specific start/stop time should come from configuration
+* 387:http://localhost:8888/#/9/12: "expressive of stratigility" s/be "expressive or stratigility"
+* 425:http://localhost:8888/#/9/52: s/be Request and Response
 
 ## Event Manager
 * Shared Manager is not automatically associated with a "local" event in ZF 3
