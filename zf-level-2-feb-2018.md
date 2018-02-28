@@ -3,7 +3,6 @@
 Left off with: http://localhost:8888/#/9
 
 ## NOTE To SELF:
-* http://localhost:8888/#/4/15: has SharedEventManagerInterface been changed recently?
 * Get Guestbook running 100% and post to the class repo
 
 ## Homework
@@ -81,6 +80,11 @@ http://onlinemarket.work/doctrine/admin
 http://onlinemarket.work/doctrine/signup
 ```
 * 088:http://localhost:8888/#/4/4: identifier of "application-identifier-database"
+* 099:http://localhost:8888/#/4/15: has SharedEventManagerInterface been changed recently?
+  * Yes: it has been removed.  Need to change the code on this slide to the following:
+```
+
+```
 * 113:http://localhost:8888/#/5/9: bindRequiresDn needs an argument in the table
 * 144:http://localhost:8888/#/5/40: the reason why we need to create a new Bcrypt() instance (instead of injecting it) is that it's a *static* call!
 * 146:http://localhost:8888/#/5/42: code block runs off page in HTML (but is OK in PDF!)
