@@ -1,5 +1,18 @@
 # ZF Fundamentals I NOTES April 2018
 
+## Re: Controllers Lab:
+* Create a directory "Factory" under "Controller" and put factories there
+* See revised lab with corrections in README file in class repo
+* Consider using the command line tool:
+```
+cd /path/to/onlinemarket.work
+vendor/bin/generate-factory-for-class Class\\Name\\With\\Namespace
+```
+
+## Re: Routing
+* Why does "Literal" not work for child when controller not specified
+  * When you use "Segment" controller inherits OK?
+
 ## VM Notes
 
 ### guestbook project
