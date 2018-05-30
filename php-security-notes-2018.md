@@ -3,6 +3,16 @@
 NOTE: some of the links are dated as these notes represent 9 years of teaching PHP security!
 
 ## LAB NOTES
+### Assignments
+* For Weds 30 May 2018
+  * Get VM running
+  * Install ZAP tool
+  * Lab: SQL Injection
+* For Thu 31 May 2018
+  * Lab: Brute Force / ZAP Tool
+  * Lab: XSS
+  * Lab: Insecure Direct Object References
+### Other Notes
 * Q: Brute force detector lab setup?
 * A: Need to create a table "bfdetect"
 ```
@@ -35,13 +45,18 @@ DEMO: nmap -A -T4 ip.add.re.ss
 * Brute Force
   * https://www.theregister.co.uk/2018/04/03/magento_brute_force_attack/
   * https://blog.paranoidpenguin.net/2018/01/another-significant-wordpress-brute-force-attack-in-the-works/
+  * Pen Testing Tool: https://www.metasploit.com/
 * XSS
   * https://snyk.io/vuln/npm:bootstrap:20160627
+  * https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
+  * https://www.owasp.org/index.php/DOM_based_XSS_Prevention_Cheat_Sheet
 * Broken Auth / Session Mgmt
-  * https://nvd.nist.gov/vuln/detail/CVE-2018-6960
+  * https://www.exploit-db.com/exploits/44220/
   * https://blog.knowbe4.com/heads-up-new-exploit-hacks-linkedin-2-factor-auth.-see-this-kevin-mitnick-video
 * Insecure Direct Obj Refs
+  * https://www.sec-consult.com/en/blog/advisories/insecure-direct-object-reference-in-testlink-open-source-test-management/index.html
 * CSRF
+  * https://nvd.nist.gov/vuln/detail/CVE-2018-7307#vulnCurrentDescriptionTitle
 * Security Misconfig
     * https://www.databreaches.net/samba-federal-employee-benefit-association-programming-error-resulted-in-mismailed-information/
     * http://arstechnica.com/security/2016/05/faulty-https-settings-leave-dozens-of-visa-sites-vulnerable-to-forgery-attacks/
@@ -51,14 +66,18 @@ DEMO: nmap -A -T4 ip.add.re.ss
 * Invalidated Redirects and Forwards
 
 ## PENETRATION TESTING TOOLS
+* Zed Attack Proxy Tool
 * https://gbhackers.com/category/pentesting/
 * http://sqlmap.org/
+* https://www.metasploit.com/
 
 ## SQL Injection Suggested Protection:
 *  1: use prepared statements to enhance protection against sql injection
 *  2: filter and validate all inputs
 *  3: treat the database with suspicion as it could have been compromised
-*  4: penetration testing tool for SQL injection: http://sqlmap.org/
+*  4: penetration testing tools for SQL injection:
+    * http://sqlmap.org/
+    * https://www.owasp.org/index.php/Category:OWASP_SQLiX_Project
 
 LAB: solution should use prepared statements!!!
 
