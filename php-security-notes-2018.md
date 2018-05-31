@@ -11,7 +11,11 @@ NOTE: some of the links are dated as these notes represent 9 years of teaching P
 * For Thu 31 May 2018
   * Lab: Brute Force / ZAP Tool
   * Lab: XSS
+* For Fri 01 Jun 2018
   * Lab: Insecure Direct Object References
+  * Lab: CSRF
+  * Lab: Security Misconfiguration
+  * Lab: Sensitive Data Exposure
 
 ## ERRATA
 * VM
@@ -30,6 +34,7 @@ NOTE: some of the links are dated as these notes represent 9 years of teaching P
         * Change any references from `xss_r` to `xssr`
         * Remove the line `extension=libsodium.so` (if it exists) on the CLI php.ini file (see notes on VM above)
         * Hit `F5` to run the example
+    * `xsss/sourcefix/with.php` == NOT fixed!
 
 ### Other Notes
 * Q: How do I figure out the size of my "attack surface"?
@@ -157,6 +162,9 @@ LAB: solution should use prepared statements!!!
 * 3: Create a profile of the user including User Agent + Language + IP Address etc.
 * 4: Implement session protection + XSS measures
 * 5: DO NOT use md5 for your hash!!!  Use something like password_hash()
+* 6: Consider sending the CSRF token out via a cookie rather than a hidden form field
+    * DO NOT use the word "token" to identify the field
+    * Use a random string of characters, and store that info in the session
 
 LAB: quick test: download form, make a change, submit manually, and see that you've change the password
 
