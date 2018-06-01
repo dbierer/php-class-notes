@@ -195,6 +195,17 @@ LAB: quick test: download form, make a change, submit manually, and see that you
     look for ssl_module especially
 * 6: php.ini settings: allow_url_include = off; open_basedir = /set/this/to/something; doc_root = /set/to/something
 
+## Missing Function Level Access Control
+* 1: Utilize an Access Control List (ACL) which defines:
+  * Resources == tangible assets which need to be secured (i.e. routes, URLs, classes, database tables, directories)
+  * Permissions == what actions to be performed on the assets
+  * Groups == categories of users
+  * Rules == allow XXX group XXX permission to XXX resource
+* 2: This vulnerability is difficult to test with most tools
+  * Might be able to use a "headless" browser such as `Selenium` (https://docs/seleniumhqorg/)
+* 3: Unit testing might help
+  * BUT: unit testing won't help with javascript
+
 ## Unvalidated Redirects and Forwards
 * Also called "Unauthorized Redirects" or "Open Redirects"
 
@@ -222,6 +233,10 @@ LAB: quick test: download form, make a change, submit manually, and see that you
     Whitelist allowed pages w/ name mappings that the user can choose
     Don't let the user see the actual php file they're going to be using
 * 4: Be sure to initiate proper access control / authorization
+
+## Javascript
+* 1: consider using "code obfuscation" to obscure your javascript to slow down potential attacks from this vector
+* 2: consider using "minified" JS libraries which improves performance and is more difficult to read
 
 ## Levy Document
 -- UC Berkeley Study
@@ -817,6 +832,7 @@ phpinfo(INFO_VARIABLES);
 ## SECURITYTRAINING SOURCE
 * Rewrote `/securitytraining/src/FrontController.php`
 * Rewrote `/securitytraining/config/config.inc.php`
+* Replaced `Zend\ServiceManager\ServiceManager` with `src\Container`
 
 ```
 <?php
@@ -827,6 +843,7 @@ phpinfo(INFO_VARIABLES);
 namespace src;
 
 use src\view\View;
+use src\services\Container;
 use Zend\Db\Adapter\Adapter;
 use Zend\ServiceManager\ServiceManager;
 
@@ -844,7 +861,7 @@ class FrontController
      * @param $phpids
      */
     public function __construct($config, $phpids) {
-        $this->sm = new ServiceManager();
+        $this->sm = new Container();
         $this->sm->setService('adapter', $this->getAdapter($config));
         $this->sm->setService('config', $config);
         $this->sm->setService('phpids', $phpids);
@@ -863,7 +880,6 @@ class FrontController
     protected function checkInput(){
         // NOTE: using $_REQUEST because "action" could be coming from either $_GET or $_POST
         //       as of PHP 7, $_REQUEST, by default, *only* includes $_GET and $_POST
-        $menuMap = $this->sm->get('menuMap');
         if ($_REQUEST && isset($_POST['Login']) && !isset($_REQUEST['action'])) {
             $this->loginAction();
         } elseif (isset($_REQUEST['action'])){
@@ -871,6 +887,7 @@ class FrontController
             if (isset($_REQUEST['action'])) {
                 $action = ctype_alpha($_REQUEST['action']) ? $_REQUEST['action'] : self::DEFAULT_ACTION;
             }
+            $menuMap = $this->sm->get('menuMap');
             if (isset($menuMap[$action])) {
                 $method = $menuMap[$action]['method'];
                 $this->$method($menuMap[$action]['params']);
@@ -878,7 +895,7 @@ class FrontController
                 $this->vulnerabilityAction($action);
             }
         } else {
-            $this->pageStartup(array('authenticated', 'phpids'));
+            $this->loginAction();
         }
     }
 
@@ -921,16 +938,21 @@ class FrontController
      */
     public function loginAction() {
         $view = $this->sm->get('view');
-
         if(isset($_POST['Login'])) {
-            $user      = ctype_alnum($_POST['username']) ? $_POST['username'] : false;
-            $pass      = strip_tags($_POST['password']);
+            $user      = $_POST['username'] ?? '';
+            $user      = ctype_alnum($user) ? $user : '';
+            $pass      = $_POST['password'] ?? '';
+            if (!$user || !$pass) {
+                $this->failedLogin($view);
+            }
+            $pass      = strip_tags($pass);
             $hash      = md5($pass);
             $adapter   = $this->sm->get('adapter');
             $resultset = $adapter->query("SELECT * FROM users WHERE user='$user' AND password='$hash'", Adapter::QUERY_MODE_EXECUTE);
 
             // Check if we have login
-            if(is_object($resultset) && $data = $resultset->current()->getArrayCopy()) {
+            if($resultset && $resultset->count()) {
+                $data = $resultset->current()->getArrayCopy();
                 $this->setSession();
                 $this->session['username'] = $user;
                 $this->login($data);
@@ -940,13 +962,18 @@ class FrontController
                 $view->setTemplate('main');
             }else {
                 // Login failed
-                $this->pushMessage("Login failed");
-                $this->loginAction();
+                $this->failedLogin($view);
             }
         }else {
             $view->setTemplate('login');
         }
         $this->setViewAndRender(null, ['page_id' => 'home', 'name' => 'home', 'body' => 'main_body']);
+    }
+
+    protected function failedLogin($view)
+    {
+        $this->pushMessage("Login failed");
+        $view->setTemplate('login');
     }
 
     /**
@@ -1088,21 +1115,6 @@ class FrontController
     public function phpInfoAction() {
         phpinfo();
         exit;
-    }
-
-    /**
-     * @param $pActions
-     */
-    public function pageStartup($pActions) {
-        if(in_array('authenticated', $pActions)) {
-            $this->loginAction();
-        }
-
-        /*      if(in_array('phpids', $pActions)) {
-    /*      if($this->zendPhpIdsIsEnabled()) {
-                        $this->zendPhpIdsTrap();
-                    }
-                }*/
     }
 
     /**
@@ -1384,6 +1396,24 @@ class FrontController
     protected function redirect($pLocation) {
         session_commit();
         header("location: $pLocation");
+    }
+}
+
+```
+```
+<?php
+namespace src\services;
+
+class Container
+{
+    protected $services = [];
+    public function setService($key, $value)
+    {
+        $this->services[$key] = $value;
+    }
+    public function get($key)
+    {
+        return $this->services[$key] ?? NULL;
     }
 }
 ```
