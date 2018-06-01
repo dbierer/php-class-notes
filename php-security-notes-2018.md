@@ -26,6 +26,9 @@ NOTE: some of the links are dated as these notes represent 9 years of teaching P
     * Look for `Loaded Configuration File => /path/to/php.ini`
     * Edit `/path/to/php.ini` (path as noted above)
     * Search for (probably at the end) and remove the line `extension=libsodium.so`
+  * The security portal itself is insecure:
+    * From the initial login screen, try entering a bad password for the user `admin`
+    * This message is shown: `Fatal Error: Uncaught Error: Call to a member function getArrayCopy() on boolean in ... FrontController.php on line 116`
 * Lab: XSS
     * refs to "xss_r" need to be changed to "xssr"
     * refs to "xss_s" need to be changed to "xsss"
@@ -39,6 +42,9 @@ NOTE: some of the links are dated as these notes represent 9 years of teaching P
 ### Other Notes
 * Q: How do I figure out the size of my "attack surface"?
   * A: There is a good set of guidelines on owasp.org here: https://www.owasp.org/index.php/Attack_Surface_Analysis_Cheat_Sheet
+* Q: How does the "Are You A Robot" captcha work?
+  * A: Simple answer: we don't know and Google is not telling
+  * A: See: https://security.googleblog.com/2014/12/are-you-robot-introducing-no-captcha.html
 * Q: Brute force detector lab setup?
   * A: Need to create a table "bfdetect"
 ```
@@ -93,6 +99,7 @@ DEMO: nmap -A -T4 ip.add.re.ss
   * https://www.symantec.com/security-center/vulnerabilities/writeup/103638
 * Using Open Source w/ Known Vulnerabilities
   * https://www.cvedetails.com/
+  * https://www.cvedetails.com/vulnerability-list/vendor_id-6538/product_id-11031/version_id-235563/Jquery-Jquery-1.6.4.html
 * Invalidated Redirects and Forwards
   * https://www.indusface.com/blog/google-vulnerable-open-redirect/
   * https://www.securityfocus.com/bid/82463/discuss
