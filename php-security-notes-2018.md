@@ -4,42 +4,22 @@ NOTE: some of the links are dated as these notes represent 9 years of teaching P
 
 ## LAB NOTES
 ### Assignments
-* For Weds 30 May 2018
+* For Tue 28 Aug
   * Get VM running
   * Install ZAP tool
   * Lab: SQL Injection
-* For Thu 31 May 2018
+* For Wed 29 Aug
   * Lab: Brute Force / ZAP Tool
   * Lab: XSS
-* For Fri 01 Jun 2018
+* For Thu 30 Aug
   * Lab: Insecure Direct Object References
   * Lab: CSRF
   * Lab: Security Misconfiguration
   * Lab: Sensitive Data Exposure
 
-## ERRATA
-* VM
-  * See this message when running CLI: `PHP Warning: PHP Startup: Unable to load dynamic library 'libsodium.so'`
-    * The `Sodium` PHP extension, which uses `libsodium.so`, is now standard as of PHP 7.1
-    * It was introduced as an alternative to OpenSSL and serves to fill the void left by the removal of the `mcrypt` extension
-    * Run this command: `php -i |less`
-    * Look for `Loaded Configuration File => /path/to/php.ini`
-    * Edit `/path/to/php.ini` (path as noted above)
-    * Search for (probably at the end) and remove the line `extension=libsodium.so`
-  * The security portal itself is insecure:
-    * From the initial login screen, try entering a bad password for the user `admin`
-    * This message is shown: `Fatal Error: Uncaught Error: Call to a member function getArrayCopy() on boolean in ... FrontController.php on line 116`
-* Lab: XSS
-    * refs to "xss_r" need to be changed to "xssr"
-    * refs to "xss_s" need to be changed to "xsss"
-    * Tidy Extension Lab:
-        * Open `/securitytraining/vulnerabilities/xssr/tools/tidy/index.php`
-        * Change any references from `xss_r` to `xssr`
-        * Remove the line `extension=libsodium.so` (if it exists) on the CLI php.ini file (see notes on VM above)
-        * Hit `F5` to run the example
-    * `xsss/sourcefix/with.php` == NOT fixed!
-
 ### Other Notes
+* Q: Are there other "official" definitions of vulnerabilities outside of OWASP?
+* A: See: https://nvd.nist.gov/vuln/categories
 * Q: How do I figure out the size of my "attack surface"?
   * A: There is a good set of guidelines on owasp.org here: https://www.owasp.org/index.php/Attack_Surface_Analysis_Cheat_Sheet
 * Q: How does the "Are You A Robot" captcha work?
@@ -71,18 +51,25 @@ DEMO: nmap -A -T4 ip.add.re.ss
 
 ## LATEST
 * SQL Injection
+  * https://bertwagner.com/2018/03/20/how-to-steal-data-using-a-second-order-sql-injection-attack/
   * https://gbhackers.com/latest-google-sql-dorks/
   * https://nakedsecurity.sophos.com/2018/02/19/hackers-sentenced-for-sql-injections-that-cost-300-million/
+  * DEF: http://cwe.mitre.org/data/definitions/89.html
   * Pen Testing Tool: http://sqlmap.org/
 * Brute Force
+  * https://www.securityweek.com/spring-2018-password-attacks
+  * https://betanews.com/2018/07/03/a-rare-breed-of-the-brute-force-a-history-of-one-attack/
   * https://www.theregister.co.uk/2018/04/03/magento_brute_force_attack/
   * https://blog.paranoidpenguin.net/2018/01/another-significant-wordpress-brute-force-attack-in-the-works/
   * Pen Testing Tool: https://www.metasploit.com/
 * XSS
+  * https://nvd.nist.gov/vuln/detail/CVE-2018-1000556
   * https://snyk.io/vuln/npm:bootstrap:20160627
   * https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
   * https://www.owasp.org/index.php/DOM_based_XSS_Prevention_Cheat_Sheet
+  * DEF: http://cwe.mitre.org/data/definitions/79.html
 * Broken Auth / Session Mgmt
+  * https://www.okta.com/security-blog/2018/03/5-identity-attacks-that-exploit-your-broken-authentication/
   * https://www.exploit-db.com/exploits/44220/
   * https://blog.knowbe4.com/heads-up-new-exploit-hacks-linkedin-2-factor-auth.-see-this-kevin-mitnick-video
 * Insecure Direct Obj Refs
@@ -1290,7 +1277,7 @@ class FrontController
         Header('Cache-Control: no-cache, must-revalidate');        // HTTP/1.1
         Header('Content-Type: text/html;charset=utf-8');        // TODO- proper XHTML headers...
         Header("Expires: Tue, 23 Jun 2009 12:00:00 GMT");        // Date in the past
-        echo "
+        echo <<< EOT
 <!DOCTYPE html>
 <html>
     <head>
@@ -1304,7 +1291,8 @@ class FrontController
             {$pPage['body']}
         </div>
     </body>
-</html>";
+</html>
+EOT;
     }
 
     /**
@@ -1318,7 +1306,7 @@ class FrontController
         Header('Content-Type: text/html;charset=utf-8');        // TODO- proper XHTML headers...
         Header("Expires: Tue, 23 Jun 2009 12:00:00 GMT");        // Date in the past
 
-        echo "
+        echo <<<EOT
 <!DOCTYPE html>
 <html>
     <head>
@@ -1332,7 +1320,8 @@ class FrontController
             {$pPage['body']}
         </div>
     </body>
-</html>";
+</html>
+EOT;
     }
 
     /**
@@ -1666,5 +1655,27 @@ return [
         'sleepTime'   => 5, // minute
     ],
 ];
+```
 
+## ERRATA
+* VM
+  * See this message when running CLI: `PHP Warning: PHP Startup: Unable to load dynamic library 'libsodium.so'`
+    * The `Sodium` PHP extension, which uses `libsodium.so`, is now standard as of PHP 7.1
+    * It was introduced as an alternative to OpenSSL and serves to fill the void left by the removal of the `mcrypt` extension
+    * Run this command: `php -i |less`
+    * Look for `Loaded Configuration File => /path/to/php.ini`
+    * Edit `/path/to/php.ini` (path as noted above)
+    * Search for (probably at the end) and remove the line `extension=libsodium.so`
+  * The security portal itself is insecure:
+    * From the initial login screen, try entering a bad password for the user `admin`
+    * This message is shown: `Fatal Error: Uncaught Error: Call to a member function getArrayCopy() on boolean in ... FrontController.php on line 116`
+* Lab: XSS
+    * refs to "xss_r" need to be changed to "xssr"
+    * refs to "xss_s" need to be changed to "xsss"
+    * Tidy Extension Lab:
+        * Open `/securitytraining/vulnerabilities/xssr/tools/tidy/index.php`
+        * Change any references from `xss_r` to `xssr`
+        * Remove the line `extension=libsodium.so` (if it exists) on the CLI php.ini file (see notes on VM above)
+        * Hit `F5` to run the example
+    * `xsss/sourcefix/with.php` == NOT fixed!
 
