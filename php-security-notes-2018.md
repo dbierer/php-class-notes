@@ -1,6 +1,10 @@
 # PHP SECURITY CLASS NOTES
 
-NOTE: some of the links are dated as these notes represent 9 years of teaching PHP security!
+oauth2
+NOTE TO SELF: examples for SQL injection:
+* Went through this worksheet: https://www.exploit-db.com/papers/13045/
+* Unable to hack in!
+* ID=xxx shows admin however, which is bad
 
 ## LAB NOTES
 ### Assignments
@@ -8,16 +12,20 @@ NOTE: some of the links are dated as these notes represent 9 years of teaching P
   * Get VM running
   * Install ZAP tool
   * Lab: SQL Injection
-* For Wed 29 Aug
   * Lab: Brute Force / ZAP Tool
+* For Wed 29 Aug
+  * Lab: Tidy Extension Lab
   * Lab: XSS
-* For Thu 30 Aug
   * Lab: Insecure Direct Object References
+* For Thu 30 Aug
   * Lab: CSRF
   * Lab: Security Misconfiguration
   * Lab: Sensitive Data Exposure
 
 ### Other Notes
+* Q: Is there a guide to follow if my website has been hacked?
+* A: This is for WordPress, but the steps are good for any PHP based site:
+  * https://codex.wordpress.org/FAQ_My_site_was_hacked
 * Q: Are there other "official" definitions of vulnerabilities outside of OWASP?
 * A: See: https://nvd.nist.gov/vuln/categories
 * Q: How do I figure out the size of my "attack surface"?
@@ -51,6 +59,7 @@ DEMO: nmap -A -T4 ip.add.re.ss
 
 ## LATEST
 * SQL Injection
+  * https://www.exploit-db.com/papers/13045/
   * https://bertwagner.com/2018/03/20/how-to-steal-data-using-a-second-order-sql-injection-attack/
   * https://gbhackers.com/latest-google-sql-dorks/
   * https://nakedsecurity.sophos.com/2018/02/19/hackers-sentenced-for-sql-injections-that-cost-300-million/
@@ -74,14 +83,20 @@ DEMO: nmap -A -T4 ip.add.re.ss
   * https://blog.knowbe4.com/heads-up-new-exploit-hacks-linkedin-2-factor-auth.-see-this-kevin-mitnick-video
 * Insecure Direct Obj Refs
   * https://www.sec-consult.com/en/blog/advisories/insecure-direct-object-reference-in-testlink-open-source-test-management/index.html
+  * Demo: http://sweetscomplete.bad.local/
 * CSRF
+  * ZBlogPHP: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-9153
+  * Vanguard Financial Services: https://github.com/d4wner/Vulnerabilities-Report/blob/master/Vanguard.md
+  * PHP Scripts Mall: https://gkaim.com/cve-2018-15187-vikas-chaudhary/
   * https://www.cvedetails.com/cve/CVE-2018-10267/
   * WordPress Plugin (again): https://www.cvedetails.com/cve/CVE-2018-10233/
 * Security Misconfig
-    * https://www.databreaches.net/samba-federal-employee-benefit-association-programming-error-resulted-in-mismailed-information/
-    * http://arstechnica.com/security/2016/05/faulty-https-settings-leave-dozens-of-visa-sites-vulnerable-to-forgery-attacks/
+  * phpMyAdmin: https://www.cvedetails.com/cve/CVE-2017-18264/
+  * https://www.databreaches.net/samba-federal-employee-benefit-association-programming-error-resulted-in-mismailed-information/
+  * http://arstechnica.com/security/2016/05/faulty-https-settings-leave-dozens-of-visa-sites-vulnerable-to-forgery-attacks/
 * Sensitive Data Exp
   * https://www.nytimes.com/2017/09/07/business/equifax-cyberattack.html
+  * Jenkins: https://www.cvedetails.com/cve/CVE-2018-1000601/
 * Missing Function Level Access Control
   * https://www.symantec.com/security-center/vulnerabilities/writeup/103638
 * Using Open Source w/ Known Vulnerabilities
@@ -228,6 +243,8 @@ LAB: quick test: download form, make a change, submit manually, and see that you
 ## Levy Document
 -- UC Berkeley Study
 -- Technical + Business Impact of Successful SQL Injection Attacks
+
+# LINK HISTORY
 
 ## THREATS:
 * https://www.hackmageddon.com/2018/04/06/february-2018-cyber-attacks-statistics/
