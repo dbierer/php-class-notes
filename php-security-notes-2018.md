@@ -1,11 +1,5 @@
 # PHP SECURITY CLASS NOTES
 
-oauth2
-NOTE TO SELF: examples for SQL injection:
-* Went through this worksheet: https://www.exploit-db.com/papers/13045/
-* Unable to hack in!
-* ID=xxx shows admin however, which is bad
-
 ## LAB NOTES
 ### Assignments
 * For Tue 28 Aug
@@ -23,6 +17,8 @@ NOTE TO SELF: examples for SQL injection:
   * Lab: Sensitive Data Exposure
 
 ### Other Notes
+* Q: How secure is Oauth2?
+* A: See: https://www.esecurityplanet.com/mobile-security/5-tips-on-using-oauth-2.0-for-secure-authorization.html
 * Q: Is there a guide to follow if my website has been hacked?
 * A: This is for WordPress, but the steps are good for any PHP based site:
   * https://codex.wordpress.org/FAQ_My_site_was_hacked
@@ -76,6 +72,7 @@ DEMO: nmap -A -T4 ip.add.re.ss
   * https://snyk.io/vuln/npm:bootstrap:20160627
   * https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
   * https://www.owasp.org/index.php/DOM_based_XSS_Prevention_Cheat_Sheet
+  * TOOL: https://www.virustotal.com/#/home/url
   * DEF: http://cwe.mitre.org/data/definitions/79.html
 * Broken Auth / Session Mgmt
   * https://www.okta.com/security-blog/2018/03/5-identity-attacks-that-exploit-your-broken-authentication/
@@ -105,12 +102,54 @@ DEMO: nmap -A -T4 ip.add.re.ss
 * Invalidated Redirects and Forwards
   * https://www.indusface.com/blog/google-vulnerable-open-redirect/
   * https://www.securityfocus.com/bid/82463/discuss
+* Web Server Security
+  * https://httpd.apache.org/security/vulnerabilities_24.html
+  * Don't forget about https://modsecurity.org/
+* Recommended Headers:
+  * OWASP recommends the following:
+```
+// timeout, path, domain, httpCookie, httpOnly
+session_set_cookie_params(900, '/', NULL, TRUE, TRUE);
+// other recommended headers
+header('Pragma: no-cache');
+header('Cache-Control: no-cache,no-store,must-revalidate');
+header('X-Frame-Options: DENY');
+header('X-XSS-Protection: 1');
+header('X-Content-Type-Options: nosniff');
+```
+
+# Tools
 
 ## PENETRATION TESTING TOOLS
 * Zed Attack Proxy Tool
 * https://gbhackers.com/category/pentesting/
 * http://sqlmap.org/
 * https://www.metasploit.com/
+
+## Logs
+* Nagios: https://www.nagios.com/solutions/log-monitoring/
+* GrayLog: https://www.graylog.org/overview
+* logcheck: https://linux.die.net/man/8/logcheck
+* LogWatch: https://sourceforge.net/projects/logwatch/
+* LogStash: https://www.elastic.co/guide/en/logstash/2.0/introduction.html#power-of-logstash
+* PHP Errors: https://sentry.io/welcome/
+
+## Monitoring
+* Nagios: https://www.nagios.com/
+* Zend Server: http://www.zend.com/en/products/zend_server
+
+## Intrusion Detection and Prevention
+* SNORT: https://snort.org/
+
+## Firewalls
+* Untangle: https://www.untangle.com/
+* Apache Web Server Firewall: https://modsecurity.org/
+
+## How to Detect If Your Website Has Been Hacked?
+* https://www.virustotal.com/#/home/url
+* https://sitecheck.sucuri.net/
+
+# Summary of Preventative Measures
 
 ## SQL Injection Suggested Protection:
 *  1: use prepared statements to enhance protection against sql injection
@@ -121,6 +160,11 @@ DEMO: nmap -A -T4 ip.add.re.ss
     * https://www.owasp.org/index.php/Category:OWASP_SQLiX_Project
 
 LAB: solution should use prepared statements!!!
+LAB: examples for SQL injection:
+* Went through this worksheet: https://www.exploit-db.com/papers/13045/
+* Unable to hack in!
+* ID=xxx shows admin however, which is bad
+
 
 ## Brute Force Suggested Protection:
 *  0: Any suggested protection may be evaded if the attack is launched from a "botnet"
