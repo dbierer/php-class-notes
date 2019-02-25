@@ -33,11 +33,11 @@ CREATE TABLE `bfdetect` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 ```
-  * Based on the config, found in the securitytraining app config under the 'bfdetect' key, the detector checks the table for previous requests from the various $_SERVER params and logs the request. 
-  * After four (config) requests are made from the same $_SERVER params within a 5 minute (config) setting, a log entry is created and a response to the attacker is slowed with a sleep option. 
-  * In order for this script to work, you have to log more than 4 requests in 5 minutes in order for the log entry and sleep response. 
+  * Based on the config, found in the securitytraining app config under the 'bfdetect' key, the detector checks the table for previous requests from the various $_SERVER params and logs the request.
+  * After four (config) requests are made from the same $_SERVER params within a 5 minute (config) setting, a log entry is created and a response to the attacker is slowed with a sleep option.
+  * In order for this script to work, you have to log more than 4 requests in 5 minutes in order for the log entry and sleep response.
   * The table is not populated with data due to this timing requirement which is based on the current server time.
-  * You can populate the table with four quick CLI executions, then run the fifth from the securitytraining brute force page with the login. 
+  * You can populate the table with four quick CLI executions, then run the fifth from the securitytraining brute force page with the login.
   * If the `bfdetect` table is not found, load the table create SQL from the dump `/securitytraining/data/sql/course.sql` and you should be able to run the BF tool.
 
 ### CLASS NOTES
@@ -534,7 +534,7 @@ OWASP Security Tutorial Series:
 * Joomla: https://lists.owasp.org/mailman/listinfo/owasp-joomla-vulnerability-scanner
 * PHP: http://pear.php.net/package/PHP_CodeSniffer
 
-## DEMOS: 
+## DEMOS:
 ### Checking a file with PHP_CodeSniffer
 ```
 $ phpcs /var/www/php_sec/bad_get_example.php
@@ -1755,4 +1755,5 @@ return [
 ```
 
 ## ERRATA
+* vhost link for sandbox?
 
