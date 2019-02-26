@@ -8,6 +8,7 @@
   * Lab: SQL Injection
   * Lab: Brute Force / ZAP Tool
 * For Wed 27 Feb
+  * Lab: Set up ZAP as proxy and test
   * Lab: Tidy Extension Lab
   * Lab: XSS
   * Lab: Insecure Direct Object References
@@ -39,6 +40,10 @@ CREATE TABLE `bfdetect` (
   * The table is not populated with data due to this timing requirement which is based on the current server time.
   * You can populate the table with four quick CLI executions, then run the fifth from the securitytraining brute force page with the login.
   * If the `bfdetect` table is not found, load the table create SQL from the dump `/securitytraining/data/sql/course.sql` and you should be able to run the BF tool.
+
+### VM NOTES
+* The virtual host `http://sandbox/` is mapped to `/home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox`
+  * _Not_ to `public` as in other Zend courses!
 
 ### CLASS NOTES
 
@@ -566,6 +571,9 @@ nmap -A -T4 ip.add.re.ss
 
 
 ## Q & A:
+
+* Q: Is Access Control List type of security available on Symfony?
+* A: Yes: see: https://symfony.com/doc/current/components/security/authorization.html
 
 * Q: Can you address how to protect from hacked images like that jpeg?
   * A: jpegs infected with a virus are not a danger unless they area "executed" directly by the OS.
@@ -1755,5 +1763,4 @@ return [
 ```
 
 ## ERRATA
-* vhost link for sandbox?
 
