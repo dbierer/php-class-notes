@@ -8,7 +8,6 @@
   * Lab: SQL Injection
   * Lab: Brute Force / ZAP Tool
 * For Wed 27 Feb
-  * Lab: Set up ZAP as proxy and test
   * Lab: Tidy Extension Lab
   * Lab: XSS
   * Lab: Insecure Direct Object References
@@ -18,6 +17,8 @@
   * Lab: Sensitive Data Exposure
 
 ### LAB NOTES
+* ZAP Lab
+  * Good "how to": https://chrisdecairos.ca/intercepting-traffic-with-zaproxy/
 * Brute Force Detector Lab:
   * Make sure the table `bfdetect` exists:
 ```
@@ -1764,3 +1765,4 @@ return [
 
 ## ERRATA
 
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/5: missing a graphic
