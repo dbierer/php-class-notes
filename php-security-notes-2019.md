@@ -1,5 +1,8 @@
 # PHP SECURITY CLASS NOTES
 
+## Q & A
+* Q: What is "SQL Safe Mode" (see file:///D:/Repos/PHP-Security/Course_Materials/index.html#/5/7)
+
 ## LAB NOTES
 ### Assignments
 * For Tue 26 Feb
@@ -188,6 +191,7 @@ LAB: examples for SQL injection:
 * 6: Consider resetting the password + use out-of-band notification (i.e. email)
 * 7: if a high level of abuse is noted, extreme measures are called for: i.e. total lockout at IP level
 * 8: Generate random temporary redirect pages if excessive failed logins are detected.  Add random ipsum lorem to the temporary pages to further confuse automated attack systems.
+* 9: Add random hidden content to the return HTML to further confuse automated attack systems
 
 ## XSS:
 * 1: escape, validate, filter all input
@@ -268,8 +272,13 @@ LAB: quick test: download form, make a change, submit manually, and see that you
 * 3: Make sure measures are in place when you store or transfer this data
 * 4: Don't store or transmit sensitive data in plain text
 * 5: Keep crypto software up to date
-* 6: DO NOT use mcrypt!!!! Use openssl_encrypt() or openssl_decrypt()
+* 6: DO NOT use mcrypt!!!! Use openssl_encrypt() or openssl_decrypt() or Sodium (http://php.net/sodium)
     See: https://wiki.php.net/rfc/mcrypt-viking-funeral
+* 7: Use a "modern" algorithm; AES is OK + a "modern" mode: suggestions:
+    * XTS
+    * GCM
+    * CTR
+* 8: For more info: https://en.wikipedia.org/wiki/Block_cipher
 
 ## Command Injection
 * 1: Do you really need to run system(), exec() etc.?  Maybe another way
@@ -1762,7 +1771,55 @@ return [
     ],
 ];
 ```
+* Example for the Insecure Direct Object Refs lab using Zend\Permissions\Acl\*
+```
+<?php
+/* This is the code file you need to modify */
+// Fix 1: No direct object reference. (Static table for simplicity.)
+// This is in effect also a whitelist.
+// MD5 (bad!) but NOT of the image name, so cracking it doesn't help the attacker
+$resources = [
+    'acbd18db4cc2f85cedef654fccc4a4d8' => 'img00011.png',
+    '37b51d194a7513e45b56f6524f2d51f2' => 'img00012.png',
+];
+// Fix 2: Don't show specific errors
+$html = "Invalid resource";
+// Fix 3: TODO: ACL
+use Zend\Permissions\Acl\ {Acl, Role, Resource};
 
+// Missing pieces:
+// 1. Verify user identity
+// 2. From the verified identity retrieve the user's role
+// Assume: if $_GET['user'] == 'admin' == allow access; otherwise deny
+$user = $_GET['user'] ?? 'guest';
+$user = strip_tags($user);
+
+// normally the user name does NOT correspond to the role!
+$acl = new Acl();
+$acl->addRole('guest');
+$acl->addRole('admin', 'guest');
+$acl->addResource('acbd18db4cc2f85cedef654fccc4a4d8');
+$acl->addResource('37b51d194a7513e45b56f6524f2d51f2');
+
+// now we make assignments
+$acl->allow('guest', 'acbd18db4cc2f85cedef654fccc4a4d8');
+$acl->allow('admin', '37b51d194a7513e45b56f6524f2d51f2');
+
+if(isset($_GET['img'])) {
+    $resourceID = $_GET['img'];
+    if(isset($resources[$resourceID]) && $acl->isAllowed($user, $resourceID)) {
+	$image = $resources[$resourceID];
+	$html = "<img src='vulnerabilities/idor/source/img/$image'>";
+    }
+
+}
+```
 ## ERRATA
 
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/5: missing a graphic
+* CSRF Lab: parameter to activate the attack should be: ?action=csrf&attack=1
+* CSRF Lab: the CSRF attack isn't working: maybe incorrect ID?
+* SDE Lab: ctype_alnum doesn't work in this context: need to rework and use it as a validator
+* SDE Lab: need to add a password quality check before allowing the new user entry to be created
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/4/4: extra ":" on 1st line
+* IFU Lab: need to have some kind way to link the random filename with the original: maybe a database entry
