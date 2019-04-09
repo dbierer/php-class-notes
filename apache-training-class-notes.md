@@ -1,7 +1,6 @@
-# Apache Fundamentals Notes November 2017
+# Apache Fundamentals Notes
 
-NEED TO INCLUDE *ALL* SLIDES in PDF
-
+Last Update: 9 Apr 2019
 
 ## Q&A
 * Q: Which MPM is better, Event or Worker?
@@ -11,21 +10,8 @@ NEED TO INCLUDE *ALL* SLIDES in PDF
 * A: apxs - APache eXtenSion tool; a tool for building and installing extension modules
   See: https://httpd.apache.org/docs/trunk/programs/apxs.html
 
-* Q: What is the performance gain/loss using APR?
-* A: ???
-
-* Q: What is meant by "Asynchronous" support for MPMs?
-* A:
-
-* Q: RPM vs. SRC considerations: make sure discussion is in mod 1
-
 * Q: from Francois to All Participants: what is the support for IPv6 in Apache?
 * A: from Todd Reed to All Participants: Apache does support dual stack
-     TODO: find the module or configuration needed for this
-
-* Q: Example of LAYOUT
-
-* Q: from Francois to All Participants: with --with-expat=MPM why MPM?
 
 * Q: from Francois: how do I enable HTTP2 support?
 * A: see: https://httpd.apache.org/docs/2.4/howto/http2.html; and rebuild Apache with
@@ -40,12 +26,6 @@ NEED TO INCLUDE *ALL* SLIDES in PDF
 
 * Q: Log format codes docs?
 * A: http://httpd.apache.org/docs/2.4/mod/mod_log_config.html
-
-* Q: from Christopher to All Participants: How can we see what ./configure flags a distribution used when building their verison of Apache?
-
-* Q: from Francois to All Participants: do why it was installed as apache2 instead of httpd? is that the prefix argument?
-
-* Q: from Christopher to All Participants: I can do httpd -V and get some info, but not all of the flags.
 
 * Q: re: the “SetHandler” directive: what handlers are available?
 * A: see:https://httpd.apache.org/docs/current/handler.html
@@ -65,12 +45,8 @@ NEED TO INCLUDE *ALL* SLIDES in PDF
 * Q: from Francois to All Participants: how would you "enable" an apache instance with a different conf file so that it start automatically at boot?
   systemctl enable httpd, can you say systemctl enable httpd -f /new-file.conf?
 
-* Q: List of SSL hardware acceleration available?
-
 * Q: from Christopher to All Participants: What is the difference between aNull and eNull?
 * A: from James to All Participants: eNULL = ciphers offering no encryption, aNULL = cipher suites offering no authentication
-
-* Q: How to you specify # instances?
 
 * Q: What is the difference between SCGI and CGI?
 * A: See: http://python.ca/scgi/protocol.txt
@@ -86,15 +62,9 @@ NEED TO INCLUDE *ALL* SLIDES in PDF
 * Q: from Christopher to All Participants: Does that module also rewrite CSS and JS?
 * A: Need to set mod_proxy_html::ProxyHTMLExtended flag to ¨on¨
 
-* Q: from Maroun to All Participants: RE: stickyness: depends where you are saving the sessions right?
-* A:
-
 * Q: What is suExec?
 * A: see: http://httpd.apache.org/docs/2.4/suexec.html
    * provides users of the Apache HTTP Server the ability to run CGI and SSI programs under user IDs different from the user ID of the calling web server
-
-* Q: from Francois to All Participants: could you proxy using verb?
-* A:
 
 * Q: Why would TransferLog be used over CustomLog (or vice-versa)?
 * A: *TransferLog* is used to change the log file name only, not the log format.
@@ -116,109 +86,6 @@ NEED TO INCLUDE *ALL* SLIDES in PDF
 
 * Q: Do I need to enable and configure `mod_session` in order to use $_SESSION in PHP?
 * A: No: PHP uses its own mechanism which bypasses the one used by `mod_session`
-
-## ERRATA
-* 52: must Linux s/be most Linux
-* 52: bad char in code
-* 78: Shared (Dynamic) vs Static Libraries: img needs width
-* 129: missing 1st example: `Header echo ^TS`shown on next slide
-* 185 URL-path is is omitted: remove duplicate "is"
-* 196: last screenshot `ScriptAlias` directive needs to be swapped with the screenshot on p. 197
-* 216: update to php7
-* 225: "Servers that are heaving on serving" s/be "Servers that are heavy on serving"
-* 249: img needs width
-* 272: img needs width
-* 276: img too big
-* 293: need ref for more detail
-* 316: usemod_cache
-* 330: Mod Cluster: out of place???
-* 331: Advantages of mod_cluster: out of place???
-* 365: mod_cluster and Load Balancing 4: funny chars in <code> block
-* 370: add description of suexec
-
-* http://localhost:8888/#/2/7: s/ not be "MPMs server"
-* http://localhost:8888/#/4/28: s/be "-h" not "- h" and "-V" not "- V" etc.
-* http://localhost:8888/#/5/5: mod_cache *not* shown above"!
-* http://localhost:8888/#/6/9: get rid of space after "/"
-* http://localhost:8888/#/6/11: get rid of space after "/"
-* http://localhost:8888/#/6/12: move lab to end of course module
-* http://localhost:8888/#/4/12: move this slide to before slide on rpmbuild!
-* http://localhost:8888/#/6/10: step 5: HTTPS not available yet
-* http://localhost:8888/#/7/17: http://httpd.apache.org/docs/2.4/expr.html
-* http://localhost:8888/#/7/42: flag s/be "-h" NOT "-H"
-* http://localhost:8888/#/7/42: "regular" file or ... ????
-* http://localhost:8888/#/7/44: mismatch between text and graphic
-* http://localhost:8888/#/7/45: RewriteEngine on == "on" s/be bold
-* http://localhost:8888/#/7/48: should make clear that this is a separate subject: i.e. enabling mod_rewrite + move this unit before discussion on config
-* http://localhost:8888/#/7/60: from Francois to All Participants: locationmatch saves as <NUMBER> but reads as MATCH_NUMBER, is that normal or an error?
-* http://localhost:8888/#/7/71: text and screenshot do not match
-* http://localhost:8888/#/8/13: “NameVirtualHost” directive has been deprecated
-* http://localhost:8080/index.html#/9/36: Link is broken: use this: https://jamielinux.com/docs/openssl-certificate-authority/appendix/root-configuration-file.html
-* http://localhost:8080/index.html#/9/39: move the openSSL directory to httpd-xxx/srclib/openssl ... don't worry about the version
-* http://localhost:8080/index.html#/9/39: `--with-ssl=` flag is incorrect; s/be:
-```
---with-ssl=/usr/local/src/httpd-2.4.x/srclib/openssl
-```
-* http://localhost:8888/#/9/5: from Francois to All Participants: why is this slide here (in http vs https)?
-  * maybe move to security or config section
-* http://localhost:8888/#/9/18: need to update this chart + browser versions
-* http://localhost:8888/#/9/22: SSL v3 date not mentioned; v2 mentioned 2x
-* http://localhost:8888/#/9/27: Listen s/be on its own line
-* http://localhost:8888/#/9/28: from Christopher to All Participants: That SSLHonorCipherOrder on should be on a new line
-* http://localhost:8888/#/9/29: missing # on 1st line
-* http://localhost:8888/#/9/29: might be better to default to a higher level of security, and then "allow" lower levels in certain non-sensitive areas of the website
-* http://localhost:8888/#/9/36: correct link: https://jamielinux.com/docs/openssl-certificate-authority/appendix/root-configuration-file.html
-* http://localhost:8888/#/9/42: rewrite this a bit: from Christopher to All Participants: I think you meant configure it to use the certificate and key
-* http://localhost:8888/#/9/55: assumes you've created an Apache user
-* http://localhost:8888/#/10/4-6: just pull linger_close() discussion out: confuses more then helps
-* http://localhost:8888/#/10/7: dup slide from config section (?verify)
-* http://localhost:8888/#/10/12: need to add references
-* http://localhost:8888/#/9/32: no need to download openssl -- use existing version
-* http://localhost:8888/#/11/14: should also mention mod_proxy_http2 + the link has a space in it!!!
-* http://localhost:8888/#/12/3: remove this slide
-* http://localhost:8888/#/12/5: need example of syntax of loading using APXS
-* http://localhost:8888/#/13/4 + 5: syntax s/be :
-```
-<Location "/server-status">
-    SetHandler server-status
-    Require host example.com
-</Location>
-```
-* http://localhost:8888/#/13/6: "such as" instead of "should you like"
-* http://localhost:8888/#/13/8: what other tools????
-* http://localhost:8888/#/14/23: Disable Directory Browser Listing: replace 2.2 syntax w/ `Require all granted`
-* http://localhost:8888/#/14/25: Run Apache as Non-Privileged User: get rid of # in code block
-* http://localhost:8888/#/14/26: Non-Privileged User Continued: s/be "apache:apache" (no "A")
-* http://localhost:8888/#/14/28: Limiting HTTP Request Methods: here is the correct syntax for the example:
-```
-<LimitExcept POST GET HEAD>
-  Require valid-user
-</LimitExcept>
-```
-* http://localhost:8888/#/14/50: mod_security Core Rule Installation: Depends on your "PREFIX" setting when installing Apache.  In our case replace "/opt/apache/" with "/usr/local/apache2/"
-* http://localhost:8888/#/14/54: mod_security Logging: Depends on your "PREFIX" setting when installing Apache.  In our case replace "/opt/apache/" with "/usr/local/apache2/"
-* http://localhost:8888/#/14/7: MaxRequestWorkers: re: performance tuning: might have already discussed???
-* http://localhost:8888/#/14/18: Protect Server Files: out of place!
-* http://localhost:8888/#/14/20: Limit Access: probably meant ¨Require all denied¨ for 2nd example: if this refers to the public website, that´s ok ... but need to rewrite to make more clear that is the case
-* http://localhost:8888/#/14/23: Disable Directory Browser Listing: uses 2.2 syntax: replace with Require all granted
-* http://localhost:8888/#/14/26: Non-Privileged User Continued: probably should say ¨document root¨ not installation directory
-* http://localhost:8888/#/14/27: Directory Permissions: from Francois to All Participants: they are mixing dir and file, either talk about the file httpd.conf or talk about the conf folder, but don't mix files and folder permission
-* http://localhost:8888/#/14/33: no space in []
-* http://localhost:8888/#/14/37: s/be libxml2-devel
-* http://localhost:8888/#/14/39: check that syntax is correct?  also no ./configure???
-* http://localhost:8888/#/14/42: s/be expat-devel
-* http://localhost:8888/#/14/53: Core Rules: Sllowed s/be Allowed
-* http://localhost:8888/#/14/69: mod_setenvif 2: Attributes can be one of 4 things: s/be "Attributes can be one of 3 things:"
-  * Bullet starting with "Hostname, IP of client, IP of the server," s/be under bullet above
-* http://localhost:8888/#/16/11: mod_cache 4: Allows concent to be cached s/be "Allows content to be cached"
-* http://localhost:8888/#/14/66: redundant???
-* http://localhost:8888/#/15/10: need reference as to how to find driver complied into apr-util + what is PKCS
-* http://localhost:8888/#/15/14: 1st line s/be a comment
-* http://localhost:8888/#/15/20: remove and/or consolidate content with earlier discussion on this subject
-* http://localhost:8888/#/15/29: s/ not be "sued"
-* http://localhost:8888/#/16/6: need more info on what this chart tells us
-* http://localhost:8888/#/16/12: s/be stale not state
-* http://localhost:8888/#/16/13: change for linux!!!
 
 ## GENERAL NOTES
 
@@ -484,42 +351,6 @@ iptables-save | sudo tee /etc/sysconfig/iptables
 </VirtualHost>
 ```
 
-## FEEDBACK
-* from Francois to All Participants: the steps of this entire modules is weird, I had to go back and forth a few times
-* from self: http://localhost:8888/#/7/4: more practical examples
-* from self: http://localhost:8888/#/7/10: more practical examples
-* from self: http://localhost:8888/#/7/17: more practical examples
-* from self: http://localhost:8888/#/7/36: more practical examples for this entire section
-* from Maroun to All Participants: I would like to see example which covers the whole flow, how you set header and how it affects the request in browser and how the response looks like
-* from self: practical use cases encompassing the whole thing
-* from self: Headers chapter: convert screenshots of code examples to text blocks which can be copied + get the order straight
-* from Francois to All Participants: course feedback -- personally, I think you should talk about mod_alias first and then go with "if you need more, here is what you can do with mod_rewrite" because at this point, I'm not sure what mod_rewrite can do that alias can't (except rewrite condition I guess).
-* from self: Headers / Rewrite Lab
-  * Create ScriptAlias for server side includes
-  * Create html with ssi date
-  * Don’t do PHP
-* from Francois to All Participants: I know you did not write these examples, but you know we are not supposed to use port 81-83? anything under 1024 (if I remember correctly) are reserved for specific apps
-* from Francois to All Participants: have cert and vhost first and multi instance and proxy after to me cert and vhost is something we do all the time so I think it should be first
-* from self: combine multi-instance w/ proxy course chapters
-* from self: add lab using separate config for each instance
-* from Christopher to All Participants: I would offer everyone one word of warning... apachectl configtest doesn't catch all SSL related errors that would stop your server from starting up You can have properly stuctured configuration but if your cert and key are messed up, it won't point it out
-* from Francois to All Participants: one think I trully did not get is the "Copy and Paste the user-cli.crt output" and "Paste Into user-cli.crt on the Client" what is the client? is it if you have multiple servers?
-* from Francois to All Participants: I just redid the entire lab this morning and I still get "SSL error:unable to get local issuer certificate"
-* from Maroun to All Participants: the private use to be pem and the public key crt
-* from Francois to All Participants: ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:9000/var/www/$1
-* from Todd to All Participants: Setting up a PHP server with RP is easier to digest.  Java/Tomcat just adds complication and causes things to get fuzzy
-* from Todd to All Participants: Not sure if I'm ahead, but I'm really suprised not to see anything on chroot/jail of Apache.  I know this is more of a Linux feature.  You might also consider adding an exposure slide to docker/containers, but that is a whole different subject docker/containers would be a whole different class (we did a section docker in the PHP III)!
-* from Francois + self: consider changing references to /opt for consistency
-* from self: simple tool to simulate web attack to see mod_security in action??? maybe a simple PHP script for example. or possibly `nmap`
-* from the group: consensus: move access logging to the beginning + consolidate with logging chapter
-* from self: section on Security: drop "Best Practices"
-* from group: for mod_session_dbd pre-install mysql w/ a users table already in place
-* from Francois: scan for any Windoze examples and modify for linux
-* from Francois to All Participants: feedback : no need to go in that level of details about encryption (in my opinion) all I need to know is how to configure my Apache with a certificate, not all the history and type of encryption, and that include the abbreviation and the list of encryption support in old browser (like IE6), I don't think it is that relevant
-* from Francois to All Participants: Examples are not details, ex: "openssl req -newkey rsa:2048 -nodes -keyform PEM -keyout test-local.key -x509 -days 3650 -outform PEM -out test-local.crt" I would like to know what each paramaters does. If I'm just going to search for this information for myself, there is no need for me to pay for a course...
-* from Francois to All Participants: A lot of wasting time, for example the million videos. What was the point of this example/discussion. I found it irrelevant for this course. I want to learn to configure Apache not to use cloud services
-
-
 ## EXAMPLES
 * Created user `apache` using this command: `useradd apache`
 * Modified `/usr/local/apache2/conf/httpd.conf` as follows:
@@ -576,11 +407,14 @@ Alias "/whatever" "/var/www/whatever"
 </Location>
 ```
 
-
-
 ## HTTP2
 * from Francois to All Participants: this is basically what I recreated to see for myself http://www.http2demo.io/
 * configure command as per Francois:
 ```
 ./configure --enable-modules="php ssl rewrite deflate security" --with-included-apr --enable-http2 --enable-so --enable-proxy --enable-proxy-fcgi
 ```
+
+## CORRECTIONS
+file:///home/jed/Repos/apache-fundamentals/Course_Materials/index.html#/1/21: need to update this
+
+
