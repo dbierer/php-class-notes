@@ -2,7 +2,67 @@
 
 Last Update: 9 Apr 2019
 
+## Lab Notes
+* LAB source code: https://github.com/dbierer/apache-training
+* First Lab:
+```
+LAB: Install, Start and Stop Apache
+Modify the network settings on the VM from NAT to Bridged and restart the VM
+Use this command: shutdown -r now
+Login as "vagrant" and switch user to "root"
+Install lynx
+Remove any existing version of Apache
+Clean up and update yum
+Using the VirtualBox Manager (or the equivalent on your system) create a snapshot of the VM which we will call "clean"
+Install Apache from a pre-compiled binary using yum
+Determine the IP address for your VM using "ifconfig"
+Create an entry for "test.local" in /etc/hosts which matches the VM IP address
+Configure the basic httpd.conf for "test.local" and the "apache" user
+Start and stop Apache successfully with minimal settings
+Confirm the installation works
+
+STEPS:
+LAB: Set Up Infrastructure
+Change to the "root" user using "su" with a password "vagrant"
+Update yum sources: yum -y update
+Clean up yum: yum clean all
+Remove any existing httpd installations: yum remove httpd
+Install the Lynx text browser: yum install lynx
+Test: lynx http://zend.com/
+Determine the IP address for your VM using "ifconfig"
+Create an entry for "test.local" in /etc/hosts which matches the VM IP address: echo "vm.ip.addr.ess test.local" >> /etc/hosts
+Using the VirtualBox Manager (or the equivalent on your system) create a snapshot of the VM which we will call "clean"
+
+LAB: Install Apache
+Install apache: yum install httpd
+Locate httpd.conf: find / -name httpd.conf
+Configure the basic httpd.conf for "test.local" and the "apache" user
+Add a firewall exception for port 80 (see previous slides)
+Start and stop Apache successfully with minimal settings
+Test the installation from inside the VM using lynx
+Test from outside the VM using any browser on your host computer
+If you do not have any response when testing from the outside, try the following:
+Right click on the network settings icon (bottom right of the VM window)
+Switch from "NAT" to "Bridged" mode
+If you have more than one adapter on the host, make sure you have chosen one which is in use and connects to your network router
+```
+* Need to add how to set up Windows to recognize `test.local` which what the VM is now considered to be
+  * C:\Windows\System32\drivers\etc\hosts
+  * Add entry just like in Linux
+* How to figure out dependencies:
+  * `yum install rpm-build`
+  * `rpmbuild -tc httd.xxx.xxx.xxx.tar.bz2`
+* Latest PCRE source is here:  https://ftp.pcre.org/pub/pcre/
+* Latest APR and APR-UTIL is here: https://www-us.apache.org/dist/apr/
+
 ## Q&A
+http://httpd.apache.org/docs/2.4/sections.html
+
+* Q: How do you find where a version of some installed software is located?
+* A: Use a command `whereis xxx` where "xxx" is what you're looking for
+* Q: Can you give me an example of an Apache module which is not thread safe?
+* A: See: https://stackoverflow.com/questions/1623914/what-is-thread-safe-or-non-thread-safe-in-php
+
 * Q: Which MPM is better, Event or Worker?
 * A: see https://linuxtechme.wordpress.com/2014/11/04/mpm/
 
@@ -88,7 +148,6 @@ Last Update: 9 Apr 2019
 * A: No: PHP uses its own mechanism which bypasses the one used by `mod_session`
 
 ## GENERAL NOTES
-
 * RE: HTTP2 ... suggest adding this to the section on Modules, or make it a new course section
 * RE: Dynamic Shared Objects: http://httpd.apache.org/docs/2.4/dso.html
 * RE: RewriteMap: http://httpd.apache.org/docs/2.4/mod/mod_rewrite.html#mapfunc
@@ -416,5 +475,6 @@ Alias "/whatever" "/var/www/whatever"
 
 ## CORRECTIONS
 file:///home/jed/Repos/apache-fundamentals/Course_Materials/index.html#/1/21: need to update this
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/1/19: link to apache.org doesn't work
 
 
