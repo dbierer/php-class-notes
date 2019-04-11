@@ -2,8 +2,31 @@
 
 Last Update: 9 Apr 2019
 
+## Installing the GUI
+```
+yum -y groups install "GNOME Desktop"
+startx
+```
+
 ## Lab Notes
+* LAB: mod_headers
+  * force refresh the browser by hitting `CTL+F5` otherwise the browser caches the page!
+  * dont forget to clone the LAB source code (see next line) + copy the /var/www/* structure over to /var/www
+  * also: don't forget to set the `DocumentRoot` directive in `httpd.conf` to `/var/www`
 * LAB source code: https://github.com/dbierer/apache-training
+* Second Lab: Install Apache from Source
+  * Documentation: http://httpd.apache.org/docs/2.4/install.html
+  * When you first download the main Apache source code file, make sure you download the latest version with `*.bz2` extension
+  * After download, run the dependency check, and do a screenshot so you have the list saved
+    * `yum install rpm-build`
+    * `rpmbuild -tc httd.xxx.xxx.xxx.tar.bz2`
+    * Suggestion: just install all the packages listed as dependencies
+  * Make sure you install the development packages (mentioned on the slides):
+```
+yum groupinstall development tools
+```
+  * If during `make` you get an error about `expat.h` then install all the packages identified as dependencies
+
 * First Lab:
 ```
 LAB: Install, Start and Stop Apache
@@ -49,14 +72,14 @@ If you have more than one adapter on the host, make sure you have chosen one whi
 * Need to add how to set up Windows to recognize `test.local` which what the VM is now considered to be
   * C:\Windows\System32\drivers\etc\hosts
   * Add entry just like in Linux
-* How to figure out dependencies:
-  * `yum install rpm-build`
-  * `rpmbuild -tc httd.xxx.xxx.xxx.tar.bz2`
 * Latest PCRE source is here:  https://ftp.pcre.org/pub/pcre/
 * Latest APR and APR-UTIL is here: https://www-us.apache.org/dist/apr/
 
 ## Q&A
 http://httpd.apache.org/docs/2.4/sections.html
+
+* Q: What happens if two headers are added with the same name?
+* A: ???
 
 * Q: How do you find where a version of some installed software is located?
 * A: Use a command `whereis xxx` where "xxx" is what you're looking for
