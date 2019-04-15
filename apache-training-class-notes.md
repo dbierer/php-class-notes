@@ -2,6 +2,8 @@
 
 Last Update: 9 Apr 2019
 
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/2/34
+
 ## Installing the GUI
 ```
 yum -y groups install "GNOME Desktop"
