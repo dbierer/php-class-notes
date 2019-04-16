@@ -4,6 +4,11 @@ Last Update: 9 Apr 2019
 
 file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/2/34
 
+## TODO
+* Create shell script to copy files from apache-training to the right folders
+* Create a README.md which explains the setup
+* Check to see why /app/image/animals/cat doesn't work
+
 ## Installing the GUI
 ```
 yum -y groups install "GNOME Desktop"
@@ -11,6 +16,13 @@ startx
 ```
 
 ## Lab Notes
+* LAB: Alias
+  * Might want to add the 3 directives to stop browser cache
+* LAB: ScriptAlias
+* LAB: RewriteCond
+  * Might not work!
+  * Maybe try something from the slide examples for this lab!
+* LAB: RewriteBase
 * LAB: mod_headers
   * force refresh the browser by hitting `CTL+F5` otherwise the browser caches the page!
   * dont forget to clone the LAB source code (see next line) + copy the /var/www/* structure over to /var/www
@@ -79,6 +91,17 @@ If you have more than one adapter on the host, make sure you have chosen one whi
 
 ## Q&A
 http://httpd.apache.org/docs/2.4/sections.html
+
+* Q: Is there a good description on RewriteBase?
+* A: https://stackoverflow.com/questions/21347768/what-does-rewritebase-do-and-how-to-use-it
+
+* Q: How do you set file system permissions?
+* A: Use this command, where x/y/z is the directory to modify
+  * This command changes the owner to `vagrant`  and the group to `daemon`
+```
+chown -R vagrant:daemon /x/y/z
+chmod -R 775 /x/y/z
+```
 
 * Q: What happens if two headers are added with the same name?
 * A: ???
@@ -173,6 +196,7 @@ http://httpd.apache.org/docs/2.4/sections.html
 * A: No: PHP uses its own mechanism which bypasses the one used by `mod_session`
 
 ## GENERAL NOTES
+* RE: /usr/local/apache2/bin/apachectl ? == help screen
 * RE: HTTP2 ... suggest adding this to the section on Modules, or make it a new course section
 * RE: Dynamic Shared Objects: http://httpd.apache.org/docs/2.4/dso.html
 * RE: RewriteMap: http://httpd.apache.org/docs/2.4/mod/mod_rewrite.html#mapfunc
@@ -501,5 +525,7 @@ Alias "/whatever" "/var/www/whatever"
 ## CORRECTIONS
 file:///home/jed/Repos/apache-fundamentals/Course_Materials/index.html#/1/21: need to update this
 file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/1/19: link to apache.org doesn't work
-
-
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/2/29: make sure the header which records timing is added to this lab solution
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/2/52: missing end "
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/2/70: improve formatting on table
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/2/90: out of place?  SSL not enabled yet!

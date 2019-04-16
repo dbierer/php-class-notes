@@ -6,6 +6,9 @@ file:///D:/Repos/PHP-Fundamentals-I/Course_Materials/index.html#/5
 * Q: Can you find a practical example of xor?
 * A:
 
+* Create a script in apache-training which copies files to the right places
+  * https://github.com/dbierer/apache-training.git
+
 ## Homework
 * For Wed 17 April
   Collabedit: http://collabedit.com/5es2d
