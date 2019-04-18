@@ -2,12 +2,14 @@
 
 Last Update: 9 Apr 2019
 
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/2/34
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/5
 
 ## TODO
-* Create shell script to copy files from apache-training to the right folders
-* Create a README.md which explains the setup
-* Check to see why /app/image/animals/cat doesn't work
+* Make sure solutions to vhost labs are in the `apache-training` public repo
+* HTTP Response Code Logging are the slide examples stated correctly?
+  * file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/3/27
+* Review CGI lab in course module 3 and make sure solution is correct
+* Add to these notes command to open CentOS firewall for 443
 
 ## Installing the GUI
 ```
@@ -16,6 +18,55 @@ startx
 ```
 
 ## Lab Notes
+* LAB: Install Apache with mod_ssl
+  * Install OpenSSL on the OS (use `yum` to do that)
+  * Compile from source `mod_ssl` (see tutorial and apache docs)
+  * Re-compile apache from source and include mod_ssl:
+```
+./configure \
+--with-included-apr \
+--with-expat-lib \
+--enable-ssl=shared \
+--enable-mods-shared=all
+```
+* LAB: Install a Self-Signed Certificate
+* LAB: Set up a Vhost which uses HTTPS
+* LAB: Configuring Logs
+* LAB: Access Logging
+* LAB: Name Based Virtual Hosts 1
+	* Set up the VM for two name based virtual hosts: "foo.local" and "bar.local"
+	* Edit /etc/hosts
+		* `foo.local`
+		* `bar.local`
+	* Make directories
+```
+/home/vagrant/foo
+/home/vagrant/bar
+```
+	* Create index.html for each:
+```
+/home/vagrant/foo/index.html
+/home/vagrant/bar/index.html
+```
+	* Assign rights to the user "daemon" to the new directories and files
+	* In `httpd.conf` locate and uncomment the line which includes `httpd-vhosts.conf`
+	* In `/usr/local/apache2/conf/extra/httpd-vhosts.conf`
+	define named based virtual hosts for `foo.local` and `bar.local`
+	* In each vhost configuration add `<Directory>` directives `AllowOverride all` and `Require all granted`
+	which grants permissions for the web server to be able to read from those directories
+	* Note the main host goes away. Add a vhost entry at the top of `httpd-vhosts.conf` for the default
+```
+<VirtualHost *:80>
+    DocumentRoot "/usr/local/apache2/htdocs"
+    ServerName test.local
+    ServerAlias www.test.local
+    ErrorLog "logs/test-error_log"
+    CustomLog "logs/test-access_log" common
+    <Directory "/usr/local/apache2/htdocs">
+        Require all Granted
+    </Directory>
+</VirtualHost>
+```
 * LAB: Alias
   * Might want to add the 3 directives to stop browser cache
 * LAB: ScriptAlias
@@ -91,6 +142,15 @@ If you have more than one adapter on the host, make sure you have chosen one whi
 
 ## Q&A
 http://httpd.apache.org/docs/2.4/sections.html
+
+* Q: Link to reference on log format codes?
+* A: http://httpd.apache.org/docs/2.4/mod/mod_log_config.html#formats
+
+* Q: Documentation on virtual hosts?
+* A: http://httpd.apache.org/docs/2.4/vhosts/
+
+* Q: Practical example of rewrite rules?
+* A: See: https://github.com/zendframework/zend-expressive-skeleton/blob/master/public/.htaccess
 
 * Q: Is there a good description on RewriteBase?
 * A: https://stackoverflow.com/questions/21347768/what-does-rewritebase-do-and-how-to-use-it
@@ -323,6 +383,15 @@ firewall-cmd --zone=public --add-port=443/tcp --permanent
 firewall-cmd --reload
 iptables -L
 ```
+* Notes from slides:
+```
+If you encounter a situation where "configure" stops due to a missing dependency, and you have already installed the latest version, try to install the "*-devel" version.
+Troubleshooting: look in "config.log" for clues.
+If you get error from "bin/ld" try "ld --help" and then "ld -l<missing lib> --verbose"
+Don't forget to run "make clean" after a failed "make" run
+See: http://askubuntu.com/questions/514414/trying-to-compile-from-source-newest-apache-with-newest-openssl
+```
+
 
 ### Procedure without using Intermediate Certs
 #### Set up directory structure
@@ -523,9 +592,29 @@ Alias "/whatever" "/var/www/whatever"
 ```
 
 ## CORRECTIONS
+Look for discussion on <Directory> and <Location> and move forward into the 2nd course module
+Also mention where config can be placed: httpd.conf, a file included by same, or .htaccess
+Implement advanced highlighting as per Daryl
+Font size for tables needs to be increased!
+Module 3: get rid of duplication with Module 2
+
 file:///home/jed/Repos/apache-fundamentals/Course_Materials/index.html#/1/21: need to update this
 file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/1/19: link to apache.org doesn't work
 file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/2/29: make sure the header which records timing is added to this lab solution
 file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/2/52: missing end "
 file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/2/70: improve formatting on table
 file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/2/90: out of place?  SSL not enabled yet!
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/3/17: change from /home/apache to /home/vagrant
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/3/18: change from /home/apache to /home/vagrant
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/3/24: need a link: http://httpd.apache.org/docs/2.4/mod/mod_log_config.html#formats
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/3/26: `CustomLog` needs to go on next line
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/3/26: s/be no space here: `logs/ english_log` and `logs/ non_english_log`
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/3/30: link doesn't work! s/be http://httpd.apache.org/docs/2.4/mod/mod_log_config.html#formats
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/3/33: http://httpd.apache.org/docs/2.4/mod/mod_log_config.html#bufferedlogs
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/3/36: find example for GlobalLog; http://httpd.apache.org/docs/2.4/mod/mod_log_config.html#globallog
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/3/43: http://httpd.apache.org/docs/2.4/logs.html#piped
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/4/2: Google's new policy on HTTPS
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/4/3: need a link: http://jmeter.apache.org/
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/4/24: LoadModule ssl_module modules/mod_ssl.so Listen 443
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/4/36: CSR = Certificate Signing Request
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/4/47: need to add CentOS firewall command equivalent
