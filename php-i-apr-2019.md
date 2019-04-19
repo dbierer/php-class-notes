@@ -1,6 +1,14 @@
 # PHP-I Class Notes: Apr 2019
 
 ## Homework
+* For Mon 22 April
+  Collabedit: http://collabedit.com/e4972
+  * Srinivas: Lab: Two Functions
+  * Tim: Lab: F-Type Functions
+  * Viktor: Lab: file_get_contents()
+  * Marcella: Lab: file_put_contents()
+  * Sean: Lab: Write Array Lab
+  * Srinivas: Lab: Read Directories
 * For Fri 19 April
   Collabedit: http://collabedit.com/7krfu
   * Shirley: Lab: Defining and Calling a Function
@@ -39,6 +47,25 @@ $${0*${0}=$_price * $_qty}
 
 
 ## Class Discussion
+* `file_get_contents()`
+```
+<?php
+$contents = file_get_contents('http://google.com/');
+$contents = str_ireplace('Google', 'Boogle', $contents);
+echo $contents;
+```
+* Array examples
+```
+<?php
+$a = [1,2,3];
+$b = [4,5,6];
+var_dump(array_merge($a, $b));
+
+$c = ['A' => 'a', 'B' => 'b', 'C' => 'c'];
+$d = ['X' => 'x', 'Y' => 'y' , 'Z' => 'z', 'A' => NULL];
+var_dump(array_merge($c, $d));
+```
+
 * Doing arithmetic within ""
   * https://stackoverflow.com/questions/18181491/can-we-do-some-arithmetic-operation-within-double-quotes
 * Magic Constants: https://www.php.net/manual/en/language.constants.predefined.php
@@ -557,3 +584,4 @@ while ($_order <= 3);
 VM: php.ini::display_errors needs to be set on
 * file:///D:/Repos/PHP-Fundamentals-I/Course_Materials/index.html#/4/39: while() loops are best used in situations where the items being handled are of an unknown quantity.  Examples: results from a database query, or analyzing lines from a file; while() loops are also useful for situations where some external control is needed; example: something based upon elapsed time
 * file:///D:/Repos/PHP-Fundamentals-I/Course_Materials/index.html#/4/47: out of place???  also: mose
+* file:///D:/Repos/PHP-Fundamentals-I/Course_Materials/index.html#/5/32: $table doesn't belong in this statement!
