@@ -1,6 +1,13 @@
 # PHP-I Class Notes: Apr 2019
 
+file:///D:/Repos/PHP-Fundamentals-I/Course_Materials/index.html#/6/39
+
 ## Homework
+* For Wed 24 April
+  Collabedit: http://collabedit.com/w95fs
+  * Viktor: Lab: Embedded PHP
+  * Marcella: Lab: PHP Form String
+
 * For Mon 22 April
   Collabedit: http://collabedit.com/e4972
   * Srinivas: Lab: Two Functions
@@ -45,8 +52,31 @@ $${0*${0}=$_price * $_qty}
 * Q: Can you find a practical example of do / while?
 * A:
 
+## Resources
+* Repository of PHP code examples developed to supplement the PHP classes
+  * https://github.com/dbierer/classic_php_examples
 
 ## Class Discussion
+* Simple login form example w/ phpinfo()
+```
+<?php
+$html = '<form action="/test.php" method="post">';
+$html .= 'Username: <input type="text" name="username" />';
+$html .= '<br>Password: <input type="password" name="password" />';
+$html .= '<br><input type="submit" />';
+$html .= '</form>';
+
+if ($_POST) {
+    phpinfo(INFO_VARIABLES);
+}
+
+echo $html;
+
+```
+
+* Recursive directory scan (without using the RecursiveDirectoryIterator SPL class)
+  * https://github.com/dbierer/classic_php_examples/blob/master/file/recursive_directory_scan.php
+
 * `file_get_contents()`
 ```
 <?php
@@ -576,6 +606,332 @@ do {
     $_order++;
 }
 while ($_order <= 3);
+
+//End Marcella Homework
+```
+* For Fri 19 Apr
+```
+<?php
+declare(strict_types=1);
+// Shirley's Homework 04/17/2019 Sorry I am not in class today //
+// 1. Define a function named getOrderTotal(...), which takes two arguments and returns the sum.//
+// 2. Call the function and output the result.  //
+
+$ordertotal = 0.00;     // assign 0.00 to identify this as float
+$item1price = 14.77;
+$item2price = 2.81;
+
+function getOrderTotal(float $item1price, float $item2price) : float
+{
+    // Made $ordertotal Global just for kicks ang giggles
+    //global $ordertotal;
+    $ordertotal = $item1price + $item2price;
+    return $ordertotal;
+}
+
+function getOrderTotal2(float $item1price, float $item2price) : float
+{
+    return $item1price + $item2price;
+}
+
+$ordertotal = getOrderTotal($item1price, $item2price);
+// Because $ordertotal is set to global I can now use it outside of the function
+echo ("Your Order total now is $ $ordertotal .");
+echo "\n<br>\n";
+
+//If I did not make it global, I could echo the value as follows
+echo getOrderTotal2($item1price, $item2price);
+
+/*
+ // Doug,,, can you please show us what the format would be to pass in the variables when the program is being called??? //<?php
+ //Also, I tried putting the calculation right in the return statement and it works great. Is that a NO NO??
+ // Example function getOrderTotal($item1price, $item2price)
+ {
+     // Made $ordertotal Global just for kicks ang giggles
+     global $ordertotal;
+     return ($ordertotal = $item1price + $item2price);
+ }
+*/
+
+
+<?php
+//Srinivas
+//Start
+
+
+// Lab: The Fibonacci sequence is a series of numbers in which each number is the sum of the previous
+// two numbers, starting with 0.
+// Recursive way
+function FibSeries($number){
+
+    // if and else if to generate first two numbers
+    if ($number == 0 or $number == 1) {
+        return $number;
+    // Recursive Call to get the upcoming numbers
+    } else {
+        return (FibSeries($number-1) +
+                FibSeries($number-2)
+                ); //Struggling at this line then got idea about it after some research. Please help understand.
+    }
+}
+
+// Till nth number in a Fibbonacci sequence.
+$sequence  = [];
+$iteration = 10;
+for ($count = 0; $count < $iteration; $count++){
+    $sequence[] = FibSeries($count) . PHP_EOL;
+}
+
+echo 'The Fibbonacci number for ' . $iteration . ' iterations is ' . array_pop($sequence);
+
+/*
+https://io9.gizmodo.com/15-uncanny-examples-of-the-golden-ratio-in-nature-5985588 - Good read - Fibbonacci in Nature
+*/
+
+//End
+```
+* For Mon 22 April
+```
+# For Mon 22 Apr 2019
+
+//BEGIN Sean LAB
+<?php
+
+// 1. Write an array of text strings to a file.
+// 2. Open the file using fopen().
+// 3. read and output the third character from each line.
+
+// create the strings and arrange them in an array
+$lorem1 = "Lorem ipsum dolor sit amet, vim an dicit sensibus laboramus. Ad mel lorem dolor audiam. Mutat omnium prodesset ea ius, legimus appetere eam ex.";
+$lorem2 = "Ius vivendo temporibus an, vim ad sumo veri. Ut duo impetus tincidunt comprehensam, has in inermis perpetua voluptatum, te vix tempor ";
+$lorem3 = "percipitur. Ut everti postulant theophrastus ius. Graece delicatissimi eu vel, eam eu postea tractatos.";
+
+$lorem_ipsum = [$lorem1, $lorem2, $lorem3];
+
+// Write the strings to a file then close it
+$lorem_file = fopen("lorem_ipsum.txt", "w+");
+
+foreach($lorem_ipsum as $item){
+    fwrite($lorem_file, $item . PHP_EOL);
+}
+
+fclose($lorem_file);
+
+// Open the file we just created and read each line then output the 3rd character
+$lorem_file = fopen("lorem_ipsum.txt", "r");
+
+$line_count = 1;
+
+while(!feof($lorem_file)) {
+    $new_array = str_split ( fgets($lorem_file) );
+    if (count($new_array) > 2){
+        echo("The third character on line $line_count is: " . $new_array[2] . PHP_EOL);
+    }
+    $line_count++;
+}
+//END Sean LAB
+
+<?php
+//BEGIN Viktor Lab: file_get_contents()
+//1. Using file_get_contents(), get the contents of a file
+//2. Display the result
+
+//text file "test.txt" with following text"%%%This is a test file with test text."
+// I placed at the same directory.
+echo file_get_contents("test.txt",false,null,3);
+
+$url = "http://vpl.ca";
+$content = file_get_contents ($url);
+echo $content;
+
+$homepage = file_get_contents('http://www.vpl.ca');
+echo $homepage;
+//END Viktor LAB
+
+<?php
+// TIM Lab
+
+//Lab: F-Type Functions
+//Write an example of:
+//1. Opening a file with error handling
+//2. Write something to the file
+//3. Close the file
+
+$j=count(file('numbers.csv'));
+$file = fopen('numbers.csv', 'a+');
+
+while (($line = fgetcsv($file)) !== FALSE) {
+    print_r($line);
+}
+
+function addLines($lines)
+{
+    //$i=$j+$lines;
+    $i=$j+3;
+    while ($j<$i) {
+        $input=["$j", "$j th", "$j$j"];
+        fputcsv($file,$input);
+        $j++;
+    }
+    // Assuming this is inside the function: will cause an infinite loop
+    // return addLines(3);
+}
+// Assuming this is outside the function: do not use the keyword "return"
+// return addLines(3);
+
+fclose($file);
+
+//The commented out lines are my attempt to make the addition of lines variable in a function (in this case i set the amount of lines to 3
+//by hand, where the idea was to have the function handle the amount of lines. Is it possible to do it like this, and could you show how?
+// My CSV file was;
+/*
+Number,nth,double
+1,1st,11
+2,2nd,22
+3,3rd,33
+4,4th,44
+5,5th,55
+6,6th,66
+7,7th,77
+8,8th,88
+
+*/
+<?php
+//Srinivas
+//Start
+
+//Assignment 1:
+/*
+
+Build two functions, one to get an array element of configuration, and one that takes an array and
+builds an HTML select/option list.
+
+ - getConfig('some config'), returns an array of allowed statuses
+ - htmlSelectHtml($config), returns a string contains an HTML <select> element with the status
+options.
+
+*/
+
+//Config File Content in the 'config/config.properties'
+/*
+['New', 'WIP', 'Hold', 'Closed']
+*/
+?>
+<!doctype html>
+<html>
+<head>
+    <title>
+        Lab: Two Functions
+    </title>
+</head>
+<?php
+    function loadConfig( $configFile ){
+        //Why this statement prints the output. I wanted it to store in variable
+        //But this line prints the array. Maybe we can try this during the session.
+        //$config = include ( __DIR__ . '/config/' . $configFile );
+
+    if (!file_exists($configFile)) {
+        exit('Unable to locate config file');
+    }
+
+        return include $configFile;
+    }
+
+    function loadConfigFromText( $configFile ){
+        return file($configFile);
+    }
+
+    function printSelectOptions( $config ){
+        foreach ($config as $val) {
+            echo "<option>$val</option><br>";
+        }
+    }
+
+?>
+
+<body>
+    <h1>Load the Configuration from File.</h1>
+    Select the Status
+    <?php
+        $configArray = loadConfig(__DIR__ . '/../config/config.properties.php');
+        //$configArray = loadConfigFromText(__DIR__ . '/../config/config.properties');
+    ?>
+    <select>
+        <?= printSelectOptions($configArray) ?>
+    </select>
+</body>
+</html>
+
+<?php
+//*************************************//
+
+//Assignment 2
+/*
+Read the directories and files in the class project root and output the following:
+- File Name
+- File Size
+- Number of lines in the file
+*/
+?>
+<!doctype html>
+<html>
+<head>
+    <title>
+        Lab: Read Directories
+    </title>
+</head>
+<?php
+
+    function PrintDirectories(){
+        $fileList = glob('*'); //https://www.php.net/manual/en/function.glob.php
+        foreach($fileList as $filename){
+            //Check if it is file
+            if(is_file($filename)){
+                $no_of_lines = count(file($filename));
+                //FileName: <name> (<Size>) - <No. of Lines>
+                echo 'FileName: ' . $filename . ' (' . filesize ($filename) . ' bytes) - ' . $no_of_lines . ' lines <br>';
+            }
+        }
+    }
+?>
+<body>
+    <h1>Showing the Current Directories</h1>
+        <?= PrintDirectories() ?>
+</body>
+</html>
+
+<?php
+//End
+//Srinivas
+?>
+
+
+<?php
+
+<?php
+//Marcella Homework
+//Use File_put_contents.  Create some string content.  Over-write the contents of a file.
+//Test and echo for success.
+
+$file = 'target.txt';
+
+// This line will create or append the file.
+file_put_contents( $file, 'First line of file (create)' . PHP_EOL, FILE_APPEND);
+
+$read = file_get_contents( $file );
+echo $read . PHP_EOL;
+
+//This line will append the file.
+file_put_contents( $file, 'Second line of file.' . PHP_EOL, FILE_APPEND);
+
+$read = file_get_contents( $file );
+echo $read . PHP_EOL;
+
+//Without the file_append flag, this line will now over-write the existing file (all lines).
+file_put_contents( $file, 'Over-write existing file.');
+
+$read = file_get_contents( $file );
+echo $read . PHP_EOL;
 
 //End Marcella Homework
 ```
