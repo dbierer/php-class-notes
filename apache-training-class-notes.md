@@ -5,10 +5,10 @@ Last Update: 9 Apr 2019
 file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/5
 
 ## TODO
+* Review CGI lab in course module 3 and make sure solution is correct
 * Make sure solutions to vhost labs are in the `apache-training` public repo
 * HTTP Response Code Logging are the slide examples stated correctly?
   * file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/3/27
-* Review CGI lab in course module 3 and make sure solution is correct
 * Add to these notes command to open CentOS firewall for 443
 
 ## Installing the GUI
@@ -618,3 +618,13 @@ file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/4/3: need a li
 file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/4/24: LoadModule ssl_module modules/mod_ssl.so Listen 443
 file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/4/36: CSR = Certificate Signing Request
 file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/4/47: need to add CentOS firewall command equivalent
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/4/35: "ciph"???
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/5/7: compresion
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/5/11: update hardware specs + "Served"???
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/5/58: consider removing the Apache Tomcat stuff
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/6/13: what user?
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/6/25: 2nd line: "apache" (lowercase a)
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/6/28: dup
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/6/29: dup
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/6/36: change example to allow for HTTP2 as well
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/6/46: rewrite instructions for v3
