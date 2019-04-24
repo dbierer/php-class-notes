@@ -3,6 +3,12 @@
 file:///D:/Repos/PHP-Fundamentals-I/Course_Materials/index.html#/6/39
 
 ## Homework
+* For Fri 26 April
+  Collabedit: http://collabedit.com/gp56g
+  * Sean: Lab: Secure Input Handling
+  * Shirley: Lab: Escaping Exercise
+  * Srinivas: Lab: SQL
+  * Tim: Lab: Putting It Together
 * For Wed 24 April
   Collabedit: http://collabedit.com/w95fs
   * Viktor: Lab: Embedded PHP
@@ -55,8 +61,25 @@ $${0*${0}=$_price * $_qty}
 ## Resources
 * Repository of PHP code examples developed to supplement the PHP classes
   * https://github.com/dbierer/classic_php_examples
+* DB Rankings: https://db-engines.com/en/ranking
 
 ## Class Discussion
+* Example of simple query using config.php from the orderapp:
+```
+<?php
+$config = include __DIR__ . '/../config/config.php';
+$db     = $config['db'];
+$conn   = mysqli_connect($db['dsn'],$db['username'],$db['password'],$db['database']);
+
+$query  = mysqli_query($conn, 'SELECT * FROM orders');
+while ($row = mysqli_fetch_assoc($query)) {
+    var_dump($row);
+}
+```
+* Reading the error log in the VM:
+```
+sudo tail /var/log/apache2/error.log
+```
 * Simple login form example w/ phpinfo()
 ```
 <?php
