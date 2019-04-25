@@ -2,14 +2,14 @@
 
 Last Update: 9 Apr 2019
 
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/5
+## Suggestions
+* Rename course to Apache Enterprise
+* Reduce slide count: figure what is not needed
+* Instead of listing every single directive, refer to docs instead
 
 ## TODO
-* Review CGI lab in course module 3 and make sure solution is correct
-* Make sure solutions to vhost labs are in the `apache-training` public repo
 * HTTP Response Code Logging are the slide examples stated correctly?
   * file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/3/27
-* Add to these notes command to open CentOS firewall for 443
 
 ## Installing the GUI
 ```
@@ -23,11 +23,7 @@ startx
   * Compile from source `mod_ssl` (see tutorial and apache docs)
   * Re-compile apache from source and include mod_ssl:
 ```
-./configure \
---with-included-apr \
---with-expat-lib \
---enable-ssl=shared \
---enable-mods-shared=all
+./configure --with-included-apr --enable-ssl
 ```
 * LAB: Install a Self-Signed Certificate
 * LAB: Set up a Vhost which uses HTTPS
@@ -142,6 +138,11 @@ If you have more than one adapter on the host, make sure you have chosen one whi
 
 ## Q&A
 http://httpd.apache.org/docs/2.4/sections.html
+
+* Q: Can the `Location` and `Directory` directives use regex?
+* A: Yes, just add ~ after `Location` and before the URL
+  A: See: http://httpd.apache.org/docs/2.4/mod/core.html#location
+  A: Even better, use the `LocationMatch` and `DirectoryMatch` directives
 
 * Q: Link to reference on log format codes?
 * A: http://httpd.apache.org/docs/2.4/mod/mod_log_config.html#formats
@@ -628,3 +629,13 @@ file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/6/28: dup
 file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/6/29: dup
 file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/6/36: change example to allow for HTTP2 as well
 file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/6/46: rewrite instructions for v3
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/7/7:  update screenshot mod_status
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/7/8:  refs to mod_benchmark???
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/7/17: missing "#" on top line
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/7/28: provide a use case for this + an example
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/7/53: 2nd to last bullet s/be "stale"
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/7/56: last bullet s/be "stale"
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/7/83: space before .htaccess
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/7/86: how do you flush buffers?
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/7/88: scenariaio
+file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/7/90: scenariaio
