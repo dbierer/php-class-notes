@@ -1,7 +1,5 @@
 # PHP-I Class Notes: Apr 2019
 
-file:///D:/Repos/PHP-Fundamentals-I/Course_Materials/index.html#/6/39
-
 ## Homework
 * For Fri 26 April
   Collabedit: http://collabedit.com/gp56g
@@ -1048,6 +1046,216 @@ if ($_POST) {
 <?php //End Viktor Homework ?>
 ```
 * For Fri 26 April
+```
+<?php
+# For Fri 26 April
+/* Shirley Ross Homework
+ * Lab: Escaping Exercise
+ * Update the email sanitizing script you wrote in a previous exercise, escaping the output.
+ */
+
+/* Doug, I am having a hard time getting double quotes into a variable. Any suggestions?
+ * SHIRLEY: two techniques: either use single quotes:
+ * $test = '"And", I said, "This is a quote"';
+ * Also this way:
+ * $test = "\"And\", I said, \"This is a quote\"";
+ * Also, If I run this in the Editor, I can see the change, but I can not see the change
+ * when running it in the browser
+ * Is this Correct?
+ *
+ */
+$emailAddress = "Evil*&^#'Code>{Maker@ImHarmless.com<script>alert('test');</script>";
+echo PHP_EOL . 'I have set an Email Address to ------------- ' .  htmlspecialchars($emailAddress) . "\n<br>\n" ;
+echo PHP_EOL . 'Using htmlspecialchars this is translated to - ';;
+echo  htmlspecialchars($emailAddress) . "\n<br>\n";
+
+$emailAddress = "Evil*&^#'Code>{Maker@ImHarmless.com";
+echo PHP_EOL . "I have reset an Email Address to ----------- ' .  $emailAddress . \n<br>\n" ;
+echo PHP_EOL . 'Using htmlentities this is translated to ---  ';
+echo htmlentities($emailAddress) . "\n";
+
+// End Homework for Shirley
+
+
+//START SRINIVAS
+
+/*
+
+Using the phpMyAdmin web interface, or the SQL entry editor.
+1. Create a new database called Accounts.
+2. Create a new table called profile with columns for id, avatar, and language.
+3. Insert three records into the new table.
+4. Retrieve the second record
+
+*/
+
+
+CREATE DATABASE Accounts;
+USE Accounts;
+
+create table profile(
+                        id INT AUTO_INCREMENT,
+                        avatar VARCHAR(255),
+                        language VARCHAR(255),
+                        PRIMARY KEY (id)
+                    );
+
+insert into profile (avatar, language) values
+('DisplayPic1', 'English'),
+('DisplayPic2', 'French'),
+('DisplayPic3', 'Spanish');
+
+select id,avatar,language from profile where id = 2;
+
+// END SRINIVAS
+
+<?php
+// Start Tim Homework
+
+$config = include __DIR__ . '/../config/config.php';
+$db     = $config['db'];
+$conn   = mysqli_connect($db['dsn'], $db['username'], $db['password'], $db['database']);
+
+//Testing a function to make new lines:
+function addEntry ($conn, array $data) {
+    $query= vsprintf("INSERT INTO profile (avatar, language) VALUES ('%s', '%s')", $data);
+    return mysqli_query($conn,$query);
+}
+//$data   = ['Jesse', ' French'];
+// After this i wanted to see if i could add several lines in 1 go, but changing the array like so didn't work... -->
+// TIM: use this syntax:
+$data   = [
+    ['Jesse', 'French'],
+    ['Jake', 'Swedish']
+];
+foreach ($data as $row) {
+	echo addEntry($conn,$row) ? 'Data saved' : 'Data not saved';
+}
+
+$inputName   = 'Martin';
+$inputLang   = 'Icelandic';
+$inputLine   = 4;
+
+$query1  = sprintf("UPDATE profile SET avatar='%s', language='%s' WHERE id=%d",$inputName, $inputLang, $inputLine);
+
+$query2  = sprintf("SELECT * FROM profile WHERE id=%d",$inputLine);
+
+$query3  = sprintf("SELECT COUNT(*) as cnt FROM profile WHERE id=(%d)", $inputLine);
+
+$query4  = sprintf("INSERT INTO profile (avatar, language) VALUES ('%s', '%s')",$inputName, $inputLang);
+
+$result3 = mysqli_fetch_row(mysqli_query($conn,$query3));
+
+// query and result 3 check if there is a line with inputline number $inputLine, if so it returns the amount of rows of which this is true
+//(should always be one since id is my unique key) and stores that amount in $result3
+// $result however is an array, so you need to acces the first (and only) entry of this array to get the number.
+// if the id exists the while condition is true and updates the line, if it doesnt it is false and creates a new line with the first available id.
+
+// NOTE: if you need to verify the results of INSERT, UPDATE or DELETE, you can use mysqli_affected_rows()
+
+if ($result3[0] >= 1) {
+    $result1 = mysqli_query($conn,$query1);
+    echo 'Line was updated';
+}
+else{
+        $result4 = mysqli_query($conn,$query4);
+        echo 'Line was added';
+}
+$result2 = mysqli_query($conn,$query2);
+
+while ($row=mysqli_fetch_row($result2)){
+    printf("\nThis is %s, he speaks %s.\n",$row[1],$row[2]);
+}
+
+mysqli_close($conn);
+
+//End Tim homework.
+
+// START Sean LAB
+// 1. Create a script that takes input from a login form (username, password, and email address).
+// 2. Filter and validate all inputs
+// 3. Display a message for both invalid and valid input.
+
+// HTML File
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>PHP Security</title>
+
+</head>
+    <body id="main_body" >
+        <form action="/process_input.php" method="post">
+        Username: <input type="text" name="username" />
+        <br>Password: <input type="password" name="password" />
+        <br>Email: <input type="text" name="email" />
+        <br><input type="submit" />
+        </form>
+
+    </body>
+</html>
+
+// PHP File: process_input.php
+<?php
+
+    //Echo the raw data
+    if ($_POST) {
+        //echo "Dangerous raw username: " . $_POST['username'] . "<br />";
+        //echo "Dangerous raw password: " . $_POST['password'] . "<br />";
+        //echo "Dangerous raw email:    " . $_POST['email'] . "<br />" . "<br />";
+    }
+
+    //validate and sanitize the data
+    if ($_POST) {
+        $username = strip_tags($_POST['username']);
+        // example of further sanitization
+        $username = trim(str_replace(';', ' ', $username));
+        // SEAN: might not want to use htmlspecialchars() to sanitize data.
+        //       When it comes time to store the data, it will have HTML entities inside it
+        //       which could mess up database searches.
+        //       strip_tags() is a good choice for input sanitization.
+        //       Usually you would only use htmlspecialchars() upon output.
+        // $username = htmlspecialchars($username);
+        $password = $_POST['password'];  //what do you do with passwords?
+	// normally nothing!  however it might used for validation after you've looked up the username
+	// the only time passwords need to be validated is when the user first signs up
+	// after signup: store the password in the database how???
+	// recommedation: use password_hash() to create the secure hash and password_verify() to verify later
+        $email = $_POST['email'];  //sanitize later
+    }
+
+    /* Test data:
+        1. \'; DROP TABLE users; --  => this passes, could be a problem for SQL
+	NOTE: use mysqli_prepare() / mysqli_execute() to help safeguard against SQL injection
+        2. <script>script attack</script>  => Browser stopped this, hard to test
+    */
+    if ($username){
+        echo $username . "<br />";
+    }
+
+    // Just realized, you should validate passwords on character length!
+    // SEAN: your first instinct to not validate was correct.
+    //       Normally you would only validate when the user 1st signs up to the website
+    //       and creates their password.  When subsequently logging in, don't validate as it
+    //       gives away too much information if an attacker launches a Brute Force attack
+    //       using an automatic attack server.
+    // So if (min_length > 7 && max_length < 17) { echo "Your password needs to be between 8 and 16 characters!"; } else { echo $password; }
+    echo $password . "<br />";
+
+    /* Test data:
+    1. bad@email.com'
+    2. <attack></attack>
+    3. bob@vancerefrigeration.com
+    */
+    $email = filter_var($email, FILTER_VALIDATE_EMAIL);
+
+    if ( $email === false ) {
+        echo "Please enter a valid email address." . "<br />";
+    } else {
+        echo $email;
+    }
+// END Sean LAB
+```
 
 ## UPDATES
 VM: php.ini::display_errors needs to be set on
