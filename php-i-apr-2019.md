@@ -958,6 +958,96 @@ echo $read . PHP_EOL;
 
 //End Marcella Homework
 ```
+* For Wed 24 April
+```
+# For Wed 24 Apr
+
+<?php
+
+/* Marcella Homework
+Lab: PHP Form String
+Only using PHP, build a simple form.
+Output the HTML to the browser.
+*/
+
+// here are 2 seed arrays which can be used later
+$mealPrefs = ['breakfast','lunch','dinner'];
+$gendPrefs = ['female' => 'Female','male' => 'Male','prefernot' => 'Prefer Not to Answer'];
+
+$html = '<form action="/test.php" method="post">';
+$html .= '<fieldset><legend>Personal Information:</legend>';
+$html .= 'Name: <input type="text" name="name"><br>';
+
+// can reduce redundancy using an array
+foreach ($gendPrefs as $key => $value)
+    $html .= 'Gender: <input type="radio" name="gender" value="' . $key . '" checked>' . $value .'<br>';
+
+$html .= '</fieldset><br><fieldset><legend>Fun Facts: </legend>';
+$html .= 'Meal Preference: <select name="meal"><br>';
+
+// can reduce redundancy using an array
+foreach ($mealPrefs as $value)
+    $html .= '<option value="' . $value . '">' . ucfirst($value) . '</option>';
+
+$html .= '</select><br>';
+$html .= 'Fun Fact About Me: <input type="text" name="FunFact"><br>';
+$html .= '</fieldset><br>';
+$html .= '<input type="submit" value="Submit">';
+$html.='</form>';
+
+echo $html;
+
+//End Marcella Homework
+
+<?php
+ini_set('display_errors', 1);
+/* Viktor Homework
+Lab: Embedded PHP
+Build an standard HTML form with embedded PHP
+Account for
+- form tag attributes
+- input tags for both username and password
+- dynamic attributes for each input tags (I am not sure)
+- a submit button
+*/
+if ($_POST) {
+    $username = $_POST['username'] ?? 'guest';
+    $username = strip_tags($username);
+    $password = $_POST['psw'] ?? '';
+} else {
+    $username = '';
+    $password = '';
+}
+
+?>
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+<title> Embedded </title>
+</head>
+<body>
+
+<?php
+   $title =  "<b>Sign in to Vagrant </b>";
+   echo $title;
+
+?>
+<br><br>
+<form action="/test.php" method="post" name="login">
+  User name:<br>
+  <input type="text" name="username" value="<?php echo htmlspecialchars($username); ?>"><br><br>
+  User password:<br>
+  <input type="password" name="psw" value="<?php echo htmlspecialchars($password); ?>"><br><br>
+  <input type="submit" value="Submit">
+  <input type="reset"><br><br>
+
+</form>
+
+</body>
+</html>
+<?php //End Viktor Homework ?>
+```
+* For Fri 26 April
 
 ## UPDATES
 VM: php.ini::display_errors needs to be set on
