@@ -1,5 +1,13 @@
 # PHP III May 2019
 
+## TODO:
+* Find another example of DoublyLinkedList
+  * See: https://github.com/dbierer/php7cookbook/blob/master/source/chapter10/chap_10_linked_double.php
+  * See: https://github.com/dbierer/php7cookbook/blob/master/source/chapter10/chap_10_linked_list_include.php
+
+* Find example of stacked iterators
+  * See: https://github.com/dbierer/php7cookbook/blob/master/source/chapter03/chap_03_developing_functions_stacked_iterators.php
+
 ## Homework
 * For Thu 9 May 2019
   Collabedit: http://collabedit.com/qx3mg
@@ -14,6 +22,7 @@
   * More Examples: https://github.com/dbierer/classic_php_examples/tree/master/date_time
   * https://github.com/dbierer/classic_php_examples/blob/master/date_time/date_time_date_period.php
     * Note to self: check and update if needed!
+* PubSub Example: https://github.com/dbierer/php7cookbook/blob/master/source/chapter11/chap_11_pub_sub_simple_example.php
 
 
 
@@ -186,5 +195,46 @@ try {
 	echo get_class($e) . ':' . $e->getMessage();
 } catch (Error $e) {
 	echo get_class($e) . ':' . $e->getMessage();
+}
+```
+* Linked list example:
+```
+<?php
+$data = [
+	'M' => ['date' => '2019-01-01', 'amount' => 3.33],
+	'D' => ['date' => '2018-02-02', 'amount' => 1.11],
+	'X' => ['date' => '2017-03-03', 'amount' => 2.22],
+];
+
+$test1 = $data;
+
+// sorts only by the 1st element
+asort($test1);
+//var_dump($test1);
+
+$linked = array_column($data, 'amount');
+$amount = array_combine(array_keys($data), $linked);
+//var_dump($amount);
+asort($amount);
+
+// linked list $amount ascending order
+foreach($amount as $key => $value) {
+	echo implode(',', $data[$key]) . PHP_EOL;
+}
+
+// linked list $revse present amount in descending order
+$reverse = array_reverse($amount);
+foreach($reverse as $key => $value) {
+	echo implode(',', $data[$key]) . PHP_EOL;
+}
+
+```
+* Example of RecursiveDirectoryIterator
+```
+<?php
+$recurse = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(__DIR__ . '/../Documents'));
+
+foreach ($recurse as $key => $value) {
+	echo $key . ':' . var_export($value, TRUE) . PHP_EOL;
 }
 ```
