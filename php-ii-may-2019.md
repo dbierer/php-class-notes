@@ -8,6 +8,7 @@
 * for Sun 12 May 2019
   Collabedit: http://collabedit.com/a43bt
   * Olawale: Lab: Create an Extensible Super Class
+    * https://github.com/oadekoya12/zend-training/blob/master/php_II_assignment/Create_an_Extensible_Super_Class.php
   * Pedro: Lab: Magic Methods
 * for Thu 9 May 2019
   Collabedit: http://collabedit.com/pvw9e
