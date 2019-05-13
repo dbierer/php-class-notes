@@ -1,24 +1,30 @@
 # PHP Fundamentals II -- May 2019
 
-## TODO
-* Post multi-autoloader example to classic repo
-* Reset editor for \n\n
-
 ## Homework
+* for Tue 14 May 2019
+  * Drew: Lab: Interfaces
+  * Marcella: Lab: Type Hinting
+  * Olawale: Lab: Build Custom Exception Class
 * for Sun 12 May 2019
   Collabedit: http://collabedit.com/a43bt
   * Olawale: Lab: Create an Extensible Super Class
     * https://github.com/oadekoya12/zend-training/blob/master/php_II_assignment/Create_an_Extensible_Super_Class.php
   * Pedro: Lab: Magic Methods
+    * https://github.com/pedrosuazo/phpcourses
 * for Thu 9 May 2019
   Collabedit: http://collabedit.com/pvw9e
   * Drew: Lab: Namespace
   * Marcella: Lab: Create a Class
 
+## TODO
+* Post multi-autoloader example to classic repo
+
 ## Corrections
 * file:///D:/Repos/PHP-Fundamentals-II/Course_Materials/index.html#/2/33: sub-class doesn't override!
 
 ## Class Discussion
+* Trait examples:
+  * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_traits.php
 * Namespace in single file example
 ```
 <?php
@@ -153,3 +159,100 @@ echo 'End of the program' . PHP_EOL;
 * Examples of magic methods:
   * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_magic_invoke_and_tostring.php
   * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_magic_call_unlimited_getters_setters.php
+* Examples of callable types
+```
+<?php
+class Test {
+    public function callIt(callable $callback, array $params) {
+        return $callback($params);
+    }
+}
+
+$operands[0] = 2;
+$operands[1] = 3;
+$callback = function ($p) {
+    return 'The result of '
+           . $p[0] . ' times ' . $p[1]
+           . ' is ' . ($p[0] * $p[1]);
+};
+$test = new Test;
+echo $test->callIt($callback, $operands);
+echo PHP_EOL;
+
+$anonCallback = new class() {
+	public function __invoke($p)
+	{
+		return 'The result of ' . $p[0] . ' + ' . $p[1] . ' is ' . array_sum($p);
+	}
+};
+
+$p = [2, 2];
+echo $test->callIt($anonCallback, $p);
+echo PHP_EOL;
+
+class Whatever {
+	public function __invoke($p)
+	{
+		return 'The result of ' . $p[0] . ' - ' . $p[1] . ' is ' . ($p[0] - $p[1]);
+	}
+};
+
+$p = [2, 2];
+echo $test->callIt(new Whatever(), $p);
+echo PHP_EOL;
+```
+* Scalar type hinting
+```
+<?php
+declare(strict_types=1);
+class Test
+{
+	public function add(float $a, float $b)
+	{
+		return $a + $b;
+	}
+}
+
+$test = new Test();
+// this works
+echo $test->add(9.99, 7);
+echo PHP_EOL;
+// this works
+echo $test->add(9.99, 7.77);
+echo PHP_EOL;
+// this does not work
+echo $test->add(9.99, '7');
+echo PHP_EOL;
+```
+* Examples of try/catch
+```
+<?php
+class Test
+{
+	public $pdo = NULL;
+	public function __construct(PDO $pdo)
+	{
+		$this->pdo = $pdo;
+	}
+}
+
+try {
+	$pdo = new PDO('x','y','z');
+} catch (PDOException $e) {
+	echo get_class($e) . PHP_EOL;
+	echo $e->getMessage() . PHP_EOL;
+	echo $e->getTraceAsString();
+} catch (Exception $e) {
+	echo get_class($e) . PHP_EOL;
+	echo $e->getMessage() . PHP_EOL;
+	echo $e->getTraceAsString();
+}
+
+try {
+	$pdo = new PDO();
+} catch (ArgumentCountError $e) {
+	echo get_class($e) . PHP_EOL;
+	echo $e->getMessage() . PHP_EOL;
+	echo $e->getTraceAsString();
+}
+```
