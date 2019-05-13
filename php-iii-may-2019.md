@@ -1,14 +1,10 @@
 # PHP III May 2019
 
 ## TODO:
-* Find another example of DoublyLinkedList
-  * See: https://github.com/dbierer/php7cookbook/blob/master/source/chapter10/chap_10_linked_double.php
-  * See: https://github.com/dbierer/php7cookbook/blob/master/source/chapter10/chap_10_linked_list_include.php
-
-* Find example of stacked iterators
-  * See: https://github.com/dbierer/php7cookbook/blob/master/source/chapter03/chap_03_developing_functions_stacked_iterators.php
 
 ## Homework
+* For Tue 14 May 2019
+  * All: Built-in Web Server Lab + Experiment with PHP CLI
 * For Thu 9 May 2019
   Collabedit: http://collabedit.com/qx3mg
 * For Tue 7 May 2019
@@ -23,13 +19,22 @@
   * https://github.com/dbierer/classic_php_examples/blob/master/date_time/date_time_date_period.php
     * Note to self: check and update if needed!
 * PubSub Example: https://github.com/dbierer/php7cookbook/blob/master/source/chapter11/chap_11_pub_sub_simple_example.php
-
-
+* Find another example of DoublyLinkedList
+  * See: https://github.com/dbierer/php7cookbook/blob/master/source/chapter10/chap_10_linked_double.php
+  * See: https://github.com/dbierer/php7cookbook/blob/master/source/chapter10/chap_10_linked_list_include.php
+* Find example of stacked iterators
+  * See: https://github.com/dbierer/php7cookbook/blob/master/source/chapter03/chap_03_developing_functions_stacked_iterators.php
+* Variable based stream wrapper
+  * See: https://github.com/dbierer/classic_php_examples/blob/master/file/streams_custom_wrapper.php
+* Streams Docs: https://www.php.net/manual/en/book.stream.php
+  * For devices, see: https://www.php.net/manual/en/function.stream-socket-client.php
 
 ## Corrections:
 * file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/2/9: PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [1049] Unknown database 'php3' in /home/vagrant/Zend/workspaces/DefaultWorkspace/php3/src/ModPhpAdvanced/Generators/GenDb/runTransactionModel.php:11
 * file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/2/10: also: when you are processing an unknown number of results, maybe safer
 * file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/2/39: extra ","
+* file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/4/31: recommend removing any APC refs
+* file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/4/35: should mention installing via pecl
 
 ## Class Examples
 * ArrayObject
