@@ -3,6 +3,14 @@
 ## TODO:
 
 ## Homework
+* For Thu 16 May 2019
+  * from course Module 4
+    * All: Compile and install the Telemetry custom extension
+    * All: Installing Customized PHP From Source Lab
+  * from course Module 5
+    * All: Prerequisites + Phing Lab
+      * Don't have to restore orderapp database
+
 * For Tue 14 May 2019
   * All: Built-in Web Server Lab + Experiment with PHP CLI
 * For Thu 9 May 2019
