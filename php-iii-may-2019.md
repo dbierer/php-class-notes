@@ -21,6 +21,10 @@
 
 
 ## Class Discussion
+* Agile software tools: web based
+  * Jira: https://www.atlassian.com/software/jira
+  * nTask: https://www.ntaskmanager.com/
+
 * DateTime Intervals:
   * Relative intervals: see: https://www.php.net/manual/en/datetime.formats.relative.php
   * More Examples: https://github.com/dbierer/classic_php_examples/tree/master/date_time

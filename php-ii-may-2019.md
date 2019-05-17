@@ -1,6 +1,27 @@
 # PHP Fundamentals II -- May 2019
 
+file:///D:/Repos/PHP-Fundamentals-II/Course_Materials/index.html#/4/46
+
 ## Homework
+* for Sun 19 May 2019
+  Collabedit: http://collabedit.com/x2jdf
+  * Drew: Lab: SQL Statements: from the VM:
+```
+mysql -u vagrant -pvagrant
+mysql> show databases;
+mysql> use phpcourse;
+mysql> show tables;
+mysql> show create table orders;
+// run different commands
+mysql> exit
+```
+  * Marcella: Lab: Prepared Statements
+  * All: Lab: Stored Procedure
+  * All: Lab: Transaction
+  * Path to source code in VM is this:
+```
+/home/vagrant/Zend/workspaces/DefaultWorkspace/ {sandbox | php2 | orderapp}
+```
 * for Thu 16 May 2019
   Collabedit: http://collabedit.com/2gy8c
   * Pedro: Lab: Traits
@@ -24,13 +45,22 @@
   * Marcella: Lab: Create a Class
 
 ## TODO
-* Post multi-autoloader example to classic repo
-  * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_multiple_autoloader_example.php
+* Install MongoDB for demo
 
 ## Corrections
 * file:///D:/Repos/PHP-Fundamentals-II/Course_Materials/index.html#/2/33: sub-class doesn't override!
+* file:///D:/Repos/PHP-Fundamentals-II/Course_Materials/index.html#/4/17: duplicate slide
 
 ## Class Discussion
+* Object Relational Mapping: https://www.doctrine-project.org/projects/orm.html
+* PHP 3rd party libraries: https://packagist.org/
+* Database Rankings: https://db-engines.com/en/ranking
+* PDO examples:
+  * https://github.com/dbierer/classic_php_examples/tree/master/db
+  * https://github.com/dbierer/classic_php_examples/blob/master/db/db_pdo_fetch_class.php
+
+* Post multi-autoloader example to classic repo
+  * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_multiple_autoloader_example.php
 * Static and Singleton design pattern example:
   * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_singleton_getinstance_example.php#L59
   * Also, read on late static binding here: https://php.net/manual/en/language.oop5.late-static-bindings.php
