@@ -3,13 +3,29 @@
 ## TODO:
 
 ## Homework
+* For Sun 19 May 2019
+  * from course module 5
+    * NOTE: make sure the Phing Lab works before running the Jenkins Lab
+    * All: Jenkins Freestyle Prerequisites Lab
+      * Instead of `orderapp` s/be `orderapp.com` (??? need to verify this)
+    * All: Jenkins CI Freestyle Project Lab
+    * All: Apache JMeter Lab
+    * All: all the Docker Labs
+      * Existing Image Lab
+      * New Image Creation Lab
+      * Full-build MySQL Container Lab
+      * Pre-built WordPress Services Lab
+      * Partial build OrderApp Services Lab
 * For Thu 16 May 2019
   * from course Module 4
     * All: Compile and install the Telemetry custom extension
     * All: Installing Customized PHP From Source Lab
+      * https://github.com/nruslan/php/blob/master/install-php-from-source.md
+      * Add `-j<# cores>` to `make` to greatly improve performance
+      * If you configure the `config.nice` file, it's a shell script to run `configure`
   * from course Module 5
     * All: Prerequisites + Phing Lab
-      * Don't have to restore orderapp database
+    * See Lab Notes section below
 
 * For Tue 14 May 2019
   * All: Built-in Web Server Lab + Experiment with PHP CLI
@@ -19,12 +35,91 @@
   * Setting up Apache Jmeter
   * Setting up the Jenkins CI
 
+## Q & A
+* Q: What is `docker-compose up -d` ???
+* A: `-d` is an option for `docker-compose up`
+  * It means: Detached mode: Run containers in the background, print new container names.
+  * To find help on specific `docker-compose` sub-commands, type the following:
+```
+docker-compose <sub-command> --help
+```
+
+* Q: What's the difference between a docker image and docker container?
+* A: A _container_ is a runtime instance of an _image_.  Analogy: a docker image is like a PHP class definition.  A docker container is like a PHP object instance.
+* A: See: https://stackoverflow.com/questions/23735149/what-is-the-difference-between-a-docker-image-and-a-container
+
+* Q: Where are docker images and containers stored?
+* A: see: https://stackoverflow.com/questions/19234831/where-are-docker-images-stored-on-the-host-machine
+* A: On the course VM:
+```
+/var/lib/docker/containers
+/var/lib/docker/overlay2
+```
+
+* Q: How do you run multiple docker containers at the same time?
+* A: Yes: you can do this by configuring Docker containers as  "services"
+* A: See: https://stackoverflow.com/questions/49980008/can-we-have-two-or-more-container-running-on-docker-at-the-same-time
+* A: Also read this: https://docs.docker.com/engine/swarm/how-swarm-mode-works/services/
+* A: Tutorial: https://docs.docker.com/get-started/part3/
+
+* Q: In the Jenkins CI lab, how is the new build number / NEW_VERSION created?
+* A: This is created by Jenkins using the `Version Number` plugin
+
+## Lab Notes
+* Phing Lab
+  * Phing Prerequisites Lab: Part 1
+	* How to confirm the group membership of the user `deploy`:
+```
+groups deploy
+```
+  * Phing Execution Lab
+    * Make sure you're the `deploy` user before running this part of the lab:
+```
+su deploy
+```
+    * Change to this directory:
+```
+cd /home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/buildh
+```
+    * If you get this error:
+```
+BUILD FAILED
+/home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/build/build.xml:136:30: Failed to copy /home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/build/target/live/config/config.php to /home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/config/config.php: Cannot delete /home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/config/config.php
+```
+      * Change ownership and permissions for the orderapp directory structure as follows:
+```
+sudo chown -R www-data:www-data /home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp
+sudo chmod -R 775 /home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp
+```
+    * If you get this error:
+```
+BUILD FAILED
+/home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/build/build.xml:176:32: '/home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/test' is not a valid directory
+```
+      * Remove references to the `punit` dependency task. Modify `/home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/build/build.xml` as follows:
+```
+    <target name="main"
+            description="Executes shell commands on remote server"
+            depends="config, public, logStart">
+```
+  * Database restore: SQL database file is here:
+```
+/home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/data/sql/phpcourse.sql
+```
+* Jenkins CI Lab
+  * The `CheckStyle` plug-in reached end-of-life. All functionality has been integrated into the `Warnings Next Generation` Plugin.
+  * Here are some other suggestions for initial setup:
+    * replace `checkstyle` with `Warnings Next Generation`
+    * replace `build-environment` with `Build Environment`
+    * replace `phing` with `Phing`
+    * replace `violations` with `Violations`
+    * replace `htmlpublisher` with `Build-Publisher` (???)
+
 
 ## Class Discussion
 * Agile software tools: web based
   * Jira: https://www.atlassian.com/software/jira
   * nTask: https://www.ntaskmanager.com/
-
 * DateTime Intervals:
   * Relative intervals: see: https://www.php.net/manual/en/datetime.formats.relative.php
   * More Examples: https://github.com/dbierer/classic_php_examples/tree/master/date_time
@@ -47,6 +142,11 @@
 * file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/2/39: extra ","
 * file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/4/31: recommend removing any APC refs
 * file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/4/35: should mention installing via pecl
+* file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/5/30: s/be `orderapp.com` ???
+* file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/5/31: (same)
+* file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/5/19: change `¬` to `/home/vagrant`
+* file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/5/23: s/be `phpcourse.sql`
+* file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/1/12: replace `checkstyle` with `Warnings Next Generation`; replace `build-environment` with `Build Environment`; `phing` with `Phing`; `htmlpublisher` with `Build-Publisher` (???); `violations` with `Violations`
 
 ## Class Examples
 * ArrayObject
