@@ -3,6 +3,9 @@
 file:///D:/Repos/PHP-Fundamentals-II/Course_Materials/index.html#/4/46
 
 ## Homework
+* for Tue 21 May 2019
+  Collabedit: http://collabedit.com/m9tff
+  * Olawale: Lab: Email
 * for Sun 19 May 2019
   Collabedit: http://collabedit.com/x2jdf
   * Drew: Lab: SQL Statements: from the VM:
@@ -50,8 +53,19 @@ mysql> exit
 ## Corrections
 * file:///D:/Repos/PHP-Fundamentals-II/Course_Materials/index.html#/2/33: sub-class doesn't override!
 * file:///D:/Repos/PHP-Fundamentals-II/Course_Materials/index.html#/4/17: duplicate slide
-
+* file:///D:/Repos/PHP-Fundamentals-II/Course_Materials/index.html#/6/2: s/be "custom"
 ## Class Discussion
+* Example of regex
+```
+<?php
+$contents = file_get_contents('https://php.net/manual/en/reference.pcre.pattern.syntax.php');
+//         Sub Matches:  1     2    3
+$pattern  = '/<a.*?href=("|\')(.*?)("|\').*?>/';
+preg_match_all($pattern, $contents, $matches);
+var_dump($matches[2]);
+// the actual links are the 2nd sub-pattern
+```
+
 * Object Relational Mapping: https://www.doctrine-project.org/projects/orm.html
 * PHP 3rd party libraries: https://packagist.org/
 * Database Rankings: https://db-engines.com/en/ranking
@@ -577,4 +591,33 @@ try {
   echo $e->getMessage();
   echo $e->getCode();
 }
+```
+* Example of nested buffering
+```
+<?php
+// Top level buffer
+ob_start();
+
+$now = new DateTime();
+echo 'some content in the first buffer ' . $now->format('H:i:s:u');
+echo PHP_EOL;
+
+// Begin Nested buffer ******************************************************
+ob_start();
+$now = new DateTime();
+echo 'some content in the second buffer ' . $now->format('H:i:s:u');
+echo PHP_EOL;
+
+// Get the nested buffer contents
+$content2 = ob_get_contents();
+ob_end_clean();
+// End Nested buffer ******************************************************
+
+// Get and clean from the outer buffer
+$content1 = ob_get_clean();
+$now = new DateTime();
+echo $content1 . $now->format('H:i:s:u');
+echo PHP_EOL;
+echo $content2;
+echo PHP_EOL;
 ```

@@ -68,35 +68,35 @@ docker-compose <sub-command> --help
 ## Lab Notes
 * Phing Lab
   * Phing Prerequisites Lab: Part 1
-	* How to confirm the group membership of the user `deploy`:
+  * How to confirm the group membership of the user `deploy`:
 ```
 groups deploy
 ```
-  * Phing Execution Lab
-    * Make sure you're the `deploy` user before running this part of the lab:
+* Phing Execution Lab
+  * Make sure you're the `deploy` user before running this part of the lab:
 ```
 su deploy
 ```
-    * Change to this directory:
+  * Change to this directory:
 ```
-cd /home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/buildh
+cd /home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/build
 ```
-    * If you get this error:
+  * If you get this error:
 ```
 BUILD FAILED
 /home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/build/build.xml:136:30: Failed to copy /home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/build/target/live/config/config.php to /home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/config/config.php: Cannot delete /home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/config/config.php
 ```
-      * Change ownership and permissions for the orderapp directory structure as follows:
+  * Change ownership and permissions for the orderapp directory structure as follows:
 ```
 sudo chown -R www-data:www-data /home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp
 sudo chmod -R 775 /home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp
 ```
-    * If you get this error:
+  * If you get this error:
 ```
 BUILD FAILED
 /home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/build/build.xml:176:32: '/home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/test' is not a valid directory
 ```
-      * Remove references to the `punit` dependency task. Modify `/home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/build/build.xml` as follows:
+  * Remove references to the `punit` dependency task. Modify `/home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/build/build.xml` as follows:
 ```
     <target name="main"
             description="Executes shell commands on remote server"
