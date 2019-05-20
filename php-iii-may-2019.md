@@ -1,13 +1,26 @@
 # PHP III May 2019
 
 ## TODO:
+* Finish documenting Jenkins labs
+* Finish documenting Docker labs
+
+* Q: When you update Jenkins, does it also update all plugins?
+* Q: RE: VM postman: there is no GeoCode pre-defined query: maybe because no longer free?
 
 ## Homework
+* For Tue 21 May 2019
+  * All: Lab: Building a REST Service API
+    * If running via Apache set rights to `/home/vagrant/Zend/workspaces/DefaultWorkspace/apigility` to `www-data`
+```
+sudo chown -R vagrant:www-data .../apigility
+sudo chmod -R 775 .../apigility
+```
+  * All: Lab: REST Service Model Code Setup == copies pre-written classes to save you a lot of work!
+  * All: Lab: REST Service Testing
 * For Sun 19 May 2019
   * from course module 5
     * NOTE: make sure the Phing Lab works before running the Jenkins Lab
     * All: Jenkins Freestyle Prerequisites Lab
-      * Instead of `orderapp` s/be `orderapp.com` (??? need to verify this)
     * All: Jenkins CI Freestyle Project Lab
     * All: Apache JMeter Lab
     * All: all the Docker Labs
@@ -36,6 +49,9 @@
   * Setting up the Jenkins CI
 
 ## Q & A
+* Q: What's faster, REST or SOAP?
+* A: http://www.ateam-oracle.com/performance-study-rest-vs-soap-for-mobile-applications
+
 * Q: What is `docker-compose up -d` ???
 * A: `-d` is an option for `docker-compose up`
   * It means: Detached mode: Run containers in the background, print new container names.
@@ -147,6 +163,7 @@ BUILD FAILED
 * file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/5/19: change `¬` to `/home/vagrant`
 * file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/5/23: s/be `phpcourse.sql`
 * file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/1/12: replace `checkstyle` with `Warnings Next Generation`; replace `build-environment` with `Build Environment`; `phing` with `Phing`; `htmlpublisher` with `Build-Publisher` (???); `violations` with `Violations`
+* file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/7/4: there is no GeoCode pre-defined query: maybe because no longer free?
 
 ## Class Examples
 * ArrayObject
