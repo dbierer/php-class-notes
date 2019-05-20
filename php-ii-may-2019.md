@@ -65,7 +65,131 @@ preg_match_all($pattern, $contents, $matches);
 var_dump($matches[2]);
 // the actual links are the 2nd sub-pattern
 ```
+* ETag Example
+```
+<?php
+/*
+ *      etag.php
+ */
+// Set eTag
+$etag = "1.0.1_2019_05_20";
 
+//$etag_match = $etag . "-gzip";
+$none_match = isset($_SERVER['HTTP_IF_NONE_MATCH']) ? $_SERVER['HTTP_IF_NONE_MATCH'] : "";
+if ( $none_match == $etag ) {
+	header('304 Not Modified', TRUE, 304);
+	exit;
+} else {
+	header("ETag: $etag");
+}
+?>
+<!DOCTYPE html>
+<head>
+	<title>ETag Example</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<meta name="generator" content="Geany 0.16" />
+</head>
+<body>
+<h1>ETag Example</h1>
+NEW: ONLY FOR TODAY ... SPECIAL!!!
+
+Refresh this page and check the header details.
+
+<br>aaaa bbbb cccc dddd eeee ffff gggg hhhh iiii jjjj
+<br>kkkk llll mmmm nnnn oooo pppp qqqq rrrr ssss tttt
+<br>aaaa bbbb cccc dddd eeee ffff gggg hhhh iiii jjjj
+<br>kkkk llll mmmm nnnn oooo pppp qqqq rrrr ssss tttt
+<br>aaaa bbbb cccc dddd eeee ffff gggg hhhh iiii jjjj
+<br>kkkk llll mmmm nnnn oooo pppp qqqq rrrr ssss tttt
+<br>aaaa bbbb cccc dddd eeee ffff gggg hhhh iiii jjjj
+<br>kkkk llll mmmm nnnn oooo pppp qqqq rrrr ssss tttt
+<br>aaaa bbbb cccc dddd eeee ffff gggg hhhh iiii jjjj
+<br>kkkk llll mmmm nnnn oooo pppp qqqq rrrr ssss tttt
+<br>aaaa bbbb cccc dddd eeee ffff gggg hhhh iiii jjjj
+<br>kkkk llll mmmm nnnn oooo pppp qqqq rrrr ssss tttt
+<br>aaaa bbbb cccc dddd eeee ffff gggg hhhh iiii jjjj
+<br>kkkk llll mmmm nnnn oooo pppp qqqq rrrr ssss tttt
+<br>aaaa bbbb cccc dddd eeee ffff gggg hhhh iiii jjjj
+<br>kkkk llll mmmm nnnn oooo pppp qqqq rrrr ssss tttt
+<br>aaaa bbbb cccc dddd eeee ffff gggg hhhh iiii jjjj
+<br>kkkk llll mmmm nnnn oooo pppp qqqq rrrr ssss tttt
+<br><a href="index.php">BACK</a>
+</body>
+</html>
+```
+* Headers example
+```
+<?php
+// if you see the error: "Headers already sent" it means you have output already before setting a header
+//header('Content-Type: application/json');
+header('Something: anything');
+// default behavior is to REPLACE duplicate headers
+header('Something: nothing');
+// otherwise you can ADD duplicates as follows:
+header('Duplicate: 1');
+header('Duplicate: 2', FALSE);
+
+$data = ['a' => 1, 'b' => 2, 'c' => 3];
+echo json_encode($data);
+
+phpinfo(INFO_VARIABLES);
+```
+* Example of nested buffering
+```
+<?php
+// Top level buffer
+ob_start();
+
+$now = new DateTime();
+echo 'some content in the first buffer ' . $now->format('H:i:s:u');
+echo PHP_EOL;
+
+// Begin Nested buffer ******************************************************
+ob_start();
+$now = new DateTime();
+echo 'some content in the second buffer ' . $now->format('H:i:s:u');
+echo PHP_EOL;
+
+// Get the nested buffer contents
+$content2 = ob_get_contents();
+ob_end_clean();
+// End Nested buffer ******************************************************
+
+// Get and clean from the outer buffer
+$content1 = ob_get_clean();
+$now = new DateTime();
+echo $content1 . $now->format('H:i:s:u');
+echo PHP_EOL;
+echo $content2;
+echo PHP_EOL;
+```
+* PDO example showing error handling
+```
+<?php
+ini_set('display_errors', 0);
+define('ERROR_LOG', __DIR__ . '/error.log');
+try {
+	$dsn  = 'mysql:host=localhost;dbname=phpcourse';
+	$opts = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
+	$pdo  = new PDO($dsn, 'vagrant', 'vagrant', $opts);
+	$sql  = 'UPDATE customers SET id=? WHERE id=?;';
+	$stmt = $pdo->prepare($sql);
+	$stmt->execute([5,1]);
+	if ($stmt->rowCount()) {
+		echo 'Update Succeeded!';
+	} else {
+		echo 'Unknown Problem :-(';
+	}
+} catch (Throwable $e) {
+	$message = date('Y-m-d H:i:s') . ':' . get_class($e) . ':' . $e->getMessage();
+	file_put_contents(ERROR_LOG, $message, FILE_APPEND);
+	echo 'Unable to complete the database operation [' . __LINE__ . ']';
+} catch (Throwable $e) {
+	$message = date('Y-m-d H:i:s') . ':' . get_class($e) . ':' . $e->getMessage();
+	file_put_contents(ERROR_LOG, $message, FILE_APPEND);
+	echo 'Unknown error [' . __LINE__ . ']';
+}
+```
 * Object Relational Mapping: https://www.doctrine-project.org/projects/orm.html
 * PHP 3rd party libraries: https://packagist.org/
 * Database Rankings: https://db-engines.com/en/ranking
@@ -592,32 +716,103 @@ try {
   echo $e->getCode();
 }
 ```
-* Example of nested buffering
+* For Sun 19 May 2019
 ```
+/**Marcella Homework
+*Lab - Prepared Statement
+*1. Create a prepared statement script.
+*2. Add a try/catch construct.
+*3. Add a new customer record binding the customer parameters.
+*
+* Is it common / good practice / practical to use a try / catch INSIDE of a class?
+* It seems to me you would have a newUser class with functions inside to complete this SQL.
+* Would you put the try catch inside of that?  Or TRY to instantiate the newUser class and catch THAT error?
+**/
+
 <?php
-// Top level buffer
-ob_start();
 
-$now = new DateTime();
-echo 'some content in the first buffer ' . $now->format('H:i:s:u');
-echo PHP_EOL;
+$dsn  = 'mysql:host=localhost;dbname=phpcourse';
+$opts = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
+$pdo  = new PDO($dsn, 'vagrant', 'vagrant', $opts);
+$statemt = $pdo->prepare( 'INSERT INTO users (firstname,lastname,userid,bday) VALUES (?,?,?,?)' );
 
-// Begin Nested buffer ******************************************************
-ob_start();
-$now = new DateTime();
-echo 'some content in the second buffer ' . $now->format('H:i:s:u');
-echo PHP_EOL;
+$fname = 'Marcella';
+$lname = 'Parker';
+$usid  = 'Delfinus';
+$bday  = '07/25';
 
-// Get the nested buffer contents
-$content2 = ob_get_contents();
-ob_end_clean();
-// End Nested buffer ******************************************************
+// If you needed to first verify that the userid is unique:
+/*
+   $stmt = $pdo->prepare('SELECT userid FROM users WHERE userid = :placeholder;');
+   $stmt->execute(['placeholder' => $usid]);
+   if ($stmt->rowCount()) {
+       echo 'This user id is already in use.  Please choose another.';
+   } else {
+      // carry on
+   }
+ *
+ */
 
-// Get and clean from the outer buffer
-$content1 = ob_get_clean();
-$now = new DateTime();
-echo $content1 . $now->format('H:i:s:u');
-echo PHP_EOL;
-echo $content2;
-echo PHP_EOL;
+$statemt->bindParam(1, $fname);
+$statemt->bindParam(2, $lname);
+$statemt->bindParam(3, $usid);
+$statemt->bindParam(4, $bday);
+
+try {
+    $statemt->execute();
+
+} catch (PDOException $e){
+    echo get_class($e) . PHP_EOL;
+    echo $e->getMessage() . PHP_EOL;
+    echo $e->getTraceAsString();
+} catch (Throwable $e){
+    echo get_class($e) . PHP_EOL;
+    echo $e->getMessage() . PHP_EOL;
+    echo $e->getTraceAsString();
+}
+
+
+/**Marcella # 2
+*Lab - Transaction
+*1. Create a transaction script.
+*2. Execute two SQL statements.
+*3. Handle any exceptions.
+*This is built to fail and hit the CATCH block.
+**/
+
+<?php
+
+try {
+    // Get the connection instance
+    $pdo = new PDO('mysql:host=localhost;dbname=phpcourse','vagrant','vagrant');
+
+    // Set error mode attribute
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Begin the transaction
+    $pdo->beginTransaction();
+    $pdo->exec("insert into customers (firstname, lastname) values ('Bob')");
+    $pdo->exec("insert into orders (date, status, amount, description, customer)
+        values(1360796400, 'open', 1200, 'PHP Testing', 6)");
+    $pdo->commit();
+    echo 'Success!';
+} catch (PDOException $e ){
+    $pdo->rollBack();
+    echo 'Failed: ' . $e->getMessage();
+}
+
+/**
+LAB: SQL Statements --DREW #1
+Identify the result of the each of the following SQL statements:
+**/
+1. SELECT * FROM users;
+--This will get all users that are in the users table
+2. SELECT firstname, lastname FROM users AS u WHERE u.id = 25;
+--This will select just the first & last name for a single user with id of 25
+3. INSERT INTO users (firstname, lastname) VALUES (James, Bond);
+--This will insert a new user into the table with a the name of James Bond
+4. UPDATE users SET firstname=Rube, lastname=Goldberg WHERE users.id=420;
+--This will update the name of the user that has an id of 420
+5. SELECT * FROM users ORDER BY lastname DESC;
+--This will select all users and put them in order by lastname Z-A
 ```
