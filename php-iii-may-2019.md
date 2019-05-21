@@ -82,6 +82,7 @@ docker-compose <sub-command> --help
 * A: This is created by Jenkins using the `Version Number` plugin
 
 ## Lab Notes
+NOTE: whenever you see `/path/to/source` in these notes, in the VM it's `/home/vagrant/Zend/workspaces/DefaultWorkspace`
 * Phing Lab
   * Phing Prerequisites Lab: Part 1
   * How to confirm the group membership of the user `deploy`:
@@ -95,24 +96,24 @@ su deploy
 ```
   * Change to this directory:
 ```
-cd /home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/build
+cd /path/to/source/orderapp/build
 ```
   * If you get this error:
 ```
 BUILD FAILED
-/home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/build/build.xml:136:30: Failed to copy /home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/build/target/live/config/config.php to /home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/config/config.php: Cannot delete /home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/config/config.php
+/path/to/source/orderapp/build/build.xml:136:30: Failed to copy /path/to/source/orderapp/build/target/live/config/config.php to /path/to/source/orderapp/config/config.php: Cannot delete /path/to/source/orderapp/config/config.php
 ```
   * Change ownership and permissions for the orderapp directory structure as follows:
 ```
-sudo chown -R www-data:www-data /home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp
-sudo chmod -R 775 /home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp
+sudo chown -R www-data:www-data /path/to/source/orderapp
+sudo chmod -R 775 /path/to/source/orderapp
 ```
   * If you get this error:
 ```
 BUILD FAILED
-/home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/build/build.xml:176:32: '/home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/test' is not a valid directory
+/path/to/source/orderapp/build/build.xml:176:32: '/path/to/source/orderapp/test' is not a valid directory
 ```
-  * Remove references to the `punit` dependency task. Modify `/home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/build/build.xml` as follows:
+  * Remove references to the `punit` dependency task. Modify `/path/to/source/orderapp/build/build.xml` as follows:
 ```
     <target name="main"
             description="Executes shell commands on remote server"
@@ -120,7 +121,7 @@ BUILD FAILED
 ```
   * Database restore: SQL database file is here:
 ```
-/home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp/data/sql/phpcourse.sql
+/path/to/source/orderapp/data/sql/phpcourse.sql
 ```
 * Jenkins CI Lab
   * The `CheckStyle` plug-in reached end-of-life. All functionality has been integrated into the `Warnings Next Generation` Plugin.
@@ -130,7 +131,72 @@ BUILD FAILED
     * replace `phing` with `Phing`
     * replace `violations` with `Violations`
     * replace `htmlpublisher` with `Build-Publisher` (???)
+    * replace `version number` with `Version Number`
+  * Jenkins Freestyle Prerequisites Lab
+    * 1st 3 commands in one: `sudo usermod -G sudo,root,www-data jenkins`
+  * Jenkins Freestyle Lab
+    * Unfortunately we don't have a repo in common for student use
+    * Something to consider for this lab:
+      * Initialize a bare repo
+      * Clone it
+      * Use this as the target in Jenkins
 
+* Apigility REST API Lab
+  * `/path/to/source/apigility/public/.htaccess` file contents:
+```
+AuthType Basic
+AuthName "Restricted Files"
+AuthUserFile /path/to/source/apigility/data/.htpasswd
+Require valid-user
+RewriteEngine On
+# The following rule allows authentication to work with fast-cgi
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+# The following rule tells Apache that if the requested filename
+# exists, simply serve it.
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
+# The following rewrites all other queries to index.php. The
+# condition ensures that if you are using Apache aliases to do
+# mass virtual hosting, the base path will be prepended to
+# allow proper resolution of the index.php file; it will work
+# in non-aliased environments as well, providing a safe, one-size
+# fits all solution.
+RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::\2$
+RewriteRule ^(.*) - [E=BASE:%1]
+RewriteRule ^(.*)$ %{ENV:BASE}index.php [NC,L]
+```
+  * When reviewing out methods in the `PropulsionSystemsResource` class:
+    * reset the ownership + permissions so that user `vagrant` has all rights, and group `www-data` has read and execute rights to entire source code structure
+    * this file will be overwritten in the next step
+  * When copying files from `/path/to/source/php3/src/ModWebApi/PropulsionsSystems` be sure to overwrite the original files created by the GUI process
+* Docker Labs
+  * New Image Creation Lab
+    * To build and run `/path/to/source/php3/src/ModDocker/NewImageBuild` do this:
+```
+docker build -t first-lab /path/to/source/php3/src/ModDocker/NewImageBuild
+```
+    * To confirm images: `docker image ls`
+    * To run the image create above:
+```
+docker run -d -p 8888:80 first-lab
+````
+    * From the VM browser, open the URL `http://localhost:8888`
+    * You will see the initial Apache2 Ubuntu splash page
+  * Full-build MySQL Container Lab
+    * Build command:
+```
+docker build -t mysql-lab /path/to/source/php3/src/ModDocker/MySqlBuild
+```
+    * Run the image: `docker run mysql-lab`
+    * Open a new terminal window
+    * Find the container id: `docker container ls`
+    * Run a shell on the container: `docker exec -it <container_id> bash`
+    * Run MySQL from the command line: `#mysql`
+  * Pre-built WordPress Services Lab
+    * To get a list of containers: `docker container ls`
+    * To access WordPress, from the VM browser: `http://localhost:8000/`
 
 ## Class Discussion
 * Agile software tools: web based
@@ -164,6 +230,12 @@ BUILD FAILED
 * file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/5/23: s/be `phpcourse.sql`
 * file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/1/12: replace `checkstyle` with `Warnings Next Generation`; replace `build-environment` with `Build Environment`; `phing` with `Phing`; `htmlpublisher` with `Build-Publisher` (???); `violations` with `Violations`
 * file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/7/4: there is no GeoCode pre-defined query: maybe because no longer free?
+* file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/7/33: replace screen shot with text of .htaccess file(above)
+* file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/7/47: reset the ownership + permissions so that user `vagrant` has all rights, and group `www-data` has read and execute rights to entire source code structure
+* file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/7/47: rewrite paragraph and make it clear this is review only: this file will be overwritten in the next step by a pre-built version
+* file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/7/51: when copying files from `/path/to/source/php3/src/ModWebApi/PropulsionsSystems` make is clear the student needs to overwrite the original files created by the GUI process
+* file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/6/21: change the following commands: `docker build -t first-lab /path/to/source/php3/src/ModDocker/NewImageBuild`, `docker run -d -p 8888:80 first-lab`, and then change last instruction to use port 8888
+* file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/5/29: 1st 3 commands in one: `sudo usermod -G sudo,root,www-data jenkins`
 
 ## Class Examples
 * ArrayObject
