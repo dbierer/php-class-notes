@@ -1,8 +1,13 @@
 # PHP Fundamentals II -- May 2019
 
-file:///D:/Repos/PHP-Fundamentals-II/Course_Materials/index.html#/4/46
+## TODO
+* Is there SMTP support in the VM, or just sendmail?
 
 ## Homework
+* for Thu 22 May 2019
+  Collabedit: http://collabedit.com/t75tv
+  * Pedro: Lab: Validate an Email Address
+  * All: Lab: Composer with OrderApp
 * for Tue 21 May 2019
   Collabedit: http://collabedit.com/m9tff
   * Olawale: Lab: Email
@@ -47,14 +52,135 @@ mysql> exit
   * Drew: Lab: Namespace
   * Marcella: Lab: Create a Class
 
-## TODO
-* Install MongoDB for demo
-
 ## Corrections
 * file:///D:/Repos/PHP-Fundamentals-II/Course_Materials/index.html#/2/33: sub-class doesn't override!
 * file:///D:/Repos/PHP-Fundamentals-II/Course_Materials/index.html#/4/17: duplicate slide
 * file:///D:/Repos/PHP-Fundamentals-II/Course_Materials/index.html#/6/2: s/be "custom"
+* Email example needs "\r\n" not '\r\n'!!!
+* file:///D:/Repos/PHP-Fundamentals-II/Course_Materials/index.html#/6/21: s/ also mention `preg_match_all()`
+
 ## Class Discussion
+* `json_encode()decode()` vs. `serialize() unserialize()`
+```
+<?php
+declare(strict_types=1);
+class Test
+{
+	protected $test = 'TEST';
+	private $something = 'SOMETHING';
+	public $other = 'OTHER';
+	public function getTest()
+	{
+		return $this->test;
+	}
+	public function setTest(string $test)
+	{
+		$this->test = $test;
+	}
+	public function toJson()
+	{
+		return json_encode(get_object_vars($this));
+	}
+}
+
+$test = new Test();
+echo $test->getTest();
+echo PHP_EOL;
+
+$json = json_encode($test);
+echo $json;
+echo PHP_EOL;
+
+try {
+	$obj = json_decode($json);
+	echo $obj->getTest();
+} catch (Throwable $e) {
+	echo $e;
+}
+echo PHP_EOL;
+var_dump($obj);
+
+$string = serialize($test);
+echo $string;
+echo PHP_EOL;
+try {
+	$obj2 = unserialize($string);
+	echo $obj2->getTest();
+} catch (Throwable $e) {
+	echo $e;
+}
+echo PHP_EOL;
+var_dump($obj2);
+echo PHP_EOL;
+
+echo $test->toJson();
+```
+* Performance of REST+JSON vs. SOAP+XML
+  * http://www.ateam-oracle.com/performance-study-rest-vs-soap-for-mobile-applications
+* Regex: example of `preg_replace_callback_array()`
+  * See: https://github.com/dbierer/php7cookbook/blob/master/source/chapter01/chap_01_php5_to_php7_code_converter.php
+  * Also: https://github.com/dbierer/php7cookbook/blob/master/source/Application/Parse/Convert.php
+
+* Regex: quantifiers
+```
+<?php
+//$pattern = '!^http(s)?\w*!i';
+// this is a stricter pattern
+$pattern = '!^http(s)?://\w+!i';
+$string  = 'http://zend.com/';
+echo (preg_match($pattern, $string)) ? 'Match' : 'No Match';
+echo PHP_EOL;
+$string  = 'https://zend.com/';
+echo (preg_match($pattern, $string)) ? 'Match' : 'No Match';
+echo PHP_EOL;
+$string  = 'ftp://zend.com/';
+echo (preg_match($pattern, $string)) ? 'Match' : 'No Match';
+echo PHP_EOL;
+```
+
+* Rewritten Email example from the VM:
+```
+<?php
+// A simple email() example.
+// A working MTA (mail server) is required to complete the delivery and appropriate php.ini configuration
+if (isset($_POST['eadd']) && isset($_POST['subject']) && isset($_POST['msg'])) // if "email" form is filled out, send email
+{
+    // send email
+    if (ctype_alnum($_POST['eadd']) && ctype_alnum($_POST['subject']) && ctype_alnum($_POST['msg'])) {
+        $to = $_POST['eadd']; // Should use preg functions to validate.
+        $subject = htmlspecialchars($_POST['subject']);
+        $msg = htmlspecialchars($_POST['msg']);
+
+        // To use all parameters, note: the @ is used here to suppress errors.
+        $headers[] = 'From: test@example.com';
+        $headers[] = 'MIME-Version: 1.0';
+        $headers[] = 'Content-type: Text/html; charset=UTF-8';
+        $params = '-f test@example.com';
+        $result = @mail($to, $subject, $msg, implode("\r\n", $headers), $params);
+
+        // To use minimum required parameters
+        $result = @mail($to, $subject, $msg);
+
+        if ($result) {
+            echo 'Mail Sent';
+        } else {
+            echo 'Mail not sent';
+        }
+    } else {
+        die('Something bogus in the submittal');
+    }
+} else { // if "email" is not filled out, display the form
+    echo "<form method='post' action='mailform.php'>
+				Email: <input name='email' type='text' /><br />
+				Subject: <input name='subject' type='text' /><br />
+				Message:<br />
+				<textarea name='message' rows='15' cols='40'>
+				</textarea><br />
+				<input type='submit' />
+			</form>";
+}
+```
+
 * Example of regex
 ```
 <?php
