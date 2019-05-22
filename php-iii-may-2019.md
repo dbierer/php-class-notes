@@ -2,27 +2,15 @@
 
 ## TODO:
 
-* Q: When you update Jenkins, does it also update all plugins?
-* A: No.  Here is a good article on the entire Jenkins update process:
-  * https://www.thegeekstuff.com/2016/06/upgrade-jenkins-and-plugins/comment-page-1/
-  * See also: https://stackoverflow.com/questions/7709993/how-can-i-update-jenkins-plugins-from-the-terminal
-  * To see all plugins which need an upgrade from a bash script:
-```
-java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080/ list-plugins | grep -e ')$' | awk '{ print $1 }'
-```
-  * Automatic upgrade bash script (from the stackoverflow article mentioned above):
-```
-UPDATE_LIST=$( java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080/ list-plugins | grep -e ')$' | awk '{ print $1 }' );
-if [ ! -z "${UPDATE_LIST}" ]; then
-    echo Updating Jenkins Plugins: ${UPDATE_LIST};
-    java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin ${UPDATE_LIST};
-    java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080/ safe-restart;
-fi
-```
-
 * Q: RE: VM postman: there is no GeoCode pre-defined query: maybe because no longer free?
+* Arrange to get VM source to Olawale
 
 ## Homework
+* For Thu 23 May 2019
+  * All: Stratigility Exercise
+  * All: Zend-Expressive Labs
+    * FlyingElephant API Middleware Lab
+    * vendor/bin/expressive in expressive.complete is not working
 * For Tue 21 May 2019
   * All: Lab: Building a REST Service API
     * If running via Apache set rights to `/home/vagrant/Zend/workspaces/DefaultWorkspace/apigility` to `www-data`
@@ -64,6 +52,25 @@ sudo chmod -R 775 .../apigility
   * Setting up the Jenkins CI
 
 ## Q & A
+* Q: When you update Jenkins, does it also update all plugins?
+* A: No.  Here is a good article on the entire Jenkins update process:
+  * https://www.thegeekstuff.com/2016/06/upgrade-jenkins-and-plugins/comment-page-1/
+  * See also: https://stackoverflow.com/questions/7709993/how-can-i-update-jenkins-plugins-from-the-terminal
+  * To see all plugins which need an upgrade from a bash script:
+```
+java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080/ list-plugins | grep -e ')$' | awk '{ print $1 }'
+```
+  * Automatic upgrade bash script (from the stackoverflow article mentioned above):
+```
+UPDATE_LIST=$( java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080/ list-plugins | grep -e ')$' | awk '{ print $1 }' );
+if [ ! -z "${UPDATE_LIST}" ]; then
+    echo Updating Jenkins Plugins: ${UPDATE_LIST};
+    java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin ${UPDATE_LIST};
+    java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080/ safe-restart;
+fi
+```
+
+
 * Q: What's faster, REST or SOAP?
 * A: http://www.ateam-oracle.com/performance-study-rest-vs-soap-for-mobile-applications
 
