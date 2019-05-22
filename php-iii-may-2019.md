@@ -1,10 +1,25 @@
 # PHP III May 2019
 
 ## TODO:
-* Finish documenting Jenkins labs
-* Finish documenting Docker labs
 
 * Q: When you update Jenkins, does it also update all plugins?
+* A: No.  Here is a good article on the entire Jenkins update process:
+  * https://www.thegeekstuff.com/2016/06/upgrade-jenkins-and-plugins/comment-page-1/
+  * See also: https://stackoverflow.com/questions/7709993/how-can-i-update-jenkins-plugins-from-the-terminal
+  * To see all plugins which need an upgrade from a bash script:
+```
+java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080/ list-plugins | grep -e ')$' | awk '{ print $1 }'
+```
+  * Automatic upgrade bash script (from the stackoverflow article mentioned above):
+```
+UPDATE_LIST=$( java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080/ list-plugins | grep -e ')$' | awk '{ print $1 }' );
+if [ ! -z "${UPDATE_LIST}" ]; then
+    echo Updating Jenkins Plugins: ${UPDATE_LIST};
+    java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin ${UPDATE_LIST};
+    java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080/ safe-restart;
+fi
+```
+
 * Q: RE: VM postman: there is no GeoCode pre-defined query: maybe because no longer free?
 
 ## Homework
