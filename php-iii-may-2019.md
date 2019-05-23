@@ -6,6 +6,7 @@
 * Arrange to get VM source to Olawale
 
 ## Homework
+* Repo for Class: https://github.com/dbierer/php-iii-may-2019
 * For Thu 23 May 2019
   * All: Stratigility Exercise
   * All: Zend-Expressive Labs
@@ -51,60 +52,161 @@ sudo chmod -R 775 .../apigility
   * Setting up Apache Jmeter
   * Setting up the Jenkins CI
 
-## Q & A
-* Q: When you update Jenkins, does it also update all plugins?
-* A: No.  Here is a good article on the entire Jenkins update process:
-  * https://www.thegeekstuff.com/2016/06/upgrade-jenkins-and-plugins/comment-page-1/
-  * See also: https://stackoverflow.com/questions/7709993/how-can-i-update-jenkins-plugins-from-the-terminal
-  * To see all plugins which need an upgrade from a bash script:
-```
-java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080/ list-plugins | grep -e ')$' | awk '{ print $1 }'
-```
-  * Automatic upgrade bash script (from the stackoverflow article mentioned above):
-```
-UPDATE_LIST=$( java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080/ list-plugins | grep -e ')$' | awk '{ print $1 }' );
-if [ ! -z "${UPDATE_LIST}" ]; then
-    echo Updating Jenkins Plugins: ${UPDATE_LIST};
-    java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin ${UPDATE_LIST};
-    java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080/ safe-restart;
-fi
-```
-
-
-* Q: What's faster, REST or SOAP?
-* A: http://www.ateam-oracle.com/performance-study-rest-vs-soap-for-mobile-applications
-
-* Q: What is `docker-compose up -d` ???
-* A: `-d` is an option for `docker-compose up`
-  * It means: Detached mode: Run containers in the background, print new container names.
-  * To find help on specific `docker-compose` sub-commands, type the following:
-```
-docker-compose <sub-command> --help
-```
-
-* Q: What's the difference between a docker image and docker container?
-* A: A _container_ is a runtime instance of an _image_.  Analogy: a docker image is like a PHP class definition.  A docker container is like a PHP object instance.
-* A: See: https://stackoverflow.com/questions/23735149/what-is-the-difference-between-a-docker-image-and-a-container
-
-* Q: Where are docker images and containers stored?
-* A: see: https://stackoverflow.com/questions/19234831/where-are-docker-images-stored-on-the-host-machine
-* A: On the course VM:
-```
-/var/lib/docker/containers
-/var/lib/docker/overlay2
-```
-
-* Q: How do you run multiple docker containers at the same time?
-* A: Yes: you can do this by configuring Docker containers as  "services"
-* A: See: https://stackoverflow.com/questions/49980008/can-we-have-two-or-more-container-running-on-docker-at-the-same-time
-* A: Also read this: https://docs.docker.com/engine/swarm/how-swarm-mode-works/services/
-* A: Tutorial: https://docs.docker.com/get-started/part3/
-
-* Q: In the Jenkins CI lab, how is the new build number / NEW_VERSION created?
-* A: This is created by Jenkins using the `Version Number` plugin
-
 ## Lab Notes
 NOTE: whenever you see `/path/to/source` in these notes, in the VM it's `/home/vagrant/Zend/workspaces/DefaultWorkspace`
+* Expressive Lab Preface
+  * Please apply the suggested lab changes in this set of notes after you complete the lab
+  * When you're done, test first by just running `http://expressive/` from the browser
+    * The `Whoops` error handler middleware generates a nicely formatted HTML page
+    * Easier to read error messages from the browser
+  * When you're bug free, switch over to Postname to generate REST requests
+  * Theoretically you should be able to run any of the imported Apigility requests just by changing the host name from `apigility` to `expressive`
+
+* Expressive Lab Notes
+  * To create the new module, from the `/path/to/source/expressive` directory, use this command:
+```
+vendor/bin/expressive module:create FlyingElephantService
+```
+  * If you get this error message: `Unable to match FlyingElephantServiceMiddlewareAuthCheckMiddleware to an autoloadable PSR-4 namespace`
+    * Be sure to use `\\` from the command line as a single `\` is an escape character
+    * Refresh the Composer autoloader
+  * To register middleware, in `/path/to/source/expressive/config/pipeline.php` add this `use` statement at the top of the file:
+```
+use FlyingElephantService\Middleware\ {AuthCheckMiddleware, UuidCheckMiddleware};
+```
+  * Modify `FlyingElephantService\V1\Rest\PropulsionSystems\PropulsionSystemsResourceFactory`: change references to `Propulsion\Mapper` to `FlyingElephantService\V1\Model\ArrayMapper`
+  * Modify `FlyingElephantService\V1\Model\ArrayMapperFactory`: change references from `$container->get('Config')` to `$container->get('config')`
+  * Add the following to `/path/to/source/expressive/config/autoload/dependencies.global.php`:
+```
+return [
+	'propulsion' => [
+		'db' => 'flying-elephant-db',
+		'table' => 'propellant',
+		'array_mapper_path' => 'data/propulsion.php'
+	],
+	'dependencies' => [
+        'services' => [
+			'zf-mvc-auth' => [
+				'authorization' => [
+					'FlyingElephantService\\V1\\Rest\\PropulsionSystems\\PropulsionSystemsResource' => [
+						'collection' => [
+							'GET' => true,
+							'POST' => true,
+							'PUT' => false,
+							'PATCH' => false,
+							'DELETE' => false,
+						],
+						'entity' => [
+							'GET' => true,
+							'POST' => true,
+							'PUT' => true,
+							'PATCH' => true,
+							'DELETE' => true,
+						],
+					],
+				],
+			],
+        ],
+	]
+];
+```
+  * If you get this error message: `Class 'ZF\Configuration\ConfigResource' not found` add this to the `/path/to/source/expressive/composer.json` file `require` directive, and update:
+```
+        "zfcampus/zf-configuration" : "*"
+```
+  * If you get this error message: `Class 'Ramsey\Uuid\Uuid' not found` add this to the `/path/to/source/expressive/composer.json` file `require` directive, and update:
+```
+        "ramsey/uuid" : "*"
+```
+  * Make sure the web server user has read/write privileges to the `/path/to/source/expressive/data` directory
+
+* Stratigility Lab
+  * Set permissions on the `/path/to/source/stratigility/log` folder so the `www-data` user can write to the log file
+  * Copy the `.htaccess` file from `/path/to/source/expressive.complete/public` to `/path/to/source/stratigility/public`
+  * You can now run the Stratigility demo from the browser using the `http://stratigility/`
+  * Here is the modified `/path/to/source/stratigility/middleware/library` file:
+```
+<?php
+// stratigility middleware "library"
+
+// class needed
+use Zend\Diactoros\Response;
+
+// init constants
+define('LOG_FILE', __DIR__ . '/../logs/access.log');
+define('MENU', '<a href="/">Home Page</a><br><a href="/page/1">Page 1</a><br><a href="/page/2">Page 2</a><br><a href="/json">JSON</a><br><a href="/view">View Log</a>');
+
+// order in which middleware pages should be attached to the pipe
+$order = ['log','accept','page','json','view','home'];
+$response = new Response();
+
+$middleware = [
+    // middleware: writes to a log file; does not return a response
+    'log' => [
+        'path' => FALSE,
+        'func' => function ($req, $handler) use ($response) {
+            $text = sprintf('%20s : %10s : %16s : %s' . PHP_EOL,
+                            date('Y-m-d H:i:s'),
+                            $req->getUri()->getPath(),
+                            ($req->getHeaders()['accept'][0] ?? 'N/A'),
+                            ($req->getServerParams()['REMOTE_ADDR']) ?? 'Command Line');
+            file_put_contents(LOG_FILE, $text, FILE_APPEND);
+            return $handler->handle($req);
+        }
+    ],
+    // middleware: sets "Content-Type" to JSON if "Accept" header is "application/json"
+    'accept' => [
+        'path' => FALSE,
+        'func' => function ($req, $handler) use ($response) {
+			$accept = $req->getHeaders()['accept'][0];
+			if (strpos($accept, 'application/json') !== FALSE) {
+				header('Content-Type: application/json');
+			}
+            return $handler->handle($req);
+        }
+    ],
+    // middleware: outputs JSON; returns a response
+    'json' => [
+        'path' => '/json',
+        'func' => function ($req, $handler) use ($response) {
+			$data = ['A' => 'This is line 1', 'B' => 'This is line 2', 'C' => 'This is line 3'];
+            $response->getBody()->write(json_encode($data));
+            return $response;
+        }
+    ],
+    // middleware: page 1 and 2; returns a response
+    'page' => [
+        'path' => '/page',
+        'func' => function ($req, $handler) use ($response) {
+            $path = $req->getUri()->getPath();
+            $page = preg_replace('/[^0-9]/', '', $path);
+            $response->getBody()->write('<h1>Page ' . $page . '</h1>' . MENU);
+            return $response;
+        }
+    ],
+    // middleware: view log page; returns a response
+    'view' => [
+        'path' => '/view',
+        'func' => function ($req, $handler) use ($response) {
+            $contents = file_get_contents(LOG_FILE);
+            $response->getBody()->write('<h1>View Access Log</h1><pre>' . $contents . '</pre>' . MENU);
+            return $response;
+        }
+    ],
+    // middleware: home page; returns a response
+    'home' => [
+        'path' => '/',
+        'func' => function ($req, $handler) use ($response) {
+            if (! in_array($req->getUri()->getPath(), ['/', ''], true)) {
+                return $handler->handle($req);
+            }
+            $response->getBody()->write('<h1>Home Page</h1>' . MENU);
+            return $response;
+        }
+    ]
+];
+```
+
 * Phing Lab
   * Phing Prerequisites Lab: Part 1
   * How to confirm the group membership of the user `deploy`:
@@ -258,6 +360,30 @@ docker build -t mysql-lab /path/to/source/php3/src/ModDocker/MySqlBuild
 * file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/7/51: when copying files from `/path/to/source/php3/src/ModWebApi/PropulsionsSystems` make is clear the student needs to overwrite the original files created by the GUI process
 * file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/6/21: change the following commands: `docker build -t first-lab /path/to/source/php3/src/ModDocker/NewImageBuild`, `docker run -d -p 8888:80 first-lab`, and then change last instruction to use port 8888
 * file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/5/29: 1st 3 commands in one: `sudo usermod -G sudo,root,www-data jenkins`
+* file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/8/11: need to copy the `.htaccess` file from `expressive.complete/public` to `stratigility/public` in `Course_Applications`
+* file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/8/23: need to clarify instructions: instruct the students to install the expressive skeleton app and make sure the project name is "expressive"
+* file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/8/23: redo the screenshot to the current one for Zend Expressive
+* file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/8/25: `expressive.complete` project doesn't work
+* file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/8/25: add a note that `vendor/bin/expressive module:create FlyingElephantService` will do most of this for you
+* file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/8/34: rewrite this using full namespace classnames
+* file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/8/45: after this slide, mention that you need to copy this config to `/path/to/source/expressive/config/autoload/dependencies.global.php`.  Has to be at the same level as the `dependencies` key, not *under* it.
+```
+return [
+	'propulsion' => [
+		'db' => 'flying-elephant-db',
+		'table' => 'propellant',
+		'array_mapper_path' => 'data/propulsion.php'
+	],
+	'dependencies' => [
+		// etc.
+	]
+];
+```
+* file:///D:/Repos/PHP-Fundamentals-III/Course_Materials/index.html#/8/47: add this to the `/path/to/source/expressive/composer.json` file
+```
+"zfcampus/zf-configuration" : "*",
+"ramsey/uuid" : "*"
+```
 
 ## Class Examples
 * ArrayObject
@@ -466,3 +592,55 @@ foreach ($recurse as $key => $value) {
 	echo $key . ':' . var_export($value, TRUE) . PHP_EOL;
 }
 ```
+## Q & A
+* Q: When you update Jenkins, does it also update all plugins?
+* A: No.  Here is a good article on the entire Jenkins update process:
+  * https://www.thegeekstuff.com/2016/06/upgrade-jenkins-and-plugins/comment-page-1/
+  * See also: https://stackoverflow.com/questions/7709993/how-can-i-update-jenkins-plugins-from-the-terminal
+  * To see all plugins which need an upgrade from a bash script:
+```
+java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080/ list-plugins | grep -e ')$' | awk '{ print $1 }'
+```
+  * Automatic upgrade bash script (from the stackoverflow article mentioned above):
+```
+UPDATE_LIST=$( java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080/ list-plugins | grep -e ')$' | awk '{ print $1 }' );
+if [ ! -z "${UPDATE_LIST}" ]; then
+    echo Updating Jenkins Plugins: ${UPDATE_LIST};
+    java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080/ install-plugin ${UPDATE_LIST};
+    java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080/ safe-restart;
+fi
+```
+
+
+* Q: What's faster, REST or SOAP?
+* A: http://www.ateam-oracle.com/performance-study-rest-vs-soap-for-mobile-applications
+
+* Q: What is `docker-compose up -d` ???
+* A: `-d` is an option for `docker-compose up`
+  * It means: Detached mode: Run containers in the background, print new container names.
+  * To find help on specific `docker-compose` sub-commands, type the following:
+```
+docker-compose <sub-command> --help
+```
+
+* Q: What's the difference between a docker image and docker container?
+* A: A _container_ is a runtime instance of an _image_.  Analogy: a docker image is like a PHP class definition.  A docker container is like a PHP object instance.
+* A: See: https://stackoverflow.com/questions/23735149/what-is-the-difference-between-a-docker-image-and-a-container
+
+* Q: Where are docker images and containers stored?
+* A: see: https://stackoverflow.com/questions/19234831/where-are-docker-images-stored-on-the-host-machine
+* A: On the course VM:
+```
+/var/lib/docker/containers
+/var/lib/docker/overlay2
+```
+
+* Q: How do you run multiple docker containers at the same time?
+* A: Yes: you can do this by configuring Docker containers as  "services"
+* A: See: https://stackoverflow.com/questions/49980008/can-we-have-two-or-more-container-running-on-docker-at-the-same-time
+* A: Also read this: https://docs.docker.com/engine/swarm/how-swarm-mode-works/services/
+* A: Tutorial: https://docs.docker.com/get-started/part3/
+
+* Q: In the Jenkins CI lab, how is the new build number / NEW_VERSION created?
+* A: This is created by Jenkins using the `Version Number` plugin
+
