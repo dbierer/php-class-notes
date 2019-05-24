@@ -269,6 +269,12 @@ BUILD FAILED
 
 * Apigility REST API Lab
   * When adding authentication adapter, make sure you enter `api` for the "realm"
+  * After creating this file: `/path/to/source/apigility/public/.htaccess` make sure you reset ownership and permissions:
+```
+chown vagrant:www-data /path/to/source/apigility/data/.htpasswd
+chmod 750 /path/to/source/apigility/data/.htpasswd
+```
+
   * `/path/to/source/apigility/public/.htaccess` file contents:
 ```
 AuthType Basic
