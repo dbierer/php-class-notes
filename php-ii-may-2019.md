@@ -58,8 +58,119 @@ mysql> exit
 * file:///D:/Repos/PHP-Fundamentals-II/Course_Materials/index.html#/6/2: s/be "custom"
 * Email example needs "\r\n" not '\r\n'!!!
 * file:///D:/Repos/PHP-Fundamentals-II/Course_Materials/index.html#/6/21: s/ also mention `preg_match_all()`
+* file:///D:/Repos/PHP-Fundamentals-II/Course_Materials/index.html#/9/14: s/be ".user.ini"
+* file:///D:/Repos/PHP-Fundamentals-II/Course_Materials/index.html#/9/19: could also be httpd.conf depending your OS version
+* file:///D:/Repos/PHP-Fundamentals-II/Course_Materials/index.html#/9/30: duplicate paragraphs!
 
 ## Class Discussion
+* Negative offsets on strings
+```
+<?php
+$test = 'This is a test of XYZ';
+echo substr($test, -3);
+echo PHP_EOL;
+
+// this produces the same thing:
+echo $test[-3] . $test[-2] . $test[-1];
+```
+* Breaking out array elements into individual vars:
+```
+<?php
+$array = [1 => 2, 2 => 4, 'eight' => 8];
+list(1 => $oneInt, 2 => $twoInt, 'eight' => $threeInt) = $array;
+echo $oneInt . PHP_EOL . $twoInt . PHP_EOL . $threeInt;
+echo PHP_EOL;
+[1 => $oneInt, 2 => $twoInt, 'eight' => $threeInt] = $array;
+echo $oneInt . PHP_EOL . $twoInt . PHP_EOL . $threeInt;
+echo PHP_EOL;
+
+$array2 = [
+	[1 => 2, 2 => 4, 'eight' => 8],
+	[1 => 2, 2 => 4, 'eight' => 8],
+	[1 => 2, 2 => 4, 'eight' => 8]
+];
+foreach($array2 as  list(1 => $oneInt, 2 => $twoInt, 'eight' => $threeInt)) {
+	echo $oneInt . PHP_EOL . $twoInt . PHP_EOL . $threeInt;
+	echo PHP_EOL;
+}
+```
+* Security: good place to start: https://www.owasp.org/index.php/Main_Page
+* Slightly modified example from file:///D:/Repos/PHP-Fundamentals-II/Course_Materials/index.html#/9/9
+```
+<?php
+// Simulate a POST request
+$_POST = [
+    'firstname'  => '<script></script>Mark',
+    'lastname'   => 'Watney   ',
+    'occupation' => '  martian  ',
+    'education'  => '<bogus>Zend PHP II</bogus>'
+];
+
+// Define Filters
+$trim = function ($input) { return trim($input); };
+$tags = function ($input) { return strip_tags($input); };
+
+// assign filters
+$filters = [
+    'firstname'  => [$trim, $tags],
+    'lastname'   => [$trim, $tags],
+    'occupation' => [$trim, $tags],
+    'education'  => [$trim, $tags]
+];
+// insert validation code here
+$valid = TRUE;
+if ($valid) {
+    // Input is valid: now perform filtering
+    $goodtogo = [];
+    foreach ($filters as $field => $run) {
+        $item = $_POST[$field];
+        // run $item through 1 or more filters
+        foreach ($run as $callback) $item = $callback($item);
+        // assign filtered item to the final array
+        $goodtogo[$field] = $item;
+    }
+    echo htmlspecialchars(var_export($goodtogo, TRUE));
+} else {
+    echo 'Input invalid';
+}
+```
+* stream_socket_client() example from inside the VM:
+```
+<?php
+// Get the resource
+$fh = stream_socket_client("tcp://127.0.0.1:80", $errno, $errstr, 30);
+
+// Check
+if (!$fh) {
+    // Output error data on failure
+    echo "$errstr ($errno)<br />\n";
+
+} else {
+    // Write to the stream
+    fwrite($fh, "GET / HTTP/1.1\r\nHost: localhost\r\nAccept: */*\r\n\r\n");
+
+    // Read from the stream
+    while (! feof($fh)) {
+        echo fgets($fh, 1024);
+    }
+
+    // Close the resource
+    fclose($fh);
+}
+```
+* OAuth2 Client:
+  * https://packagist.org/packages/league/oauth2-client
+* Another SOAP client example using USA Weather Service:
+  * https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
+* To generate a request to an external web service using streams:
+  * https://www.php.net/manual/en/function.stream-context-create.php
+* RFC Based regex for email validation
+  * https://stackoverflow.com/questions/13992403/regex-validation-of-email-addresses-according-to-rfc5321-rfc5322
+  * https://stackoverflow.com/questions/12026842/how-to-validate-an-email-address-in-php
+  * This might not catch all variations of an email address according to the latest specifications, but might work in the short term:
+```
+$valid = filter_var('bob@example.com', FILTER_VALIDATE_EMAIL);
+```
 * `json_encode()decode()` vs. `serialize() unserialize()`
 ```
 <?php

@@ -4,7 +4,9 @@
 
 * Q: RE: VM postman: there is no GeoCode pre-defined query: maybe because no longer free?
 * Arrange to get VM source to Olawale
-
+* Foundation of modern software design patterns:
+  * https://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented/dp/0201633612
+  * https://www.amazon.com/Patterns-Enterprise-Application-Architecture-Martin/dp/0321127420/ref=sr_1_1?crid=33WORKA14VTG4&keywords=martin+fowler+patterns+of+enterprise+architecture&qid=1558668034&s=books&sprefix=martin+fowler+pattern%2Cstripbooks-intl-ship%2C392&sr=1-1
 ## Homework
 * Repo for Class: https://github.com/dbierer/php-iii-may-2019
 * For Thu 23 May 2019
@@ -59,7 +61,7 @@ NOTE: whenever you see `/path/to/source` in these notes, in the VM it's `/home/v
   * When you're done, test first by just running `http://expressive/` from the browser
     * The `Whoops` error handler middleware generates a nicely formatted HTML page
     * Easier to read error messages from the browser
-  * When you're bug free, switch over to Postname to generate REST requests
+  * When you're bug free, switch over to Postman to generate REST requests
   * Theoretically you should be able to run any of the imported Apigility requests just by changing the host name from `apigility` to `expressive`
 
 * Expressive Lab Notes
@@ -266,6 +268,7 @@ BUILD FAILED
       * Use this as the target in Jenkins
 
 * Apigility REST API Lab
+  * When adding authentication adapter, make sure you enter `api` for the "realm"
   * `/path/to/source/apigility/public/.htaccess` file contents:
 ```
 AuthType Basic
