@@ -1,20 +1,28 @@
 # PHP SECURITY CLASS NOTES
 
-## Q & A
-* Q: What is "SQL Safe Mode" (see file:///D:/Repos/PHP-Security/Course_Materials/index.html#/5/7)
+## TODO
+* Q: Ref to Project Honeypot
+* Q: Example of uploaded script which can takeover the file system
+* Q: RE: SQL Injection:
+  * Second Level Attacks
+  * Union Select Attacks
+
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/7: dup
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/10: founden
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/18: are your SQL statements influenced by user input?
 
 ## LAB NOTES
 ### Assignments
-* For Tue 26 Feb
+* For Wed 29 May
   * Get VM running
   * Install ZAP tool
   * Lab: SQL Injection
+* For Thu 30 May
   * Lab: Brute Force / ZAP Tool
-* For Wed 27 Feb
   * Lab: Tidy Extension Lab
   * Lab: XSS
   * Lab: Insecure Direct Object References
-* For Thu 28 Feb
+* For Fri 31 May
   * Lab: CSRF
   * Lab: Security Misconfiguration
   * Lab: Sensitive Data Exposure
@@ -165,7 +173,10 @@ header('X-Content-Type-Options: nosniff');
 *  1: use prepared statements to enhance protection against sql injection
 *  2: filter and validate all inputs
 *  3: treat the database with suspicion as it could have been compromised
-*  4: penetration testing tools for SQL injection:
+*  4: use database users with the lowest possible level of access to do the job required
+*  5: encrypting the database passwords might negatively impact performance, but
+      you can at least put the credentials in a separate include file
+*  6: penetration testing tools for SQL injection:
     * http://sqlmap.org/
     * https://www.owasp.org/index.php/Category:OWASP_SQLiX_Project
 
