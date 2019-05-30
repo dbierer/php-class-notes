@@ -1,15 +1,16 @@
 # PHP SECURITY CLASS NOTES
 
+file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/61
+
 ## TODO
 * Q: Ref to Project Honeypot
-* Q: Example of uploaded script which can takeover the file system
-* Q: RE: SQL Injection:
-  * Second Level Attacks
-  * Union Select Attacks
+* A: https://www.projecthoneypot.org/
 
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/7: dup
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/10: founden
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/18: are your SQL statements influenced by user input?
+* Q: Example of uploaded script which can takeover the file system
+
+* Q: RE: SQL Injection:
+  * Second Level Attacks: https://bertwagner.com/2018/03/20/how-to-steal-data-using-a-second-order-sql-injection-attack/
+  * Union Select Attacks: http://www.sqlinjection.net/union/
 
 ## LAB NOTES
 ### Assignments
@@ -21,8 +22,8 @@
   * Lab: Brute Force / ZAP Tool
   * Lab: Tidy Extension Lab
   * Lab: XSS
-  * Lab: Insecure Direct Object References
 * For Fri 31 May
+  * Lab: Insecure Direct Object References
   * Lab: CSRF
   * Lab: Security Misconfiguration
   * Lab: Sensitive Data Exposure
@@ -71,6 +72,8 @@ CREATE TABLE `bfdetect` (
   * DEF: http://cwe.mitre.org/data/definitions/89.html
   * TOOL: http://sqlmap.org/
 * Brute Force
+  * https://securityaffairs.co/wordpress/84948/hacking/hacker-hacked-iot-botnets.html
+  * https://gbhackers.com/brute-force-attack-from-outlaw/
   * phpLiteAdmin: Apr 2018: http://k3research.outerhaven.de/posts/small-mistakes-lead-to-big-problems.html
   * Blocked Attempts on WordPress Sites: https://www.wordfence.com/blog/2019/01/analyzing-a-week-of-blocked-attacks/
   * https://www.securityweek.com/spring-2018-password-attacks
@@ -78,6 +81,8 @@ CREATE TABLE `bfdetect` (
   * https://www.theregister.co.uk/2018/04/03/magento_brute_force_attack/
   * https://blog.paranoidpenguin.net/2018/01/another-significant-wordpress-brute-force-attack-in-the-works/
   * Pen Testing Tool: https://www.metasploit.com/
+  * TOOL: simulates a botnet using brute force to crack passwords:
+    * https://github.com/JPaulMora/Pyrit
 * XSS
   * PHP Script Mall Email Script: https://hackingvila.wordpress.com/2019/02/16/xss-vulnerability-in-responsive-video-news-script-php-script-mall/
   * KindEditor: https://github.com/0xUhaw/CVE-Bins/tree/master/KindEditor
@@ -105,6 +110,7 @@ CREATE TABLE `bfdetect` (
   * https://www.cvedetails.com/cve/CVE-2018-10267/
   * WordPress Plugin (again): https://www.cvedetails.com/cve/CVE-2018-10233/
 * Security Misconfig
+  * https://www.wordfence.com/blog/2019/05/privilege-escalation-flaw-present-in-slick-popup-plugin/
   * Node.js debugger mode code execution: https://exchange.xforce.ibmcloud.com/vulnerabilities/153454
   * phpMyAdmin: https://www.cvedetails.com/cve/CVE-2017-18264/
   * https://www.databreaches.net/samba-federal-employee-benefit-association-programming-error-resulted-in-mismailed-information/
@@ -123,6 +129,8 @@ CREATE TABLE `bfdetect` (
 * Web Server Security
   * https://httpd.apache.org/security/vulnerabilities_24.html
   * Don't forget about https://modsecurity.org/
+* Command Injection
+  * https://www.wordfence.com/blog/2019/05/os-command-injection-vulnerability-patched-in-wp-database-backup-plugin/
 * Recommended Headers:
   * OWASP recommends the following:
 ```
@@ -203,6 +211,7 @@ LAB: examples for SQL injection:
 * 7: if a high level of abuse is noted, extreme measures are called for: i.e. total lockout at IP level
 * 8: Generate random temporary redirect pages if excessive failed logins are detected.  Add random ipsum lorem to the temporary pages to further confuse automated attack systems.
 * 9: Add random hidden content to the return HTML to further confuse automated attack systems
+* 10: Have multiple password and a random rotation
 
 ## XSS:
 * 1: escape, validate, filter all input
@@ -220,6 +229,7 @@ LAB: examples for SQL injection:
 * 7: Use Zend\Escaper\HtmlAttrib (???) which escapes *contents* of attribs
 * 8: from Keoghan to All Participants: just thought I'd share this for the times where html is needed to be allowed through:
     https://github.com/ezyang/htmlpurifier (not sure if everyone will have some across it or not)
+* 9: User education: instruct them where to look and what not to do
 
 ## Insecure Direct Object Reference / Missing Function Level Access Control
 * 1: When building the SELECT, encrypt the database key which is exposed to the form
@@ -1834,3 +1844,7 @@ if(isset($_GET['img'])) {
 * SDE Lab: need to add a password quality check before allowing the new user entry to be created
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/4/4: extra ":" on 1st line
 * IFU Lab: need to have some kind way to link the random filename with the original: maybe a database entry
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/7: dup
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/10: founden
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/18: are your SQL statements influenced by user input?
+
