@@ -12,6 +12,16 @@ file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/61
   * Second Level Attacks: https://bertwagner.com/2018/03/20/how-to-steal-data-using-a-second-order-sql-injection-attack/
   * Union Select Attacks: http://www.sqlinjection.net/union/
 
+* Q: What is the ultimate pen testing tool?
+* A: Definitive answer: https://www.metasploit.com/
+
+* Q: Can you provide a working version of the CSRF lab please?
+* Q: Looks like "id" is not provided in the CSRF ajax query???
+* A:
+
+* Q: Is there an "easy" way to migrate off of the now removed mcrypt extension?
+* A: https://packagist.org/packages/phpseclib/mcrypt_compat
+
 ## LAB NOTES
 ### Assignments
 * For Wed 29 May
@@ -27,6 +37,7 @@ file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/61
   * Lab: CSRF
   * Lab: Security Misconfiguration
   * Lab: Sensitive Data Exposure
+  * Lab: Missing Function Access Level Control (ACL)
 
 ### LAB NOTES
 * ZAP Lab
@@ -55,9 +66,18 @@ CREATE TABLE `bfdetect` (
   * If the `bfdetect` table is not found, load the table create SQL from the dump `/securitytraining/data/sql/course.sql` and you should be able to run the BF tool.
 
 ### VM NOTES
-* The virtual host `http://sandbox/` is mapped to `/home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox`
-  * _Not_ to `public` as in other Zend courses!
-
+* Here is the virtual host definition for `http://sandbox/`:
+```
+<VirtualHost *:80>
+	 ServerName sandbox
+	 DocumentRoot /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public
+	 <Directory /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public/>
+		 Options Indexes FollowSymlinks MultiViews
+		 AllowOverride All
+		 Require all granted
+	 </Directory>
+ </VirtualHost>
+```
 ### CLASS NOTES
 
 ## LATEST
@@ -131,6 +151,10 @@ CREATE TABLE `bfdetect` (
   * Don't forget about https://modsecurity.org/
 * Command Injection
   * https://www.wordfence.com/blog/2019/05/os-command-injection-vulnerability-patched-in-wp-database-backup-plugin/
+* Secure File Uploads
+  * Anti-Virus filter for ZF: https://www.sitepoint.com/zf-clamav/
+* Insecure CAPTCHA
+  * https://andresriancho.com/recaptcha-bypass-via-http-parameter-pollution/
 * Recommended Headers:
   * OWASP recommends the following:
 ```
@@ -1847,4 +1871,10 @@ if(isset($_GET['img'])) {
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/7: dup
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/10: founden
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/18: are your SQL statements influenced by user input?
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/75: s/be DO NOT include token in GET param
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/84: s/be a dot "." after "session"
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/102: accessability
+* LABS: Sensitive Data Exposure: looks like solution is not complete; esp ctype_alnum() not affecting validation
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/5/6: show examples of these
+* PDF page 177: smart quotes are causing weird characters to appear in the PDF creation
 
