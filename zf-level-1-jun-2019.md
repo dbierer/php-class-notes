@@ -1,5 +1,18 @@
 # ZF Fundamentals June 2019
 
+## Labs
+* For Wed 12 Jun 2019
+  * Lab: fix the Apache vhost definition for `onlinemarket.work` as shown below
+  * Lab: install the Zend Framework skeleton app as described in the lab instructions
+    * Recommendation: don't do steps 4 and 5 (so that you'll see the error message associated with missing modules later)
+  * Lab: Integrating an Existing Module
+    * https://github.com/zendframework/zend-developer-tools
+## Class Discussion
+* New "home" for Zend Framework in the future:
+  * https://www.linuxfoundation.org/blog/2019/04/lf-forms-laminas-project/
+  * https://getlaminas.org/
+* ZF2 vs. ZF3
+  * https://github.com/dbierer/ZF2_ZF3_Side_by_SIde
 ## TODO
 * Troubleshoot VM web server issues
   * Notify Isha when done: isha.negi19@gmail.com
