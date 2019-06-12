@@ -15,7 +15,6 @@
   * https://github.com/dbierer/ZF2_ZF3_Side_by_SIde
 ## TODO
 * Troubleshoot VM web server issues
-  * Notify Isha when done: isha.negi19@gmail.com
 * Need to modify the virtual host definition for `onlinemarket.work` as follows:
   * From the VM open a terminal window
   * Run `gedit` as the root user:
