@@ -1,6 +1,14 @@
 # ZF Fundamentals June 2019
 
 ## Labs
+* Recommendations
+  * Add `ini_set('display_errors',1);` in `/onlinemarket.work/config/development.config.php`
+  * From `/home/vagrant/Zend/workspaces/DefaultWorkspace/onlinemarket.work` run `composer update` after installing the ZF skeleton app.  This will get rid of the notices you might see initially.
+  * Error log file: `sudo tail /var/log/apache2/error.log`
+* For Fri 14 Jun 2019
+  * Lab: Market Module
+  * Lab: Index Controller
+  * Lab: Initial View
 * For Wed 12 Jun 2019
   * Lab: fix the Apache vhost definition for `onlinemarket.work` as shown below
   * Lab: install the Zend Framework skeleton app as described in the lab instructions
@@ -8,13 +16,13 @@
   * Lab: Integrating an Existing Module
     * https://github.com/zendframework/zend-developer-tools
 ## Class Discussion
+* Why my new `Test` module was not responding: I needed to enable it in `/onlinemarket.work/config/modules.config.php`! (facepalm)
 * New "home" for Zend Framework in the future:
   * https://www.linuxfoundation.org/blog/2019/04/lf-forms-laminas-project/
   * https://getlaminas.org/
 * ZF2 vs. ZF3
   * https://github.com/dbierer/ZF2_ZF3_Side_by_SIde
 ## TODO
-* Troubleshoot VM web server issues
 * Need to modify the virtual host definition for `onlinemarket.work` as follows:
   * From the VM open a terminal window
   * Run `gedit` as the root user:
