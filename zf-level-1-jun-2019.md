@@ -1,5 +1,6 @@
 # ZF Fundamentals June 2019
 
+Class Repository: https://github.com/dbierer/zf-fund-jun-2019
 ## Labs
 * Recommendations
   * Add `ini_set('display_errors',1);` in `/onlinemarket.work/config/development.config.php`
