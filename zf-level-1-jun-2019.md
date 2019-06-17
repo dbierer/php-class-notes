@@ -6,6 +6,8 @@ Class Repository: https://github.com/dbierer/zf-fund-jun-2019
   * Add `ini_set('display_errors',1);` in `/onlinemarket.work/config/development.config.php`
   * From `/home/vagrant/Zend/workspaces/DefaultWorkspace/onlinemarket.work` run `composer update` after installing the ZF skeleton app.  This will get rid of the notices you might see initially.
   * Error log file: `sudo tail /var/log/apache2/error.log`
+* For Wed 19 Jun 2019
+  * Lab: Creating and Accessing a Service
 * For Mon 17 Jun 2019
   * Lab: Using a Built-in Controller Plugin
   * Lab: Using a Custom Controller Plugin
@@ -13,7 +15,7 @@ Class Repository: https://github.com/dbierer/zf-fund-jun-2019
     * For creating factories you can use, from the `onlinemarket.work` project root directory
     * This example creates the `PostControllerFactory`:
 ```
-vendor/bin/create-factory-for-class Market\\Controller\\PostController
+vendor/bin/generate-factory-for-class Market\\Controller\\PostController
 ```
 * For Fri 14 Jun 2019
   * Lab: Market Module
@@ -28,6 +30,7 @@ vendor/bin/create-factory-for-class Market\\Controller\\PostController
 ## Class Discussion
 * file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/4/31: s/be `setContent()` (no "S")
 * file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/4/9: Zend\Mvc\Controller\Plugin\AbstractPlugin
+* file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/5/4: implmenets
 * Why my new `Test` module was not responding: I needed to enable it in `/onlinemarket.work/config/modules.config.php`! (facepalm)
 * New "home" for Zend Framework in the future:
   * https://www.linuxfoundation.org/blog/2019/04/lf-forms-laminas-project/
