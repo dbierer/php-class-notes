@@ -10,6 +10,8 @@ Class Repository: https://github.com/dbierer/zf-fund-jun-2019
   * Add `ini_set('display_errors',1);` in `/onlinemarket.work/config/development.config.php`
   * From `/home/vagrant/Zend/workspaces/DefaultWorkspace/onlinemarket.work` run `composer update` after installing the ZF skeleton app.  This will get rid of the notices you might see initially.
   * Error log file: `sudo tail /var/log/apache2/error.log`
+* For Mon 24 Jun 2019
+  * Lab: Forms
 * For Fri 21 Jun 2019
   * Lab: Manipulating Views and Layouts
   * Lab: Create a View Helper
@@ -35,10 +37,6 @@ vendor/bin/generate-factory-for-class Market\\Controller\\PostController
   * Lab: Integrating an Existing Module
     * https://github.com/zendframework/zend-developer-tools
 ## Class Discussion
-* file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/4/31: s/be `setContent()` (no "S")
-* file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/4/9: Zend\Mvc\Controller\Plugin\AbstractPlugin
-* file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/5/4: implmenets
-* file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/6/35: also recommended: define an alias to make the view helper easier to use in a view script
 * Why my new `Test` module was not responding: I needed to enable it in `/onlinemarket.work/config/modules.config.php`! (facepalm)
 * New "home" for Zend Framework in the future:
   * https://www.linuxfoundation.org/blog/2019/04/lf-forms-laminas-project/
@@ -75,4 +73,18 @@ sudo apachectl configtest
   * Restart the web server as follows:
 ```
 sudo service apache2 start
+```
+
+## Errata
+* file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/4/31: s/be `setContent()` (no "S")
+* file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/4/9: Zend\Mvc\Controller\Plugin\AbstractPlugin
+* file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/5/4: implmenets
+* file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/6/35: also recommended: define an alias to make the view helper easier to use in a view script
+* file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/7/7: accompished
+* file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/7/29: doesn't show how inputfilter is assigned to the form
+* onlinemarket.complete needs to have `public/captcha` folder created:
+```
+vagrant@zf1-training:~/Zend/workspaces/DefaultWorkspace/onlinemarket.complete$ mkdir public/captcha
+vagrant@zf1-training:~/Zend/workspaces/DefaultWorkspace/onlinemarket.complete$ sudo chown vagrant:www-data public/captcha/
+vagrant@zf1-training:~/Zend/workspaces/DefaultWorkspace/onlinemarket.complete$ sudo chmod 775 public/captcha
 ```
