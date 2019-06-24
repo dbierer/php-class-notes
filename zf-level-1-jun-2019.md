@@ -10,6 +10,11 @@ Class Repository: https://github.com/dbierer/zf-fund-jun-2019
   * Add `ini_set('display_errors',1);` in `/onlinemarket.work/config/development.config.php`
   * From `/home/vagrant/Zend/workspaces/DefaultWorkspace/onlinemarket.work` run `composer update` after installing the ZF skeleton app.  This will get rid of the notices you might see initially.
   * Error log file: `sudo tail /var/log/apache2/error.log`
+* For Wed 26 Jun 2019
+  * Lab: Events
+  * Lab: Shared Event Manager
+    * To view the error log in the VM: `sudo tail /var/log/apache2/error.log`
+
 * For Mon 24 Jun 2019
   * Lab: Forms
 * For Fri 21 Jun 2019
@@ -82,6 +87,7 @@ sudo service apache2 start
 * file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/6/35: also recommended: define an alias to make the view helper easier to use in a view script
 * file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/7/7: accompished
 * file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/7/29: doesn't show how inputfilter is assigned to the form
+* file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/8/15: s/be `onBootstrap()` method
 * onlinemarket.complete needs to have `public/captcha` folder created:
 ```
 vagrant@zf1-training:~/Zend/workspaces/DefaultWorkspace/onlinemarket.complete$ mkdir public/captcha
