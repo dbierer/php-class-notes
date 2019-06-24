@@ -1,43 +1,12 @@
 # PHP SECURITY CLASS NOTES
 
-file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/61
-
 ## TODO
-* Q: Ref to Project Honeypot
-* A: https://www.projecthoneypot.org/
 
-* Q: Example of uploaded script which can takeover the file system
-
-* Q: RE: SQL Injection:
-  * Second Level Attacks: https://bertwagner.com/2018/03/20/how-to-steal-data-using-a-second-order-sql-injection-attack/
-  * Union Select Attacks: http://www.sqlinjection.net/union/
-
-* Q: What is the ultimate pen testing tool?
-* A: Definitive answer: https://www.metasploit.com/
-
-* Q: Can you provide a working version of the CSRF lab please?
-* Q: Looks like "id" is not provided in the CSRF ajax query???
-* A:
-
-* Q: Is there an "easy" way to migrate off of the now removed mcrypt extension?
-* A: https://packagist.org/packages/phpseclib/mcrypt_compat
-
-## LAB NOTES
 ### Assignments
-* For Wed 29 May
-  * Get VM running
-  * Install ZAP tool
+* For Tue 25 Jun 2019
+  * Get the VM up and running
+  * Lab: Get the ZED Attack Proxy Setup
   * Lab: SQL Injection
-* For Thu 30 May
-  * Lab: Brute Force / ZAP Tool
-  * Lab: Tidy Extension Lab
-  * Lab: XSS
-* For Fri 31 May
-  * Lab: Insecure Direct Object References
-  * Lab: CSRF
-  * Lab: Security Misconfiguration
-  * Lab: Sensitive Data Exposure
-  * Lab: Missing Function Access Level Control (ACL)
 
 ### LAB NOTES
 * ZAP Lab
@@ -78,6 +47,7 @@ CREATE TABLE `bfdetect` (
 	 </Directory>
  </VirtualHost>
 ```
+
 ### CLASS NOTES
 
 ## LATEST
@@ -626,6 +596,19 @@ nmap -A -T4 ip.add.re.ss
 
 
 ## Q & A:
+
+* Q: Ref to Project Honeypot
+* A: https://www.projecthoneypot.org/
+
+* Q: RE: SQL Injection:
+  * Second Level Attacks: https://bertwagner.com/2018/03/20/how-to-steal-data-using-a-second-order-sql-injection-attack/
+  * Union Select Attacks: http://www.sqlinjection.net/union/
+
+* Q: What is the ultimate pen testing tool?
+* A: Definitive answer: https://www.metasploit.com/
+
+* Q: Is there an "easy" way to migrate off of the now removed mcrypt extension?
+* A: https://packagist.org/packages/phpseclib/mcrypt_compat
 
 * Q: Is Access Control List type of security available on Symfony?
 * A: Yes: see: https://symfony.com/doc/current/components/security/authorization.html
@@ -1861,20 +1844,19 @@ if(isset($_GET['img'])) {
 ```
 ## ERRATA
 
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/5: missing a graphic
-* CSRF Lab: parameter to activate the attack should be: ?action=csrf&attack=1
-* CSRF Lab: the CSRF attack isn't working: maybe incorrect ID?
 * SDE Lab: ctype_alnum doesn't work in this context: need to rework and use it as a validator
 * SDE Lab: need to add a password quality check before allowing the new user entry to be created
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/4/4: extra ":" on 1st line
 * IFU Lab: need to have some kind way to link the random filename with the original: maybe a database entry
+* LABS: Sensitive Data Exposure: looks like solution is not complete; esp ctype_alnum() not affecting validation
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/2/16: syntax error in example!!!
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/7: dup
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/10: founden
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/18: are your SQL statements influenced by user input?
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/75: s/be DO NOT include token in GET param
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/84: s/be a dot "." after "session"
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/102: accessability
-* LABS: Sensitive Data Exposure: looks like solution is not complete; esp ctype_alnum() not affecting validation
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/4/4: extra ":" on 1st line
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/5: missing a graphic
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/5/6: show examples of these
 * PDF page 177: smart quotes are causing weird characters to appear in the PDF creation
 
