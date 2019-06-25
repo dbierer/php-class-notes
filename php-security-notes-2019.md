@@ -1869,17 +1869,17 @@ if(isset($_GET['img'])) {
   * replaced with: `$username = preg_replace('/[^a-z0-9]/i', '', $_POST['username']);`
 * SDE Lab: need to add a password quality check before allowing the new user entry to be created
   * added validation for both username and password
-* IFU Lab: need to have some kind way to link the random filename with the original: maybe a database entry
-* LABS: Sensitive Data Exposure: looks like solution is not complete; esp ctype_alnum() not affecting validation
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/2/16: syntax error in example!!!
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/7: dup
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/10: founden
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/18: are your SQL statements influenced by user input?
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/75: s/be DO NOT include token in GET param
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/84: s/be a dot "." after "session"
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/102: accessability
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/4/4: extra ":" on 1st line
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/5: missing a graphic
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/5/6: show examples of these
-* PDF page 177: smart quotes are causing weird characters to appear in the PDF creation
+* IFU Lab: need to have some kind way to link the random filename with the original: maybe a database entry; OK
+* LABS: Sensitive Data Exposure: looks like solution is not complete; esp ctype_alnum() not affecting validation; OK
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/2/16: syntax error in example!!!; OK
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/7: dup; ???
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/10: founden; OK
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/18: are your SQL statements influenced by user input?; OK
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/75: s/be DO NOT include token in GET param; OK
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/84: s/be a dot "." after "session"; OK
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/102: accessability; OK
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/4/4: extra ":" on 1st line; OK
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/5: missing a graphic; OK
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/5/6: show examples of these; OK
+* PDF page 177: smart quotes are causing weird characters to appear in the PDF creation; OK
 
