@@ -1,6 +1,27 @@
 # PHP SECURITY CLASS NOTES
 
 ## TODO
+* The source code in the VM needs to be updated.  Please do the following:
+  * Open a terminal window
+  * Change to the `/home/vagrant` home directory
+  * Clone from the update repo:
+```
+git clone https://github.com/dbierer/php-sec-update-jun-2019.git
+```
+  * Change to the new directory just cloned:
+```
+cd php-sec-update-jun-2019
+```
+  * Run the copy script as root:
+```
+chmod +x ./copy.sh
+sudo ./copy.sh
+```
+  * Verify that the database has been refreshed: look for a new table called `flowers`
+  * If the refresh didn't occur property, refresh the database by importing from this file (you can also do this from phpMyAdmin):
+```
+mysqlimport security -uvagrant -pvagrant ./securitytraining/data/sql/security.sql
+```
 
 ### Assignments
 * For Tue 25 Jun 2019
@@ -1844,8 +1865,10 @@ if(isset($_GET['img'])) {
 ```
 ## ERRATA
 
-* SDE Lab: ctype_alnum doesn't work in this context: need to rework and use it as a validator
+* SDE Lab: ctype_alnum doesn't work in this context
+  * replaced with: `$username = preg_replace('/[^a-z0-9]/i', '', $_POST['username']);`
 * SDE Lab: need to add a password quality check before allowing the new user entry to be created
+  * added validation for both username and password
 * IFU Lab: need to have some kind way to link the random filename with the original: maybe a database entry
 * LABS: Sensitive Data Exposure: looks like solution is not complete; esp ctype_alnum() not affecting validation
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/2/16: syntax error in example!!!
