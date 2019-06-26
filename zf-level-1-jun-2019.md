@@ -2,7 +2,7 @@
 
 ## TODO
 * Q: in the layout there is a reference to `$this->inlinescript()`;  where is it defined?
-* A:
+* A: This is defined
 
 Class Repository: https://github.com/dbierer/zf-fund-jun-2019
 ## Labs
@@ -90,7 +90,7 @@ sudo service apache2 start
 * file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/7/7: accompished
 * file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/7/29: doesn't show how inputfilter is assigned to the form
 * file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/8/15: s/be `onBootstrap()` method
-* file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/9/41: missing the table name: s/be the 1st argument to the TableGateway contructor
+* file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/9/41: missing the table name: s/be the 1st argument to the TableGateway contructor (see example just below)
 * file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/9/52: `$rowset = $userTableGateway->selectWith($where);` s/be `$rowset = $userTableGateway->selectWith($select);`
 ```
 use Zend\Db\{Adapter\Adapter, Sql\Sql, ResultSet\ResultSetInterface,

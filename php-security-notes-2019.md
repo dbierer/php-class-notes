@@ -1,6 +1,11 @@
 # PHP SECURITY CLASS NOTES
 
 ## Assignments
+* For Thu 27 Jun 2019
+  * Lab: CSRF
+  * Lab: Security Misconfiguration
+  * Lab: Insecure Deserialization
+  * Lab: Using Components with Known Vulnerabilities: just look over the information
 * For Wed 26 Jun 2019
   * Lab: Brute Force
   * Lab: Zed Attack Proxy Project Exercise
@@ -285,7 +290,8 @@ $document->getElementById("name-output"); // doesn't have querySelector by defau
 * 6: Consider sending the CSRF token out via a cookie rather than a hidden form field
     * DO NOT use the word "token" to identify the field
     * Use a random string of characters, and store that info in the session
-
+* 7: Once a token is used, throw it away - that makes sense, but I've always wondered what to do with tokens that are _not_ used. Seems like a vulnerability having many active tokens as many users navigate complex sites with many forms.
+	* Set some sort of expiration, otherwise you have active, valid, unused tokens sitting around.
 LAB: quick test: download form, make a change, submit manually, and see that you've change the password
 
 ## Session Protection:
@@ -1902,4 +1908,5 @@ if(isset($_GET['img'])) {
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/5: missing a graphic; OK
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/5/6: show examples of these; OK
 * PDF page 177: smart quotes are causing weird characters to appear in the PDF creation; OK
-
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/2/89: Create interfaces which tightly define
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/2/91: the whitelist might be subject to attack: maybe index of function names, not stored directly
