@@ -1,6 +1,20 @@
 # PHP SECURITY CLASS NOTES
 
+## Assignments
+* For Wed 26 Jun 2019
+  * Lab: Brute Force
+  * Lab: Zed Attack Proxy Project Exercise
+  * Lab: Cross-Site Scripting (XSS)
+    * Tidy example, XSSS, XSSR
+  * Lab: External XML Entities
+* For Tue 25 Jun 2019
+  * Get the VM up and running
+  * Lab: Get the ZED Attack Proxy Setup
+  * Lab: SQL Injection
+
 ## TODO
+* Password cracker: Hydra
+
 * The source code in the VM needs to be updated.  Please do the following:
   * Open a terminal window
   * Change to the `/home/vagrant` home directory
@@ -23,13 +37,9 @@ sudo ./copy.sh
 mysqlimport security -uvagrant -pvagrant ./securitytraining/data/sql/security.sql
 ```
 
-### Assignments
-* For Tue 25 Jun 2019
-  * Get the VM up and running
-  * Lab: Get the ZED Attack Proxy Setup
-  * Lab: SQL Injection
-
+## General Notes
 ### LAB NOTES
+* SQLI Lab: solution: doesn't take into account 0 ID for admin
 * ZAP Lab
   * Good "how to": https://chrisdecairos.ca/intercepting-traffic-with-zaproxy/
 * Brute Force Detector Lab:
@@ -83,6 +93,7 @@ CREATE TABLE `bfdetect` (
   * DEF: http://cwe.mitre.org/data/definitions/89.html
   * TOOL: http://sqlmap.org/
 * Brute Force
+  * https://hackercombat.com/password-cracking-tool-hydra/
   * https://securityaffairs.co/wordpress/84948/hacking/hacker-hacked-iot-botnets.html
   * https://gbhackers.com/brute-force-attack-from-outlaw/
   * phpLiteAdmin: Apr 2018: http://k3research.outerhaven.de/posts/small-mistakes-lead-to-big-problems.html
@@ -92,6 +103,7 @@ CREATE TABLE `bfdetect` (
   * https://www.theregister.co.uk/2018/04/03/magento_brute_force_attack/
   * https://blog.paranoidpenguin.net/2018/01/another-significant-wordpress-brute-force-attack-in-the-works/
   * Pen Testing Tool: https://www.metasploit.com/
+  * TOOL: https://www.hackeroyale.com/crack-passwords-using-thc-hydra/
   * TOOL: simulates a botnet using brute force to crack passwords:
     * https://github.com/JPaulMora/Pyrit
 * XSS
@@ -104,6 +116,8 @@ CREATE TABLE `bfdetect` (
   * TOOL: https://www.virustotal.com/#/home/url
   * DEF: http://cwe.mitre.org/data/definitions/79.html
   * EXPLANATION: https://stackoverflow.com/questions/2526522/csrf-cross-site-request-forgery-attack-example-and-prevention-in-php
+  * RESOURCES: https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity
+    * Uses Subresource Integrity to verify the integrity of the jQuery source
 * Broken Auth / Session Mgmt
   * Monstra: https://github.com/monstra-cms/monstra/issues/429
   * PHP Proxy: https://pentest.com.tr/exploits/PHP-Proxy-3-0-3-Local-File-Inclusion.html
@@ -245,6 +259,12 @@ LAB: examples for SQL injection:
 * 8: from Keoghan to All Participants: just thought I'd share this for the times where html is needed to be allowed through:
     https://github.com/ezyang/htmlpurifier (not sure if everyone will have some across it or not)
 * 9: User education: instruct them where to look and what not to do
+* 10: Inject your data into a DOM, minimized the need to sanitise
+```
+$document->querySelector("#name-output")->innerText = $_GET["name"]
+// also: using PHP DOM extension:
+$document->getElementById("name-output"); // doesn't have querySelector by default.
+```
 
 ## Insecure Direct Object Reference / Missing Function Level Access Control
 * 1: When building the SELECT, encrypt the database key which is exposed to the form
