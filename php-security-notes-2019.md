@@ -1,10 +1,17 @@
 # PHP SECURITY CLASS NOTES
 
 ## Assignments
+* For Fri 28 Jun 2019
+  * Lab: Insecure Direct Object References
+  * Lab: Missing Function Access Level Control (ACL)
+  * Lab: Command Execution
+  * Lab: Unrestricted File Inclusion
+  * Lab: Secure File Uploads
 * For Thu 27 Jun 2019
   * Lab: CSRF
   * Lab: Security Misconfiguration
   * Lab: Insecure Deserialization
+    * NOTE: in the URL you are asked to post via `curl` target s/be `http://securitytraining/`
   * Lab: Using Components with Known Vulnerabilities: just look over the information
 * For Wed 26 Jun 2019
   * Lab: Brute Force
@@ -19,6 +26,11 @@
 
 ## TODO
 * Password cracker: Hydra
+* https://codepen.io/cshaw/pen/oroXjX: add this to notes
+* RE: Insecure Deserialization:
+  * don't store the strategy directly in the cookie: just reference to whitelist of strategies
+  * create a digital signature of object prior to serialization and then compare with unserialized version
+* Reverse CAPTCHAs: designed such that only bots can complete them
 
 * The source code in the VM needs to be updated.  Please do the following:
   * Open a terminal window
@@ -341,6 +353,11 @@ LAB: quick test: download form, make a change, submit manually, and see that you
     * GCM
     * CTR
 * 8: For more info: https://en.wikipedia.org/wiki/Block_cipher
+
+## Insecure Deserialization
+* 1: Maybe don't store such information in a cookie: store someplace else
+* 2: Enumerate the strategies and only store the enumeration in the cookie; upon return compare with a whitelist of strategies
+* 3: Create a digital signature or hash of the object to be stored and confirm upon restoration
 
 ## Command Injection
 * 1: Do you really need to run system(), exec() etc.?  Maybe another way
@@ -1910,3 +1927,8 @@ if(isset($_GET['img'])) {
 * PDF page 177: smart quotes are causing weird characters to appear in the PDF creation; OK
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/2/89: Create interfaces which tightly define
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/2/91: the whitelist might be subject to attack: maybe index of function names, not stored directly
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/4/3: get rid of "smart quote"!!!
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/4/11: get rid of "smart quote"!!!
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/4/11: don't use direct user input!  use value from whitelist instead
+* LAB: IDSZ:     * NOTE: in the URL you are asked to post via `curl` target s/be `http://securitytraining/`
+
