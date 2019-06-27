@@ -90,8 +90,21 @@ sudo service apache2 start
 * file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/7/7: accompished
 * file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/7/29: doesn't show how inputfilter is assigned to the form
 * file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/8/15: s/be `onBootstrap()` method
-* file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/9/41: missing the table name: s/be the 1st argument to the TableGateway contructor (see example just below)
+* file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/9/41: missing the table name: s/be the 1st argument to the TableGateway contructor (see example just below): `class UserTableGateway extends TableGateway {` ...  `public function __construct($tableName, Adapter $adapter, AbstractFeature $feature = null,ResultSetInterface $resultSet = null, Sql $sql = null)`
 * file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/9/52: `$rowset = $userTableGateway->selectWith($where);` s/be `$rowset = $userTableGateway->selectWith($select);`
+* Database Lab:
+  * Step 4 - Define Adapter Factory: "Build an adapter factory called "Primary" in Model\Adapter\Factory" ... then in step 5 we were asked to a add a new service as follows: `'factories' => [ 'model-primary-adapter' => Adapter\Factory\PrimaryFactory::class],`.  I think in step 4 the adapter factory should be called `PrimaryFactory`.
+  * Step 5 Add Config Parameters: s/be `zfcourse` instead of `onlinemarket` in this config:
+```
+'services' => [
+    'model-primary-adapter-config' => [
+    'driver' => 'PDO',
+    'dsn' => 'mysql:hostname=localhost;dbname=onlinemarket',
+    'username' => 'vagrant',
+    'password' => 'vagrant',
+],
+```
+* The class + factory below should include the table name as the first parameter in the constructor:
 ```
 use Zend\Db\{Adapter\Adapter, Sql\Sql, ResultSet\ResultSetInterface,
     TableGateway\TableGateway, TableGateway\Feature};
