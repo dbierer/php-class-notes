@@ -31,6 +31,7 @@
   * don't store the strategy directly in the cookie: just reference to whitelist of strategies
   * create a digital signature of object prior to serialization and then compare with unserialized version
 * Reverse CAPTCHAs: designed such that only bots can complete them
+* https://stackoverflow.com/questions/13719821/email-validation-using-regular-expression-in-php/13719870#13719870
 
 * The source code in the VM needs to be updated.  Please do the following:
   * Open a terminal window
@@ -1930,5 +1931,6 @@ if(isset($_GET['img'])) {
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/4/3: get rid of "smart quote"!!!
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/4/11: get rid of "smart quote"!!!
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/4/11: don't use direct user input!  use value from whitelist instead
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/6/20: metasplit
 * LAB: IDSZ:     * NOTE: in the URL you are asked to post via `curl` target s/be `http://securitytraining/`
 

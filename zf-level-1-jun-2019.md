@@ -44,6 +44,7 @@ vendor/bin/generate-factory-for-class Market\\Controller\\PostController
   * Lab: Integrating an Existing Module
     * https://github.com/zendframework/zend-developer-tools
 ## Class Discussion
+* Master list of all `Module::get*Config()` methods: https://docs.zendframework.com/zend-modulemanager/module-manager/
 * Why my new `Test` module was not responding: I needed to enable it in `/onlinemarket.work/config/modules.config.php`! (facepalm)
 * New "home" for Zend Framework in the future:
   * https://www.linuxfoundation.org/blog/2019/04/lf-forms-laminas-project/
@@ -93,6 +94,9 @@ sudo service apache2 start
 * file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/9/41: missing the table name: s/be the 1st argument to the TableGateway contructor (see example just below): `class UserTableGateway extends TableGateway {` ...  `public function __construct($tableName, Adapter $adapter, AbstractFeature $feature = null,ResultSetInterface $resultSet = null, Sql $sql = null)`
 * file:///D:/Repos/ZF-Level-1/Course_Materials/index.html#/9/52: `$rowset = $userTableGateway->selectWith($where);` s/be `$rowset = $userTableGateway->selectWith($select);`
 * Database Lab:
+  * Some images referenced in the Online Market database are missing from the `images` folders:
+    * copy from `onlinemarket.work/public/images` folder in this repo
+    * also need to restore the `listings` table from `onlinemarket.work/data/sql/listings.sql` in this repo to get references to the remaining images
   * Step 4 - Define Adapter Factory: "Build an adapter factory called "Primary" in Model\Adapter\Factory" ... then in step 5 we were asked to a add a new service as follows: `'factories' => [ 'model-primary-adapter' => Adapter\Factory\PrimaryFactory::class],`.  I think in step 4 the adapter factory should be called `PrimaryFactory`.
   * Step 5 Add Config Parameters: s/be `zfcourse` instead of `onlinemarket` in this config:
 ```
