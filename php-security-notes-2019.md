@@ -25,14 +25,6 @@
   * Lab: SQL Injection
 
 ## TODO
-* Password cracker: Hydra
-* https://codepen.io/cshaw/pen/oroXjX: add this to notes
-* RE: Insecure Deserialization:
-  * don't store the strategy directly in the cookie: just reference to whitelist of strategies
-  * create a digital signature of object prior to serialization and then compare with unserialized version
-* Reverse CAPTCHAs: designed such that only bots can complete them
-* https://stackoverflow.com/questions/13719821/email-validation-using-regular-expression-in-php/13719870#13719870
-
 * The source code in the VM needs to be updated.  Please do the following:
   * Open a terminal window
   * Change to the `/home/vagrant` home directory
@@ -57,7 +49,6 @@ mysqlimport security -uvagrant -pvagrant ./securitytraining/data/sql/security.sq
 
 ## General Notes
 ### LAB NOTES
-* SQLI Lab: solution: doesn't take into account 0 ID for admin
 * ZAP Lab
   * Good "how to": https://chrisdecairos.ca/intercepting-traffic-with-zaproxy/
 * Brute Force Detector Lab:
@@ -111,6 +102,7 @@ CREATE TABLE `bfdetect` (
   * DEF: http://cwe.mitre.org/data/definitions/89.html
   * TOOL: http://sqlmap.org/
 * Brute Force
+  * https://www.abuseipdb.com/check/203.195.130.124
   * https://hackercombat.com/password-cracking-tool-hydra/
   * https://securityaffairs.co/wordpress/84948/hacking/hacker-hacked-iot-botnets.html
   * https://gbhackers.com/brute-force-attack-from-outlaw/
@@ -120,7 +112,8 @@ CREATE TABLE `bfdetect` (
   * https://betanews.com/2018/07/03/a-rare-breed-of-the-brute-force-a-history-of-one-attack/
   * https://www.theregister.co.uk/2018/04/03/magento_brute_force_attack/
   * https://blog.paranoidpenguin.net/2018/01/another-significant-wordpress-brute-force-attack-in-the-works/
-  * Pen Testing Tool: https://www.metasploit.com/
+  * RESOURCES: Good "how to": https://chrisdecairos.ca/intercepting-traffic-with-zaproxy/
+  * TOOL: https://www.metasploit.com/
   * TOOL: https://www.hackeroyale.com/crack-passwords-using-thc-hydra/
   * TOOL: simulates a botnet using brute force to crack passwords:
     * https://github.com/JPaulMora/Pyrit
@@ -178,6 +171,7 @@ CREATE TABLE `bfdetect` (
   * Anti-Virus filter for ZF: https://www.sitepoint.com/zf-clamav/
 * Insecure CAPTCHA
   * https://andresriancho.com/recaptcha-bypass-via-http-parameter-pollution/
+  * Reverse CAPTCHA discussion: https://www.tectite.com/vbforums/showthread.php?5752-Reverse-CAPTCHA-Thoughts-Tips-and-Questions
 * Recommended Headers:
   * OWASP recommends the following:
 ```
@@ -210,6 +204,7 @@ header('X-Content-Type-Options: nosniff');
 ## Monitoring
 * Nagios: https://www.nagios.com/
 * Zend Server: http://www.zend.com/en/products/zend_server
+* LogWatch (available in Linux)
 
 ## Intrusion Detection and Prevention
 * SNORT: https://snort.org/
@@ -277,7 +272,8 @@ LAB: examples for SQL injection:
 * 8: from Keoghan to All Participants: just thought I'd share this for the times where html is needed to be allowed through:
     https://github.com/ezyang/htmlpurifier (not sure if everyone will have some across it or not)
 * 9: User education: instruct them where to look and what not to do
-* 10: Inject your data into a DOM, minimized the need to sanitise
+* 10: Email address validation: https://stackoverflow.com/questions/13719821/email-validation-using-regular-expression-in-php/13719870#13719870
+* 11: Inject your data into a DOM, minimized the need to sanitise
 ```
 $document->querySelector("#name-output")->innerText = $_GET["name"]
 // also: using PHP DOM extension:
@@ -1909,12 +1905,6 @@ if(isset($_GET['img'])) {
 ```
 ## ERRATA
 
-* SDE Lab: ctype_alnum doesn't work in this context
-  * replaced with: `$username = preg_replace('/[^a-z0-9]/i', '', $_POST['username']);`
-* SDE Lab: need to add a password quality check before allowing the new user entry to be created
-  * added validation for both username and password
-* IFU Lab: need to have some kind way to link the random filename with the original: maybe a database entry; OK
-* LABS: Sensitive Data Exposure: looks like solution is not complete; esp ctype_alnum() not affecting validation; OK
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/2/16: syntax error in example!!!; OK
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/7: dup; ???
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/10: founden; OK
@@ -1926,11 +1916,20 @@ if(isset($_GET['img'])) {
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/5: missing a graphic; OK
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/5/6: show examples of these; OK
 * PDF page 177: smart quotes are causing weird characters to appear in the PDF creation; OK
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/2/89: Create interfaces which tightly define
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/2/91: the whitelist might be subject to attack: maybe index of function names, not stored directly
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/4/3: get rid of "smart quote"!!!
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/4/11: get rid of "smart quote"!!!
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/4/11: don't use direct user input!  use value from whitelist instead
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/2/89: Create interfaces which tightly define; OK
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/2/91: the whitelist might be subject to attack: maybe index of function names, not stored directly; OK
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/4/3: get rid of "smart quote"!!! OK
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/4/11: get rid of "smart quote"!!! OK
+* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/4/11: don't use direct user input!  use value from whitelist instead; OK
 * file:///D:/Repos/PHP-Security/Course_Materials/index.html#/6/20: metasplit
-* LAB: IDSZ:     * NOTE: in the URL you are asked to post via `curl` target s/be `http://securitytraining/`
+* LAB: IDSZ: in the URL you are asked to post via `curl` target s/be `http://securitytraining/`; OK
+* SDE Lab: ctype_alnum doesn't work in this context
+  * replaced with: `$username = preg_replace('/[^a-z0-9]/i', '', $_POST['username']);`
+* SDE Lab: need to add a password quality check before allowing the new user entry to be created
+  * added validation for both username and password
+* IFU Lab: need to have some kind way to link the random filename with the original: maybe a database entry; OK
+* LABS: Sensitive Data Exposure: looks like solution is not complete; esp ctype_alnum() not affecting validation; OK
+* SQLI Lab: solution: doesn't take into account 0 ID for admin; OK
+* CSRF Lab: javascript could read the DOM and pick up the hash, including it in the illegal posting; try to figure out a better prevention
+  * Added CAPTCHA
 
