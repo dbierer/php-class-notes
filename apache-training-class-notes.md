@@ -600,42 +600,42 @@ Font size for tables needs to be increased!
 Module 3: get rid of duplication with Module 2
 
 file:///home/jed/Repos/apache-fundamentals/Course_Materials/index.html#/1/21: need to update this
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/1/19: link to apache.org doesn't work
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/2/29: make sure the header which records timing is added to this lab solution
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/2/52: missing end "
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/2/70: improve formatting on table
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/2/90: out of place?  SSL not enabled yet!
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/3/17: change from /home/apache to /home/vagrant
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/3/18: change from /home/apache to /home/vagrant
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/3/24: need a link: http://httpd.apache.org/docs/2.4/mod/mod_log_config.html#formats
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/3/26: `CustomLog` needs to go on next line
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/3/26: s/be no space here: `logs/ english_log` and `logs/ non_english_log`
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/3/30: link doesn't work! s/be http://httpd.apache.org/docs/2.4/mod/mod_log_config.html#formats
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/3/33: http://httpd.apache.org/docs/2.4/mod/mod_log_config.html#bufferedlogs
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/3/36: find example for GlobalLog; http://httpd.apache.org/docs/2.4/mod/mod_log_config.html#globallog
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/3/43: http://httpd.apache.org/docs/2.4/logs.html#piped
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/4/2: Google's new policy on HTTPS
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/4/3: need a link: http://jmeter.apache.org/
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/4/24: LoadModule ssl_module modules/mod_ssl.so Listen 443
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/4/36: CSR = Certificate Signing Request
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/4/47: need to add CentOS firewall command equivalent
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/4/35: "ciph"???
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/5/7: compresion
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/5/11: update hardware specs + "Served"???
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/5/58: consider removing the Apache Tomcat stuff
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/6/13: what user?
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/6/25: 2nd line: "apache" (lowercase a)
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/6/28: dup
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/6/29: dup
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/6/36: change example to allow for HTTP2 as well
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/6/46: rewrite instructions for v3
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/7/7:  update screenshot mod_status
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/7/8:  refs to mod_benchmark???
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/7/17: missing "#" on top line
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/7/28: provide a use case for this + an example
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/7/53: 2nd to last bullet s/be "stale"
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/7/56: last bullet s/be "stale"
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/7/83: space before .htaccess
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/7/86: how do you flush buffers?
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/7/88: scenariaio
-file:///D:/Repos/apache-fundamentals/Course_Materials/index.html#/7/90: scenariaio
+* Course_Materials/index.html#/1/19: link to apache.org doesn't work
+* Course_Materials/index.html#/2/29: make sure the header which records timing is added to this lab solution
+* Course_Materials/index.html#/2/52: missing end "
+* Course_Materials/index.html#/2/70: improve formatting on table
+* Course_Materials/index.html#/2/90: out of place?  SSL not enabled yet!
+* Course_Materials/index.html#/3/17: change from /home/apache to /home/vagrant
+* Course_Materials/index.html#/3/18: change from /home/apache to /home/vagrant
+* Course_Materials/index.html#/3/24: need a link: http://httpd.apache.org/docs/2.4/mod/mod_log_config.html#formats
+* Course_Materials/index.html#/3/26: `CustomLog` needs to go on next line
+* Course_Materials/index.html#/3/26: s/be no space here: `logs/ english_log` and `logs/ non_english_log`
+* Course_Materials/index.html#/3/30: link doesn't work! s/be http://httpd.apache.org/docs/2.4/mod/mod_log_config.html#formats
+* Course_Materials/index.html#/3/33: http://httpd.apache.org/docs/2.4/mod/mod_log_config.html#bufferedlogs
+* Course_Materials/index.html#/3/36: find example for GlobalLog; http://httpd.apache.org/docs/2.4/mod/mod_log_config.html#globallog
+* Course_Materials/index.html#/3/43: http://httpd.apache.org/docs/2.4/logs.html#piped
+* Course_Materials/index.html#/4/2: Google's new policy on HTTPS
+* Course_Materials/index.html#/4/3: need a link: http://jmeter.apache.org/
+* Course_Materials/index.html#/4/24: LoadModule ssl_module modules/mod_ssl.so Listen 443
+* Course_Materials/index.html#/4/36: CSR = Certificate Signing Request
+* Course_Materials/index.html#/4/47: need to add CentOS firewall command equivalent
+* Course_Materials/index.html#/4/35: "ciph"???
+* Course_Materials/index.html#/5/7: compresion
+* Course_Materials/index.html#/5/11: update hardware specs + "Served"???
+* Course_Materials/index.html#/5/58: consider removing the Apache Tomcat stuff
+* Course_Materials/index.html#/6/13: what user?
+* Course_Materials/index.html#/6/25: 2nd line: "apache" (lowercase a)
+* Course_Materials/index.html#/6/28: dup
+* Course_Materials/index.html#/6/29: dup
+* Course_Materials/index.html#/6/36: change example to allow for HTTP2 as well
+* Course_Materials/index.html#/6/46: rewrite instructions for v3
+* Course_Materials/index.html#/7/7:  update screenshot mod_status
+* Course_Materials/index.html#/7/8:  refs to mod_benchmark???
+* Course_Materials/index.html#/7/17: missing "#" on top line
+* Course_Materials/index.html#/7/28: provide a use case for this + an example
+* Course_Materials/index.html#/7/53: 2nd to last bullet s/be "stale"
+* Course_Materials/index.html#/7/56: last bullet s/be "stale"
+* Course_Materials/index.html#/7/83: space before .htaccess
+* Course_Materials/index.html#/7/86: how do you flush buffers?
+* Course_Materials/index.html#/7/88: scenariaio
+* Course_Materials/index.html#/7/90: scenariaio
