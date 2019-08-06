@@ -1,5 +1,17 @@
 # ZF Masters Class Notes
 
+file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/30
+
+## HOMEWORK
+* For Wed 7 Aug
+  * Install the Doctrine ORM Module for ZF
+  * Provide configuration in `/config/autoload`
+  * Don't worry about module config yet
+  * Create the `proxy` directory + change owner and permissions
+	* `chown vagrant:www-dat /data/proxy`
+	* `chmod 775 /data/proxy`
+  * Test by running `/vendor/bin/doctrine-module`
+    * If you see the help screen and no errors, you're good
 ## VM
 * Need to change the name of the database from `zfcourse` to `course`
   * Go to `phpMyAdmin`
@@ -35,4 +47,9 @@ php -S localhost:9999 -t public
 * Change VM provisioning script to create database `course` (not `zfcourse`)
 * Update listings dates in `course.sql` 2013 => 2019
 * Make sure all links are set (maybe import database from ZF-Level-1)
-
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/1/06: Recording policy changed
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/1/11: ZF2/3 diffs covered in other course: remove
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/3: dup Strategy
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/9: Zend\Hydrator\XXX is now Zend\Hydrator\XXXHydrator
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/10: hydrate() must have Employee object
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/28: make it consistent w/ VM: course / vagrant /vagrant
