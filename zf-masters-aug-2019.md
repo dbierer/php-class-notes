@@ -3,6 +3,13 @@
 file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/30
 
 ## HOMEWORK
+* For Fri 9 Aug
+  * Doctrine Lab
+    * Port `Guestbook\Event\Doctrine` over to onlinemarket.work as a new module `MyDoctrine`
+    * Get it working
+    * Add a new route
+    * Use the `xxx_d` tables for this
+  * Lab: Lazy Services
 * For Wed 7 Aug
   * Install the Doctrine ORM Module for ZF
   * Provide configuration in `/config/autoload`
@@ -12,6 +19,16 @@ file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/30
 	* `chmod 775 /data/proxy`
   * Test by running `/vendor/bin/doctrine-module`
     * If you see the help screen and no errors, you're good
+  * *IMPORTANT*: make sure you add these two entries into `/config/modules.config.php`
+```
+'DoctrineModule',
+'DoctrineORMModule',
+```
+
+## TODO
+* Need to restore Events\Doctrine\* source code: find in commit log where it got erased
+* Find an example of form created using annotation form builder where elements are added later
+
 ## VM
 * Need to change the name of the database from `zfcourse` to `course`
   * Go to `phpMyAdmin`
@@ -53,3 +70,5 @@ php -S localhost:9999 -t public
 * file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/9: Zend\Hydrator\XXX is now Zend\Hydrator\XXXHydrator
 * file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/10: hydrate() must have Employee object
 * file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/28: make it consistent w/ VM: course / vagrant /vagrant
+* RE: Doctrine ORM Lab: already installed in VM: need to un-install!
+* RE: Doctrine ORM Lab: onlinemarket.complete is missing the Doctrine portion of Events module
