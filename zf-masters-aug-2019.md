@@ -2,15 +2,48 @@
 
 file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/30
 
+## TODO
+* Find an example of form created using annotation form builder where elements are added later
+* Port solution to Lazy Services lab from *.work to *.complete in class repo
+* ???Need port `sandbox` into class repo: /sandbox/public/events_aggregate_hydrator.php.
+* Get LazyServices solution working in Logging module
+
 ## REPO
 * https://github.com/dbierer/zf-master-aug-2019
 
 ## HOMEWORK
+* For Wed 14 Aug
+  * LAB: Database Events
+  * LAB: run the code on the slides `Scrypt Example` and `PBKDF2 Example`
+    * Add `zendframework/zend-crypt` to `composer.json`
+    * Run `composer update`
+    * Create separate script files in `public` for onlinemarket.work
+    * Don't forget to include `vendor/autoload.php`
+```
+use Zend\Crypt\Key\Derivation\Pbkdf2;
+use Zend\Math\Rand;
+$pass = 'password';
+$salt = Rand::getBytes(32, true);
+$key  = Pbkdf2::calc('sha256', $pass, $salt, 10000, 32);
+printf ("Original password: %s\n", $pass);
+printf ("Derived key (hex): %s\n", bin2hex($key));
+```
+```
+use Zend\Crypt\Key\Derivation\Scrypt;
+use Zend\Math\Rand;
+$pass = 'password';
+$salt = Rand::getBytes(32, true);
+$key  = Scrypt::calc($pass, $salt, 2048, 2, 1, 32);
+printf ("Original password: %s\n", $pass);
+printf ("Derived key (hex): %s\n", bin2hex($key));
+```
+
 * For Mon 12 Aug
   * Restore `onlinemarket.work` and `onlinemarket.complete` current versions to class repo
   * Restore the database from `onlinemarket.work/data/sql/course.sql`
   * Lab: Delegating Hydrators
   * Lab: Lazy Listeners
+    * NOTE: do the work in `Modify Events\Listener\Aggregate::attach()`
   * Lab: Aggregate Hydrator
 * For Fri 9 Aug
   * Doctrine Lab
@@ -36,12 +69,6 @@ file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/30
 
 ## RE: ZEND DEVELOPER TOOLS
 * Follow the instructions here: https://github.com/zendframework/zend-developer-tools
-
-## TODO
-* Find an example of form created using annotation form builder where elements are added later
-* Restore the current onlinemarket.complete to class repo as well
-* Post solution to Lazy Services lab
-* Need port `sandbox` into class repo: /sandbox/public/events_aggregate_hydrator.php.
 
 ## VM
 * Need to change the name of the database from `zfcourse` to `course`
@@ -91,5 +118,8 @@ Configuration is missing a "session_config" key, or the value of that key is not
 * file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/28: make it consistent w/ VM: course / vagrant /vagrant
 * file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/3/11: `Hydratory` s/be `Hydrator`
 * file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/4/20: is now `ObjectPropertyHydrator`
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/4/9: s/be `Modify Events\Listener\Aggregate::attach() to accomplish this task` (remove `Factory` from the namespace)
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/4/31: change self::IDENTIFIER to __CLASS__
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/4/31: need to add const IDENTIFIER = 'whatever'
 * RE: Doctrine ORM Lab: already installed in VM: need to un-install!
 * RE: Doctrine ORM Lab: onlinemarket.complete is missing the Doctrine portion of Events module
