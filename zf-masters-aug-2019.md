@@ -3,17 +3,29 @@
 file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/30
 
 ## TODO
+* Implement the Aggregate Hydrator in onlinemarket.work
+* Is there a way to get `TableGateway\Feature\EventFeature` to work with `ZendDeveloperTools`?
+* Get Guestbook demo app in VM working properly
+* Double check to see if the up-to-date code for `onlinemarket.complete` posted in repo works OK in VM
+* Check to see why a newly registered user cannot logout
+
 * Find an example of form created using annotation form builder where elements are added later
 * Port solution to Lazy Services lab from *.work to *.complete in class repo
 * ???Need port `sandbox` into class repo: /sandbox/public/events_aggregate_hydrator.php.
-* Get LazyServices solution working in Logging module
 
 ## REPO
 * https://github.com/dbierer/zf-master-aug-2019
 
 ## HOMEWORK
+* For Fri 16 Aug
+  * Lab: BlockCipher
 * For Wed 14 Aug
   * LAB: Database Events
+    * When implementing the Event Feature ... got this error:
+```
+Argument 1 passed to ZendDeveloperTools\Listener\EventLoggingListenerAggregate::onCollectEvent() must be an instance of Zend\EventManager\Event, instance of Zend\Db\TableGateway\Feature\EventFeature\TableGatewayEvent given, called in /home/vagrant/zf-master-aug-2019/onlinemarket.work/vendor/zendframework/zend-eventmanager/src/EventManager.php on line 322
+```
+	* Had to completely uninstall ZendDeveloperTools using Composer
   * LAB: run the code on the slides `Scrypt Example` and `PBKDF2 Example`
     * Add `zendframework/zend-crypt` to `composer.json`
     * Run `composer update`
@@ -52,6 +64,17 @@ printf ("Derived key (hex): %s\n", bin2hex($key));
     * Add a new route
     * Use the `xxx_d` tables for this
   * Lab: Lazy Services
+    * Make sure that any delegators are assigned as an array, even if only one:
+```
+// in module.config.php file
+'service_manager' => [
+	'delegators' => [
+		Logging::class => [LazyServiceFactory::class],
+	],
+]
+```
+	* If you get this error: `Fatal error: Uncaught Error: Class 'ProxyManager\Configuration' not found`, make sure you installed the `ProxyManager` component: see: https://docs.zendframework.com/zend-servicemanager/lazy-services/#setup
+
 * For Wed 7 Aug
   * Install the Doctrine ORM Module for ZF
   * Provide configuration in `/config/autoload`
@@ -65,6 +88,14 @@ printf ("Derived key (hex): %s\n", bin2hex($key));
 ```
 'DoctrineModule',
 'DoctrineORMModule',
+```
+
+## RE: SECURITY
+* Run this to find out what algorithms, key size and mode combos are available on your server:
+```
+<?php
+$algos = openssl_get_cipher_methods();
+var_dump($algos);
 ```
 
 ## RE: ZEND DEVELOPER TOOLS
@@ -121,5 +152,6 @@ Configuration is missing a "session_config" key, or the value of that key is not
 * file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/4/9: s/be `Modify Events\Listener\Aggregate::attach() to accomplish this task` (remove `Factory` from the namespace)
 * file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/4/31: change self::IDENTIFIER to __CLASS__
 * file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/4/31: need to add const IDENTIFIER = 'whatever'
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/14: s/be PBKDF2!!!
 * RE: Doctrine ORM Lab: already installed in VM: need to un-install!
 * RE: Doctrine ORM Lab: onlinemarket.complete is missing the Doctrine portion of Events module
