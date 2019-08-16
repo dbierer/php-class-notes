@@ -3,11 +3,15 @@
 file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/30
 
 ## TODO
-* Implement the Aggregate Hydrator in onlinemarket.work
+* Finish the Aggregate Hydrator in onlinemarket.work re: `PrivateMessages` module
+* Post instructions for installing OpenLDAP + restoring the LDIF file
 * Is there a way to get `TableGateway\Feature\EventFeature` to work with `ZendDeveloperTools`?
 * Get Guestbook demo app in VM working properly
 * Double check to see if the up-to-date code for `onlinemarket.complete` posted in repo works OK in VM
+
 * Check to see why a newly registered user cannot logout
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/51: find original image and make sure it appears in full
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/83: find the stand-alone examples mentioned here
 
 * Find an example of form created using annotation form builder where elements are added later
 * Port solution to Lazy Services lab from *.work to *.complete in class repo
@@ -17,6 +21,9 @@ file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/30
 * https://github.com/dbierer/zf-master-aug-2019
 
 ## HOMEWORK
+* For Mon 19 Aug
+  * Lab: Oauth2
+  * Lab: LDAP
 * For Fri 16 Aug
   * Lab: BlockCipher
 * For Wed 14 Aug
@@ -153,5 +160,10 @@ Configuration is missing a "session_config" key, or the value of that key is not
 * file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/4/31: change self::IDENTIFIER to __CLASS__
 * file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/4/31: need to add const IDENTIFIER = 'whatever'
 * file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/14: s/be PBKDF2!!!
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/4/18: s/be `$object->message = $this->blockCipher->decrypt($data['message']);`
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/51: find original image and make sure it appears in full
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/69: top DC s/be `com`
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/72: `cn=homer,ou=support,ou=users,ou=zend,dc=sanjose,dc=roguewave,dc=com`
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/73: s/be `dc=roguewave,dc=com` + resize image to make it fully visible
 * RE: Doctrine ORM Lab: already installed in VM: need to un-install!
 * RE: Doctrine ORM Lab: onlinemarket.complete is missing the Doctrine portion of Events module
