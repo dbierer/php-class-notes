@@ -30,6 +30,334 @@ file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/30
 * For Mon 19 Aug
   * Lab: Oauth2
   * Lab: LDAP
+    * Main website: http://www.openldap.org/
+    * Install OpenLDAP server on Ubuntu: https://www.linux.com/blog/2019/3/how-install-openldap-ubuntu-server-1804
+    * Restore database from LDIF file (29 Nov 2016!):
+```
+## DEFINE DIT ROOT/BASE/SUFFIX ####
+## uses RFC 2377 format
+## replace company and com as necessary below
+## or for experimentation leave as is
+
+## dcObject is an AUXILLIARY objectclass and MUST
+## have a STRUCTURAL objectclass (organization in this case)
+# this is an ENTRY sequence and is preceded by a BLANK line
+
+## FIRST Level hierarchy - zf2widder
+## uses mixed upper and lower case for objectclass
+# this is an ENTRY sequence and is preceded by a BLANK line
+
+dn: ou=zf2widder,dc=company,dc=com
+ou: zf2widder
+description: Sample Company
+objectclass: organizationalunit
+
+## SECOND Level hierarchy
+## ADD a single entry under FIRST (people) level
+# this is an ENTRY sequence and is preceded by a BLANK line
+# the ou: Human Resources is the department name
+
+dn: cn=adminTwo,ou=zf2widder,dc=company,dc=com
+objectclass: inetOrgPerson
+cn: adminTwo
+sn: adminTwo
+uid: adminTwo
+userpassword: password
+departmentNumber: 2
+preferredLanguage: English
+homephone: +1 555-111-2222
+mail: adminTwo@zend.com
+description: super user
+ou: Software Development
+
+dn: cn=clark,ou=zf2widder,dc=company,dc=com
+objectclass: inetOrgPerson
+cn: clark
+sn: everetts
+uid: ceveretts
+userpassword: password
+departmentNumber: 1
+preferredLanguage: English
+homephone: +1 555-111-2222
+mail: clark.e@zend.com
+description: swell guy
+ou: Software Development
+
+dn: cn=doug,ou=zf2widder,dc=company,dc=com
+objectclass: inetOrgPerson
+cn: doug
+sn: bierer
+uid: dbierer
+userpassword: password
+departmentNumber: 1
+preferredLanguage: English
+homephone: +1 555-111-2222
+mail: doug@unlikelysource.com
+description: slow tourist
+ou: Software Development
+
+dn: cn=Robert Smith,ou=zf2widder,dc=company,dc=com
+objectclass: inetOrgPerson
+cn: bob
+sn: smith
+uid: rjsmith
+userpassword: password
+carlicense: HISCAR 123
+homephone: 555-111-2222
+mail: rsmith@company.com
+description: swell guy
+ou: Human Resources
+
+## FIRST Level hierarchy - onlinemarket
+## uses mixed upper and lower case for objectclass
+# this is an ENTRY sequence and is preceded by a BLANK line
+
+dn: ou=onlinemarket, dc=company,dc=com
+ou: onlinemarket
+description: Sample Company
+objectclass: organizationalunit
+
+## SECOND Level hierarchy
+## ADD a single entry under FIRST (people) level
+# this is an ENTRY sequence and is preceded by a BLANK line
+# the ou: Human Resources is the department name
+
+dn: cn=adminOne, ou=onlinemarket,dc=company,dc=com
+objectclass: inetOrgPerson
+cn: adminOne
+sn: adminOne
+uid: adminOne
+userpassword: password
+employeeType: admin
+preferredLanguage: English
+homephone: +1 555-111-2222
+mail: adminOne@zend.com
+description: super user
+ou: Admin
+
+dn: cn=guest, ou=onlinemarket,dc=company,dc=com
+objectclass: inetOrgPerson
+cn: guest
+sn: user
+uid: guest
+userpassword: password
+employeeType: guest
+preferredLanguage: English
+homephone: +1 555-111-2222
+mail: guest@zend.com
+description: guest user
+ou: Guest
+
+dn: cn=Xavier Change, ou=onlinemarket,dc=company,dc=com
+objectclass: inetOrgPerson
+cn: xchange
+sn: change
+uid: xchange
+userpassword: password
+employeeType: manager
+preferredLanguage: English
+homephone: +1 555-111-2222
+mail: xchange@company.com
+description: Category Manager for Barter
+ou: Barter
+
+dn: cn=Marilyn Monroe, ou=onlinemarket,dc=company,dc=com
+objectclass: inetOrgPerson
+cn: marilyn
+sn: monroe
+uid: mmonroe
+userpassword: password
+employeeType: manager
+preferredLanguage: English
+homephone: +1 555-111-2222
+mail: mmonroe@company.com
+description: Category Manager for Beauty
+ou: Beauty
+
+dn: cn=Jean Blue, ou=onlinemarket,dc=company,dc=com
+objectclass: inetOrgPerson
+cn: jean
+sn: blue
+uid: jblue
+userpassword: password
+employeeType: manager
+preferredLanguage: Italian
+homephone: +39 555-111-2222
+mail: jblue@company.com
+description: Category Manager for Clothing
+ou: Clothing
+
+dn: cn=Alessandro Turing, ou=onlinemarket,dc=company,dc=com
+objectclass: inetOrgPerson
+cn: alessandro
+sn: turing
+uid: aturing
+userpassword: password
+employeeType: manager
+preferredLanguage: Spanish
+homephone: +34 555-111-2222
+mail: jturing@company.com
+description: Category Manager for Computer
+ou: Computer
+
+dn: cn=Groucho Marx, ou=onlinemarket,dc=company,dc=com
+objectclass: inetOrgPerson
+cn: groucho
+sn: marx
+uid: gmarx
+userpassword: password
+employeeType: manager
+preferredLanguage: Fast
+homephone: +1 555-111-2222
+mail: gmarx@company.com
+description: Category Manager for Entertainment
+ou: Entertainment
+
+dn: cn=Grah Tweet, ou=onlinemarket,dc=company,dc=com
+objectclass: inetOrgPerson
+cn: grah
+sn: tweet
+uid: gtweet
+userpassword: password
+employeeType: manager
+preferredLanguage: French
+homephone: +33 555-111-2222
+mail: gtweet@company.com
+description: Category Manager for Free
+ou: Free
+
+dn: cn=Herb Ivore, ou=onlinemarket,dc=company,dc=com
+objectclass: inetOrgPerson
+cn: herb
+sn: ivore
+uid: hivore
+userpassword: password
+employeeType: manager
+preferredLanguage: Green
+homephone: +64 555-111-2222
+mail: hivore@company.com
+description: Category Manager for Garden
+ou: Garden
+
+dn: cn=Douglas MacArthur, ou=onlinemarket,dc=company,dc=com
+objectclass: inetOrgPerson
+cn: mac
+sn: macarthur
+uid: dmacarthur
+userpassword: password
+employeeType: manager
+preferredLanguage: No-Nonsense
+homephone: +1 555-111-2222
+mail: dmacarthur@company.com
+description: Category Manager for General
+ou: General
+
+dn: cn=Jerry Lewis, ou=onlinemarket,dc=company,dc=com
+objectclass: inetOrgPerson
+cn: jerry
+sn: lewis
+uid: jlewis
+userpassword: password
+employeeType: manager
+preferredLanguage: English
+homephone: +1 555-111-2222
+mail: jlewis@company.com
+description: Category Manager for Health
+ou: Health
+
+dn: cn=Martha Stewart, ou=onlinemarket,dc=company,dc=com
+objectclass: inetOrgPerson
+cn: martha
+sn: stewart
+uid: mstewart
+userpassword: password
+employeeType: manager
+preferredLanguage: English
+homephone: +44 555-111-2222
+mail: mstewart@company.com
+description: Category Manager for Household
+ou: Household
+
+dn: cn=Alex Bell, ou=onlinemarket,dc=company,dc=com
+objectclass: inetOrgPerson
+cn: alex
+sn: bell
+uid: abell
+userpassword: password
+employeeType: manager
+preferredLanguage: English
+homephone: +1 555-111-2222
+mail: abell@company.com
+description: Category Manager for Phones
+ou: Phones
+
+dn: cn=Elizabeth Windsor, ou=onlinemarket,dc=company,dc=com
+objectclass: inetOrgPerson
+cn: TheQueen
+sn: windsor
+uid: thequeen
+userpassword: password
+employeeType: manager
+preferredLanguage: English
+homephone: +44 555-111-2222
+mail: ewindsor2@company.com
+description: Category Manager for Property
+ou: Property
+
+dn: cn=David Beckham, ou=onlinemarket,dc=company,dc=com
+objectclass: inetOrgPerson
+cn: david
+sn: beckham
+uid: dbeckham
+userpassword: password
+employeeType: manager
+preferredLanguage: English
+homephone: +44 555-111-2222
+mail: dbeckham@company.com
+description: Category Manager for Sporting
+ou: Sporting
+
+dn: cn=Mike Holmes, ou=onlinemarket,dc=company,dc=com
+objectclass: inetOrgPerson
+cn: mike
+sn: holmes
+uid: mholmes
+userpassword: password
+employeeType: manager
+preferredLanguage: English
+homephone: +1 555-111-2222
+mail: mholmes@company.com
+description: Category Manager for Tools
+ou: Tools
+
+dn: cn=Transporter, ou=onlinemarket,dc=company,dc=com
+objectclass: inetOrgPerson
+cn: transporter
+sn: transporter
+uid: transporter
+userpassword: password
+employeeType: manager
+preferredLanguage: English
+homephone: +44 555-111-2222
+mail: transporter@company.com
+description: Category Manager for Transportation
+ou: Transport
+ation
+
+dn: cn=Al Capone, ou=onlinemarket,dc=company,dc=com
+objectclass: inetOrgPerson
+cn: al
+sn: capone
+uid: acapone
+userpassword: password
+employeeType: manager
+preferredLanguage: English
+homephone: +1 555-111-2222
+mail: acapone@company.com
+description: Category Manager for Wanted
+ou: Wanted
+```
+
 * For Fri 16 Aug
   * Lab: BlockCipher
 * For Wed 14 Aug

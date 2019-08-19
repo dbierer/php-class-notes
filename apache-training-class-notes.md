@@ -599,7 +599,8 @@ Implement advanced highlighting as per Daryl
 Font size for tables needs to be increased!
 Module 3: get rid of duplication with Module 2
 
-file:///home/jed/Repos/apache-fundamentals/Course_Materials/index.html#/1/21: need to update this
+### DONE
+* Course_Materials/index.html#/1/21: need to update this
 * Course_Materials/index.html#/1/19: link to apache.org doesn't work
 * Course_Materials/index.html#/2/29: make sure the header which records timing is added to this lab solution
 * Course_Materials/index.html#/2/52: missing end "
@@ -628,14 +629,16 @@ file:///home/jed/Repos/apache-fundamentals/Course_Materials/index.html#/1/21: ne
 * Course_Materials/index.html#/6/28: dup
 * Course_Materials/index.html#/6/29: dup
 * Course_Materials/index.html#/6/36: change example to allow for HTTP2 as well
-* Course_Materials/index.html#/6/46: rewrite instructions for v3
-* Course_Materials/index.html#/7/7:  update screenshot mod_status
-* Course_Materials/index.html#/7/8:  refs to mod_benchmark???
 * Course_Materials/index.html#/7/17: missing "#" on top line
-* Course_Materials/index.html#/7/28: provide a use case for this + an example
 * Course_Materials/index.html#/7/53: 2nd to last bullet s/be "stale"
 * Course_Materials/index.html#/7/56: last bullet s/be "stale"
 * Course_Materials/index.html#/7/83: space before .htaccess
-* Course_Materials/index.html#/7/86: how do you flush buffers?
 * Course_Materials/index.html#/7/88: scenariaio
 * Course_Materials/index.html#/7/90: scenariaio
+
+### TODO
+* Course_Materials/index.html#/6/46: rewrite instructions for v3
+* Course_Materials/index.html#/7/7:  update screenshot mod_status
+* Course_Materials/index.html#/7/8:  refs to mod_benchmark???
+* Course_Materials/index.html#/7/28: provide a use case for this + an example
+* Course_Materials/index.html#/7/86: how do you flush buffers?
