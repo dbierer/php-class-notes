@@ -21,6 +21,12 @@ file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/30
 * https://github.com/dbierer/zf-master-aug-2019
 
 ## HOMEWORK
+* For Wed 21 Aug
+  * Lab: Hydrator Filters and Strategies
+  * Lab: Custom Route
+    * Create a custom route which does a database lookup on title; if found, takes you to the page displaying that item
+    * Example: this URL `http://onlinemarket.work/market/view/title/3.5%20Inch%20Diskettes` should end up here `http://onlinemarket.work/market/view/item/15`
+    * Hint: use `urldecode()` to strip out any URL encoding
 * For Mon 19 Aug
   * Lab: Oauth2
   * Lab: LDAP
@@ -97,6 +103,34 @@ printf ("Derived key (hex): %s\n", bin2hex($key));
 'DoctrineORMModule',
 ```
 
+## RE: Oauth2 Discussion
+* Note that when you are building a namespaced classname, using "\\" is optional.  Have a look at this example:
+```
+<?php
+namespace Test\One\Two {
+
+	class Test
+	{
+		public function test()
+		{
+			echo __CLASS__;
+		}
+	}
+}
+
+namespace Whatever {
+	$class1 = 'Test\One\Two\Test';
+	$obj1 = new $class1();
+	echo $obj1->test();
+	echo PHP_EOL;
+	$class2 = 'Test\\One\\Two\\Test';
+	$obj2 = new $class2();
+	echo $obj2->test();
+	// returns:
+	// "Test\One\Two\Three \n Test\One\Two\Three"
+}
+```
+
 ## RE: SECURITY
 * Run this to find out what algorithms, key size and mode combos are available on your server:
 ```
@@ -165,5 +199,15 @@ Configuration is missing a "session_config" key, or the value of that key is not
 * file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/69: top DC s/be `com`
 * file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/72: `cn=homer,ou=support,ou=users,ou=zend,dc=sanjose,dc=roguewave,dc=com`
 * file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/73: s/be `dc=roguewave,dc=com` + resize image to make it fully visible
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/56: rewrite as follows:
+```
+$requestedName = 'Zend\Db\Adapter\Adapter';
+$name = str_replace('\\','-',$requestedName);
+$element = explode('-', $name);
+echo end($element);
+```
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/6/35: s/be ZF 3
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/6/40: needs to be expanded (understatement)
 * RE: Doctrine ORM Lab: already installed in VM: need to un-install!
 * RE: Doctrine ORM Lab: onlinemarket.complete is missing the Doctrine portion of Events module
+* RE: LDAP Lab: the OpenLDAP server is not installed in the VM + the link is missing from the home page
