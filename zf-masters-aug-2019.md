@@ -2,12 +2,28 @@
 
 file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/30
 
+## REPO
+* https://github.com/dbierer/zf-master-aug-2019
+
+## HOMEWORK (CURRENT)
+* For Mon 26 Aug
+  * Lab: Psr7Bridge
+  * Lab: MiddleWare Listener
+* For Wed 21 Aug
+  * Lab: Hydrator Filters and Strategies
+  * Lab: Custom Route
+    * Create a custom route which does a database lookup on title; if found, takes you to the page displaying that item
+    * Example: this URL `http://onlinemarket.work/market/view/title/3.5%20Inch%20Diskettes` should end up here `http://onlinemarket.work/market/view/item/15`
+    * Hint: use `urldecode()` to strip out any URL encoding
+    * Good outline: https://olegkrivtsov.github.io/using-zend-framework-3-book/html/en/Routing/Writing_Own_Route_Type.html
+
 ## TODO
 * Finish the Aggregate Hydrator in onlinemarket.work re: `PrivateMessages` module
-* Post instructions for installing OpenLDAP + restoring the LDIF file
 * Is there a way to get `TableGateway\Feature\EventFeature` to work with `ZendDeveloperTools`?
 * Get Guestbook demo app in VM working properly
-* Double check to see if the up-to-date code for `onlinemarket.complete` posted in repo works OK in VM
+* Post solution to Custom Route Lab
+* Post latest Guestbook to the Repo
+* Add "Stratigility" demo to `sandbox`
 
 * Check to see why a newly registered user cannot logout
 * file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/51: find original image and make sure it appears in full
@@ -16,17 +32,9 @@ file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/30
 * Find an example of form created using annotation form builder where elements are added later
 * Port solution to Lazy Services lab from *.work to *.complete in class repo
 * ???Need port `sandbox` into class repo: /sandbox/public/events_aggregate_hydrator.php.
+* Double check to see if the up-to-date code for `onlinemarket.complete` posted in repo works OK in VM
 
-## REPO
-* https://github.com/dbierer/zf-master-aug-2019
-
-## HOMEWORK
-* For Wed 21 Aug
-  * Lab: Hydrator Filters and Strategies
-  * Lab: Custom Route
-    * Create a custom route which does a database lookup on title; if found, takes you to the page displaying that item
-    * Example: this URL `http://onlinemarket.work/market/view/title/3.5%20Inch%20Diskettes` should end up here `http://onlinemarket.work/market/view/item/15`
-    * Hint: use `urldecode()` to strip out any URL encoding
+## HOMEWORK (PAST)
 * For Mon 19 Aug
   * Lab: Oauth2
   * Lab: LDAP
@@ -536,6 +544,11 @@ echo end($element);
 ```
 * file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/6/35: s/be ZF 3
 * file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/6/40: needs to be expanded (understatement)
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/8/2: link needs to be updated: all links now rolled into PSR-15
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/8/2: add Zend Expressive!
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/8/46: where is the sample program?
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/8/55: dir s/be `manage`
 * RE: Doctrine ORM Lab: already installed in VM: need to un-install!
 * RE: Doctrine ORM Lab: onlinemarket.complete is missing the Doctrine portion of Events module
 * RE: LDAP Lab: the OpenLDAP server is not installed in the VM + the link is missing from the home page
+* RE: Middleware: Move course Module 8 (Middleware) in front of Module 6 (Cross Cutting Concerns)
