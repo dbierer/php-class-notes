@@ -9,6 +9,21 @@ file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/30
 * For Mon 26 Aug
   * Lab: Psr7Bridge
   * Lab: MiddleWare Listener
+  * Lab: Zend Expressive
+    * Too much old tech in the files in `onlinemarket.start/expressive` to be useful.  Example:
+```
+use Interop\Http\ServerMiddleware\DelegateInterface;
+use Interop\Http\ServerMiddleware\MiddlewareInterface;
+```
+    * Has been abandoned, and rolled into the PSR standards:
+```
+use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+```
+    * Accordingly, I rewrote the lab.  See at the end of this file a new heading *Lab: Zend Expressive*
+
 * For Wed 21 Aug
   * Lab: Hydrator Filters and Strategies
   * Lab: Custom Route
@@ -552,3 +567,170 @@ echo end($element);
 * RE: Doctrine ORM Lab: onlinemarket.complete is missing the Doctrine portion of Events module
 * RE: LDAP Lab: the OpenLDAP server is not installed in the VM + the link is missing from the home page
 * RE: Middleware: Move course Module 8 (Middleware) in front of Module 6 (Cross Cutting Concerns)
+
+## Lab: Zend Expressive
+### Install Zend Expressive
+* Open a terminal window and change to the `/path/to/onlinemarket.work` project folder
+* Use `composer` to create a project based upon `zendframework/zend-expressive-skeleton`
+* During installation, answer the following prompts:
+```
+What type of installation would you like?
+  [1] Minimal (no default middleware, templates, or assets; configuration only)
+  [2] Flat (flat source code structure; default selection)
+  [3] Modular (modular source code structure; recommended)
+  Make your selection (2): 3
+
+  Which container do you want to use for dependency injection?
+  [1] Aura.Di
+  [2] Pimple
+  [3] zend-servicemanager
+  [4] Auryn
+  [5] Symfony DI Container
+  [6] PHP-DI
+  Make your selection or type a composer package name and version (zend-servicemanager): 3
+
+  Which router do you want to use?
+  [1] Aura.Router
+  [2] FastRoute
+  [3] zend-router
+  Make your selection or type a composer package name and version (FastRoute): 3
+
+  Which template engine do you want to use?
+  [1] Plates
+  [2] Twig
+  [3] zend-view installs zend-servicemanager
+  [n] None of the above
+  Make your selection or type a composer package name and version (n): 2
+
+  Which error handler do you want to use during development?
+  [1] Whoops
+  [n] None of the above
+  Make your selection or type a composer package name and version (Whoops): 1
+```
+* When prompted about injecting configuration choose `config/config.php`
+```
+ Please select which config file you wish to inject 'Zend\Validator\ConfigProvider' into:
+  [0] Do not inject
+  [1] config/config.php
+  Make your selection (default is 1):1
+  Remember this option for other packages of the same type? (Y/n)Y
+```
+* Rename the resulting folder to `/path/to/onlinemarket.work/expressive`
+### Create the `Manage` Module
+* Change to the new `expressive` directory
+* Run the command line tool `vendor/bin/expressive` to create a new module `Manage`
+* You will need to use `composer` to refresh the autoload files before the new module is recognized.  This is done as part of the next step.
+### Configure Database Support
+* Open the file `config/autoload/dependencies.global.php`
+* Copy the entire `services` block which contains database config from `onlinemarket.work/module/Model/config/module.config.php` to `dependencies.global.php`.
+* Use `composer` to install `zendframework/zend-db`.  Note that this will also cause `composer` to refresh the autoloading tables so the new module is recognized.
+### Create a Domain Service
+* Make a directory `src/Manage/src/Domain`
+* Create a new class `Manage\Domain\ListingService` which will work with the `listings` database table
+```
+<?php
+declare(strict_types=1);
+namespace Manage\Domain;
+
+use Zend\Db\Sql\Sql;
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\TableGateway\TableGateway;
+use Psr\Container\ContainerInterface;
+
+class ListingsService
+{
+    const TABLE_NAME = 'listings';
+    /** @var ContainerInterface */
+    protected $container;
+    /** @var TableGateway */
+    protected $table;
+    /**
+     * @param ContainerInterface $container
+     */
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+        $adapter = new Adapter($container->get('model-primary-adapter-config'));
+        $this->table = new TableGateway(self::TABLE_NAME, $adapter);
+    }
+    /**
+     * Returns all listings table entries paginated
+     *
+     * @param int $limit (lines per page)
+     * @param int $offset (lines per page * current page number)
+     * @return Zend\Db\ResultSet\ResultSet $result
+     */
+    public function fetchAllPaginated(int $limit = 20, int $offset = 0)
+    {
+        $select = (new Sql($this->table->getAdapter()))->select();
+        $select->from(self::TABLE_NAME)
+               ->limit($limit)
+               ->offset($offset);
+        return $this->table->selectWith($select);
+    }
+    /**
+     * Deletes listings table entry by id
+     *
+     * @param int $id
+     * @return int $numberRowsAffected
+     */
+    public function deleteById(int $id)
+    {
+        return $this->table->delete(['listings_id' => $id]);
+    }
+}
+```
+* Use the command line tool to create a factory for this class
+* Add an entry to `src/Manage/src/ConfigProvider::getDependencies()` under the `factories` key which assigns `Manage\Domain\ListingsService` to the factory you just created.
+### Create Handlers to List and Delete Online Market Listings
+* Use the command line tool to create two new handlers: `Manage\\Handler\\ListHandler` and `Manage\\Handler\\DeleteHandler`.  Note that `\\` is required otherwise a single `\` just escapes the next character.
+* Have a look in `src/Manage/src/Handler`.  Note that the two handlers are there as well as 2 factory classes.
+* Have a look in `config/autoload`. Open the file `zend-expressive-tooling-factories.global.php` and move the handler service container assignments from that file and into `src/Manage/src/ConfigProvider.php::getDependencies()`.  You can then delete the file `zend-expressive-tooling-factories.global.php`.
+### Add Routes to the Handlers
+* Open the file `config/routes.php`
+* Add a `get` route to `Manage\Handler\ListHandler` which includes a URL and an optional segment route parameter `page`
+* Add a `post` route to `Manage\Handler\DeleteHandler`
+### Finish the `ListHandler`
+* Modify `Manage\Handler\ListHandlerFactory` to inject `Manage\Domain\LisitingsService` into `Manage\Handler\ListHandler`
+* Modify `Manage\Handler\ListHandler::__construct()` to accept the service
+* In the `Manage\Handler\ListHandler`, add the following
+    * Class constant which represents the number of lines per page
+* Define `Manage\Handler\ListHandler::handle()` as follows:
+```
+public function handle(ServerRequestInterface $request) : ResponseInterface
+{
+    $page = $request->getAttributes()['page'] ?? 0;
+    $listings = $this->service->fetchAllPaginated(self::LINES_PER_PAGE, $page * self::LINES_PER_PAGE);
+    return new HtmlResponse($this->renderer->render('manage::list', ['listings' => $listings]));
+}
+```
+* Define the view template `src/Manage/templates/manage/list.twg` as follows:
+```
+{% extends '@layout/default.html.twig' %}
+
+{% block title %}List{% endblock %}
+
+{% block content %}
+    {% set confirm = '' %}
+    {% if ok_corall == 1 %}
+        {% set confirm = '&confirm=1' %}
+    {% endif %}
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Guestbook List</h2>
+            <hr>
+            <table style="width:100%;">
+            <tr><th>ID</th><th>Name</th><th>Email</th><th>&nbsp;</th></tr>
+            {% for entry in response %}
+                <tr>
+                <td>{{ entry.id }}</td>
+                <td>{{ entry.name }}</td>
+                <td>{{ entry.email }}</td>
+                <td><a href="/manage?id={{ entry.id }}&del=1{{ confirm }}">DELETE</a></td>
+                </tr>
+            {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
+```
