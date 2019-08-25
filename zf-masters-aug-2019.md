@@ -686,13 +686,20 @@ class ListingsService
 * Use the command line tool to create two new handlers: `Manage\\Handler\\ListHandler` and `Manage\\Handler\\DeleteHandler`.  Note that `\\` is required otherwise a single `\` just escapes the next character.
 * Have a look in `src/Manage/src/Handler`.  Note that the two handlers are there as well as 2 factory classes.
 * Have a look in `config/autoload`. Open the file `zend-expressive-tooling-factories.global.php` and move the handler service container assignments from that file and into `src/Manage/src/ConfigProvider.php::getDependencies()`.  You can then delete the file `zend-expressive-tooling-factories.global.php`.
+* Modify the `__construct()` method in both handlers to accept the following arguments:
+    * `Zend\Expressive\Template\TemplateRendererInterface` instance
+    * `Manage\Domain\ListingsService` instance
+* Add properties in both handlers to represent `$template` and `$service`, which should be set in `__construct()`
+* Modify the factories associated with both handlers to inject the following arguments:
+```
+$template = $container->get(TemplateRendererInterface::class);
+$service  = $container->get(ListingsService::class);
+```
 ### Add Routes to the Handlers
 * Open the file `config/routes.php`
 * Add a `get` route to `Manage\Handler\ListHandler` which includes a URL and an optional segment route parameter `page`
 * Add a `post` route to `Manage\Handler\DeleteHandler`
 ### Finish the `ListHandler`
-* Modify `Manage\Handler\ListHandlerFactory` to inject `Manage\Domain\LisitingsService` into `Manage\Handler\ListHandler`
-* Modify `Manage\Handler\ListHandler::__construct()` to accept the service
 * In the `Manage\Handler\ListHandler`, add the following
     * Class constant which represents the number of lines per page
 * Define `Manage\Handler\ListHandler::handle()` as follows:
@@ -700,37 +707,142 @@ class ListingsService
 public function handle(ServerRequestInterface $request) : ResponseInterface
 {
     $page = $request->getAttributes()['page'] ?? 0;
-    $listings = $this->service->fetchAllPaginated(self::LINES_PER_PAGE, $page * self::LINES_PER_PAGE);
-    return new HtmlResponse($this->renderer->render('manage::list', ['listings' => $listings]));
+    $listings = $this->service->fetchAllPaginated(self::LINES_PER_PAGE, $page * self::LINES_PER_PAGE)->toArray();
+    $count = count($listings);
+    if ($count < self::LINES_PER_PAGE) {
+        $backFill = self::LINES_PER_PAGE - $count;
+        for ($x = 0; $x < $backFill; $x++) {
+            $listings[] = new ArrayObject(['title' => '', 'listings_id' => 0]);
+        }
+    }
+    $next = $page + 1;
+    $prev = (($page - 1) > 0) ? $page - 1 : 0;
+    $body = $this->renderer->render(
+        'manage::list',
+        ['listings' => $listings, 'prev' => $prev, 'next' => $next, 'url' => '/list']);
+    return new HtmlResponse($body);
 }
 ```
-* Define the view template `src/Manage/templates/manage/list.twg` as follows:
+* Define the view template `src/Manage/templates/manage/list.html.twg` as follows:
 ```
 {% extends '@layout/default.html.twig' %}
-
-{% block title %}List{% endblock %}
-
 {% block content %}
-    {% set confirm = '' %}
-    {% if ok_corall == 1 %}
-        {% set confirm = '&confirm=1' %}
-    {% endif %}
     <div class="row">
         <div class="col-md-12">
-            <h2>Guestbook List</h2>
+            <h2>Online Market List</h2>
             <hr>
-            <table style="width:100%;">
-            <tr><th>ID</th><th>Name</th><th>Email</th><th>&nbsp;</th></tr>
-            {% for entry in response %}
+            Place a checkmark next to any title to delete.
+            <form action="/delete" method="post">
+            <table width="80%">
                 <tr>
-                <td>{{ entry.id }}</td>
-                <td>{{ entry.name }}</td>
-                <td>{{ entry.email }}</td>
-                <td><a href="/manage?id={{ entry.id }}&del=1{{ confirm }}">DELETE</a></td>
+                    <td>
+                        <ul>
+                        {% for entry in listings|slice(0, 9) %}
+                            <li>
+                                <input type=checkbox name="del[{{ entry.listings_id }}]" value="{{ entry.listings_id }}" />  {{ entry.title }}
+                                <input type=hidden name="title[{{ entry.listings_id }}]" value="{{ entry.title }}" />
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                        {% for entry in listings|slice(10, 19) %}
+                            <li>
+                                <input type=checkbox name="del[{{ entry.listings_id }}]" value="{{ entry.listings_id }}" />  {{ entry.title }}
+                                <input type=hidden name="title[{{ entry.listings_id }}]" value="{{ entry.title }}" />
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </td>
+                <tr>
+                <tr>
+                    <td>
+                        <input type="submit" value="Process" />
+                        <a href="{{ url }}/{{ prev }}">PREV</a> | <a href="{{ url }}/{{ next }}">NEXT</a>
+                    </td>
+                    <td>&nbsp;</td>
                 </tr>
-            {% endfor %}
             </table>
+            </form>
         </div>
     </div>
 {% endblock %}
 ```
+### Finish the `DeleteHandler`
+* Define `Manage\Handler\DeleteHandler::handle()` as follows:
+```
+public function handle(ServerRequestInterface $request) : ResponseInterface
+{
+    $expected = 0;
+    $actual   = 0;
+    $listings = [];
+    if (strtolower($request->getMethod()) == 'post') {
+        $post = $request->getParsedBody();
+        if (isset($post['del'] && isset($post['title'])) {
+            $toDelete = array_combine($post['del'], $post['title']);
+            foreach ($toDelete as $id => $title) {
+                if ($this->service->deleteById((int) $id)) {
+                    $actual++;
+                    $listings[] = new ArrayObject(['title' => $title]);
+                }
+                $expected++;
+            }
+        }
+    }
+    $body = $this->renderer->render(
+        'manage::delete',
+        ['listings' => $listings, 'expected' => $expected, 'actual' => $actual]);
+    return new HtmlResponse($body);
+}
+```
+* Define the view template `src/Manage/templates/manage/delete.html.twg` as follows:
+```
+{% extends '@layout/default.html.twig' %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Online Market Deletion(s)</h2>
+            <hr>
+            List of successful deletions:
+            <ul>
+            {% for entry in listings %}
+                <li>{{ entry.title }}</li>
+            {% endfor %}
+            </ul>
+            <br>Expected: {{ expected }}
+            <br>Actual:   {{ actual }}
+        </div>
+    </div>
+{% endblock %}
+```
+### Access Control Middleware [optional]
+* Use the command line tool to create middleware `Manage\Security\AccessControlMiddleware`
+* Have a look in `config/autoload`. Open the file `zend-expressive-tooling-factories.global.php` and move the handler service container assignments from that file and into `src/Manage/src/ConfigProvider.php::getDependencies()`.  You can then delete the file `zend-expressive-tooling-factories.global.php`.
+* Define the `process()` method to do the following:
+    * Check to see if a file `/path/to/onlinemarket.work/data/auth/storage.txt` exists
+    * If it does not exist, the user is not logged in: redirect back to `onlinemarket.work`
+```
+use Zend\Diactoros\Response\RedirectResponse;
+public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
+{
+    // other code not shown
+    // proceed with request or redirect home
+    if ($ok) {
+        return $handler->handle($request);
+    } else {
+        error_log(__METHOD__ . ':' . __LINE__ . ' : ' . $message);
+        return new RedirectResponse('http://onlinemarket.work', 307); // Temporary Redirect
+    }
+}
+```
+    * If the file does exist, and use `strpos()` to see if the file contains `admin@zend.com`
+    * If so: `return $handler->handle($request)`
+    * If not: do a redirect (see above)
+* Add the middleware to `config/pipeline.php` before `$app->pipe(DispatchMiddleware::class);`
+### To Run the App
+* Open a terminal window
+* Change to `/path/to/onlinemarket.work/expressive`
+* Run this command: `php -S localhost:9999 -t public`
+* Open `http://localhost:9999` from your browser
+* You might also consider adding a menu item to the main `onlinemarket.work` project so that you can access the functionality from the main menu
