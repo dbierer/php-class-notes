@@ -32,6 +32,22 @@ use Psr\Http\Message\ResponseInterface;
     * Hint: use `urldecode()` to strip out any URL encoding
     * Good outline: https://olegkrivtsov.github.io/using-zend-framework-3-book/html/en/Routing/Writing_Own_Route_Type.html
 
+## RE: I18n
+* Standards for date formatting used by PHP Intl extension: http://www.icu-project.org/apiref/icu4c/classSimpleDateFormat.html#details
+
+## RE: Stratigility
+* Here is a working demo which uses only Stratigility: https://github.com/dbierer/strat_post/
+* URL: `https://api.unlikelysource.com/`
+
+## RE: Expressive
+* Inside your handler `handle()` method, here's how you get params:
+  * `$request->getParsedBody()` == `$_POST`
+  * `$request->getQueryParams()` == `$_GET`
+  * `$request->getAttributes()` == Routing parameters
+  * `$request->getServerParams()` == `$_SERVER`
+  * `$request->getUploadedFiles()` == `$_FILES`
+  * `$request->getUploadedFiles()` == `$_COOKIE`
+
 ## TODO
 * Finish the Aggregate Hydrator in onlinemarket.work re: `PrivateMessages` module
 * Is there a way to get `TableGateway\Feature\EventFeature` to work with `ZendDeveloperTools`?
@@ -563,10 +579,15 @@ echo end($element);
 * file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/8/2: add Zend Expressive!
 * file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/8/46: where is the sample program?
 * file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/8/55: dir s/be `manage`
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/6/66: method name s/be `checkIfNotHttp()`! change title too + previous 2 slides
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/7/29: intl chars causing problems with PDF (p. 314)
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/7/32: same
 * RE: Doctrine ORM Lab: already installed in VM: need to un-install!
 * RE: Doctrine ORM Lab: onlinemarket.complete is missing the Doctrine portion of Events module
 * RE: LDAP Lab: the OpenLDAP server is not installed in the VM + the link is missing from the home page
 * RE: Middleware: Move course Module 8 (Middleware) in front of Module 6 (Cross Cutting Concerns)
+* RE: Command ZF Lab: make sure solution is ported to onlinemarket.complete.  See: file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/6/68
+* RE: CommandLine module in Guestbook: make sure it's working
 
 ## Lab: Zend Expressive
 ### Install Zend Expressive
@@ -626,7 +647,7 @@ What type of installation would you like?
 * Use `composer` to install `zendframework/zend-db`.  Note that this will also cause `composer` to refresh the autoloading tables so the new module is recognized.
 ### Create a Domain Service
 * Make a directory `src/Manage/src/Domain`
-* Create a new class `Manage\Domain\ListingService` which will work with the `listings` database table
+* Create a new class `Manage\Domain\ListingsService` which will work with the `listings` database table
 ```
 <?php
 declare(strict_types=1);
@@ -774,26 +795,26 @@ public function handle(ServerRequestInterface $request) : ResponseInterface
 ```
 public function handle(ServerRequestInterface $request) : ResponseInterface
 {
-    $expected = 0;
-    $actual   = 0;
-    $listings = [];
-    if (strtolower($request->getMethod()) == 'post') {
-        $post = $request->getParsedBody();
-        if (isset($post['del'] && isset($post['title'])) {
-            $toDelete = array_combine($post['del'], $post['title']);
-            foreach ($toDelete as $id => $title) {
-                if ($this->service->deleteById((int) $id)) {
-                    $actual++;
-                    $listings[] = new ArrayObject(['title' => $title]);
-                }
-                $expected++;
-            }
-        }
-    }
-    $body = $this->renderer->render(
-        'manage::delete',
-        ['listings' => $listings, 'expected' => $expected, 'actual' => $actual]);
-    return new HtmlResponse($body);
+	$expected = 0;
+	$actual   = 0;
+	$listings = [];
+	if (strtolower($request->getMethod()) == 'post') {
+		$post = $request->getParsedBody();
+		error_log(__METHOD__ . ':' . __LINE__ . ':' . var_export($post, TRUE));
+		if (isset($post['del']) && isset($post['title'])) {
+			foreach ($post['del'] as $index => $id) {
+				if ($this->service->deleteById((int) $id)) {
+					$actual++;
+					$listings[] = new ArrayObject(['title' => $post['title'][$index]]);
+				}
+				$expected++;
+			}
+		}
+	}
+	$body = $this->renderer->render(
+		'manage::delete',
+		['listings' => $listings, 'expected' => $expected, 'actual' => $actual]);
+	return new HtmlResponse($body);
 }
 ```
 * Define the view template `src/Manage/templates/manage/delete.html.twg` as follows:
