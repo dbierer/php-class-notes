@@ -1,7 +1,29 @@
 # PHP-I Class Notes
 
+## HOMEWORK
+* For Fri 8 Nov 2019
+  * Lab: The Mixed Array 1
+  * http://collabedit.com/sjtx8
+
 ## CLASS NOTES
+* Ways to recapture memory:
+  * Temporary memory limit increase:
+```
+ini_set('memory_limit', '1G');
+```
+  * Release memory from variables which have been `unset()`: https://www.php.net/manual/en/function.gc-collect-cycles.php
+  * Use "generators" to "yield" results instead returning a single massive array: https://www.php.net/manual/en/language.generators.overview.php
+
+
 * https://www.php.net/manual/en/reserved.constants.php
+
+* Automatic documentation generation: https://www.phpdoc.org/git
+
+* Turn on display errors in this file:
+```
+sudo gedit /etc/php/7.3/apache2/php.ini
+sudo service apache2 restart
+```
 
 * Basic examples
 ```
@@ -67,4 +89,55 @@ foreach ($users as $obj) {
 	echo PHP_EOL;
 }
 ```
+* Array examples
+```
+<?php
+$astronaut = ['Mark', 'Watney', 'Botanist'];
+$astronaut[7] = 'Status';
+$astronaut[] = 'Active';
+$astronaut[4] = 'Male';
+$astronaut[2] = 'Doctor';
 
+var_dump($astronaut);
+
+foreach ($astronaut as $key => $value) {
+	echo $key . ':' . $value . PHP_EOL;
+}
+
+ksort($astronaut);
+foreach ($astronaut as $key => $value) {
+	echo $key . ':' . $value . PHP_EOL;
+}
+
+echo PHP_EOL;
+$astronaut = ['firstName' => 'Mark', 5 => 'Watney', 'Botanist'];
+var_dump($astronaut);
+```
+* Alternate ways to assign values to arrays:
+```
+<?php
+// Build the crew: Approach #1
+$astronaut[] = ['firstName' => 'Mark', 'lastName' => 'Watney',
+        'specialty' => 'Botanist'];
+$astronaut[] = ['firstName' => 'Melissa', 'lastName' => 'Lewis',
+        'specialty' => 'Commander'];
+$astronaut[] = ['firstName' => 'Beth', 'lastName' => 'Johanssen',
+        'specialty' => 'Computer Specialist'];
+$mission = ['STS395' => $astronaut];
+
+// Output all elements
+print_r($mission);
+echo PHP_EOL;
+
+// Build the crew: Approach #2
+$mission = [
+	'STS395' => [
+		['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
+		['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
+		['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist']
+	],
+];
+
+// Output all elements
+print_r($mission);
+```
