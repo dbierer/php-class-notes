@@ -1,11 +1,16 @@
 # PHP-I Class Notes
 
 ## HOMEWORK
+* For Mon 11 Nov 2019
+  * https://gist.github.com/dbierer/475743a8f0b658b71cef5f7287eada2c
 * For Fri 8 Nov 2019
   * Lab: The Mixed Array 1
   * http://collabedit.com/sjtx8
 
 ## CLASS NOTES
+* Conditionals:
+&& || ! ^
+
 * Ways to recapture memory:
   * Temporary memory limit increase:
 ```
@@ -125,10 +130,6 @@ $astronaut[] = ['firstName' => 'Beth', 'lastName' => 'Johanssen',
         'specialty' => 'Computer Specialist'];
 $mission = ['STS395' => $astronaut];
 
-// Output all elements
-print_r($mission);
-echo PHP_EOL;
-
 // Build the crew: Approach #2
 $mission = [
 	'STS395' => [
@@ -138,6 +139,74 @@ $mission = [
 	],
 ];
 
-// Output all elements
-print_r($mission);
+// Output all the specialty for Melissa Lewis
+echo $mission['STS395'][1]['specialty'];
+echo PHP_EOL;
+// overwrite assignment:
+$mission['STS395'][1]['specialty'] = 'Captain';
+echo $mission['STS395'][1]['specialty'];
+echo PHP_EOL;
+// whole thing
+var_dump($mission);
+```
+* Nested `foreach()`
+```
+<?php
+// nested foreach
+$mission = [
+	'STS395' => [
+		['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
+		['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
+		['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist']
+	],
+];
+
+foreach ($mission as $key1 => $outer) {
+	echo $key1 . PHP_EOL;
+	foreach ($outer as $key2 => $astronaut) {
+		echo "\n\tID: " . $key2;
+		foreach ($astronaut as $key3 => $value) {
+			echo "\n\t" . ucfirst($key3) . "\t" . $value;
+		}
+	}
+}
+```
+* Use keyword `namespace` if you need to completely isolate a block of code
+```
+<?php
+namespace MySpace;
+use function strtoupper as phpupper;
+function strtoupper(string $x)
+{
+	return 'X';
+}
+
+echo strtoupper('whatever');
+echo PHP_EOL;
+echo phpupper('whatever');
+```
+* Type checking + optional parameter
+```
+<?php
+//declare(strict_types=1);
+
+function test(array $test, string $name, int $status = 0)
+{
+	$output = "\nStatus:" . $status . ':' . $name . "\n";
+	foreach ($test as $item) {
+		$output .= $item . PHP_EOL;
+	}
+	return $output;
+}
+
+$name = 'Doug';
+$xyz  = [1,2,3,4,5];
+// this works all the time
+echo test($xyz, $name, 1);
+echo PHP_EOL;
+// this works only if strict_types is not active
+echo test($xyz, 12345);
+echo PHP_EOL;
+// this doesn't work any time
+echo test(12345, 12345);
 ```
