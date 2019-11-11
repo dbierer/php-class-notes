@@ -3,11 +3,19 @@
 ## HOMEWORK
 * For Mon 11 Nov 2019
   * https://gist.github.com/dbierer/475743a8f0b658b71cef5f7287eada2c
+  * https://github.com/rpuglia12/php1/blob/master/homework11-8-19
 * For Fri 8 Nov 2019
   * Lab: The Mixed Array 1
   * http://collabedit.com/sjtx8
 
 ## CLASS NOTES
+* Most widely used string functions also include:
+  * `substr()`
+  * `strpos()`
+  * `str_replace()`
+
+* Dealing with strings representing fixed-length records: https://www.php.net/manual/en/function.sscanf.php
+
 * Conditionals:
 && || ! ^
 
@@ -209,4 +217,74 @@ echo test($xyz, 12345);
 echo PHP_EOL;
 // this doesn't work any time
 echo test(12345, 12345);
+```
+* Command Line processing of params
+```
+<?php
+// split out key pairs from command line PHP
+$params = [];
+foreach ($argv as $item) {
+    if (strpos($item, '=')) {
+        [$key, $value] = explode('=', $item);
+	$params[$key] = $value;
+    } else {
+	$params[] = $item;
+    }
+}
+var_dump($params);
+```
+* Using references to access elements of a multi-dimensional array
+```
+<?php
+$mission = [
+	'STS395' => [
+		['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
+		['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
+		['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist']
+	],
+];
+
+$lewis = &$mission['STS395'][1];
+$lewis['specialty'] = 'Captain';
+var_dump($mission);
+```
+* Beware of `strpos()`!  Have a look at the best way to frame a search:
+```
+<?php
+$test = 'ERROR: file not found';
+if (strpos($test, 'ERROR') !== FALSE) {
+	echo 'This line reflects an error';
+} else {
+	echo 'Skip this line, all OK';
+}
+```
+* Dangers of using `sort()`
+```
+<?php
+// illustrates the danger of sort()
+
+$test = ['A' => 1, 'D' => 4, 'C' => 3, 'B' => 2];
+$save = $test;
+var_dump($test);
+sort($test);
+// sort re-keys the array!
+var_dump($test);
+// use asort() to retain the keys
+asort($save);
+var_dump($save);
+```
+* Example of manipulating the PHP include path:
+```
+<?php
+set_include_path(
+	get_include_path()
+	. PATH_SEPARATOR
+	. __DIR__
+	. DIRECTORY_SEPARATOR
+	. 'Functions'
+);
+
+include 'Library.php';
+
+echo whatever('lowercase');
 ```
