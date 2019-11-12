@@ -1,6 +1,8 @@
 # PHP-I Class Notes
 
 ## HOMEWORK
+* For Wed 13 Nov 2019
+  * https://gist.github.com/dbierer/9a1a957c16af5cd92b8d52fcf0a39272
 * For Mon 11 Nov 2019
   * https://gist.github.com/dbierer/475743a8f0b658b71cef5f7287eada2c
   * https://github.com/rpuglia12/php1/blob/master/homework11-8-19
