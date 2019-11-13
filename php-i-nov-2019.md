@@ -1,8 +1,16 @@
 # PHP-I Class Notes
 
 ## HOMEWORK
+* For Fri 15 Nov 2019
+  * https://gist.github.com/dbierer/961007eabe0da28e402b94b7998adfe9
 * For Wed 13 Nov 2019
   * https://gist.github.com/dbierer/9a1a957c16af5cd92b8d52fcf0a39272
+  * For the file labs: here's how you can set permissions for both web + command line vagrant user:
+```
+sudo chown vagrant:www-data /path/to/directory
+sudo chmod 775 /path/to/directory
+```
+
 * For Mon 11 Nov 2019
   * https://gist.github.com/dbierer/475743a8f0b658b71cef5f7287eada2c
   * https://github.com/rpuglia12/php1/blob/master/homework11-8-19
@@ -11,6 +19,29 @@
   * http://collabedit.com/sjtx8
 
 ## CLASS NOTES
+* Additional PHP software: https://packagist.org/
+* `fopen()` can also be used with a number of different protocols:
+  * See: https://www.php.net/manual/en/wrappers.php
+  * To send metadata along with your payload, create a "context" using `stream_context_create`
+  * See: https://www.php.net/stream_context_create
+* If you need to create a zero byte file entry use `touch($fn)`
+* Communicating with remote systems:
+  * `fsockopen()`
+  * `stream_socket_client()`
+  * Using the `cURL` extension: https://www.php.net/curl
+* To build relative directory path:
+```
+// example of writing to a dir "data" 2 levels up from here
+$path = realpath(__DIR__ . '/../../data');
+```
+* The file commands write a string to the filesystem.  What about writing arrays or objects?
+  * Use either `json_encode()` or `serialize()` to first convert the array or to a string
+  * Use `json_decode()` or `unserialize()` to reverse and get the original data back
+* If you need to increase the amount of RAM allocated for a program run:  this example sets the limit to 1 GB:
+```
+ini_set('memory_limit', '1G');
+```
+
 * Most widely used string functions also include:
   * `substr()`
   * `strpos()`
@@ -289,4 +320,40 @@ set_include_path(
 include 'Library.php';
 
 echo whatever('lowercase');
+```
+* Modified homework example returning an associative array
+```
+<?php
+function getOrderTotal(int $operand1,int $operand2) {
+
+  $sum = $operand1 + $operand2;
+
+  return array('sum' => $sum, 'op1' => $operand1, 'op2' => $operand2);
+}
+
+$returnarray = getOrderTotal(1,3);
+foreach ($returnarray as $key => $value) {
+  echo $key . ':' . $value;
+  echo PHP_EOL;
+}
+```
+* Example of a hit count + using `glob()`
+```
+<?php
+function getCount( $counter )
+{
+    if (!file_exists($counter)) touch($counter);
+    $fh = fopen( $counter, 'r+' );  // bi-directional mode
+    $num = (int) fread( $fh, 10 );  // get the current count
+    rewind( $fh );                  // reset file pointer
+    fwrite( $fh, ++$num, 10 );      // pre-increment and write new count
+    fclose( $fh );                  // close the handle
+    return $num;
+}
+$path = realpath(__DIR__ . '/../../php1/src/ModIOAndLibraries');
+$list = glob($path . '/*');
+echo 'Hit count: ' . getCount(__DIR__ . '/../data/counter.txt') . PHP_EOL;
+echo '<br><pre>';
+var_dump($list);
+echo '</pre>';
 ```
