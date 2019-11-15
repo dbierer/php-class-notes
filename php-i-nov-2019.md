@@ -1,6 +1,8 @@
 # PHP-I Class Notes
 
 ## HOMEWORK
+* For Mon 17 Nov 2019
+  * https://gist.github.com/dbierer/5eb9f74f02dc6e98f69a9b95d02cb62e
 * For Fri 15 Nov 2019
   * https://gist.github.com/dbierer/961007eabe0da28e402b94b7998adfe9
 * For Wed 13 Nov 2019
@@ -19,6 +21,16 @@ sudo chmod 775 /path/to/directory
   * http://collabedit.com/sjtx8
 
 ## CLASS NOTES
+* To work with URLs, etc.:
+  * Parse a URL: https://www.php.net/parse_url
+  * Build a query string: https://www.php.net/manual/en/function.http-build-query.php
+  * To encode URL for transmission: https://www.php.net/manual/en/function.urlencode.php
+  * HTTP Status Codes: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+* HTTP requests info
+  * Use `phpinfo(INFO_VARIABLES);` in your script to test incoming requests; erase afterwards!!!
+* JavaScript Libraries:
+  * Library of classes and functions: https://jquery.com/
+  * Complete Front End: https://reactjs.org/
 * Additional PHP software: https://packagist.org/
 * `fopen()` can also be used with a number of different protocols:
   * See: https://www.php.net/manual/en/wrappers.php
@@ -356,4 +368,64 @@ echo 'Hit count: ' . getCount(__DIR__ . '/../data/counter.txt') . PHP_EOL;
 echo '<br><pre>';
 var_dump($list);
 echo '</pre>';
+```
+* Example of function to create SELECT
+```
+<?php
+// Functions to get config
+$config = include __DIR__ . '/../config/config.php';
+
+function htmlSelectHtml( $config, $current ) {
+    $html = '<select>' . PHP_EOL;
+      foreach ($config as $value) {
+	$selected = ($value == $current) ? 'selected ' : '';
+        $html .=  '<option value="'.$value.'" ' . $selected . '>'.$value.'</option>' . PHP_EOL;
+      }
+    $html .= '</select>';
+    return $html;
+}
+
+echo '<!DOCTYPE html><html><body>';
+echo htmlSelectHtml($config['status_codes'], 'open');
+echo '<br>';
+echo htmlSelectHtml($config['security'], 'pending');
+echo '<br>';
+echo '</body></html>';
+```
+* File Ops involving PHP `serialize()` vs. `json_encode()` etc.
+```
+<?php
+define('FILE_JSON', __DIR__ . '/json.js');
+define('SERIAL_FILE', __DIR__ . '/serial.txt');
+
+class User
+{
+    public $first;
+    public $last;
+    public function __construct($first, $last)
+    {
+	$this->first = $first;
+	$this->last  = $last;
+    }
+    public function getFullName()
+    {
+	return $this->first . ' ' . $this->last;
+    }
+}
+
+$user = new User('Fred','Flintstone');
+echo $user->getFullName();
+
+file_put_contents(FILE_JSON, json_encode($user,  JSON_PRETTY_PRINT |  JSON_FORCE_OBJECT));
+file_put_contents(SERIAL_FILE, serialize($user));
+
+$serialUser = unserialize(file_get_contents(SERIAL_FILE));
+$jsonUser = json_decode(file_get_contents(FILE_JSON));
+
+echo PHP_EOL;
+var_dump($serialUser);
+var_dump($jsonUser);
+echo $serialUser->getFullName();
+echo PHP_EOL;
+echo $jsonUser->getFullName();
 ```
