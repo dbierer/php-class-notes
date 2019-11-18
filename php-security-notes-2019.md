@@ -1,54 +1,36 @@
 # PHP SECURITY CLASS NOTES
 
 ## Assignments
-* For Fri 28 Jun 2019
+* For Tue 19 Nov 2019
+  * Get the VM up and running
+  * Lab: Get the ZED Attack Proxy Setup
+  * Lab: Firefox and Security Training App
+  * Lab: SQL Injection
+    * Path to code: `/home/vagrant/Zend/workspaces/DefaultWorkspace/securitytraining/src/vulnerabilities/sqli/source/with.php`
+  * Lab: Brute Force
+    * Path to code: `/home/vagrant/Zend/workspaces/DefaultWorkspace/securitytraining/src/vulnerabilities/brute/source/with.php`
+  * Lab: Zed Attack Proxy Project Exercise
+* Not Yet Assigned
+  * Lab: Cross-Site Scripting (XSS)
+    * Tidy example, XSSS, XSSR
+  * Lab: External XML Entities
   * Lab: Insecure Direct Object References
   * Lab: Missing Function Access Level Control (ACL)
   * Lab: Command Execution
   * Lab: Unrestricted File Inclusion
   * Lab: Secure File Uploads
-* For Thu 27 Jun 2019
   * Lab: CSRF
   * Lab: Security Misconfiguration
   * Lab: Insecure Deserialization
     * NOTE: in the URL you are asked to post via `curl` target s/be `http://securitytraining/`
   * Lab: Using Components with Known Vulnerabilities: just look over the information
-* For Wed 26 Jun 2019
-  * Lab: Brute Force
-  * Lab: Zed Attack Proxy Project Exercise
-  * Lab: Cross-Site Scripting (XSS)
-    * Tidy example, XSSS, XSSR
-  * Lab: External XML Entities
-* For Tue 25 Jun 2019
-  * Get the VM up and running
-  * Lab: Get the ZED Attack Proxy Setup
-  * Lab: SQL Injection
 
 ## TODO
-* The source code in the VM needs to be updated.  Please do the following:
-  * Open a terminal window
-  * Change to the `/home/vagrant` home directory
-  * Clone from the update repo:
-```
-git clone https://github.com/dbierer/php-sec-update-jun-2019.git
-```
-  * Change to the new directory just cloned:
-```
-cd php-sec-update-jun-2019
-```
-  * Run the copy script as root:
-```
-chmod +x ./copy.sh
-sudo ./copy.sh
-```
-  * Verify that the database has been refreshed: look for a new table called `flowers`
-  * If the refresh didn't occur property, refresh the database by importing from this file (you can also do this from phpMyAdmin):
-```
-mysqlimport security -uvagrant -pvagrant ./securitytraining/data/sql/security.sql
-```
 
 ## General Notes
 ### LAB NOTES
+* Good Overview of the Stats and Costs:
+  * https://www.thesslstore.com/blog/80-eye-opening-cyber-security-statistics-for-2019/
 * ZAP Lab
   * Good "how to": https://chrisdecairos.ca/intercepting-traffic-with-zaproxy/
 * Brute Force Detector Lab:
@@ -92,6 +74,7 @@ CREATE TABLE `bfdetect` (
 
 ## LATEST
 * SQL Injection
+  * .NET: https://visualstudiomagazine.com/articles/2019/10/22/top-net-attacks.aspx
   * Find a Place CMS Directory 1.5: https://www.exploit-db.com/exploits/46418
   * phpMyAdmin Designer Feature SQL Injection Vulnerability: https://tools.cisco.com/security/center/viewAlert.x?alertId=59526
   * Wordpress Plugin Vulnerabilities: https://www.woobro.com/wordpress-sql-injection-how-to-prevent-attacks-in-2019/
@@ -102,6 +85,9 @@ CREATE TABLE `bfdetect` (
   * DEF: http://cwe.mitre.org/data/definitions/89.html
   * TOOL: http://sqlmap.org/
 * Brute Force
+  * https://ktla.com/2018/08/20/latest-scam-email-has-your-real-password-inside-heres-how-they-got-it/
+  * https://cybersecurityreviews.net/2019/07/30/nas-targeted-by-brute-force-ransomware-attacks/
+  * https://resources.infosecinstitute.com/popular-tools-for-brute-force-attacks/
   * https://www.abuseipdb.com/check/203.195.130.124
   * https://hackercombat.com/password-cracking-tool-hydra/
   * https://securityaffairs.co/wordpress/84948/hacking/hacker-hacked-iot-botnets.html
