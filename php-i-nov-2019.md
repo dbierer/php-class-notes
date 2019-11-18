@@ -1,12 +1,17 @@
 # PHP-I Class Notes
 
 ## HOMEWORK
+* For Wed 19 Nov 2019
+  * https://gist.github.com/dbierer/39ef3a69bae952a7f6645131becce0da
 * For Mon 17 Nov 2019
   * https://gist.github.com/dbierer/5eb9f74f02dc6e98f69a9b95d02cb62e
+  * https://github.com/rpuglia12/php1/blob/master/homework%2011-18-19
 * For Fri 15 Nov 2019
   * https://gist.github.com/dbierer/961007eabe0da28e402b94b7998adfe9
+  * https://github.com/rpuglia12/php1/blob/master/homework%2011-15-19
 * For Wed 13 Nov 2019
   * https://gist.github.com/dbierer/9a1a957c16af5cd92b8d52fcf0a39272
+  * https://github.com/rpuglia12/php1/blob/master/homework%2011-13-19
   * For the file labs: here's how you can set permissions for both web + command line vagrant user:
 ```
 sudo chown vagrant:www-data /path/to/directory
