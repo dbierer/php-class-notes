@@ -429,3 +429,117 @@ echo $serialUser->getFullName();
 echo PHP_EOL;
 echo $jsonUser->getFullName();
 ```
+* Example of HTML with embedded PHP
+```
+<?php
+function addAttribs($config, $name) {
+    echo ' name="' . $name . '"';
+    foreach ($config[$name] as $key => $value) {
+	echo ' ' . $key . '="' . $value . '"';
+    }
+};
+$config = [
+    'username' => [
+	'type' => 'text',
+	'size' => 40,
+	'class' => 'user_class',
+	'placeholder' => 'Enter Username',
+	'title' => 'Username must only be alpha numeric: no special characters',
+    ],
+    'password' => [
+	'type' => 'password',
+	'size' => 20,
+	'class' => 'pwd_class'
+    ],
+];?>
+<!DOCTYPE html>
+<html>
+<title> HTML homework assignment </title>
+<form>
+  User Name:
+  <br><input <?= addAttribs($config, 'username'); ?> />
+  <br>Password:
+  <br><input <?= addAttribs($config, 'password'); ?> />
+  <input type="submit" value="Submit" />
+</form>
+</html>
+```
+* PHP producing all the HTML
+```
+<?php
+function addAttribs($config, $name) {
+    $attribs = '';
+    $attribs .= ' name="' . $name . '"';
+    foreach ($config[$name] as $key => $value) {
+	$attribs .= ' ' . $key . '="' . $value . '"';
+    }
+    return $attribs;
+};
+$config = [
+    'username' => [
+	'type' => 'text',
+	'size' => 40,
+	'class' => 'user_class',
+	'placeholder' => 'Enter Username',
+	'title' => 'Username must only be alpha numeric: no special characters',
+    ],
+    'password' => [
+	'type' => 'password',
+	'size' => 20,
+	'class' => 'pwd_class'
+    ],
+];
+$output = '<!DOCTYPE html>';
+$output .= '<html>';
+$output .= '<head>';
+$output .= '<title> HTML homework assignment </title>';
+$output .= '</head>';
+$output .= '<body>';
+$output .= '<form>';
+$output .= '  User Name:';
+$output .= '  <br><input ' . addAttribs($config, 'username') . '/>';
+$output .= '  <br>Password:';
+$output .= '  <br><input ' . addAttribs($config, 'password') . '/>';
+$output .= '  <input type="submit" value="Submit" />';
+$output .= '</form>';
+$output .= '</body>';
+$output .= '</html> ';
+echo $output;
+```
+* Examples of filtering and validation of username
+```
+<?php
+// form data validation
+// username: example of regulations: mandatory, length 6 - 8 chars, alphanumeric
+$points   = 0;
+$expected = 3;
+$username = '';
+$message  = '';
+// example of validation:
+if (!isset($_POST['username'])) {
+    $message = 'Username is not set';
+} else {
+    $points++;
+    // check length
+    if (strlen($_POST['username']) >= 6 and strlen($_POST['username']) <= 8) {
+	$points++;
+    } else {
+	$message .= '<br>Invalid length' . PHP_EOL;
+    }
+    // alphanumeric check
+    if (ctype_alnum($_POST['username'])) {
+	$points++;
+    } else {
+	$message .= '<br>Name contains non alphanumerics';
+    }
+    if ($points == $expected) {
+	// example of filtering:
+	$username = strip_tags($_POST['username']);
+	$message  = 'Username Meets Criteria';
+    }
+}
+// escape any suspect output:
+echo 'Username: ' . htmlspecialchars($username);
+echo '<br>Message: ' . $message;
+phpinfo(INFO_VARIABLES);
+```
