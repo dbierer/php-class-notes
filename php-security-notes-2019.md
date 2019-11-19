@@ -1,5 +1,9 @@
 # PHP SECURITY CLASS NOTES
 
+## TODO
+* How to get rid of `system problem detected` message on Ubuntu
+
+
 ## Assignments
 * For Tue 19 Nov 2019
   * Get the VM up and running
@@ -10,20 +14,21 @@
   * Lab: Brute Force
     * Path to code: `/home/vagrant/Zend/workspaces/DefaultWorkspace/securitytraining/src/vulnerabilities/brute/source/with.php`
   * Lab: Zed Attack Proxy Project Exercise
-* Not Yet Assigned
+* For Thu 21 Nov 2019
   * Lab: Cross-Site Scripting (XSS)
     * Tidy example, XSSS, XSSR
   * Lab: External XML Entities
+  * Lab: CSRF
+  * Lab: Security Misconfiguration
+  * Lab: Insecure Deserialization
+  * Lab: Using Components with Known Vulnerabilities: just look over the information
+* Not Yet Assigned
   * Lab: Insecure Direct Object References
   * Lab: Missing Function Access Level Control (ACL)
   * Lab: Command Execution
   * Lab: Unrestricted File Inclusion
   * Lab: Secure File Uploads
-  * Lab: CSRF
-  * Lab: Security Misconfiguration
-  * Lab: Insecure Deserialization
     * NOTE: in the URL you are asked to post via `curl` target s/be `http://securitytraining/`
-  * Lab: Using Components with Known Vulnerabilities: just look over the information
 
 ## TODO
 
@@ -265,6 +270,7 @@ $document->querySelector("#name-output")->innerText = $_GET["name"]
 // also: using PHP DOM extension:
 $document->getElementById("name-output"); // doesn't have querySelector by default.
 ```
+* 12: Might need to set [`CORS`](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) headers to allow "legal" cross information sharing for servers under your control
 
 ## Insecure Direct Object Reference / Missing Function Level Access Control
 * 1: When building the SELECT, encrypt the database key which is exposed to the form
