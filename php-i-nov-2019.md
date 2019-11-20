@@ -1,6 +1,24 @@
 # PHP-I Class Notes
 
 ## HOMEWORK
+* For Fri 21 Nov 2019
+  * To access the database in the VM: open a terminal window and then:
+```
+mysql -u vagrant -p
+```
+  * From the `mysql` command prompt:
+```
+help [<command>];
+help show;
+show databases;
+use phpcourse;
+show tables;
+show create table <name of table>;
+--when finished:
+exit;
+```
+
+
 * For Wed 19 Nov 2019
   * https://gist.github.com/dbierer/39ef3a69bae952a7f6645131becce0da
 * For Mon 17 Nov 2019
@@ -547,4 +565,129 @@ if (!isset($_POST['username'])) {
 echo 'Username: ' . htmlspecialchars($username);
 echo '<br>Message: ' . $message;
 phpinfo(INFO_VARIABLES);
+```
+* Login / New Account form example
+```
+<?php // login.php ?>
+<!DOCTYPE html>
+<html>
+<head>
+<title> User, Password and Email Form </title>
+<!-- Use PHP to build a custom javascript function -->
+</head>
+<body>
+<form action="login_submit.php" method="post">
+  User Name:<input type="text" name="username" size=10 placeholder="Enter username." title="Username must be alphanumeric, no special characters."><br><br>
+  Email Address:<input type="email" name="emailaddr" size=64 placeholder="Enter email address." title="Enter a valid email address."><br><br>
+  Password:<input type="password" name="pswd" size=20><br><br>
+  New Account? <input type="checkbox" name="new_acct" value="1" /><br><br>
+  <input type="submit" value="Submit">
+</form>
+</body>
+</html>
+```
+* Login / New Account target PHP program
+```
+<?php
+// login_submit.php
+$points   = 0;
+$expected = 5;
+$username = $_POST['username']  ?? '';
+$email    = $_POST['emailaddr'] ?? '';
+$password = $_POST['pswd']      ?? '';
+$new_acct = $_POST['new_acct']  ?? '';
+$message  = '';
+
+// validate username - must be entered
+if (!$username) {
+    $message .= '<br><br>Username is not set.';
+} else {
+    $points++;
+    // length must be 6 - 10 characters
+    if (strlen($username) >= 6 and strlen($username) <= 10) {
+	$points++;
+    } else {
+	$message .= 'Invalid length.  ' . PHP_EOL;
+    }
+    // alphanumeric check
+    if (ctype_alnum($username)) {
+	$points++;
+    } else {
+	$message .= 'Name contains non alphanumerics.  ';
+    }
+    if ($points == $expected) {
+	// filter username
+	$username = strip_tags($username);
+    } else {
+        // escape any suspect output and display message
+        $message .= 'Username: ' . htmlspecialchars($username);
+    }
+    // validate email
+    if (!$email) {
+        $message .= '<br><br>Email address is not set.';
+    } else {
+        $points++;
+        // filter password
+        $email_addr = strip_tags($email);
+    }
+    if (!$password) {
+        $message .= 'Password is not set.';
+    } else {
+	$points++;
+    }
+}
+
+// validate password if it's a new account only
+if ($new_acct) {
+    $expected += 3;
+    $pswd = '';
+    // password must be entered
+    if (!$password) {
+        $message .= 'Password is not set.';
+    } else {
+        $points++;
+        // length must be 8 - 20 characters
+        if (strlen($password) >= 8 and strlen($password) <= 20) {
+	    $points++;
+        }
+        // uppercase, lowercase, number and special character check
+        $uppercase = preg_match('@[A-Z]@', $password);
+        $lowercase = preg_match('@[a-z]@', $password);
+        $number = preg_match('@[0-9]@', $password);
+        $specialChars = preg_match('@[^\w]@', $password);
+        if($uppercase && $lowercase && $number && $specialChars) {
+            $points++;
+	    $password = password_hash($password);
+        } else {
+	    $message .= 'For new accounts, please set your password according the guidelines on our New Accounts Page.';
+	}
+    }
+}
+
+if ($points == $expected) {
+    echo 'Valid Login.';
+    if ($new_acct) {
+	// at this point you would store all collected user info
+	// store the password HASH, not plain text!
+    }
+} else {
+    echo 'Invalid Login.';
+}
+echo '<br>' . $message;
+echo '<br>';
+phpinfo(INFO_VARIABLES);
+```
+* Example iterating through the `customers` table in the VM:
+```
+<?php
+// Gets a connection to the database
+$conn = mysqli_connect('127.0.0.1', 'vagrant', 'vagrant', 'phpcourse');
+// Queries the database with the specified query
+$result = mysqli_query($conn, "SELECT * FROM customers");
+// Fetches a row a data based on the query
+while ( $row = mysqli_fetch_assoc($result)) {
+    var_dump($row);
+}
+// close
+mysqli_close($conn);
 ```
