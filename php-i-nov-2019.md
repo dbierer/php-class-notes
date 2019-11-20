@@ -2,6 +2,7 @@
 
 ## HOMEWORK
 * For Fri 21 Nov 2019
+  * https://gist.github.com/dbierer/c68c1e6ffe96666f938aafcccff54415
   * To access the database in the VM: open a terminal window and then:
 ```
 mysql -u vagrant -p
