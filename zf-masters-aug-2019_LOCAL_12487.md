@@ -1,10 +1,5 @@
 # ZF Masters Class Notes
 
-file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/30
-
-## REPO
-* https://github.com/dbierer/zf-master-aug-2019
-
 ## HOMEWORK (CURRENT)
 * For Mon 26 Aug
   * Lab: Psr7Bridge
@@ -31,22 +26,6 @@ use Psr\Http\Message\ResponseInterface;
     * Example: this URL `http://onlinemarket.work/market/view/title/3.5%20Inch%20Diskettes` should end up here `http://onlinemarket.work/market/view/item/15`
     * Hint: use `urldecode()` to strip out any URL encoding
     * Good outline: https://olegkrivtsov.github.io/using-zend-framework-3-book/html/en/Routing/Writing_Own_Route_Type.html
-
-## RE: I18n
-* Standards for date formatting used by PHP Intl extension: http://www.icu-project.org/apiref/icu4c/classSimpleDateFormat.html#details
-
-## RE: Stratigility
-* Here is a working demo which uses only Stratigility: https://github.com/dbierer/strat_post/
-* URL: `https://api.unlikelysource.com/`
-
-## RE: Expressive
-* Inside your handler `handle()` method, here's how you get params:
-  * `$request->getParsedBody()` == `$_POST`
-  * `$request->getQueryParams()` == `$_GET`
-  * `$request->getAttributes()` == Routing parameters
-  * `$request->getServerParams()` == `$_SERVER`
-  * `$request->getUploadedFiles()` == `$_FILES`
-  * `$request->getUploadedFiles()` == `$_COOKIE`
 
 ## TODO
 * Finish the Aggregate Hydrator in onlinemarket.work re: `PrivateMessages` module
@@ -710,8 +689,6 @@ class ListingsService
     }
 }
 ```
-* Use the command line tool to create a factory for this class
-* Add an entry to `src/Manage/src/ConfigProvider::getDependencies()` under the `factories` key which assigns `Manage\Domain\ListingsService` to the factory you just created.
 ### Create Handlers to List and Delete Online Market Listings
 * Use the command line tool to create two new handlers: `Manage\\Handler\\ListHandler` and `Manage\\Handler\\DeleteHandler`.  Note that `\\` is required otherwise a single `\` just escapes the next character.
 * Have a look in `src/Manage/src/Handler`.  Note that the two handlers are there as well as 2 factory classes.
@@ -753,7 +730,7 @@ public function handle(ServerRequestInterface $request) : ResponseInterface
     return new HtmlResponse($body);
 }
 ```
-* Define the view template `src/Manage/templates/manage/list.html.twg` as follows:
+* Define the view template `src/Manage/templates/manage/list.html.twig` as follows:
 ```
 {% extends '@layout/default.html.twig' %}
 {% block content %}
@@ -826,7 +803,7 @@ public function handle(ServerRequestInterface $request) : ResponseInterface
     return new HtmlResponse($body);
 }
 ```
-* Define the view template `src/Manage/templates/manage/delete.html.twg` as follows:
+* Define the view template `src/Manage/templates/manage/delete.html.twig` as follows:
 ```
 {% extends '@layout/default.html.twig' %}
 {% block content %}

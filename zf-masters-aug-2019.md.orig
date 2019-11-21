@@ -1,10 +1,5 @@
 # ZF Masters Class Notes
 
-file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/30
-
-## REPO
-* https://github.com/dbierer/zf-master-aug-2019
-
 ## HOMEWORK (CURRENT)
 * For Mon 26 Aug
   * Lab: Psr7Bridge
@@ -573,6 +568,7 @@ $name = str_replace('\\','-',$requestedName);
 $element = explode('-', $name);
 echo end($element);
 ```
+<<<<<<< HEAD
 * x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/6/35: s/be ZF 3
 * x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/6/40: needs to be expanded (understatement)
 * x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/8/2: link needs to be updated: all links now rolled into PSR-15
@@ -595,6 +591,23 @@ echo end($element);
 * x RE: Middleware: Move course Module 8 (Middleware) in front of Module 6 (Cross Cutting Concerns)
 * RE: PS7Bridge Lab: confirm it works
 * RE: Middleware Listener Lab: confirm it works
+=======
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/6/35: s/be ZF 3
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/6/40: needs to be expanded (understatement)
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/8/2: link needs to be updated: all links now rolled into PSR-15
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/8/2: add Zend Expressive!
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/8/46: where is the sample program?
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/8/55: dir s/be `manage`
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/6/66: method name s/be `checkIfNotHttp()`! change title too + previous 2 slides
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/7/29: intl chars causing problems with PDF (p. 314)
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/7/32: same
+* RE: Doctrine ORM Lab: already installed in VM: need to un-install!
+* RE: Doctrine ORM Lab: onlinemarket.complete is missing the Doctrine portion of Events module
+* RE: LDAP Lab: the OpenLDAP server is not installed in the VM + the link is missing from the home page
+* RE: Middleware: Move course Module 8 (Middleware) in front of Module 6 (Cross Cutting Concerns)
+* RE: Command ZF Lab: make sure solution is ported to onlinemarket.complete.  See: file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/6/68
+* RE: CommandLine module in Guestbook: make sure it's working
+>>>>>>> b701fa0a7f6a7c9c86f3d3ab1304ce787921d3f4
 
 ## Lab: Zend Expressive
 ### Install Zend Expressive
@@ -654,9 +667,13 @@ What type of installation would you like?
 * Use `composer` to install `zendframework/zend-db`.  Note that this will also cause `composer` to refresh the autoloading tables so the new module is recognized.
 ### Create a Domain Service
 * Make a directory `src/Manage/src/Domain`
+<<<<<<< HEAD
 * Create a new class `Manage\Domain\ListingService` which will work with the `listings` database table
 * Use the command line tool to create a factory for this class
 * Add an entry to `src/Manage/src/ConfigProvider::getDependencies()` under the `factories` key which assigns `Manage\Domain\ListingsService` to the factory you just created.
+=======
+* Create a new class `Manage\Domain\ListingsService` which will work with the `listings` database table
+>>>>>>> b701fa0a7f6a7c9c86f3d3ab1304ce787921d3f4
 ```
 <?php
 declare(strict_types=1);
@@ -710,8 +727,6 @@ class ListingsService
     }
 }
 ```
-* Use the command line tool to create a factory for this class
-* Add an entry to `src/Manage/src/ConfigProvider::getDependencies()` under the `factories` key which assigns `Manage\Domain\ListingsService` to the factory you just created.
 ### Create Handlers to List and Delete Online Market Listings
 * Use the command line tool to create two new handlers: `Manage\\Handler\\ListHandler` and `Manage\\Handler\\DeleteHandler`.  Note that `\\` is required otherwise a single `\` just escapes the next character.
 * Have a look in `src/Manage/src/Handler`.  Note that the two handlers are there as well as 2 factory classes.
@@ -753,7 +768,7 @@ public function handle(ServerRequestInterface $request) : ResponseInterface
     return new HtmlResponse($body);
 }
 ```
-* Define the view template `src/Manage/templates/manage/list.html.twg` as follows:
+* Define the view template `src/Manage/templates/manage/list.html.twig` as follows:
 ```
 {% extends '@layout/default.html.twig' %}
 {% block content %}
@@ -804,29 +819,29 @@ public function handle(ServerRequestInterface $request) : ResponseInterface
 ```
 public function handle(ServerRequestInterface $request) : ResponseInterface
 {
-    $expected = 0;
-    $actual   = 0;
-    $listings = [];
-    if (strtolower($request->getMethod()) == 'post') {
-        $post = $request->getParsedBody();
-        if (isset($post['del'] && isset($post['title'])) {
-            $toDelete = array_combine($post['del'], $post['title']);
-            foreach ($toDelete as $id => $title) {
-                if ($this->service->deleteById((int) $id)) {
-                    $actual++;
-                    $listings[] = new ArrayObject(['title' => $title]);
-                }
-                $expected++;
-            }
-        }
-    }
-    $body = $this->renderer->render(
-        'manage::delete',
-        ['listings' => $listings, 'expected' => $expected, 'actual' => $actual]);
-    return new HtmlResponse($body);
+	$expected = 0;
+	$actual   = 0;
+	$listings = [];
+	if (strtolower($request->getMethod()) == 'post') {
+		$post = $request->getParsedBody();
+		error_log(__METHOD__ . ':' . __LINE__ . ':' . var_export($post, TRUE));
+		if (isset($post['del']) && isset($post['title'])) {
+			foreach ($post['del'] as $index => $id) {
+				if ($this->service->deleteById((int) $id)) {
+					$actual++;
+					$listings[] = new ArrayObject(['title' => $post['title'][$index]]);
+				}
+				$expected++;
+			}
+		}
+	}
+	$body = $this->renderer->render(
+		'manage::delete',
+		['listings' => $listings, 'expected' => $expected, 'actual' => $actual]);
+	return new HtmlResponse($body);
 }
 ```
-* Define the view template `src/Manage/templates/manage/delete.html.twg` as follows:
+* Define the view template `src/Manage/templates/manage/delete.html.twig` as follows:
 ```
 {% extends '@layout/default.html.twig' %}
 {% block content %}

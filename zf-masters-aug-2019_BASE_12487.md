@@ -32,22 +32,6 @@ use Psr\Http\Message\ResponseInterface;
     * Hint: use `urldecode()` to strip out any URL encoding
     * Good outline: https://olegkrivtsov.github.io/using-zend-framework-3-book/html/en/Routing/Writing_Own_Route_Type.html
 
-## RE: I18n
-* Standards for date formatting used by PHP Intl extension: http://www.icu-project.org/apiref/icu4c/classSimpleDateFormat.html#details
-
-## RE: Stratigility
-* Here is a working demo which uses only Stratigility: https://github.com/dbierer/strat_post/
-* URL: `https://api.unlikelysource.com/`
-
-## RE: Expressive
-* Inside your handler `handle()` method, here's how you get params:
-  * `$request->getParsedBody()` == `$_POST`
-  * `$request->getQueryParams()` == `$_GET`
-  * `$request->getAttributes()` == Routing parameters
-  * `$request->getServerParams()` == `$_SERVER`
-  * `$request->getUploadedFiles()` == `$_FILES`
-  * `$request->getUploadedFiles()` == `$_COOKIE`
-
 ## TODO
 * Finish the Aggregate Hydrator in onlinemarket.work re: `PrivateMessages` module
 * Is there a way to get `TableGateway\Feature\EventFeature` to work with `ZendDeveloperTools`?
@@ -549,52 +533,40 @@ Configuration is missing a "session_config" key, or the value of that key is not
 * Change VM provisioning script to create database `course` (not `zfcourse`)
 * Update listings dates in `course.sql` 2013 => 2019
 * Make sure all links are set (maybe import database from ZF-Level-1)
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/1/06: Recording policy changed
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/1/11: ZF2/3 diffs covered in other course: remove
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/3: dup Strategy
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/9: Zend\Hydrator\XXX is now Zend\Hydrator\XXXHydrator
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/10: hydrate() must have Employee object
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/28: make it consistent w/ VM: course / vagrant /vagrant
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/3/11: `Hydratory` s/be `Hydrator` + Zend\Hydrator\XXX is now Zend\Hydrator\XXXHydrator
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/4/20: is now `ObjectPropertyHydrator`
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/4/9: s/be `Modify Events\Listener\Aggregate::attach() to accomplish this task` (remove `Factory` from the namespace)
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/4/31: change self::IDENTIFIER to __CLASS__
-* ? file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/4/31: need to add const IDENTIFIER = 'whatever'
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/14: s/be PBKDF2!!!
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/4/18: s/be `$object->message = $this->blockCipher->decrypt($data['message']);`
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/51: find original image and make sure it appears in full
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/69: top DC s/be `com`
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/72: `cn=homer,ou=support,ou=users,o=zend,dc=sanjose,dc=roguewave,dc=com`
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/73: s/be `dc=roguewave,dc=com` + resize image to make it fully visible
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/56: rewrite as follows:
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/1/06: Recording policy changed
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/1/11: ZF2/3 diffs covered in other course: remove
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/3: dup Strategy
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/9: Zend\Hydrator\XXX is now Zend\Hydrator\XXXHydrator
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/10: hydrate() must have Employee object
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/2/28: make it consistent w/ VM: course / vagrant /vagrant
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/3/11: `Hydratory` s/be `Hydrator`
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/4/20: is now `ObjectPropertyHydrator`
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/4/9: s/be `Modify Events\Listener\Aggregate::attach() to accomplish this task` (remove `Factory` from the namespace)
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/4/31: change self::IDENTIFIER to __CLASS__
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/4/31: need to add const IDENTIFIER = 'whatever'
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/14: s/be PBKDF2!!!
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/4/18: s/be `$object->message = $this->blockCipher->decrypt($data['message']);`
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/51: find original image and make sure it appears in full
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/69: top DC s/be `com`
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/72: `cn=homer,ou=support,ou=users,ou=zend,dc=sanjose,dc=roguewave,dc=com`
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/73: s/be `dc=roguewave,dc=com` + resize image to make it fully visible
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/5/56: rewrite as follows:
 ```
 $requestedName = 'Zend\Db\Adapter\Adapter';
 $name = str_replace('\\','-',$requestedName);
 $element = explode('-', $name);
 echo end($element);
 ```
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/6/35: s/be ZF 3
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/6/40: needs to be expanded (understatement)
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/8/2: link needs to be updated: all links now rolled into PSR-15
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/8/2: add Zend Expressive!
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/8/46: where is the sample program?
-* x file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/8/55: dir s/be `manage`
-* x http://localhost:8888/#/6/21: need to confirm this works
-* x http://localhost:8888/#/6/30: need to rewrite: replace `DelegateInterface` with `RequestHandlerInterface` etc.
-* x http://localhost:8888/#/6/31: same thing
-* x http://localhost:8888/#/6/34: confirm rewrites are working in Guestbook app
-* x http://localhost:8888/#/6/61:  need to rewrite: replace `DelegateInterface` with `RequestHandlerInterface` etc.
-* x http://localhost:8888/#/6/63:  need to rewrite: replace `DelegateInterface` with `RequestHandlerInterface` etc.
-* x http://localhost:8888/#/6/64:  need to rewrite: replace `DelegateInterface` with `RequestHandlerInterface` etc.
-* x http://localhost:8888/#/6/70:  need to rewrite: replace `DelegateInterface` with `RequestHandlerInterface` etc.
-* x http://localhost:8888/#/6/72:  need to rewrite: replace `DelegateInterface` with `RequestHandlerInterface` etc.
-
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/6/35: s/be ZF 3
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/6/40: needs to be expanded (understatement)
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/8/2: link needs to be updated: all links now rolled into PSR-15
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/8/2: add Zend Expressive!
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/8/46: where is the sample program?
+* file:///D:/Repos/ZF-Level-3/Course_Materials/index.html#/8/55: dir s/be `manage`
 * RE: Doctrine ORM Lab: already installed in VM: need to un-install!
 * RE: Doctrine ORM Lab: onlinemarket.complete is missing the Doctrine portion of Events module
 * RE: LDAP Lab: the OpenLDAP server is not installed in the VM + the link is missing from the home page
-* x RE: Middleware: Move course Module 8 (Middleware) in front of Module 6 (Cross Cutting Concerns)
-* RE: PS7Bridge Lab: confirm it works
-* RE: Middleware Listener Lab: confirm it works
+* RE: Middleware: Move course Module 8 (Middleware) in front of Module 6 (Cross Cutting Concerns)
 
 ## Lab: Zend Expressive
 ### Install Zend Expressive
@@ -643,7 +615,7 @@ What type of installation would you like?
   Make your selection (default is 1):1
   Remember this option for other packages of the same type? (Y/n)Y
 ```
-* Rename the resulting folder to `/path/to/onlinemarket.work/manage`
+* Rename the resulting folder to `/path/to/onlinemarket.work/expressive`
 ### Create the `Manage` Module
 * Change to the new `expressive` directory
 * Run the command line tool `vendor/bin/expressive` to create a new module `Manage`
@@ -655,8 +627,6 @@ What type of installation would you like?
 ### Create a Domain Service
 * Make a directory `src/Manage/src/Domain`
 * Create a new class `Manage\Domain\ListingService` which will work with the `listings` database table
-* Use the command line tool to create a factory for this class
-* Add an entry to `src/Manage/src/ConfigProvider::getDependencies()` under the `factories` key which assigns `Manage\Domain\ListingsService` to the factory you just created.
 ```
 <?php
 declare(strict_types=1);
