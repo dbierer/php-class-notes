@@ -83,7 +83,8 @@ CREATE TABLE `bfdetect` (
 ```
 
 ### CLASS NOTES
-
+* Pay close attention to anything that Enrico says:
+  * https://www.zimuel.it/
 ## LATEST
 * SQL Injection
   * .NET: https://visualstudiomagazine.com/articles/2019/10/22/top-net-attacks.aspx
