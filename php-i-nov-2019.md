@@ -18,8 +18,6 @@ show create table <name of table>;
 --when finished:
 exit;
 ```
-
-
 * For Wed 19 Nov 2019
   * https://gist.github.com/dbierer/39ef3a69bae952a7f6645131becce0da
 * For Mon 17 Nov 2019
@@ -45,6 +43,14 @@ sudo chmod 775 /path/to/directory
   * http://collabedit.com/sjtx8
 
 ## CLASS NOTES
+* Resources:
+  * https://www.packtpub.com/catalogsearch/result/?q=html
+  * Check out O'Reilly
+  * W3Schools
+* Tools to test for security weaknesses in your application:
+  * Looks for SQL Injection vulnerabilities: http://sqlmap.org/
+  * General vulnerability tester: OWASP ZED Attack Proxy
+* PHP DB2 Manual: https://www.php.net/manual/en/book.ibm-db2.php
 * To work with URLs, etc.:
   * Parse a URL: https://www.php.net/parse_url
   * Build a query string: https://www.php.net/manual/en/function.http-build-query.php
@@ -691,4 +697,56 @@ while ( $row = mysqli_fetch_assoc($result)) {
 }
 // close
 mysqli_close($conn);
+```
+* Database Lab
+```
+<?php
+try {
+	// connect to the DB
+	$conn = mysqli_connect('127.0.0.1', 'vagrant', 'vagrant', 'accounts');
+
+	if ($conn->connect_error) {
+            throw new Exception('Connect Error (' . $mysqli->connect_errno . ') '. $mysqli->connect_error);
+	}
+
+	//set parameter markers and execute sql
+	$name = $_GET['name'] ?? '';
+	$avatar = $_GET['avatar'] ?? '';
+	$language = $_GET['language'] ?? '';
+
+	if ($name && $avatar && $language) {
+
+	    // filter, validate and sanatize inputs
+	    $name = strtolower(strip_tags($name));
+	    $avatar = strip_tags($avatar);
+	    $language = strip_tags($language);
+
+	    // to protect against SQL injection: filter out certain characters (e.g. ";")
+	    $name = str_replace(';', '', $name);
+	    $avatar = str_replace(';', '', $avatar);
+	    $language = str_replace(';', '', $language);
+
+	    // as a further layer of security, use parameterized query
+	    // prepare sql statment
+	    $stmt = $conn->prepare("update profile set avatar = ?, language = ? where name = ?");
+	    $stmt->bind_param('sss', $avatar, $language, $name);
+	    $stmt->execute();
+	}
+
+	// fetch all rows
+	$result = $conn->query("select * from profile");
+	// Fetches a row a data based on the query
+	if ($result) {
+	    while ( $row = mysqli_fetch_assoc($result)) {
+		var_dump($row);
+	    }
+	} else {
+	    echo "No results";
+	}
+	// close
+	mysqli_close($conn);
+
+} catch (Throwable $t) {
+	echo $t->getMessage();
+}
 ```

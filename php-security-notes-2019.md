@@ -8,7 +8,7 @@
   * or having to do with `__construct()` method signature
 * Get a `Faraday Bag` for your keyless entry vehicle!
   * https://www.bbc.com/news/business-47023003
-
+  * https://www.locksmiths.co.uk/faq/keyless-car-theft/
 ## Assignments
 * For Tue 19 Nov 2019
   * Get the VM up and running
