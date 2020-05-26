@@ -2,8 +2,13 @@
 
 ## TODO
 * How to get rid of `system problem detected` message on Ubuntu
-
-
+  * Have to remove the crash report
+* Lookup what caused phpMyAdmin to break when PHP 7.3 update occurred
+  * Either a newly reserved keyword was used
+  * or having to do with `__construct()` method signature
+* Get a `Faraday Bag` for your keyless entry vehicle!
+  * https://www.bbc.com/news/business-47023003
+  * https://www.locksmiths.co.uk/faq/keyless-car-theft/
 ## Assignments
 * For Tue 19 Nov 2019
   * Get the VM up and running
@@ -22,10 +27,12 @@
   * Lab: Security Misconfiguration
   * Lab: Insecure Deserialization
   * Lab: Using Components with Known Vulnerabilities: just look over the information
-* Not Yet Assigned
-  * Lab: Insecure Direct Object References
+* For Fri 22 Nov 2019
+  * Lab: Insecure Direct Object References #1 and #2
   * Lab: Missing Function Access Level Control (ACL)
+  * Lab: Unvalidated Redirects and Forwards
   * Lab: Command Execution
+* Not Assigned
   * Lab: Unrestricted File Inclusion
   * Lab: Secure File Uploads
     * NOTE: in the URL you are asked to post via `curl` target s/be `http://securitytraining/`
@@ -76,7 +83,8 @@ CREATE TABLE `bfdetect` (
 ```
 
 ### CLASS NOTES
-
+* Pay close attention to anything that Enrico says:
+  * https://www.zimuel.it/
 ## LATEST
 * SQL Injection
   * .NET: https://visualstudiomagazine.com/articles/2019/10/22/top-net-attacks.aspx
@@ -344,9 +352,10 @@ LAB: quick test: download form, make a change, submit manually, and see that you
 * 8: For more info: https://en.wikipedia.org/wiki/Block_cipher
 
 ## Insecure Deserialization
-* 1: Maybe don't store such information in a cookie: store someplace else
+* 1: Maybe don't store such information in a cookie: store someplace else (i.e. the Session)
 * 2: Enumerate the strategies and only store the enumeration in the cookie; upon return compare with a whitelist of strategies
 * 3: Create a digital signature or hash of the object to be stored and confirm upon restoration
+* 4: Check to see if `__wakeup()` has been defined, and if so, make sure it doesn't invalidate security measures when object is restored
 
 ## Command Injection
 * 1: Do you really need to run system(), exec() etc.?  Maybe another way
