@@ -1,7 +1,25 @@
 # Zend Server Training -- May 2020
 
+## TODO
+* Research relationship between /usr/local/zend/etc/conf.d/*.ini and the GUI components menu
+* Change access rights for log files
+* Generate a web API key from command line?
+
+## Homework
+* For mercredi 27
+  * Lab: Zend Server Manual Installation
+    * For class, use: `sudo apt-get install zend-server-apache-fpm`
+    * Root password: `vagrant`
+  * Lab: Component Enable Verification
+  * Lab: Monitor Settings for Directives
+  * Lab: Web API Keys Generation
+  * Lab: Zend Server Command Line
+  * Lab: zs-client
 ## Installation
 * https://docs.roguewave.com/en/zend/current/content/installation_guide.htm
+
+## Class Notes
+* PHP-FPM: https://www.php.net/manual/en/install.fpm.php
 
 ## Tools
 * Change password:
