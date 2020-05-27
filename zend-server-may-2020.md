@@ -1,6 +1,16 @@
 # Zend Server Training -- May 2020
 
+## TODO
+* Q: Can I create a "plugin" similar to the demo apps (e.g. drupal) to deploy from a github repo?
+* Q: Can you locate the `deployment.xml` files for the sample apps included w/ Zend Server (e.g. drupal)?
+* Q: Can you locate the deployment hook scripts for the sample apps included w/ Zend Server (e.g. drupal)?
+
 ## Homework
+* For jeudi 28
+  * Lab: Virtual Host Setup
+  * Lab: Deploy Demo Package
+  * Lab: Application Packaging and Deployment
+  * Lab: Joining a Cluster
 * For mercredi 27
   * Lab: Zend Server Manual Installation
     * For class, use: `sudo apt-get install zend-server-apache-fpm`
@@ -15,7 +25,27 @@
 * https://docs.roguewave.com/en/zend/current/content/installation_guide.htm
 
 ## Class Notes
+* Basic Docker commands (you can use these in the VM):
+  * List of containers that are running: `docker container ls`
+  * Shell into a container:
+```
+docker exec -it <CONTAINER> /bin/bash
+```
+  * Run a command from *outside* Docker:
+```
+docker exec <CONTAINER> /bin/bash -c "command"
+```
+  * To start/stop the 3 Docker containers:
+```
+cd ~/Docker
+docker-compose up -d | down
+```
+
+* Info on `deployment.xml` file:
+  * https://docs.roguewave.com/en/zend/current/content/understanding_the_application_package_structure.htm
 * Info on PHP-FPM: https://www.php.net/manual/en/install.fpm.php
+* Example of `composer.json` file with installation (deployment) scripting:
+  * https://github.com/mezzio/mezzio-skeleton/blob/master/composer.json
 
 ## Tools
 * Change password:
@@ -44,12 +74,6 @@ sqlite> update GUI_USERS set PASSWORD="hash from PHP command above" where ID="ID
 sqlite> .exit
 ```
 WARNING: the above procedure can wipe out your installation if a mistake is made!
-
-## Course Timing:
-* Day 1: Module 1 to Module 5 (Virtual Host Management)
-* Day 2: Module 5 to Module 6 (Monitoring > Logs)
-* Day 3: Module 6 to Module 9 (Debugging)
-* Day 4: Module 9 to the End
 
 ## Q & A
 * Q: What is the relationship between /usr/local/zend/etc/conf.d/*.ini and the GUI components menu?
@@ -122,4 +146,10 @@ foreach($objects as $name => $object){
 $rows .= '</table>';
 echo $rows;
 ```
+
+## Course Timing:
+* Day 1: Module 1 to Module 5 (Virtual Host Management)
+* Day 2: Module 5 to Module 6 (Monitoring > Logs)
+* Day 3: Module 6 to Module 9 (Debugging)
+* Day 4: Module 9 to the End
 
