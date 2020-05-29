@@ -1,12 +1,22 @@
 # Zend Server Training -- May 2020
 
 ## TODO
-* Q: Can you write an example of caching the results of prime generation ?
+* Q: Is there an update to the course slides?
+* A: Yes ... will send ASAP
+
+* Q: After installing the Web API client UI plugin, where does it show up?
+* Q: How can I incorporate Composer installation into the ZS deployment process?
+* Q: What are the correct header params to make a Web API request?
+
+* Q: How do I restrict a website to allow or deny selective access by Z-Ray?
 
 * Q: Can I create a "plugin" similar to the demo apps (e.g. drupal) to deploy from a github repo?
 * Q: Can you locate the `deployment.xml` files for the sample apps included w/ Zend Server (e.g. drupal)?
 * Q: Can you locate the deployment hook scripts for the sample apps included w/ Zend Server (e.g. drupal)?
 * Q: How can I export rules?  Nothing appears in the XML file.
+
+* Q: Can you write an example of caching the results of prime generation ?
+* A: In progress.  The current version is included below (not working yet!)
 
 * Q: Why can I not access the Cache Pulse screen?  It's greyed out.
 * A: Make sure the component is enabled (Adminstration > Components) + somebody needs to access the page to generate data for the pulse.
@@ -39,6 +49,8 @@
 * https://docs.roguewave.com/en/zend/current/content/installation_guide.htm
 
 ## Class Notes
+* Z-Ray Plugins
+  * Plugins for demo apps (e.g. Drupal, WordPress): `/usr/local/zend/var/plugins/`
 * Zend Debugger
   * Toolbar for Firefox: https://addons.mozilla.org/en-US/firefox/addon/zend-debugger-toolbar/?src=search
   * IDE Setup: https://www.jetbrains.com/help/phpstorm/configuring-zend-debugger.html#
