@@ -226,7 +226,7 @@ echo $rows;
       <description>
 
       </description>
-    </parameter>
+    </paramet
     <parameter id="db_username"
     display="Database Connection.User Name"
     required="true" type="string">
@@ -254,6 +254,88 @@ echo $rows;
     </parameter>
   </parameters>
 </package>
+```
+* Creates report on `/var/log/apache2/access.log`
+  * Need to have permissions set so that PHP can read the log
+  * Alternatively: set up a server cron job to copy the access.log somewhere PHP can read
+```
+<?php
+// scans Apache access log and groups requests by IP address + request URL
+$fn  = '/var/log/apache2/access.log';
+$log = new SplFileObject($fn, 'r');
+$info = [];
+$pattern = '/^(\d+?\.\d+?\.\d+?\.\d+?).*?\[(.*?)\] \"(.*?)\" (\d+?) (\d+?) \"(.*?)\" \"(.*?)\"/';
+while ($line = $log->fgets()) {
+    $matches = [];
+    preg_match($pattern, $line, $matches);
+    $ip = $matches[1] ?? '--';
+    $http = $matches[3] ?? ' ';
+    [$method, $path, $http_vers] = explode(' ', $http);
+    $path = $path ?? '-';
+    $info[$ip . '::' . $path][] = [
+        'ip' => $ip,
+        'date' => $matches[2] ?? '--',
+        'method' => $method ?? '--',
+        'path' => $path ?? '--',
+        'http_vers' => $http_vers ?? '--',
+        'url' => $matches[4] ?? '--',
+        'user_agent' => $matches[5] ?? '--',
+    ];
+}
+
+// add code to add entries to database every 24 hours
+
+echo '<pre>';
+foreach ($info as $key => $data) {
+    $message = sprintf('Access Attempts for %s = %d', $key, count($data));
+    echo $message . PHP_EOL;
+    error_log($message);
+}
+echo '</pre>';
+```
+* Using `zend_shm_cache*` (not working yet!)
+```
+<?php
+ini_set('max_execution_time', 60);
+
+// use cache or not?
+$cache  = $_GET['cache'] ?? 0;
+$cache  = (bool) $cache && function_exists('zend_shm_cache_fetch');
+$max    = 999999;
+$key    = 'prime';
+$result = '';
+
+// attempt to retrieve from cache
+if ($cache && $result = zend_shm_cache_fetch($key)) {
+    echo $result;
+    exit;
+}
+
+// generate primes
+$count  =  0;
+$number =  1;
+$result = '1, ';
+while ($count < $max ) {
+    $div_count = FALSE;
+    for ( $i = 2; $i < $number; $i++) {
+        if (($number % $i) == 0) {
+            $div_count = TRUE;
+            break;
+        }
+    }
+    if (!$div_count) {
+        $result .= $number . ', ';
+        $count += 1;
+    }
+    $number += 1;
+}
+
+// store into cache
+if ($cache) {
+    zend_shm_cache_store($key, $result);
+}
+
+echo $result;
 ```
 ## Course Timing:
 * Day 1: Module 1 to Module 5 (Virtual Host Management)
