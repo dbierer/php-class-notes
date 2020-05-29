@@ -39,6 +39,9 @@
 * https://docs.roguewave.com/en/zend/current/content/installation_guide.htm
 
 ## Class Notes
+* Zend Debugger
+  * Toolbar for Firefox: https://addons.mozilla.org/en-US/firefox/addon/zend-debugger-toolbar/?src=search
+  * IDE Setup: https://www.jetbrains.com/help/phpstorm/configuring-zend-debugger.html#
 * Example using `zs-client.sh`:
 ```
 sudo /usr/local/zend/bin/zs-client.sh getServerInfo --serverId=0 --zskey=test --zssecret=0bbc693cd0506c12b56e1ba307561d3961e05772a86f57b644e28ea0f3180b21 --output-format=json
