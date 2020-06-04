@@ -34,3 +34,15 @@ Bitwise XOR
 1 ^ 1 = 0
 ```
 * `php.ini` config settings: https://www.php.net/manual/en/configuration.changes.modes.php
+
+### Strings
+* Be "glancingly familiar" with the string functions, especially those starting with `str*`
+  * Letter `i` indicates case-insensitive
+  * Letter `r` indicates in reverse
+  * Letter `u` indicates user-defined callback
+* `printf` family
+  * Format codes documents under [`sprintf`](https://www.php.net/sprintf)
+  * Make sure you understand the basic format codes
+
+### Regex
+Various `preg*` examples: https://github.com/dbierer/classic_php_examples/tree/master/regex
