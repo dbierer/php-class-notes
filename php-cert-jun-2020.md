@@ -1,5 +1,8 @@
 # PHP Test Prep -- June 2020
 
+## Note to Self
+* Check on when to deliver mock exams
+
 ## Schedule
 * Tue 02 Jun: 1  - 2
 * Thu 04 Jun: 3  - 4
@@ -34,6 +37,21 @@ Bitwise XOR
 1 ^ 1 = 0
 ```
 * `php.ini` config settings: https://www.php.net/manual/en/configuration.changes.modes.php
+* From the 1st in-class quiz:
+```
+echo ~(($a | $b) ^ $c) ? 'T' : 'F';
+// from Catalin-Marius to All Participants:
+(0010 | 0101) = 0111 ^ 0111 = ~0000 = 1111 => 'T'
+```
+### XPath / XML
+* Basic Usage Guide: https://www.php.net/manual/en/simplexml.examples-basic.php
+* Tutorial: https://www.w3schools.com/xml/xpath_intro.asp
+* Tutorial: https://www.w3schools.com/xml/default.asp
+### SOAP
+* https://www.php.net/manual/en/soapclient.soapclient.php
+* https://www.php.net/manual/en/soapserver.soapserver.php
+### DateTime
+* NOTE: `DateInterval` also accepts "relative" formats: https://www.php.net/manual/en/datetime.formats.relative.php
 
 ### Strings
 * Be "glancingly familiar" with the string functions, especially those starting with `str*`
