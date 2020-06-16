@@ -64,3 +64,33 @@ echo ~(($a | $b) ^ $c) ? 'T' : 'F';
 
 ### Regex
 Various `preg*` examples: https://github.com/dbierer/classic_php_examples/tree/master/regex
+
+### OOP
+* Example on PDF page 297 (slide 8/16) generates warning, which was fixed in PHP 7.4:
+```
+Warning: Declaration of Container\ControllerServiceContainer::set(string $name, $value) should be compatible with Container\ServiceContainer::set($name, $value)
+```
+* Example on PDF page 308 (slide 8/27): `use` syntax should be as follows.  Curly braces are not appropriate in this situation.
+```
+use FactoryInterface, IndexControllerFactory;
+```
+* Example on PDF page 308 (slide 8/27): the abstract method `set()` is not defined which means a fatal error will be generated
+
+#### Magic Methods
+You will be responsible for *all* magic methods except for: 
+* `__serialize()` : only available as of PHP 7.4
+* `__unserialize()` : only available as of PHP 7.4
+* See: https://www.php.net/manual/en/language.oop5.magic.php
+
+#### SPL
+Make sure you are "glancingly familiar" with the SPL
+* See: http://php.net/manual/en/book.spl.php
+* Pay special attention to `ArrayObject` and `ArrayIterator`
+* Don't have to know all the iterators, but have a general idea what they do
+
+#### Late Static Binding
+Read the explanation: https://www.php.net/manual/en/language.oop5.late-static-bindings.php
+
+#### Traits
+Traits are affected by `namespace`
+
