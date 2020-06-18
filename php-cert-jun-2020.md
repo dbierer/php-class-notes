@@ -77,7 +77,7 @@ use FactoryInterface, IndexControllerFactory;
 * Example on PDF page 308 (slide 8/27): the abstract method `set()` is not defined which means a fatal error will be generated
 
 #### Magic Methods
-You will be responsible for *all* magic methods except for: 
+You will be responsible for *all* magic methods except for:
 * `__serialize()` : only available as of PHP 7.4
 * `__unserialize()` : only available as of PHP 7.4
 * See: https://www.php.net/manual/en/language.oop5.magic.php
@@ -98,7 +98,20 @@ Read the explanation: https://www.php.net/manual/en/language.oop5.late-static-bi
 ## Security
 * http://localhost:9999/#/10/26 (PDF 433): needs 2 arguments:
 ```
-random_int(int $min, int $max); 
+random_int(int $min, int $max);
 ```
 * Make sure you know the flags and defaults for `htmlspecialchars()`
   * https://www.php.net/htmlspecialchars
+
+## Database
+Notes from `PDO::bindValue()`:
+  * What the `bindValue()` docs fail to explain without reading them _very_ carefully is that bindParam() is passed to PDO byref - whereas `bindValue()` isn't. Thus with `bindValue()` you can do something like $stmt->bindValue(":something", "bind this"); whereas with bindParam() it will fail because you can't pass a string by reference, for example.
+* http://localhost:8888/#/9/26: PDOException is never thrown because the error mode is not set!
+
+## Exceptions
+* http://localhost:8888/#/12/8: aggregate Exceptions are separated by "|"
+
+## ERRATA
+* 4/42: correct answer: `255 255.000000`
+* 5/17: array_search(): Returns element *key* value, or boolean false. A third boolean parameter includes type checking.
+
