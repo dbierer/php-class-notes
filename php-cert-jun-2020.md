@@ -92,5 +92,13 @@ Make sure you are "glancingly familiar" with the SPL
 Read the explanation: https://www.php.net/manual/en/language.oop5.late-static-bindings.php
 
 #### Traits
-Traits are affected by `namespace`
+* Traits are affected by `namespace`
+* Make sure you're familiar with `use` / `as` / `insteadof` with reference to traits
 
+## Security
+* http://localhost:9999/#/10/26 (PDF 433): needs 2 arguments:
+```
+random_int(int $min, int $max); 
+```
+* Make sure you know the flags and defaults for `htmlspecialchars()`
+  * https://www.php.net/htmlspecialchars
