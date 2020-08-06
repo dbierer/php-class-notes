@@ -1,8 +1,8 @@
-# PHP Test Prep -- June 2020
+# PHP Test Prep -- Aug 2020
 
 ## Working Schedule
 * Tue 04 Aug: up to Mod 3 XML
-* Thu 06 Aug: Finish Mod 4 + deliver 1st Mock
+* Thu 06 Aug: 3 - 4 + deliver 1st Mock
 * Tue 11 Aug: Review Mock 1 + Mod 5 - 7 (partial)
 * Thu 13 Aug: Finish Mods 7 and 8 + Deliver Mock 2
 * Tue 18 Aug: Review Mock 2 + 9 - 10 + deliver Mock Final
@@ -110,7 +110,7 @@ Notes from `PDO::bindValue()`:
 * http://localhost:8888/#/12/8: aggregate Exceptions are separated by "|"
 
 ## ERRATA
-* 2/??  correct answer s/be B and C.  PSR-4 is only applicable if the question addresses directory structure and namespace
+* 2/57  correct answer s/be B and C.  PSR-4 is only applicable if the question addresses directory structure and namespace
 * 4/42: correct answer: `255 255.000000`
 * 5/17: array_search(): Returns element *key* value, or boolean false. A third boolean parameter includes type checking.
 
