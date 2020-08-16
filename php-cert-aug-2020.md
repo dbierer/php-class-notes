@@ -9,23 +9,24 @@
 * Thu 20 Aug: 11 - 12 + Review Mock Final
 
 ## TODO
-* Table summarizing push/pop/shift/unshift
-* Add link to Closure for study
-* Add some var_dumps to the example 7-29-278
-* Add a link to Generators and Delegating Generators
-* Add link to Late Static Binding
-* Study traits keywords "as" and "insteadof"
 
 ## Q & A
 * Q: Can an Interface contain properties?
-* A: ???
+* A: No.  If you try to add a property, this message will result:
+```
+PHP Fatal error:  Interfaces may not include member variables in ...
+```
 * Q: Find reference to article about REST vs. SOAP done by Oracle
 * A: https://www.ateam-oracle.com/performance-study-rest-vs-soap-for-mobile-applications
 
-## Notes
-* Warning: COVID-19 Protocols
+## Class Notes
+
+### Test Logistics
+* Warning: check the COVID-19 protocols at your preferred test center before scheduling a test
 * General topic info: https://www.zend.com/training/php-certification-exam
 * FAQ: https://www.zend.com/training/certification-faq
+
+### Bitwise Operations
 * Tutorial on PHP Bitwise Operators for the Exam:
   * https://www.w3resource.com/php/operators/bitwise-operators.php
 * Bitwise "Truth Table":
@@ -77,6 +78,23 @@ echo ~(($a | $b) ^ $c) ? 'T' : 'F';
 ### Regex
 Various `preg*` examples: https://github.com/dbierer/classic_php_examples/tree/master/regex
 
+### Arrays
+Summary of array add and remove functions:
+
+| &nbsp;                          | `array_push()` | `array_pop()` | `array_shift()` | `array_unshift()` |
+| :------------------------------ | :------------: | :-----------: | :-------------: | :---------------: |
+| Adds to the array               | X              | &nbsp;        | &nbsp;          | X                 |
+| Removes from the array          | &nbsp;         | X             | X               | &nbsp;            |
+| Beginning of the array          | &nbsp;         | &nbsp;        | X               | X                 |
+| End of the array                | X              | X             | &nbsp;          | &nbsp;            |
+| Returns the new array count     | X              | &nbsp;        | &nbsp;          | X                 |
+| Returns the removed element     | &nbsp;         | X             | X               | &nbsp;            |
+
+
+
+### Anonymous Functions
+Reference to `Closure` class: https://www.php.net/closure
+
 ### OOP
 * Example on PDF page 297 (slide 8/16) generates warning, which was fixed in PHP 7.4:
 ```
@@ -87,6 +105,10 @@ Warning: Declaration of Container\ControllerServiceContainer::set(string $name, 
 use FactoryInterface, IndexControllerFactory;
 ```
 * Example on PDF page 308 (slide 8/27): the abstract method `set()` is not defined which means a fatal error will be generated
+
+#### Generators and Delegating Generators
+* https://www.php.net/manual/en/language.generators.overview.php
+
 
 #### Magic Methods
 You will be responsible for *all* magic methods except for:
@@ -106,6 +128,8 @@ Read the explanation: https://www.php.net/manual/en/language.oop5.late-static-bi
 #### Traits
 * Traits are affected by `namespace`
 * Make sure you're familiar with `use` / `as` / `insteadof` with reference to traits
+* Study traits keywords "as" and "insteadof"
+* https://www.php.net/traits
 
 ## Security
 * http://localhost:9999/#/10/26 (PDF 433): needs 2 arguments:
