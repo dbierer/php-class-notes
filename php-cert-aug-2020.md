@@ -8,6 +8,20 @@
 * Tue 18 Aug: Review Mock 2 + 9 - 10 + deliver Mock Final
 * Thu 20 Aug: 11 - 12 + Review Mock Final
 
+## TODO
+* Table summarizing push/pop/shift/unshift
+* Add link to Closure for study
+* Add some var_dumps to the example 7-29-278
+* Add a link to Generators and Delegating Generators
+* Add link to Late Static Binding
+* Study traits keywords "as" and "insteadof"
+
+## Q & A
+* Q: Can an Interface contain properties?
+* A: ???
+* Q: Find reference to article about REST vs. SOAP done by Oracle
+* A: https://www.ateam-oracle.com/performance-study-rest-vs-soap-for-mobile-applications
+
 ## Notes
 * Warning: COVID-19 Protocols
 * General topic info: https://www.zend.com/training/php-certification-exam
@@ -113,4 +127,3 @@ Notes from `PDO::bindValue()`:
 * 2/57  correct answer s/be B and C.  PSR-4 is only applicable if the question addresses directory structure and namespace
 * 4/42: correct answer: `255 255.000000`
 * 5/17: array_search(): Returns element *key* value, or boolean false. A third boolean parameter includes type checking.
-
