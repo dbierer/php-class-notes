@@ -1,7 +1,75 @@
 # PHP-I -- Sep 2020
 # Class Notes
 
-## Examples:
+## TODO
+* Example of loan amortization formula
+
+## Q & A
+* Q: How do you increase the memory allocation for a PHP program
+* A: `ini_set('memory_limit', 'XXX'); // where "XXX" is some number + "M" or "G"`
+
+## Class Discussion
+* Example using constant as error or success messages
+```
+<?php
+define('ERROR_ID', 'ERROR: id must be an integer');
+define('SUCCESS_ID', 'SUCCESS: this is a valid ID');
+$a = 999;
+$b = 'Test';
+
+if (is_int($b)) {
+	echo SUCCESS_ID;
+} else {
+	echo ERROR_ID;
+}
+
+```
+
+* Variables
+```
+<?php
+$test = 123;
+$Test = 456;
+$TEST = 789;
+var_dump($test, $Test, $TEST);
+
+$_ = 'Works';
+echo $_;
+
+// doesn't work
+$4abc = 'ABC';
+
+```
+
+* Docblocks
+  * PHP Documenter Project: https://phpdoc.org/
+* Comments badly placed:
+```
+<?php
+$a = TRUE;
+// correctly placed comment
+if ($a) {
+	echo 'TRUE';
+} else {
+	echo 'FALSE';
+}
+if ($a) // badly placed comment {
+	echo 'TRUE';
+} else {
+	echo 'FALSE';
+}
+```
+
+* Example of type coercion from URL params
+* Also ends up performing input sanitization
+```
+<?php
+var_dump($_GET);
+$id = ($_GET['id'] ?? 0);
+$id = (int) $id;
+echo "Your ID is: $id";
+```
+* Simple hello world
 ```
 <?php
 echo 'Hello World';
