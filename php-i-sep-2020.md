@@ -1,14 +1,171 @@
 # PHP-I -- Sep 2020
 # Class Notes
 
+## Homework
+* For Mon 21 Sep
+  * http://collabedit.com/s8a65
+	* Lab: The Mixed Array 1
+	* Lab: The Mixed Array 2
+	* Lab: The Multi Array
+	* Lab: The Multi Configuration Array
+	* Lab: Additional Crew Members
+  
 ## TODO
-* Example of loan amortization formula
+* Example of loan amortization formula: https://www.vertex42.com/ExcelArticles/amortization-calculation.html
 
 ## Q & A
 * Q: How do you increase the memory allocation for a PHP program
 * A: `ini_set('memory_limit', 'XXX'); // where "XXX" is some number + "M" or "G"`
 
 ## Class Discussion
+* Example of pagination using `while`
+```
+<?php
+$test = [];
+
+foreach (range(0, 30) as $index) {
+	$test[] = range('A','F');
+}
+
+// pagination example:
+$start = $_GET['start'] ?? 0;
+$start = (int) $start;
+$pages = 10;
+
+// same thing but using a while() loop instead
+$x = 0;
+while ($x < $pages && ($x + $start) < count($test)) {
+	echo 'Row ' . ($x + $start) . ': ';
+	foreach ($test[$x + $start] as $letter) {
+		echo $letter . ' ';
+	}
+	echo "<br>\n";
+	$x++;
+}
+```
+* Example of pagination using `for` loop
+```
+<?php
+$test = [];
+
+foreach (range(0, 30) as $index) {
+	$test[] = range('A','F');
+}
+
+// pagination example:
+$start = $_GET['start'] ?? 20;
+$start = (int) $start;
+$pages = 10;
+
+// TODO: add some control to make sure we don't go off the end of the array!
+for($x = 0; $x < $pages; $x++) {
+	echo 'Row ' . ($x + $start) . ': ';
+	foreach ($test[$x + $start] as $letter) {
+		echo $letter . ' ';
+	}
+	echo "<br>\n";
+}
+```
+
+* Variations on if / elseif / else
+```
+<?php
+$light = 'green';
+
+// testing status of light
+if ($light === 'green') {
+	$action = 'GO';
+} elseif ($light === 'yellow') {
+	$action = 'SLOW DOWN';
+} else {
+	$action = 'STOP';
+}
+echo $action . "\n";
+
+// using ternary
+$action = ($light == 'green') ? 'GO' : (($light == 'YELLOW') ? 'SLOW DOWN' : 'STOP');
+echo $action . "\n";
+
+// testing status of light using switch
+switch ($light) {
+	case 'green' :
+		$action = 'GO';
+		break;
+	case 'yellow' :
+		$action = 'SLOW DOWN';
+		break;
+	default :
+		$action = 'STOP';
+}
+echo $action . "\n";
+
+// using ternary to test for input
+$status = (isset($_GET['status'])) ? strip_tags($_GET['status']) : 'DEFAULT';
+echo $status . "\n";
+
+// using null coalesce
+$status = $_GET['status'] ?? 'DEFAULT';
+echo $status . "\n";
+
+// using null coalese to receive input from multiple sources
+$status = $_GET['status'] ?? $_POST['status'] ?? $_COOKIE['status'] ?? $_SESSION['status'] ?? 'DEFAULT';
+echo $status . "\n";
+
+// using compressed ternary: returns an error if not set
+/*
+$status = $_GET['status'] ?: 'DEFAULT';
+echo $status . "\n";
+*/
+```
+
+* Example of refactoring for efficiency
+```
+<?php
+$a = 'AAA';
+$b = 'BBB';
+
+// how can this be refactored for more efficiency?
+$result = strcmp($a, $b);
+if ($result === 0) {
+	echo 'These strings are equal';
+} else {
+	echo 'These strings are NOT equal';
+}
+echo "\n";
+
+// solution
+if (strcmp($a, $b) === 0) {
+	echo 'These strings are equal';
+} else {
+	echo 'These strings are NOT equal';
+}
+echo "\n";
+```
+
+* Example of assigning a multi-dimensional array
+```
+<?php
+// Build the crew
+$mission = [
+	'STS395' => [
+		['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
+		['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
+		['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist'],	
+	],
+	'STS396' => [
+		['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
+		['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
+	],
+];
+// last name of the 3rd crew member of mission STS395
+$mission_id = 'STS395';
+echo $mission[$mission_id][2]['lastName'];
+echo PHP_EOL;
+
+// Output all elements	
+print_r($mission);
+```
+
 * Example using constant as error or success messages
 ```
 <?php
