@@ -2,6 +2,8 @@
 # Class Notes
 
 ## Homework
+* For Wed 23 Sep
+  * http://collabedit.com/2rh98
 * For Mon 21 Sep
   * http://collabedit.com/s8a65
 	* Lab: The Mixed Array 1
@@ -278,4 +280,141 @@ $pi = (float) $pi;
 var_dump($pi);
 $pi = (int) $pi;
 var_dump($pi);
+```
+* Switch Lab:
+```
+//Lab: Switch Construct
+// An application needs to determine the country of origin for an astronaut applicant. 
+// Write a switch construct that evaluates multiple country use cases against a true boolean, 
+// and sets a variable based on the condition evaluated.
+$mission = [
+	'STS395' => [
+		['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist', 'country' => 'US'],
+		['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander', 'country' => 'UK'],
+		['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist', 'country' => 'SE'],	
+	],
+	'STS397' => [
+		['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist', 'country' => 'US'],
+		['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander', 'country' => 'UK'],
+		['firstName' => 'Ha', 'lastName' => 'Vu', 'specialty' => 'Developer', 'country' => 'AU'],	
+	],
+];
+
+foreach ($mission as $key => $sub) {
+	echo "\nProcessing $key\n";
+	foreach ($sub as $crew) {
+		$country = $crew['country'];
+		$name = $crew['firstName'];
+		switch (TRUE) {
+			case $country === 'US' :
+			case $country === 'UK' :
+			case $country === 'AU' :
+				$lang = 'English';
+				break;
+			case $country === 'SE' :
+				$lang = 'Swedish';
+				break;
+			default :
+				$lang = 'Martian';
+		}
+		echo "The assumed language of $name is $lang\n";
+	}
+}
+```
+* Data typing (e.g. Type Hinting)
+```
+<?php
+// by identifying the data type of the function argument:
+// 1. It makes the code more readable
+// 2. Easier to decipher later on
+// 3. Allows you to quickly determine in the case of an error, if the error is inside or outside the function
+function extractLanguage(array $mission)
+{
+	$output = '';
+	foreach ($mission as $key => $sub) {
+		$output .= "\nProcessing $key\n";
+		foreach ($sub as $crew) {
+			$country = $crew['country'];
+			$name = $crew['firstName'];
+			switch (TRUE) {
+				case $country === 'US' :
+				case $country === 'UK' :
+				case $country === 'AU' :
+					$lang = 'English';
+					break;
+				case $country === 'SE' :
+					$lang = 'Swedish';
+					break;
+				default :
+					$lang = 'Martian';
+			}
+			$output .= "The assumed language of $name is $lang\n";
+		}
+	}
+	return $output;
+}
+
+/*
+// simulated database query
+$mission = [
+	'STS395' => [
+		['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist', 'country' => 'US'],
+		['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander', 'country' => 'UK'],
+		['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist', 'country' => 'SE'],	
+	],
+	'STS397' => [
+		['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist', 'country' => 'US'],
+		['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander', 'country' => 'UK'],
+		['firstName' => 'Ha', 'lastName' => 'Vu', 'specialty' => 'Developer', 'country' => 'AU'],	
+	],
+];
+*/
+$mission = FALSE;
+
+echo extractLanguage($mission);
+```
+* Functions and arguments
+```
+<?php
+// strict_types only affects string, int, float or bool
+declare(strict_types=1);
+function getName(string $last, string $first, string $mi = '')
+{
+	$name = $first . ' ';
+	$name .= ($mi) ? $mi . ' ' : '';
+	$name .= $last;
+	return $name . "\n";
+}
+
+echo getName('Flintstone', 'Fred');
+echo getName('Rubble', 'Barney', 'B');
+// this throws fatal error: ArgumentCountError
+echo getName('Wilma');
+```
+* Example using `static` in a function to retain error messages
+```
+<?php
+declare(strict_types=1);
+function test(string $test)
+{
+	return strtolower($test);
+}
+
+function errorCapture($err = '')
+{
+	static $errors;
+	$errors .= "\n" . $err;
+	return $errors;
+}
+
+$values = [1234, 123.456, 'TEST', TRUE];
+foreach ($values as $item) {
+	try {
+		echo test($item);
+		echo "\n";
+	} catch (Error $e) {
+		errorCapture('Value Passed: ' . $item . ':' . $e->getMessage());
+	}
+}
+echo errorCapture();
 ```
