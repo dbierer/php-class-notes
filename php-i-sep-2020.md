@@ -2,6 +2,8 @@
 # Class Notes
 
 ## Homework
+* For Fri 25 Sep
+  * http://collabedit.com/3ykhb
 * For Wed 23 Sep
   * http://collabedit.com/2rh98
 * For Mon 21 Sep
@@ -417,4 +419,41 @@ foreach ($values as $item) {
 	}
 }
 echo errorCapture();
+```
+* Simple HTML form + PHP
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Test</title>
+<meta name="generator" content="Geany 1.32" />
+</head>
+<body>
+
+<form method="post">
+	Name: <input type="text" name="name" />
+	<br>Age: <input type="text" name="age" />
+	<br>Email: <input type="email" name="email" />
+	<br>Date: <input type="date" name="date" />
+	<br><input type="submit" name="submit" value="Do It" />
+</form>
+
+</body>
+</html>
+```
+* Example using `fopen()`
+```
+<?php
+$fn = __DIR__ . '/gettysburg.txt';
+$fh = fopen($fn, 'r');
+if ($fh) {
+	while (!feof($fh)) {
+		$line = fgets($fh);
+		echo $line;
+	}
+	fclose($fh);
+} else {
+	echo 'Error opening file';
+}
 ```
