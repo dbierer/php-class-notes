@@ -2,6 +2,8 @@
 # Class Notes
 
 ## Homework
+* For Mon 28 Sep
+  * http://collabedit.com/e4qna
 * For Fri 25 Sep
   * http://collabedit.com/3ykhb
 * For Wed 23 Sep
@@ -16,12 +18,26 @@
   
 ## TODO
 * Example of loan amortization formula: https://www.vertex42.com/ExcelArticles/amortization-calculation.html
+* Provide benchmarks that show performance of `file*()` vs. `fopen()` family of I/O functions
 
 ## Q & A
 * Q: How do you increase the memory allocation for a PHP program
 * A: `ini_set('memory_limit', 'XXX'); // where "XXX" is some number + "M" or "G"`
+* Q: Most popular location for PHP packages?
+* A: https://packagist.org/
+  A: Managed by Composer (getcomposer.org)
 
 ## Class Discussion
+* Example using the `http` wrapper:
+```
+<?php
+$url = 'https://google.com/';
+$contents = file_get_contents($url);
+$contents = str_replace('Google', 'Boogle', $contents);
+echo $contents;
+```
+* File Ops
+  * Wrappers: https://www.php.net/manual/en/wrappers.php
 * Example of pagination using `while`
 ```
 <?php
@@ -456,4 +472,81 @@ if ($fh) {
 } else {
 	echo 'Error opening file';
 }
+```
+* Example of reading a CSV file and producing output from it
+```
+<?php	
+// reads a CSV and returns a multi-dimensional array
+$path = '/home/vagrant/Zend/workspaces/DefaultWorkspace/php1/src/ModIOAndLibraries/';
+$file = $path . 'bitcoin.csv';
+$fh   = fopen($file, 'r');
+$data = [];
+$headers = [];
+while (!feof($fh)){
+	$line = fgetcsv($fh);
+	if (!$headers) {
+		$headers = $line;
+	} else {
+		$data[] = $line;
+	}
+}
+
+// output using the sprintf() family
+vprintf("%3s : %6s : %6s : %8s : %s\n", $headers);
+foreach ($data as $line) {
+	if ($line && is_array($line) && count($line) === 5) {
+		vprintf("%3d : %6d : %6d : %8.2f : %s\n", $line);
+	}
+}
+```
+* Benchmark `fopen()` vs. `file()`
+  * Conclusion: peformance ratio `fopen*`:`file*` is 3:2
+```
+<?php	
+// very_large_file.txt == 1.2M of lorem ipsum from https://www.lipsum.com
+
+$max   = 1000; // iterations
+$file  = __DIR__ . '/very_large_file.txt';
+
+// testing fopen
+$start = microtime(TRUE);
+$total = 0;
+for ($x = 0; $x < $max; $x++) {
+	$fh = fopen($file, 'r');
+	while (!feof($fh)) {
+		$line = fgets($fh);
+		$total += str_word_count($line);
+	}
+	fclose($fh);
+}
+$end = microtime(TRUE);
+$run = ($end - $start) * 1000; 
+echo "fopen\n";
+echo 'Time Elapsed    : ' . $run . " ms\n";
+echo "Words Processed : $total\n";
+
+// testing file
+$start = microtime(TRUE);
+$total = 0;
+for ($x = 0; $x < $max; $x++) {
+	$fh = file($file);
+	foreach ($fh as $line) {
+		$total += str_word_count($line);
+	}
+}
+$end = microtime(TRUE);
+$run = ($end - $start) * 1000; 
+echo "file\n";
+echo 'Time Elapsed    : ' . $run . " ms\n";
+echo "Words Processed : $total\n";
+
+// Output
+/*
+fopen
+Time Elapsed    : 11320.692062378 ms
+Words Processed : 182400000
+file
+Time Elapsed    :  7901.5920162201 ms
+Words Processed : 182400000
+*/
 ```
