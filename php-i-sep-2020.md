@@ -2,6 +2,8 @@
 # Class Notes
 
 ## Homework
+* For Wed 30 Sep
+  * http://collabedit.com/44443
 * For Mon 28 Sep
   * http://collabedit.com/e4qna
 * For Fri 25 Sep
@@ -549,4 +551,86 @@ file
 Time Elapsed    :  7901.5920162201 ms
 Words Processed : 182400000
 */
+```
+* Example of directory recursion using `RecursiveDirectoryIterator`
+```
+<?php	
+// read dir structure using RecursiveDirectoryIterator
+
+$dirIter = new RecursiveDirectoryIterator(__DIR__ . '/../../php1');
+$recurse = new RecursiveIteratorIterator($dirIter);
+
+foreach ($recurse as $name => $info) {
+	if ($info->isDir()) {
+		echo $name;
+	} else {
+		echo $info->getBasename() . "\n";
+	}
+}
+```
+* How to simulate a "fake" DNS entry: add <ip address>   <fake host> to the local "hosts" file:
+  * Windows: `C:\Windows\System32\drivers\etc\hosts`
+  * Linux: `/etc/hosts`
+* NetCraft web server survey:
+  * https://news.netcraft.com/archives/2020/07/27/july-2020-web-server-survey.html
+* Excellent quality, non advertising driven search engine: 
+  * https://duckduckgo.com
+* Sample Program to generate a form using a hybrid approach:
+```
+// test.php
+<?php
+$error_count = 0;
+$title = 'Test Page';
+$form = [
+	'name' => ['label' => 'Name', 'type' => 'text', 'name' => 'name', 'error' => '', 'value' => ''],
+	'email' => ['label' => 'Email', 'type' => 'email', 'name' => 'email', 'error' => '', 'value' => ''],
+	'submit' => ['label' => 'Submit', 'type' => 'submit', 'name' => 'submit', 'value' => 'Process'],
+];
+if ($_POST) {
+	$email = $_POST['email'] ?? '';
+	$name  = $_POST['name'] ?? '';
+	if (!empty($email)) {
+		// validate
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			$form['email']['error'] = 'Bad email address';
+			$error_count++;
+		}
+		// sanitize
+		$email = filter_var($email, FILTER_SANITIZE_EMAIL);
+		$form['email']['value'] = $email;
+		// do the same for name (code not shown)
+	} else {
+		$form['email']['error'] = 'Email address is mandatory';
+		$error_count++;
+	}
+	// sanitize the name
+	// NOTE: should also validate
+	$name = strip_tags($name);
+	$form['name']['value'] = $name;
+}
+include __DIR__ . '/html_some_php.php';
+```
+* Second program to display the form:
+```
+<!-- html_some_php.php -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title><?= $title; ?></title>
+<meta name="generator" content="Geany 1.32" />
+</head>
+<body>
+
+<form method="post">
+	<?php foreach ($form as $element) : ?>
+		<br><?= $element['label'] . ':'; ?>
+		<input type="<?= $element['type'] ?>" name="<?= $element['name']?>" 
+		       value="<?php if (!empty($element['value'])) echo $element['value']; ?>"  />
+		<?php if (isset($element['error']) && $element['error']) echo $element['error']; ?>
+	<?php endforeach; ?>
+</form>
+
+</body>
+</html>
 ```
