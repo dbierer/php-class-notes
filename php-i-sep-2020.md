@@ -2,6 +2,8 @@
 # Class Notes
 
 ## Homework
+* For Fri 02 Oct
+  * http://collabedit.com/mbnby
 * For Wed 30 Sep
   * http://collabedit.com/44443
 * For Mon 28 Sep
@@ -21,6 +23,7 @@
 ## TODO
 * Example of loan amortization formula: https://www.vertex42.com/ExcelArticles/amortization-calculation.html
 * Provide benchmarks that show performance of `file*()` vs. `fopen()` family of I/O functions
+* Database tech survey?
 
 ## Q & A
 * Q: How do you increase the memory allocation for a PHP program
@@ -634,3 +637,102 @@ include __DIR__ . '/html_some_php.php';
 </body>
 </html>
 ```
+## HTML and PHP
+```
+<?php
+define('FIELD_USER', 'username');
+define('FIELD_PWD', 'pwd');
+$dbFake = ['test' => 'password', 'whatever' => 'whatever'];
+$message = '';
+
+// capture username
+$username = $_POST[FIELD_USER] ?? '';
+
+// sanitize the name
+$username = strip_tags($username);
+
+// validate the name
+// assume all usernames must only contain alphanumeric characters
+if (ctype_alnum($username)) {
+	$message .= "Username accepted\n";
+}
+
+// capture password
+$password = $_POST[FIELD_PWD] ?? '';
+
+// validate password via simulated database lookup
+$valid = FALSE;
+if (isset($dbFake[$username])) {
+	if ($dbFake[$username] === $password) {
+		$valid = TRUE;
+		$message .= "Password accepted\n";
+	}
+}	
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>HTML with PHP</title>
+<meta name="generator" content="Geany 1.32" />
+</head>
+<body>
+<form method="post">    
+    <label >username: </label>
+    <input name="<?= FIELD_USER ?>" value="<?= $username ?>" />
+    <br>
+    <label>password: </label>
+    <input name="<?= FIELD_PWD ?>" type="password" />
+    <br>
+    <input type="submit" name="login" value="login" />
+</form>
+<?= $message ?>
+</body>
+</html>
+```
+* Example of page visit tracking using cookies
+```
+<?php
+$visits = $_COOKIE['visits'] ?? 0;
+setcookie('visits', ++$visits, time() + 3600);
+echo "You have visited this page $visits times\n";
+```
+* Example of page visit tracking using session
+```
+<?php
+session_start();
+$visits = $_SESSION['visits'] ?? 0;
+$_SESSION['visits'] = ++$visits;
+echo "You have visited this page $visits times\n";
+```
+## Database Access
+* Simple query
+```
+<?php
+function getCustomers($conn) {
+    // Build the query
+    $query = "SELECT id, CONCAT(firstname, ' ', lastname) AS customer_name FROM customers ORDER BY firstname"; 
+    $results = [];
+    // Set the query
+    $result = mysqli_query($conn, $query);
+    while($row = mysqli_fetch_assoc($result)) $results[] = $row;
+    return $results;
+}
+$config = [
+	'dsn' => '127.0.0.1',
+	'username' => 'vagrant',
+	'password' => 'vagrant',
+	'database' => 'phpcourse'
+];
+$conn = mysqli_connect(
+	$config['dsn'], 
+	$config['username'], 
+	$config['password'], 
+	$config['database']);
+foreach(getCustomers($conn) as $customer) {
+    echo "{$customer['id']} {$customer['customer_name']}\n";
+}
+```
+* Mysqli Security precautions
+  * Use prepre / execute
+  * See: https://www.php.net/manual/en/mysqli-stmt.execute.php
