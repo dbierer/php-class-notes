@@ -2,6 +2,25 @@
 # Class Notes
 
 ## Homework
+* Final assignment:
+  * Go to collabedit.com, create your own document and email me the solution to this:
+```
+Building upon the previous exercises and examples, perform the following:
+    0. Modify the "profile" table to incorporate `username`, `email` and `password
+    1. Get data from the form (created from a previous lab) via `$_POST`
+    2. Use `sprintf()` to build an SQL INSERT statement using the filtered, validated, sanitized form input
+    3. Use `mysqli_connect()` to connect
+    4. Use `mysqli_query()` to send the INSERT SQL to the database, and later query for results
+    5. Use `mysqli_fetch_row()` for results processing in a loop
+
+	Optional: upload an avatar image
+	File upload example: https://github.com/dbierer/classic_php_examples/blob/master/web/f%E2%80%8Eile_upload.php
+    Get a database connection.
+    Format an update query using the sprintf() function.
+    Update the accounts database, profile table for the third row changing the image and language values.
+    Select from the profile table the updated row and dump it to output.
+    Close the connection.
+```
 * For Fri 02 Oct
   * http://collabedit.com/mbnby
 * For Wed 30 Sep
@@ -20,17 +39,32 @@
 	* Lab: The Multi Configuration Array
 	* Lab: Additional Crew Members
   
-## TODO
-* Example of loan amortization formula: https://www.vertex42.com/ExcelArticles/amortization-calculation.html
-* Provide benchmarks that show performance of `file*()` vs. `fopen()` family of I/O functions
-* Database tech survey?
-
 ## Q & A
+* Q: What are some PHP code editors with debug capability?
+* A: Read up on the PHP debugging library: https://xdebug.org/
+* A: See links in the course slides
+* A: Free:
+  * NetBeans
+  * VsCode (Microsoft: https://code.visualstudio.com/)
+* A: Commercial
+  * PHPStorm
+
+* Q: What database technology is the most popular?
+* A: See: https://db-engines.com/en/ranking
+
+* Q: Which is faster: the `file*()` or `fopen()` family of I/O functions?
+* A: See note below "Benchmark `fopen()` vs. `file()`"
+* A: Conclusion: peformance ratio `fopen()` : `file()` is 3:2
+
 * Q: How do you increase the memory allocation for a PHP program
 * A: `ini_set('memory_limit', 'XXX'); // where "XXX" is some number + "M" or "G"`
+
 * Q: Most popular location for PHP packages?
 * A: https://packagist.org/
   A: Managed by Composer (getcomposer.org)
+
+* Q: Do you have an example of loan amortization formula?
+* A: See: https://www.vertex42.com/ExcelArticles/amortization-calculation.html
 
 ## Class Discussion
 * Example using the `http` wrapper:
@@ -736,3 +770,12 @@ foreach(getCustomers($conn) as $customer) {
 * Mysqli Security precautions
   * Use prepre / execute
   * See: https://www.php.net/manual/en/mysqli-stmt.execute.php
+
+## Error Handling
+* Use the `error_log()` function to record information on `$some_variable` as your app is running
+```
+error_log(__FILE__ . ':' . __LINE__ . ':' . var_export($some_variable, TRUE));
+```
+
+## Security
+Place to start: https://owasp.org/
