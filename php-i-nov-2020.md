@@ -31,6 +31,12 @@
 * Pre-Defined Constants
   * Determined when PHP is installed on a server
   * See: https://www.php.net/manual/en/reserved.constants.php
+* Great data source: https://www.geonames.org/
+* If you need to confirm the data type, use one of the `is_*()` functions
+  * Example: https://www.php.net/is_string
+* Settings that control PHP's behavior: https://www.php.net/manual/en/ini.list.php
+
+## Code Examples
 * Simple data type assignments:
 ```
 <?php
@@ -71,4 +77,80 @@ $person = new Person();
 echo $person->getFirstName();
 $person->firstname = 'George';
 echo $person->getFirstName();
+```
+* Example of data type changing on the fly
+```
+<?php
+$a = 12345;
+// comes back as integer
+var_dump($a);
+$a = $a . ' is the current number';
+// comes back as string
+var_dump($a);
+```
+* Example of enforcing strict data types:
+```
+<?php
+declare(strict_types=1);
+class Test {
+	public int $a = 12345;
+}
+$test = new Test();
+// comes back as integer
+var_dump($test->a);
+$test->a = $test->a . ' is the current number';
+// comes back as string
+var_dump($test->a);
+```
+* Mixing PHP and HTML
+```
+<?php
+$welcome = '<h1>Welcome</h1>';
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>untitled</title>
+<meta name="generator" content="Geany 1.32" />
+</head>
+<body>
+<?= $welcome ?>
+</body>
+</html>
+```
+* Examples of type juggling
+```
+<?php
+$a = 123;
+$b = '456';
+$c = $a + $b;
+$d = $a . $b;
+var_dump($a,$b,$c,$d);
+
+$a = 123;
+$b = (string) 456;
+$c = $a + $b;
+$d = $a . $b;
+var_dump($a,$b,$c,$d);
+
+$a = 123;
+$b = 'xxx456';
+$c = $a + $b;
+$d = $a . $b;
+var_dump($a,$b,$c,$d);
+```
+* Example of using type casting to enforce data type + add security
+```
+<?php
+$id = $_GET['id'] ?? 0;
+// you could also sanitize inputs using "strip_tags()"
+$id = (int) $id;
+echo "ID: $id";
+```
+* Increase memory allocation
+```
+<?php
+// allocates 1 G of RAM for this script execution
+ini_set('memory_limit', '1G');
 ```
