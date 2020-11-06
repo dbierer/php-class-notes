@@ -1,6 +1,14 @@
 # PHP -I Nov 2020
 
 ## Homework
+  * For Mon 9 Nov: http://collabedit.com/8f2rd
+    ALL labs for course module #3 (Foundation)
+    * Lab: The Mixed Array 1: 
+    * Lab: The Mixed Array 2:
+    * Lab: The Multi Array
+    * Lab: The Multi Configuration Array
+    * Lab: First Program
+    * Lab: Additional Crew Members
   * For Fri 6 Nov
     * Create a "Hello World" program such at you can see it as follows: `http://sandbox/hello_world.php`
       * Hint: use this: `echo 'Hello World';`
@@ -35,7 +43,8 @@
 * If you need to confirm the data type, use one of the `is_*()` functions
   * Example: https://www.php.net/is_string
 * Settings that control PHP's behavior: https://www.php.net/manual/en/ini.list.php
-
+* PHP Documentor Project: automatic documentation generation
+  * https://phpdoc.org/
 ## Code Examples
 * Simple data type assignments:
 ```
@@ -153,4 +162,133 @@ echo "ID: $id";
 <?php
 // allocates 1 G of RAM for this script execution
 ini_set('memory_limit', '1G');
+```
+* Example showing possible issue with order or precedence
+```
+<?php	
+echo 5 - 3 . '<br>';
+echo 5 + 3 . '<br>';
+echo 5 * 3 . '<br>';
+echo 5 / 3 . '<br>';
+echo 5 % 3 . '<br>';
+echo 5 ** 3 . '<br>';
+$value = 5;
+echo $value;
+echo "\Revised\n";
+// use parentheses to control the flow of the operations
+echo '<br>' . (5 - 3);
+echo '<br>' . (5 + 3);
+echo '<br>' . (5 * 3);
+echo '<br>' . (5 / 3);
+echo '<br>' . (5 % 3);
+echo '<br>' . (5 ** 3);
+$value = 5;
+echo $value;
+```
+* Value check vs. data+value check
+```
+<?php	
+$a = '123';
+$b = 123;
+if ($a == $b) {
+	echo "\nEqual " . __LINE__;
+} else {
+	echo "\nNot Equal" . __LINE__;
+}
+if ($a === $b) {
+	echo "\nEqual " . __LINE__;
+} else {
+	echo "\nNot Equal" . __LINE__;
+}
+```
+* Example of a loop by 10
+```
+<?php	
+$array = ['A','B','C','D','E','F'];
+$pos = 10;
+foreach ($array as $value) {
+	echo $pos . ':' . $value . "\n";
+	$pos += 10;
+}
+```
+* Assigning the root of the project structure to a constant:
+```
+<?php	
+define('BASE_PATH', realpath(__DIR__ . '/..'));
+echo BASE_PATH;
+```
+* Acquiring info from a URL and storing into an array
+```
+<?php	
+// example URL:
+// http://sandbox/test.php?first=Doug&last=Bierer&spec=PHP%20Developer
+
+// acquiring input from the URL
+$first = $_GET['first'] ?? '';
+$last = $_GET['last'] ?? '';
+$spec = $_GET['spec'] ?? '';
+
+// sanitizing the input
+$first = strip_tags($first);
+$last = strip_tags($last);
+$spec = strip_tags($spec);
+
+// storing into an array
+$astronaut = [
+	'firstName' => $first,
+	'lastName'  => $last,
+	'specialty' => $spec
+];
+
+echo '<pre>';
+var_dump($astronaut);
+echo '</pre>';
+
+echo "Astronaut: " . $astronaut['firstName']
+	 . ' ' . $astronaut['lastName']
+	 . ' is a ' . $astronaut['specialty'];
+
+// presumably, you'd do something with the array
+// etc.
+```
+* Same code as above, but refactored, taking advantage of the looping structure foreach()
+```
+<?php	
+// example URL:
+// http://sandbox/test.php?first=Doug&last=Bierer&spec=PHP%20Developer
+
+// acquiring input from the URL
+$astronaut = $_GET ?? [];
+
+// sanitizing the input
+foreach ($astronaut as $key => $value) {
+	$astronaut[$key] = strip_tags($value);
+}
+
+echo '<pre>';
+var_dump($astronaut);
+echo '</pre>';
+
+echo "Astronaut: " . $astronaut['first']
+	 . ' ' . $astronaut['last']
+	 . ' is a ' . $astronaut['spec'];
+
+// presumably, you'd do something with the array
+// etc.
+```
+* A more readable way of building an array
+```
+<?php
+// Build the crew
+$mission = [
+	'STS395' => 
+	[
+		['firstName' => 'Mark',    'lastName' => 'Watney',    'specialty' => 'Botanist'],
+		['firstName' => 'Melissa', 'lastName' => 'Lewis',     'specialty' => 'Commander'],
+		['firstName' => 'Beth',    'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist'],
+	]
+];
+ 
+// Access the Commander's last name
+echo $mission['STS395'][1]['lastName'];
 ```
