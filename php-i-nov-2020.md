@@ -1,13 +1,14 @@
 # PHP -I Nov 2020
 
 ## Homework
+  * For solutions: create your own gist: https://gist.github.com/
+  * For Wed 11 Nov: https://gist.github.com/dbierer/e251abd66213cb58d97647054ef2a4a1
   * For Mon 9 Nov: http://collabedit.com/8f2rd
     ALL labs for course module #3 (Foundation)
     * Lab: The Mixed Array 1: 
     * Lab: The Mixed Array 2:
     * Lab: The Multi Array
     * Lab: The Multi Configuration Array
-    * Lab: First Program
     * Lab: Additional Crew Members
   * For Fri 6 Nov
     * Create a "Hello World" program such at you can see it as follows: `http://sandbox/hello_world.php`
@@ -45,6 +46,13 @@
 * Settings that control PHP's behavior: https://www.php.net/manual/en/ini.list.php
 * PHP Documentor Project: automatic documentation generation
   * https://phpdoc.org/
+* Two excellent functions to test to see if an array key exists and has a value
+  * `array_key_exists($array, $key)` : checks to see if the array key is set; doesn't check the value
+  * `empty($array[$key])` : checks to see if there is a value at that key (i.e. non-empty string, non-null, non-zero)
+  * `isset($array[$key])` : same as array_key_exists()
+* A repo of code examples of all different types:
+  * https://github.com/dbierer/classic_php_examples
+
 ## Code Examples
 * Simple data type assignments:
 ```
@@ -291,4 +299,59 @@ $mission = [
  
 // Access the Commander's last name
 echo $mission['STS395'][1]['lastName'];
+```
+* Example of generating a series of checkboxes from an array with a pre-selection
+```
+<?php
+// using the ternary operator to test the presence of the key + sanitize
+$choice = (isset($_GET['gender'])) ? strip_tags($_GET['gender']) : '';
+// another option assigns data sources in chain: 
+// -- reads left-to-right
+// -- takes the first non-NULL value
+// $choice = $_POST['gender'] ?? $_GET['gender'] ?? $_SESSION['gender'] ?? $_COOKIE['gender'] ?? '';
+$gender = [
+	'M' => 'Male',
+	'F' => 'Female',
+	'X' => 'Other'
+];
+
+echo '<form>';
+echo '<ul>';
+foreach ($gender as $key => $value) {
+	$checked = ($key === $choice) ? ' checked ' : '';
+	echo '<li><input type="radio" name="gender" value="' . $key . '" ' . $checked . '/>' . $value . '</li>';
+}
+echo '</ul>';
+echo '<input type="submit" />';
+echo '</form>';
+```
+* Example building an SQL INSERT statement using foreach() and continue
+```
+<?php
+$fields = ['id','first','last','address','city','postcode','country'];
+$sql = 'INSERT INTO users (';
+foreach ($fields as $name) {
+	if ($name == 'id') continue;
+	$sql .= $name . ',';
+}
+$sql[-1] = ' ';
+$sql .= ') VALUES (:';
+foreach ($fields as $name) {
+	if ($name == 'id') continue;
+	$sql .= $name . ', :';
+}
+$sql = substr($sql, 0, -3);
+$sql .= ');';
+echo $sql;
+```
+* Example using strict type checks
+```
+<?php
+declare(strict_types=1);
+function add(int $a, int $b, string $label)
+{
+	return $label . ' ' . ($a + $b) . PHP_EOL;
+}
+
+echo add('The sum is: ', 2,2);
 ```
