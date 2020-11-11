@@ -1,6 +1,10 @@
 # PHP -I Nov 2020
 
 ## Homework
+  * For Fri 13 Nov 2020
+    * Do a review of how the OrderApp generates HTML forms
+    * `orderapp/config/config.php`
+    * `orderapp/src/Forms.php`
   * For solutions: create your own gist: https://gist.github.com/
   * For Wed 11 Nov: https://gist.github.com/dbierer/e251abd66213cb58d97647054ef2a4a1
   * For Mon 9 Nov: http://collabedit.com/8f2rd
@@ -52,7 +56,10 @@
   * `isset($array[$key])` : same as array_key_exists()
 * A repo of code examples of all different types:
   * https://github.com/dbierer/classic_php_examples
-
+* Any HTTP header sent by the browser is present in `$_SERVER[]` using this algorithm:
+  * Dashes "-" are converted to underscore "_"
+  * The key is prepended with 'HTTP_'
+  * The key is made all UPPERCASE
 ## Code Examples
 * Simple data type assignments:
 ```
@@ -354,4 +361,238 @@ function add(int $a, int $b, string $label)
 }
 
 echo add('The sum is: ', 2,2);
+```
+* Example of using an array to build a form + determining the next day
+```
+<?php
+// initializes vars
+$message = 'DayCheck';
+$days    = [ 'Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+// generate HTML SELECT
+$select  = '<select name="day">';
+foreach ($days as $num => $val)
+	$select .= '<option value="' . $num . '">' . $val . '</option>';
+$select .= '</select>';
+
+// process POST data
+if (isset($_POST['day'])) {
+	// sanitize the data
+	$num = (int) $_POST['day'];
+	$max = count($days);
+	if ($num == ($max - 1)) {
+		$next = 0;
+	} else {
+		$next = $num + 1;
+	}
+	$message = 'See you on ' . $days[$next];
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Test</title>
+<meta name="generator" content="Geany 1.32" />
+</head>
+<body>
+	<?= $message ?> <br>
+	<form method="post">
+	What day is today <?= $select ?>
+	<input type="submit" name="button1" class="button" value="Check"/>
+	</form>
+</body>
+</html>
+```
+* Previous example but using `switch`
+```
+DayCheck <br>
+	<form method="post">
+	What day is today <input type="text" name="day">
+	<input type="submit" name="button1" class="button" value="Check"/>
+	</form>
+<?php
+
+$day = $_POST['day'];
+$message = '';
+switch ($day) {
+	case 'Monday' :
+		$message = 'Tuesday';
+		break;
+	case 'Tuesday' :
+		$message = 'Wednesday';
+		break;
+	// not all code shown
+	default :
+		$message = 'Invalid Day';
+}
+echo 'See you on ' . $message . '<br>';
+?>
+```
+* Rewritten example of `switch` from homework
+```
+OriginCheck <br>
+	<form method="post">
+	Origin Country <input type="text" name="origin">
+	<input type="submit" name="button1" class="button" value="Check"/>
+	</form>
+
+<?php
+$origin = $_POST['origin'] ?? '';
+switch ($origin) {
+	case 'US':
+		$country = 'America';
+		break;
+	case 'UK':
+		$country = 'United Kingdom';
+		break;
+	case 'PL':
+		$country = 'Poland';
+		break;
+	case 'IN':
+		$country = 'India';
+		break;
+	default:
+		$country = 'Undefined Country';
+}
+echo "The Astronout is from " . $country . "<br>";
+```
+* Example using type hints + alt lang settings
+```
+<?php
+// initializes vars
+define('MAX_DAYS', 7);
+$message = 'DayCheck';
+$daysWithLanguage    = [ 
+	'en' => ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+	'fr' => ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'],
+];
+
+// get language setting 
+// NOTE: could also extract from $_SERVER['HTTP_ACCEPT_LANGUAGE'] which comes from the browser
+$lang = $_GET['lang'] ?? 'en';
+
+// safety check
+if (!isset($daysWithLanguage[$lang])) $lang = 'en';
+
+// generate HTML SELECT
+function makeSelect(array $days)
+{
+	$select  = '<select name="day">';
+	foreach ($days as $num => $val)
+		$select .= '<option value="' . $num . '">' . $val . '</option>';
+	$select .= '</select>';
+	return $select;
+}
+
+function whatsNext(int $num, int $max)
+{
+	if ($num == ($max - 1)) {
+		$next = 0;
+	} else {
+		$next = $num + 1;
+	}
+	return $next;
+}
+
+// process POST data
+if (isset($_POST['day'])) {
+	// sanitize the data
+	$num = (int) $_POST['day'];
+	$max = MAX_DAYS;
+	$next = whatsNext($num, $max);
+	$message = 'See you on ' . $daysWithLanguage[$lang][$next];
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Test</title>
+<meta name="generator" content="Geany 1.32" />
+</head>
+<body>
+	<?= $message ?> <br>
+	<form method="post">
+	What day is today <?= makeSelect($daysWithLanguage[$lang]) ?>
+	<input type="submit" name="button1" class="button" value="Check"/>
+	</form>
+</body>
+</html>
+```
+* Example that demonstrates how type-hinting facilitates trouble-shooting
+```
+<?php
+// initializes vars
+define('MAX_DAYS', 7);
+$message = 'DayCheck';
+$days= ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+function showDays(array $days)
+{
+	$output = '';
+	foreach ($days as $one) 
+		$output .= $one . "<br>\n";
+	return $output;
+}
+
+echo showDays($a);
+```
+* Example of function accepting an unknown / unlimited number of args
+```
+<?php
+
+function superDump(...$args)
+{
+	$output = '';
+	if (!empty($args)) {
+		foreach ($args as $var) {
+			$output .= "\n";
+			$output .= var_export($var, TRUE);
+		}
+	}
+	return $output;
+}
+
+$a = new stdClass();
+$a->name = 'Doug';
+$a->country = 'Thailand';
+$b = [1,2,3,4,5];
+$c = 'String of some sort';
+
+echo superDump();
+echo superDump($a);
+echo superDump($a, $b, $c);
+```
+* Example of successive transformations using pass-by-reference
+```
+<?php
+function reverse(string &$str)
+{
+	$str = strrev($str);
+}
+function everyOtherUpper(string &$str)
+{
+	$len = strlen($str);
+	for ($x = 0; $x < $len; $x++) {
+		if (($x % 2) === 0) {
+			$str[$x] = strtoupper($str[$x]);
+		}
+	}
+}
+function everyThirdNum(string &$str)
+{
+	$len = strlen($str);
+	for ($x = 0; $x < $len; $x++) {
+		if (($x % 3) === 0) {
+			$str[$x] = rand(0,9);
+		}
+	}
+}
+$string = 'This is a test, this is only a test.  Do not panic!';
+echo $string . "\n";
+reverse($string);
+everyOtherUpper($string);
+everyThirdNum($string);
+echo $string . "\n";
 ```
