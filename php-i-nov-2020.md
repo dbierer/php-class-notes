@@ -1,6 +1,8 @@
 # PHP -I Nov 2020
 
 ## Homework
+  * For Mon 16 Nov 2020
+    * http://collabedit.com/t9act
   * For Fri 13 Nov 2020
     * Do a review of how the OrderApp generates HTML forms
     * `orderapp/config/config.php`
@@ -60,6 +62,14 @@
   * Dashes "-" are converted to underscore "_"
   * The key is prepended with 'HTTP_'
   * The key is made all UPPERCASE
+* Extremely commonly used string functions:
+  * `substr()`
+  * `strpos()`
+  * `str_replace()`
+* To manage third party sofware:
+  * Composer: https://getcomposer.org (manages libraries available on Packagist)
+  * Packagist: https://packagist.org (largest repository of PHP libraries: current and up-to-date)
+  * Replacement for pear.php.net
 ## Code Examples
 * Simple data type assignments:
 ```
@@ -595,4 +605,111 @@ reverse($string);
 everyOtherUpper($string);
 everyThirdNum($string);
 echo $string . "\n";
+```
+* Example of using `printf()` to do base conversions: e.g. binary, hex and decimal
+```
+<?php
+$b = 198;
+printf('%08b %4X %d', $b, $b, $b);
+```
+* Demonstrates usage of `strpos()`
+```
+<?php
+$str = 'The quick brown fox jumps over the fence';
+echo strpos($str, 'the');	// 31
+echo "\n";
+echo strpos($str, 'The');	// 0
+echo "\n";
+var_dump(strpos($str, 'duck'));	// FALSE
+echo "\n";
+echo stripos($str, 'the');	// 0
+echo "\n";
+
+// wrong way to determine presence or absence
+if (strpos($str, 'The')) {
+	echo "This string contains the word The\n";
+} else {
+	echo "This string does NOT contain the word The\n";
+}
+
+
+// demonstrates proper usage of strpos to determine presence or absence
+if (strpos($str, 'The') !== FALSE) {
+	echo "This string contains the word The\n";
+} else {
+	echo "This string does NOT contain the word The\n";
+}
+```
+* Examples of `sort()`, `asort()` and `ksort()`
+```
+<?php
+$arr = [
+	'A' => 111,
+	'C' => 333,
+	'F' => 999,
+	'G' => 888,
+	'B' => 777,
+	'D' => 444,
+	'E' => 555
+];
+
+$copy1 = $arr;
+$copy2 = $arr;
+$copy3 = $arr;
+
+// don't rely upon the return value from sort!!!
+// it operates by reference
+$result = sort($copy1);
+
+// NOTE: wipes out the keys!
+var_dump($copy1);
+
+// Retains the keys
+asort($copy2);
+var_dump($copy2);
+
+// Sorts by key
+ksort($copy3);
+var_dump($copy3);
+```
+* Example using `fopen()`
+```
+<?php
+$fn = __DIR__ .'/gettysburg.txt';
+
+$count = 0;
+$fh = fopen($fn, 'r');
+while($line = fgets($fh)) {
+	$count += str_word_count($line);
+}
+echo 'The Gettysburg Address has ' . $count . ' words';
+fclose($fh);
+```
+* Example reading from a URL and manipulating contents
+```
+<?php
+$contents = file_get_contents('https://google.com/');
+$contents = str_replace(['Google','google'],['Boogle','boogle'],$contents);
+echo $contents;
+```
+* Example using `glob()`
+```
+<?php
+$start = __DIR__ . '/../../orderapp/src';
+$list  = glob($start . '/*.php');
+foreach ($list as $fn) {
+	echo $fn . "\n";
+}
+```
+* Example of how to iterate through an entire directory structure
+```
+<?php
+// Read up on SplFileInfo: https://www.php.net/SplFileInfo
+$start = __DIR__ . '/../../orderapp';
+$dirIterator = new RecursiveDirectoryIterator($start);
+$recurse     = new RecursiveIteratorIterator($dirIterator);
+foreach ($recurse as $name => $obj) {
+	// $obj == SplFileInfo
+	echo $name . "\n";
+}
 ```
