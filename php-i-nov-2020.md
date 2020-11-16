@@ -1,6 +1,8 @@
 # PHP -I Nov 2020
 
 ## Homework
+  * For Wed 18 Nov 2020
+    * https://gist.github.com/dbierer/deae9980ac911bb84aabd2f58604cbcd
   * For Mon 16 Nov 2020
     * http://collabedit.com/t9act
   * For Fri 13 Nov 2020
@@ -70,6 +72,10 @@
   * Composer: https://getcomposer.org (manages libraries available on Packagist)
   * Packagist: https://packagist.org (largest repository of PHP libraries: current and up-to-date)
   * Replacement for pear.php.net
+* Basic tutorials on related technology:
+  * HTML: https://www.w3schools.com/html/default.asp
+* JavaScript library: jquery.com
+* Example of a file upload: https://github.com/dbierer/classic_php_examples/blob/master/web/upload_file.php
 ## Code Examples
 * Simple data type assignments:
 ```
@@ -712,4 +718,99 @@ foreach ($recurse as $name => $obj) {
 	// $obj == SplFileInfo
 	echo $name . "\n";
 }
+```
+* Example of a program that produces either JSON or HTML
+```
+<?php
+$type = $_GET['type'] ?? 'json';
+$data = ['A' => 111, 'B' => 222, 'C' => 333];
+if ($type == 'json') {
+	header('Content-Type: application/json');
+	echo json_encode($data, JSON_PRETTY_PRINT);
+	exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>untitled</title>
+<meta name="generator" content="Geany 1.32" />
+</head>
+<body>
+<?php foreach($data as $key => $value) echo 'Key: ' . $key . ' Value: ' . $value . '<br>'; ?>
+</body>
+</html>
+```
+* Third way of having PHP generate an HTML page:
+```
+<?php
+$html = file_get_contents('test.html');
+$replace = 
+	['Sample Test Page',
+	 'Welcome',
+	 '<p>This represents some contents.</p><p>Blah blah blah.</p>'];
+$html = str_replace(['%%TITLE%%','%%HEADER%%','%%CONTENT%%'], $replace, $html);
+echo $html;
+```
+* Here is the sample HTML template:
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>%%TITLE%%</title>
+<meta name="generator" content="Geany 1.32" />
+</head>
+<body>
+<H1>%%HEADER%%</H1>
+<hr>
+%%CONTENT%%
+</body>
+</html>
+```
+* Adding to the earlier example form posting:
+```
+<?php
+$html = file_get_contents('test.html');
+$replace = 
+	['Sample Test Page',
+	 'Welcome'];
+$replace[] = <<<EOT
+<form action="test.php" method="post">
+    <fieldset>
+        <legend>Add Checklist Item</legend>
+        <label for="item">Enter the checklist item</label>
+        <input type="text" name="item" id="item" />
+        <label for="priority">Enter the priority</label>
+        <input type="text" name="priority" id="priority" />
+        <input type="submit" value="Submit" />
+    </fieldset>
+</form>
+EOT;
+if (!empty($_POST)) {
+	$replace[] = var_export($_POST, TRUE);
+} else {
+	$replace[] = '';
+}
+$html = str_replace(['%%TITLE%%','%%HEADER%%','%%CONTENT%%','%%MESSAGE%%'], $replace, $html);
+echo $html;
+```
+* Here's the HTML template:
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>%%TITLE%%</title>
+<meta name="generator" content="Geany 1.32" />
+</head>
+<body>
+<H1>%%HEADER%%</H1>
+<hr>
+%%CONTENT%%
+<hr>
+<pre>%%MESSAGE%%</pre>
+</body>
+</html>
 ```
