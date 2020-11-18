@@ -76,6 +76,8 @@
   * HTML: https://www.w3schools.com/html/default.asp
 * JavaScript library: jquery.com
 * Example of a file upload: https://github.com/dbierer/classic_php_examples/blob/master/web/upload_file.php
+* URLs are generally encoded (e.g. special characters get an ASCII code assigned: space == "%20")
+  * If you need to do this yourself in a PHP program, use `url_encode()`
 ## Code Examples
 * Simple data type assignments:
 ```
@@ -813,4 +815,115 @@ echo $html;
 <pre>%%MESSAGE%%</pre>
 </body>
 </html>
+```
+* Revised form from 1st Forms lab
+```
+<?php
+// process data
+$username = '';
+if (isset($_POST['submit'])) {
+	// process submitted data
+	phpinfo(INFO_VARIABLES);
+} elseif (isset($_POST['cancel'])) {
+	// process a cancellation
+	// code not shown
+}
+?>
+<?php $class='test'; $color='green'; $id='item test';?>
+<?php $att = ['id' => $id, 'class' => $class, 'name' => 'data', 'type' => 'password']?>   
+<form action="/test.php" method="post">
+<ul style ='list-style:none;'>
+	<li style='color: <?= $color ?>;padding: 10px;'>
+	Username: <input name="username" id='cb_<?= $id ?>' class='<?= $class ?>' value="<?= $username ?>" type="text" />
+	</li>   		
+	<li style='color: <?= $color ?>;padding: 10px;'>
+	Password: <input <?php foreach($att as $key => $value) echo " $key='$value' ";?> />
+</li>	
+</ul>
+<!-- You could also do this: -->
+<input type="submit" name="submit" value="Submit" />
+<input type="submit" name="cancel" value="Cancel" />
+<!-- <button type = "submit">Submit</button> -->
+</form>
+```
+* Second form example using just PHP + sanitization + validation + output escaping
+```
+<?php
+$message = '';
+$config = [
+	'username' => [
+		'type' => 'text',
+		'id'   => 'user_123',
+		'title' => 'Enter your username',
+		'size' => 40,
+		'value' => '',
+	],
+	'email' => [
+		'type' => 'email',
+		'id'   => 'email_123',
+		'placeholder' => 'Enter your email address',
+		'size' => 40,
+		'value' => '',
+	],
+	'age' => [
+		'type' => 'number',
+		'id'   => 'age_123',
+		'placeholder' => 'Must be 18 or older to login',
+		'value' => '',
+	],
+	'submit' => [
+		'type' => 'submit',
+		'name' => 'submit',
+		'value' => 'Login',
+	],
+];
+
+function htmlTable(string $title = 'Login', array $config) {
+	 $html = '<form action="test.php" method="post">' . PHP_EOL;
+     $html .= '<table><thead>' . PHP_EOL;
+     $html .= "<tr><th colspan=\"2\">$title</th></tr>\n";
+     $html .= '</thead><tbody>' . PHP_EOL;    
+     foreach ($config as $key => $value) {
+		 $html .= '<tr><th>' . ucfirst($key) . '</th>' . PHP_EOL;
+		 $html .= '<td><input name="' . $key . '" ';
+		 foreach ($value as $attr => $item) {
+			 if ($attr == 'value') {
+				 $html .= $attr . '=' . '"' . htmlspecialchars($item) . '" ';
+			 } else {
+				$html .= $attr . '=' . '"' . $item . '" ';
+			}
+		 }
+		 $html .= ' /></td></tr>' . PHP_EOL;
+	 }
+     $html .= '</tbody></table>' . PHP_EOL;    
+     $html .= '</form>' . PHP_EOL;    
+     return $html;
+}
+     
+// validation
+if (!empty($_POST)) {
+	// quick sanitization
+	foreach ($_POST as $key => $value) 
+		$_POST[$key] = strip_tags($_POST[$key]);
+	// capture the input
+	$config['age']['value'] = $_POST['age'] ?? '';
+	$config['email']['value'] = $_POST['email'] ?? '';
+	$config['username']['value'] = $_POST['username'] ?? '';
+	//validation
+	$expect = 2;
+	$actual = 0;
+	// #1: check to see if age is integer
+	$actual += ctype_digit($config['age']['value']);
+	// #2: check to see if age > 18
+	$actual += ((date('Y') - $config['age']['value']) <= (date('Y') - 18)) ? 1 : 0;
+	if ($actual === $expect) {
+		$message = 'Proceed to Login';
+	} else {
+		$message = 'Sorry ... would you like to see some really great landscapes?';
+	}
+}
+
+// output
+echo htmlTable('Hours Worked', $config);
+echo ($message) ? '<hr><b style="color:red;">' . $message . '</b>' : '';
 ```
