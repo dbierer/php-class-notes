@@ -989,3 +989,43 @@ echo htmlspecialchars($counter);
 </body>
 </html>
 ```
+* Example of SQL query with pagination
+```
+<?php
+
+$first = 0;
+$page  = $_GET['page'] ?? 0;
+$lines = 10;
+$offset = (int) $page * $lines;
+$conn = mysqli_connect('127.0.0.1', 'vagrant', 'vagrant', 'phpcourse');
+$result = mysqli_query($conn, "SELECT * FROM customers LIMIT $lines OFFSET $offset");
+$header_pattern = "%2s | %12s | %20s\n";
+$pattern = "%2d | %12s | %20s\n";
+echo '<pre>';
+while ($row = mysqli_fetch_assoc($result)) {
+	if ($first++ === 0) {
+		$headers = array_keys($row);
+		vprintf($header_pattern, $headers);
+		vprintf($header_pattern, ['--','------------','------------']);
+	}
+	vprintf($pattern, $row);
+}
+echo '</pre>';
+mysqli_close($conn);
+```
+* Example of SQL `join` statement + results:
+```
+mysql> select * from customers as c join orders as o on c.id = o.customer;
++----+-----------+-----------+----+------------+----------+--------+--------------------------+----------+
+| id | firstname | lastname  | id | date       | status   | amount | description              | customer |
++----+-----------+-----------+----+------------+----------+--------+--------------------------+----------+
+|  4 | Susan     | Chu       |  1 | 1355097600 | complete |    560 |                          |        4 |
+|  3 | Jason     | Flores    |  2 | 1359062345 | invoiced |   9800 |                          |        3 |
+|  2 | Janet     | Levitz    |  3 | 1357948800 | held     |    300 |                          |        2 |
+|  3 | Jason     | Flores    |  4 | 1359500400 | open     |     34 | Paper                    |        3 |
+|  1 | George    | Stevenson |  5 | 1359586800 | open     |   4570 | PHP development          |        1 |
+|  5 | Thomas    | White     |  6 | 1359586800 | invoiced |   2000 | Laptop                   |        5 |
+|  3 | Jason     | Flores    |  7 | 1360796400 | open     |    300 | A big box of chocolates. |        3 |
++----+-----------+-----------+----+------------+----------+--------+--------------------------+----------+
+7 rows in set (0.00 sec)
+```
