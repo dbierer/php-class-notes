@@ -1,5 +1,9 @@
 # PHP-III Jan 2021
 
+## TODO
+* Create example of binding `$this` to another class in an anon function
+* Does PHP 8 automatically to strict_types=1?
+
 ## Homework
 * For Wed 6 Jan 2021
   * Setup Apache JMeter
@@ -21,9 +25,6 @@
   * https://github.com/dbierer/php-class-notes/blob/master/php-iii-may-2019.md
 * Previous class repos:
   * https://github.com/dbierer/php-iii-may-2019
-* Serialization has changed as of PHP 7.4
-  * See: https://wiki.php.net/rfc/custom_object_serialization
-  * Example: https://github.com/phpcl/phpcl_jumpstart_php_7_4/blob/master/new_custom_serialize.php
 
 ## Class Notes
 * DateTime
@@ -58,11 +59,74 @@ foreach ($x as $letter) echo $letter;
 echo "\nReturn Value:" . $x->getReturn();
 var_dump($x);
 ```
+* `ArrayObject` example demonstrating use of internal `IteratorAggregate` interface as well as `ArrayAccess`
+```
+<?php
+$source = ['A' => 111, 'B' => 222, 'C' => 333];
+$obj = new ArrayObject($source);
+
+// this is possible due to ArrayAccess interface implementation
+echo $obj['A'];
+echo $obj->offsetGet('B');
+echo "\n";
+
+// this is possible because of IteratorAggregate
+foreach ($obj as $key => $val) {
+	echo $key . ':' . $val . "\n";
+}
+echo "\n";
+
+$iter = $obj->getIterator();
+foreach ($iter as $key => $val) {
+	echo $key . ':' . $val . "\n";
+}
+echo "\n";
+```
+* Serialization has changed as of PHP 7.4
+  * See: https://wiki.php.net/rfc/custom_object_serialization
+  * Example: https://github.com/phpcl/phpcl_jumpstart_php_7_4/blob/master/new_custom_serialize.php
+* Type Hinting
+```
+<?php
+// If this is not declared, scalar data-typing acts as a type cast
+declare(strict_types=1);
+class Test
+{
+	public $name = 'Fred';
+	public function setName(string $name)
+	{
+		$this->name = $name;
+	}
+	public function getName() : string
+	{
+		return $this->name;
+	}
+}
+
+$test = new Test;
+$test->setName('Wilma');
+echo $test->getName();
+
+
+$test->setName(123);
+echo $test->getName();
+var_dump($test);
+```
 * Typed Properties
   * RFC: https://wiki.php.net/rfc/typed_properties_v2
   * Example:
     * Old: https://github.com/phpcl/phpcl_jumpstart_php_7_4/blob/master/new_typed_props_old.php
     * New: https://github.com/phpcl/phpcl_jumpstart_php_7_4/blob/master/new_typed_props_new.php
+* Nullable Types
+  * In PHP 8 you can use a new syntax if you want to accept multiple data types as an argument
+  * Referred to as `union` types
+  * See: https://wiki.php.net/rfc/union_types_v2
+```
+// accepts either a string or float as an argument
+public function setParam(string|float $param) {	
+	$this->param = $param;
+}
+```
 * New Additions:
   * New as of PHP 7.4: https://www.php.net/manual/en/migration74.new-features.php
   * New as of PHP 8.0: https://www.php.net/manual/en/migration80.new-features.php
