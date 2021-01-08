@@ -1,9 +1,15 @@
 # PHP-III Jan 2021
 
 ## TODO
+* Get link to article on using `RecursiveDirectoryIterator`
+* Create an example of a heap where you create a branch (e.g. another list associated with "Space Suite Check" from slide example)
+* Find or create an example of storing and retrieving objects using `SplObjectStorage`
 * Create example of binding `$this` to another class in an anon function
-* Does PHP 8 automatically to strict_types=1?
-
+* Q: Does PHP 8 automatically default to strict_types=1?
+* A: No: same behavior as PHP 7.4
+* A: Note: if `declare(strict_types=1);` is not enabled, the type hint acts as a type-cast.  
+  * If the type cast is unsuccessful or ambiguous a `TypeError` is thrown
+ 
 ## Homework
 * For Wed 6 Jan 2021
   * Setup Apache JMeter
@@ -127,8 +133,77 @@ public function setParam(string|float $param) {
 	$this->param = $param;
 }
 ```
+* Example of `iterable` data type
+```
+<?php
+// If this is not declared, scalar data-typing acts as a type cast
+//declare(strict_types=1);
+class Test
+{
+	public $iter = NULL;
+	public function setIter(iterable $iter)
+	{
+		$this->iter = $iter;
+	}
+	public function getIterAsString()
+	{
+		$output = '';
+		foreach ($this->iter as $key => $val)
+			$output .= $key . ':' . $val . "\n";
+		return $output;
+	}
+}
+$arr = ['A' => 111, 'B' => 222, 'C' => 333];
+$test = new Test();
+$test->setIter($arr);
+echo $test->getIterAsString();
+
+$obj = new ArrayObject($arr);
+$test->setIter($obj);
+echo $test->getIterAsString();
+```
+* `callable` data type
+```
+<?php
+// If this is not declared, scalar data-typing acts as a type cast
+//declare(strict_types=1);
+class Test
+{
+	public $callback = NULL;
+	public function setCallback(callable $callback)
+	{
+		$this->callback = $callback;
+	}
+	public function getCallback()
+	{
+		return $this->callback;
+	}
+}
+
+$func = function ($a, $b) { return $a + $b; };
+$anon = new class() {
+	public function add($a, $b) { 
+		return $a + $b;
+	}
+};
+$test = new Test();
+// no error
+$test->setCallback($func);
+// classes that define __invoke are considered callable
+// if not, you can  use array syntax as shown:
+$test->setCallback([$anon, 'add']);
+// no error on defined functions
+$test->setCallback('strtolower');
+echo $test->getCallback()('ABCDEF');
+```
+* Create `Closure` from `callable`: https://wiki.php.net/rfc/closurefromcallable
+* Example of Null Coalesce Operator
+```
+$id = $_POST['id'] ?? $_GET['id'] ?? $_SESSION['id'] ?? 0;
+```
 * New Additions:
   * New as of PHP 7.4: https://www.php.net/manual/en/migration74.new-features.php
+    * See: https://github.com/phpcl/phpcl_jumpstart_php_7_4/
   * New as of PHP 8.0: https://www.php.net/manual/en/migration80.new-features.php
 * PubSub Example: https://github.com/dbierer/php7cookbook/blob/master/source/chapter11/chap_11_pub_sub_simple_example.php
 * DoublyLinkedList:
@@ -140,6 +215,18 @@ public function setParam(string|float $param) {
     * See `getCardIterator()` method, and
     * `injectCards()` this line: `$iter = new LimitIterator($temp, 0, (int) $qualifier);`
     * Limits iterations returned from the card iterator
+* Example of `RecursiveDirectoryIterator`
+```
+<?php
+$path = '/home/vagrant/Zend/workspaces/DefaultWorkspace/php3';
+$directory = new RecursiveDirectoryIterator($path);
+$iterator = new RecursiveIteratorIterator($directory);
+
+foreach ($iterator as $name => $obj) {
+	echo $name . "\n";
+	var_dump($obj);
+}
+```
 * Variable based stream wrapper:
   * https://github.com/dbierer/classic_php_examples/blob/master/file/streams_custom_wrapper.php
 * Streams Docs: https://www.php.net/manual/en/book.stream.php
