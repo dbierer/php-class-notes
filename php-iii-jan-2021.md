@@ -1,18 +1,12 @@
 # PHP-III Jan 2021
 
-## TODO
-* Q: Is there an article on using `RecursiveDirectoryIterator`?
-* A: https://lfphpcloud.net/articles/spl-recursive-directory-iterator
-* Create an example of a heap where you create a branch (e.g. another list associated with "Space Suite Check" from slide example)
-* Q: Find or create an example of storing and retrieving objects using `SplObjectStorage`
-* A: This article is 9 years old, but very informative: https://stackoverflow.com/questions/8520241/associative-array-versus-splobjectstorage
-* Create example of binding `$this` to another class in an anon function
-* Q: Does PHP 8 automatically default to strict_types=1?
-* A: No: same behavior as PHP 7.4
-* A: Note: if `declare(strict_types=1);` is not enabled, the type hint acts as a type-cast.
-  * If the type cast is unsuccessful or ambiguous a `TypeError` is thrown
-
 ## Homework
+* For Wed 13 Jan 2021
+  * Lab: New Functions
+    * Installing a Custom Extension
+  * Optional Lab: install the MongoDB extension or install apcu
+  * Lab: Custom Compile PHP
+    * See: https://lfphpcloud.net/articles/adventures_in_custom_compiling_php_8
 * For Wed 6 Jan 2021
   * Setup Apache JMeter
   * Setup Jenkins CI
@@ -26,6 +20,23 @@
       * replace `violations` with `Violations`
       * replace `htmlpublisher` with `Build-Publisher` (???)
       * replace `version number` with `Version Number`
+
+## TODO
+* What are the PHP 8 `JIT` flags?
+* What is `opcache.interned_strings_buffer`?
+* Check out `runBitCoinFilter` ... bzip2 doesn't appear to be working
+* Explanation of streams buckets: https://stackoverflow.com/questions/27103269/what-is-a-bucket-brigade#31132646
+* Examples of using `stream_socket_client`?
+* Create an example of a heap where you create a branch (e.g. another list associated with "Space Suite Check" from slide example)
+* Create example of binding `$this` to another class in an anon function
+* Q: Is there an article on using `RecursiveDirectoryIterator`?
+* A: https://lfphpcloud.net/articles/spl-recursive-directory-iterator
+* Q: Find or create an example of storing and retrieving objects using `SplObjectStorage`
+* A: This article is 9 years old, but very informative: https://stackoverflow.com/questions/8520241/associative-array-versus-splobjectstorage
+* Q: Does PHP 8 automatically default to strict_types=1?
+* A: No: same behavior as PHP 7.4
+* A: Note: if `declare(strict_types=1);` is not enabled, the type hint acts as a type-cast.
+  * If the type cast is unsuccessful or ambiguous a `TypeError` is thrown
 
 ## Resources
 * Previous class notes:
@@ -233,3 +244,100 @@ foreach ($iterator as $name => $obj) {
   * https://github.com/dbierer/classic_php_examples/blob/master/file/streams_custom_wrapper.php
 * Streams Docs: https://www.php.net/manual/en/book.stream.php
   * For devices, see: https://www.php.net/manual/en/function.stream-socket-client.php
+* Custom compile PHP `configure` options example:
+    * See: https://lfphpcloud.net/articles/adventures_in_custom_compiling_php_8
+    * Also see installation directions here: https://github.com/php/php-src
+    * Missing libraries:
+```
+sudo apt install -y pkg-config build-essential autoconf bison re2c libxml2-dev libsqlite3-dev
+```
+    * After cloning from github.com:
+```
+cd /path/to/cloned/php
+tar xvfz php-src-file
+cd php-src-xxx
+./buildconf
+```
+    * Example `configure` options
+```
+./configure  \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --datadir=/usr/share/php \
+    --mandir=/usr/share/man \
+    --enable-fpm \
+    --with-fpm-user=apache \
+    --with-fpm-group=apache \
+    --with-config-file-path=/etc \
+    --with-zlib \
+    --enable-bcmath \
+    --with-bz2 \
+    --enable-calendar \
+    --enable-dba=shared \
+    --with-gdbm \
+    --with-gmp \
+    --enable-ftp \
+    --with-gettext=/usr \
+    --enable-mbstring \
+    --enable-pcntl \
+    --with-pspell \
+    --with-readline \
+    --with-snmp \
+    --with-mysql-sock=/run/mysqld/mysqld.sock \
+    --with-curl \
+    --with-openssl \
+    --with-openssl-dir=/usr \
+    --with-mhash \
+    --enable-intl \
+    --with-libdir=/lib64 \
+    --enable-sockets \
+    --with-libxml \
+    --enable-soap \
+    --enable-gd \
+    --with-jpeg \
+    --with-freetype \
+    --enable-exif \
+    --with-xsl \
+    --with-pgsql \
+    --with-pdo-mysql=/usr \
+    --with-pdo-pgsql \
+    --with-mysqli \
+    --with-pdo-dblib \
+    --with-ldap \
+    --with-ldap-sasl \
+    --enable-shmop \
+    --enable-sysvsem \
+    --enable-sysvshm \
+    --enable-sysvmsg \
+    --with-tidy \
+    --with-expat \
+    --with-enchant \
+    --with-imap=/usr/local/imap-2007f \
+    --with-imap-ssl=/usr/include/openssl \
+    --with-kerberos=/usr/include/krb5 \
+    --with-sodium=/usr \
+    --with-zip \
+    --enable-opcache \
+    --with-pear \
+    --with-ffi
+ ```
+* Using PHP directly as a shell script
+```
+#!/usr/bin/php
+<?php
+echo 'Hello World!';
+```
+* Example of a lightweight PHP-based HTML framework
+  * https://github.com/dbierer/SimpleHtmlhttps://github.com/dbierer/SimpleHtml
+* Using PHP where the document is in another directory:
+```
+php -S IP-or-DNS:port -t DOC_ROOT_DIR
+// example
+php -S localhost:9999 -t public
+```
+* Prototype `StreamWrapper` class
+  * Doesn't exist: can't extend it
+  * Contains definitions of required methods
+  * Only define the ones you need
+  * At a minimum: `stream_open()`
+  * See: https://www.php.net/StreamWrapper
