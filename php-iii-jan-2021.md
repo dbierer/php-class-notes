@@ -1,15 +1,17 @@
 # PHP-III Jan 2021
 
 ## TODO
-* Get link to article on using `RecursiveDirectoryIterator`
+* Q: Is there an article on using `RecursiveDirectoryIterator`?
+* A: https://lfphpcloud.net/articles/spl-recursive-directory-iterator
 * Create an example of a heap where you create a branch (e.g. another list associated with "Space Suite Check" from slide example)
-* Find or create an example of storing and retrieving objects using `SplObjectStorage`
+* Q: Find or create an example of storing and retrieving objects using `SplObjectStorage`
+* A: This article is 9 years old, but very informative: https://stackoverflow.com/questions/8520241/associative-array-versus-splobjectstorage
 * Create example of binding `$this` to another class in an anon function
 * Q: Does PHP 8 automatically default to strict_types=1?
 * A: No: same behavior as PHP 7.4
-* A: Note: if `declare(strict_types=1);` is not enabled, the type hint acts as a type-cast.  
+* A: Note: if `declare(strict_types=1);` is not enabled, the type hint acts as a type-cast.
   * If the type cast is unsuccessful or ambiguous a `TypeError` is thrown
- 
+
 ## Homework
 * For Wed 6 Jan 2021
   * Setup Apache JMeter
@@ -78,13 +80,13 @@ echo "\n";
 
 // this is possible because of IteratorAggregate
 foreach ($obj as $key => $val) {
-	echo $key . ':' . $val . "\n";
+        echo $key . ':' . $val . "\n";
 }
 echo "\n";
 
 $iter = $obj->getIterator();
 foreach ($iter as $key => $val) {
-	echo $key . ':' . $val . "\n";
+        echo $key . ':' . $val . "\n";
 }
 echo "\n";
 ```
@@ -98,15 +100,15 @@ echo "\n";
 declare(strict_types=1);
 class Test
 {
-	public $name = 'Fred';
-	public function setName(string $name)
-	{
-		$this->name = $name;
-	}
-	public function getName() : string
-	{
-		return $this->name;
-	}
+        public $name = 'Fred';
+        public function setName(string $name)
+        {
+                $this->name = $name;
+        }
+        public function getName() : string
+        {
+                return $this->name;
+        }
 }
 
 $test = new Test;
@@ -129,8 +131,8 @@ var_dump($test);
   * See: https://wiki.php.net/rfc/union_types_v2
 ```
 // accepts either a string or float as an argument
-public function setParam(string|float $param) {	
-	$this->param = $param;
+public function setParam(string|float $param) {
+        $this->param = $param;
 }
 ```
 * Example of `iterable` data type
@@ -140,18 +142,18 @@ public function setParam(string|float $param) {
 //declare(strict_types=1);
 class Test
 {
-	public $iter = NULL;
-	public function setIter(iterable $iter)
-	{
-		$this->iter = $iter;
-	}
-	public function getIterAsString()
-	{
-		$output = '';
-		foreach ($this->iter as $key => $val)
-			$output .= $key . ':' . $val . "\n";
-		return $output;
-	}
+        public $iter = NULL;
+        public function setIter(iterable $iter)
+        {
+                $this->iter = $iter;
+        }
+        public function getIterAsString()
+        {
+                $output = '';
+                foreach ($this->iter as $key => $val)
+                        $output .= $key . ':' . $val . "\n";
+                return $output;
+        }
 }
 $arr = ['A' => 111, 'B' => 222, 'C' => 333];
 $test = new Test();
@@ -169,22 +171,22 @@ echo $test->getIterAsString();
 //declare(strict_types=1);
 class Test
 {
-	public $callback = NULL;
-	public function setCallback(callable $callback)
-	{
-		$this->callback = $callback;
-	}
-	public function getCallback()
-	{
-		return $this->callback;
-	}
+        public $callback = NULL;
+        public function setCallback(callable $callback)
+        {
+                $this->callback = $callback;
+        }
+        public function getCallback()
+        {
+                return $this->callback;
+        }
 }
 
 $func = function ($a, $b) { return $a + $b; };
 $anon = new class() {
-	public function add($a, $b) { 
-		return $a + $b;
-	}
+        public function add($a, $b) {
+                return $a + $b;
+        }
 };
 $test = new Test();
 // no error
@@ -223,8 +225,8 @@ $directory = new RecursiveDirectoryIterator($path);
 $iterator = new RecursiveIteratorIterator($directory);
 
 foreach ($iterator as $name => $obj) {
-	echo $name . "\n";
-	var_dump($obj);
+        echo $name . "\n";
+        var_dump($obj);
 }
 ```
 * Variable based stream wrapper:
