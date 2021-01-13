@@ -22,13 +22,35 @@
       * replace `version number` with `Version Number`
 
 ## TODO
-* What are the PHP 8 `JIT` flags?
-* What is `opcache.interned_strings_buffer`?
-* Check out `runBitCoinFilter` ... bzip2 doesn't appear to be working
-* Explanation of streams buckets: https://stackoverflow.com/questions/27103269/what-is-a-bucket-brigade#31132646
-* Examples of using `stream_socket_client`?
 * Create an example of a heap where you create a branch (e.g. another list associated with "Space Suite Check" from slide example)
 * Create example of binding `$this` to another class in an anon function
+* Q: Example of using FFI?
+* A: See: https://github.com/phpcl/phpcl_jumpstart_php_7_4
+* A: Look for PHP examples starting with `ffi*`
+* Q: What are the PHP 8 `JIT` flags?
+* A: For overview see: https://wiki.php.net/rfc/jit
+* A: For `php.ini` defaults see: https://wiki.php.net/rfc/jit#phpini_defaults
+* Q: What is `opcache.interned_strings_buffer`?
+* A: The amount of memory used to store interned strings in MB
+* A: See: https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.interned-strings-buffer
+* Q: Check out `runBitCoinFilter` ... bzip2 doesn't appear to be working
+* A: Run `stream_get_filters()` to see which are available for your PHP installation
+  * Run `php -i` or `phpinfo()` and look for filter support per extension
+  * Example for `zlib`:
+```
+zlib
+
+ZLib Support => enabled
+Stream Wrapper => compress.zlib://
+Stream Filter => zlib.inflate, zlib.deflate
+Compiled Version => 1.2.11
+Linked Version => 1.2.11
+```
+* Q: Examples of using `stream_socket_client`?
+* A: See: https://github.com/reactphp/socket
+* A: See: https://github.com/reactphp/socket/blob/master/src/TcpConnector.php::line 76
+* Q: Explanation of streams buckets?
+* A: See: https://stackoverflow.com/questions/27103269/what-is-a-bucket-brigade#31132646
 * Q: Is there an article on using `RecursiveDirectoryIterator`?
 * A: https://lfphpcloud.net/articles/spl-recursive-directory-iterator
 * Q: Find or create an example of storing and retrieving objects using `SplObjectStorage`
