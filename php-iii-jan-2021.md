@@ -1,6 +1,18 @@
 # PHP-III Jan 2021
 
 ## Homework
+* For Fri 15 Jan 2021
+  * Lab: CD Phing Build Tool Prerequisites
+  * Lab: Lab: Phing Build Execution
+  * Lab: Phing Deployment Update
+  * Lab: Jenkins Freestyle Prerequisites
+  * Lab: Jenkins CI Freestyle Project Configuration
+  * Lab: Jenkins CI Freestyle Project Build
+    * NOTE: the URL mentioned on slides is this: https://github.com/datashuttle/PHP3OA
+    * OPTIONAL: fork the repo from datashuttle into your own github account and use that as a target repo you can then make changes and test to see if the automated process kicks in
+  * Lab: Load (Smoke) Testing
+  * Notes on Labs: https://github.com/dbierer/php-iii-mar-2020
+  * Or look here:  https://github.com/dbierer/php-class-notes/blob/master/php-iii-may-2019.md
 * For Wed 13 Jan 2021
   * Lab: New Functions
     * Installing a Custom Extension
@@ -23,7 +35,9 @@
 
 ## TODO
 * Create an example of a heap where you create a branch (e.g. another list associated with "Space Suite Check" from slide example)
-* Create example of binding `$this` to another class in an anon function
+* Document extension creation lab: note missing libs
+* Q: Create example of binding `$this` to another class in an anon function
+* A: See: https://github.com/phpcl/phpcl_jumpstart_php_7_4/blob/master/infra_deprec_anon_unbind_this.php
 * Q: Example of using FFI?
 * A: See: https://github.com/phpcl/phpcl_jumpstart_php_7_4
 * A: Look for PHP examples starting with `ffi*`
