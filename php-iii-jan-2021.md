@@ -1,11 +1,23 @@
 # PHP-III Jan 2021
 
 ## Homework
+* For Mon 18 Jan 2021
+  * Lab: Docker Image Build
+  * Lab: New Image Creation
+  * Lab: Full-build MySQL Container
+  * Lab: Configuration Review and Pre-Built Service Execution
+  * Lab: Configuration Review and Partial-Build Service Execution
 * For Fri 15 Jan 2021
   * Lab: CD Phing Build Tool Prerequisites
   * Lab: Lab: Phing Build Execution
   * Lab: Phing Deployment Update
   * Lab: Jenkins Freestyle Prerequisites
+    * Consider running as Docker image
+    * https://www.jenkins.io/doc/book/installing/docker/
+    * To start the container running:
+```
+docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts
+```
   * Lab: Jenkins CI Freestyle Project Configuration
   * Lab: Jenkins CI Freestyle Project Build
     * NOTE: the URL mentioned on slides is this: https://github.com/datashuttle/PHP3OA
@@ -34,6 +46,9 @@
       * replace `version number` with `Version Number`
 
 ## TODO
+* More info on ENTRYPOINT
+* How does `restart:always` work?
+* Locate the `docker-compose.yml` file that brings multiple containers online (mongodb)
 * Create an example of a heap where you create a branch (e.g. another list associated with "Space Suite Check" from slide example)
 * Document extension creation lab: note missing libs
 * Q: Create example of binding `$this` to another class in an anon function
@@ -377,3 +392,21 @@ php -S localhost:9999 -t public
   * Only define the ones you need
   * At a minimum: `stream_open()`
   * See: https://www.php.net/StreamWrapper
+* Docker Notes
+  * To open a shell onto a running image (container)
+```
+docker exec -it keen_edison /bin/bash
+```
+  * To get detailed information:
+```
+docker image|container|volume|network ls
+docker image|container|volume|network inspect <ID>
+```
+  * System maintenance
+```
+docker system prune
+```
+* To run Docker on Windows
+  * Install the WSL (Windows Services for Linux)
+  * Keep the Hypervisor running
+  * Install Docker Desktop for Windows
