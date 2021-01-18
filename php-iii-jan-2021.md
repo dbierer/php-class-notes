@@ -46,11 +46,16 @@ docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenk
       * replace `version number` with `Version Number`
 
 ## TODO
-* More info on ENTRYPOINT
-* How does `restart:always` work?
-* Locate the `docker-compose.yml` file that brings multiple containers online (mongodb)
 * Create an example of a heap where you create a branch (e.g. another list associated with "Space Suite Check" from slide example)
 * Document extension creation lab: note missing libs
+* Q: More info on `ENTRYPOINT`
+* A: Unless overriden, the default `ENTRYPOINT` is `/bin/sh -c`.  You need to specify a `CMD` in order to have the container do something upon startup.  For example, if you want to go right into a MySQL shell, the `CMD` would be `mysql -uroot`.
+* A: See: https://stackoverflow.com/questions/21553353/what-is-the-difference-between-cmd-and-entrypoint-in-a-dockerfile
+* Q: How does `restart:always` work?
+* A: Causes the container to restart by itself, without manual intervention, if it stops due to some internal failure
+* A: See: https://docs.docker.com/compose/compose-file/compose-file-v3/#restart
+* Q: Locate the `docker-compose.yml` file that brings multiple containers online (mongodb)
+* A: See: https://github.com/dbierer/Learn-MongoDB-4.x/blob/master/chapters/15/docker-compose.yml
 * Q: Create example of binding `$this` to another class in an anon function
 * A: See: https://github.com/phpcl/phpcl_jumpstart_php_7_4/blob/master/infra_deprec_anon_unbind_this.php
 * Q: Example of using FFI?
@@ -410,3 +415,9 @@ docker system prune
   * Install the WSL (Windows Services for Linux)
   * Keep the Hypervisor running
   * Install Docker Desktop for Windows
+* Docker-Compose
+  * `docker-compose.yml` file reference: https://docs.docker.com/compose/compose-file/compose-file-v3/
+  * Simple example: https://github.com/laminas/laminas-mvc-skeleton/blob/1.2.x/docker-compose.yml
+  * Slightly more complex example: https://github.com/dbierer/SimpleHtml/blob/main/templates/deployment/docker-compose.yml.template
+  * Complex example that uses docker-compose to simulate a MongoDB Sharded Cluster with 5 servers:
+    * https://github.com/dbierer/Learn-MongoDB-4.x/blob/master/chapters/15/docker-compose.yml
