@@ -11,6 +11,10 @@
   * Lab: CD Phing Build Tool Prerequisites
   * Lab: Lab: Phing Build Execution
   * Lab: Phing Deployment Update
+```
+PHP Deprecated: Array and string offset access syntax with curly braces is deprecated
+// maybe Phing needs to be update?
+```
   * Lab: Jenkins Freestyle Prerequisites
     * Consider running as Docker image
     * https://www.jenkins.io/doc/book/installing/docker/
@@ -28,7 +32,12 @@ docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenk
 * For Wed 13 Jan 2021
   * Lab: New Functions
     * Installing a Custom Extension
-  * Optional Lab: install the MongoDB extension or install apcu
+      * change to this directory: `/home/vagrant/Zend/workspaces/DefaultWorkspace/php3/src/ModAdvancedTechniques/Extensions/TelemetryExtension`
+	  * Modify `Makefile`: 
+		* Change this: `INIT_DIR` to `/etc/php/7.4/cli/conf.d`
+```
+PHP Warning:  PHP Startup: Unable to load dynamic library 'telemetry.so' (tried: /usr/lib/php/20190902/telemetry.so (libphpcpp.so.2.0: cannot open shared object file: No such file or directory), /usr/lib/php/20190902/telemetry.so.so (libphpcpp.so.2.0: cannot open shared object file: No such file or directory)) in Unknown on line 0
+```
   * Lab: Custom Compile PHP
     * See: https://lfphpcloud.net/articles/adventures_in_custom_compiling_php_8
 * For Wed 6 Jan 2021
@@ -46,27 +55,47 @@ docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenk
       * replace `version number` with `Version Number`
 
 ## TODO
+* Make arrangements with Nicole to get updated version of PDF to Svante (screenshots missing for REST Service API section
 * Create an example of a heap where you create a branch (e.g. another list associated with "Space Suite Check" from slide example)
 * Document extension creation lab: note missing libs
+
+## Q & A
+* Q: Do you have any good references on programming PHP Async and Swoole
+* A: Main project: https://github.com/swoole/swoole-src
+  * Last update: 1 hour ago!
+* A: Articles on Swoole: https://deminy.in/
+* Q: Open source alternatives to Google Maps
+* A: Free Open Source: https://www.openstreetmap.org/
+* A: App using OpenStreetMap data: https://osmand.net/
+* A: https://openlayers.org/
+* A: Others, but there is a limit on free requests: https://nordicapis.com/5-powerful-alternatives-to-google-maps-api/
+
 * Q: More info on `ENTRYPOINT`
 * A: Unless overriden, the default `ENTRYPOINT` is `/bin/sh -c`.  You need to specify a `CMD` in order to have the container do something upon startup.  For example, if you want to go right into a MySQL shell, the `CMD` would be `mysql -uroot`.
 * A: See: https://stackoverflow.com/questions/21553353/what-is-the-difference-between-cmd-and-entrypoint-in-a-dockerfile
+
 * Q: How does `restart:always` work?
 * A: Causes the container to restart by itself, without manual intervention, if it stops due to some internal failure
 * A: See: https://docs.docker.com/compose/compose-file/compose-file-v3/#restart
+
 * Q: Locate the `docker-compose.yml` file that brings multiple containers online (mongodb)
 * A: See: https://github.com/dbierer/Learn-MongoDB-4.x/blob/master/chapters/15/docker-compose.yml
+
 * Q: Create example of binding `$this` to another class in an anon function
 * A: See: https://github.com/phpcl/phpcl_jumpstart_php_7_4/blob/master/infra_deprec_anon_unbind_this.php
+
 * Q: Example of using FFI?
 * A: See: https://github.com/phpcl/phpcl_jumpstart_php_7_4
 * A: Look for PHP examples starting with `ffi*`
+
 * Q: What are the PHP 8 `JIT` flags?
 * A: For overview see: https://wiki.php.net/rfc/jit
 * A: For `php.ini` defaults see: https://wiki.php.net/rfc/jit#phpini_defaults
+
 * Q: What is `opcache.interned_strings_buffer`?
 * A: The amount of memory used to store interned strings in MB
 * A: See: https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.interned-strings-buffer
+
 * Q: Check out `runBitCoinFilter` ... bzip2 doesn't appear to be working
 * A: Run `stream_get_filters()` to see which are available for your PHP installation
   * Run `php -i` or `phpinfo()` and look for filter support per extension
@@ -421,3 +450,12 @@ docker system prune
   * Slightly more complex example: https://github.com/dbierer/SimpleHtml/blob/main/templates/deployment/docker-compose.yml.template
   * Complex example that uses docker-compose to simulate a MongoDB Sharded Cluster with 5 servers:
     * https://github.com/dbierer/Learn-MongoDB-4.x/blob/master/chapters/15/docker-compose.yml
+* Open source web API projects
+  * http://www.geonames.org/export/
+* JSON standards
+  * `json+hal` : https://tools.ietf.org/id/draft-kelly-json-hal-01.html#RFC4627 (expired)
+  * JSend: https://github.com/omniti-labs/jsend
+  
+## ERRATA
+* Mod 4: Use Case: Makefile
+  * Note that in the VM you can also use this path for `INIT_DIR`: `/etc/php/7.4/cli/conf.d`
