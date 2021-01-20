@@ -1,6 +1,14 @@
 # PHP-III Jan 2021
 
 ## Homework
+* For Fri 22 Jan 2021
+  * Stratigility Lab: Add a Middleware
+  * Lab: Mezzio Skeleton Installation
+    * See: https://github.com/mezzio/mezzio-skeleton
+    * Create a new module (use the command line tool)
+    * Create a Handler
+    * Create Middleware
+    * Don't forget to run `composer dump-autoload` to refresh the autoloading files
 * For Mon 18 Jan 2021
   * Lab: Docker Image Build
   * Lab: New Image Creation
@@ -35,6 +43,12 @@ docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenk
       * change to this directory: `/home/vagrant/Zend/workspaces/DefaultWorkspace/php3/src/ModAdvancedTechniques/Extensions/TelemetryExtension`
       * Modify `Makefile`:
         * Change this: `INIT_DIR` to `/etc/php/7.4/cli/conf.d`
+        * Make sure all the directives, starting with `all:` are on their own line
+        * Arguments should be on subsequent lines with at least a single tab indent
+      * If you get this error: `make: Nothing to be done for 'all'.`
+        * Make sure that `all:` is on its own line
+        * Make sure arguments for `all:` are on the following line(s)
+        * Arguments need to have at least a single tab indent
 ```
 PHP Warning:  PHP Startup: Unable to load dynamic library 'telemetry.so' (tried: /usr/lib/php/20190902/telemetry.so (libphpcpp.so.2.0: cannot open shared object file: No such file or directory), /usr/lib/php/20190902/telemetry.so.so (libphpcpp.so.2.0: cannot open shared object file: No such file or directory)) in Unknown on line 0
 ```
@@ -64,6 +78,10 @@ PHP Warning:  PHP Startup: Unable to load dynamic library 'telemetry.so' (tried:
 * A: Main project: https://github.com/swoole/swoole-src
   * Last update: 1 hour ago!
 * A: Articles on Swoole: https://deminy.in/
+
+* Q: Examples of frameworks using Swoole?
+* A: See: https://lightmvcframework.net/
+* A: See: https://github.com/lightmvc/lightmvcskel/blob/master/public/swoole.php
 
 * Q: Open source alternatives to Google Maps
 * A: Free Open Source: https://www.openstreetmap.org/
@@ -460,6 +478,39 @@ docker system prune
 * JSON standards
   * `json+hal` : https://tools.ietf.org/id/draft-kelly-json-hal-01.html#RFC4627 (expired)
   * JSend: https://github.com/omniti-labs/jsend
+* Working example just using `Stratigility`
+  * https://github.com/dbierer/strat_post
+
+## Mezzio
+* Create Mezzio project:
+```
+composer create-project mezzio/mezzio-skeleton </path/to/project>
+```
+* Command line tool: `/vendor/bin/mezzio`
+* Example Middleware
+```
+<?php
+
+declare(strict_types=1);
+
+namespace Demo\Middleware;
+
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+
+class Log implements MiddlewareInterface
+{
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
+    {
+        // $response = $handler->handle($request);
+        $message = __METHOD__ . ':' . get_class($request);
+        error_log($message);
+        return $handler->handle($request);
+    }
+}
+```
 
 ## ERRATA
 * Mod 4: Use Case: Makefile
