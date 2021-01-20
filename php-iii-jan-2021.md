@@ -33,8 +33,8 @@ docker run -d -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenk
   * Lab: New Functions
     * Installing a Custom Extension
       * change to this directory: `/home/vagrant/Zend/workspaces/DefaultWorkspace/php3/src/ModAdvancedTechniques/Extensions/TelemetryExtension`
-	  * Modify `Makefile`: 
-		* Change this: `INIT_DIR` to `/etc/php/7.4/cli/conf.d`
+      * Modify `Makefile`:
+        * Change this: `INIT_DIR` to `/etc/php/7.4/cli/conf.d`
 ```
 PHP Warning:  PHP Startup: Unable to load dynamic library 'telemetry.so' (tried: /usr/lib/php/20190902/telemetry.so (libphpcpp.so.2.0: cannot open shared object file: No such file or directory), /usr/lib/php/20190902/telemetry.so.so (libphpcpp.so.2.0: cannot open shared object file: No such file or directory)) in Unknown on line 0
 ```
@@ -64,11 +64,20 @@ PHP Warning:  PHP Startup: Unable to load dynamic library 'telemetry.so' (tried:
 * A: Main project: https://github.com/swoole/swoole-src
   * Last update: 1 hour ago!
 * A: Articles on Swoole: https://deminy.in/
+
 * Q: Open source alternatives to Google Maps
 * A: Free Open Source: https://www.openstreetmap.org/
 * A: App using OpenStreetMap data: https://osmand.net/
 * A: https://openlayers.org/
 * A: Others, but there is a limit on free requests: https://nordicapis.com/5-powerful-alternatives-to-google-maps-api/
+
+* Q: What is `opcache.interned_strings_buffer`?
+* A: The amount of memory used to store interned strings in MB
+* A: See: https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.interned-strings-buffer
+
+* Q: What is an "interned" string?
+* A: Any strings interned in the startup phase. Common to all the threads, won't be free'd until process exit. If we want an ability to add permanent strings even after startup, it would be still possible on costs of locking in the thread safe builds.
+* A: See: https://github.com/php/php-src/blob/master/Zend/zend_string.c
 
 * Q: More info on `ENTRYPOINT`
 * A: Unless overriden, the default `ENTRYPOINT` is `/bin/sh -c`.  You need to specify a `CMD` in order to have the container do something upon startup.  For example, if you want to go right into a MySQL shell, the `CMD` would be `mysql -uroot`.
@@ -91,10 +100,6 @@ PHP Warning:  PHP Startup: Unable to load dynamic library 'telemetry.so' (tried:
 * Q: What are the PHP 8 `JIT` flags?
 * A: For overview see: https://wiki.php.net/rfc/jit
 * A: For `php.ini` defaults see: https://wiki.php.net/rfc/jit#phpini_defaults
-
-* Q: What is `opcache.interned_strings_buffer`?
-* A: The amount of memory used to store interned strings in MB
-* A: See: https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.interned-strings-buffer
 
 * Q: Check out `runBitCoinFilter` ... bzip2 doesn't appear to be working
 * A: Run `stream_get_filters()` to see which are available for your PHP installation
@@ -455,7 +460,7 @@ docker system prune
 * JSON standards
   * `json+hal` : https://tools.ietf.org/id/draft-kelly-json-hal-01.html#RFC4627 (expired)
   * JSend: https://github.com/omniti-labs/jsend
-  
+
 ## ERRATA
 * Mod 4: Use Case: Makefile
   * Note that in the VM you can also use this path for `INIT_DIR`: `/etc/php/7.4/cli/conf.d`
