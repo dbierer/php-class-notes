@@ -490,9 +490,7 @@ composer create-project mezzio/mezzio-skeleton </path/to/project>
 * Example Middleware
 ```
 <?php
-
 declare(strict_types=1);
-
 namespace Demo\Middleware;
 
 use Psr\Http\Message\ResponseInterface;
@@ -511,7 +509,18 @@ class Log implements MiddlewareInterface
     }
 }
 ```
+* Survey of programming languages: https://w3techs.com/technologies/overview/programming_language
 
 ## ERRATA
 * Mod 4: Use Case: Makefile
   * Note that in the VM you can also use this path for `INIT_DIR`: `/etc/php/7.4/cli/conf.d`
+* Docker Lab
+ * Dockerfile in oabuild
+```
+DEBIAN_FRONTEND=noninte7ractive add-apt-repository -y
+```
+ * Package errors out: just comment this out: covered by another package
+```
+python-software-properties
+```
+  * Need to install `apt-utils` before its used
