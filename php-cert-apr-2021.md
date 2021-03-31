@@ -1,5 +1,27 @@
 # PHP Test Prep -- Apr 2020
 
+## TODO
+* Check on answers to 2/56
+* Question 2/58: question contradicts the answer
+
+## Links
+* Detailed list of topic areas:
+  * https://www.zend.com/training/php-certification-exam
+* Bitwise tutorial:
+  * https://www.w3resource.com/php/operators/bitwise-operators.php
+* `php.ini` settings:
+  * https://www.php.net/manual/en/ini.list.php
+  * https://www.php.net/manual/en/configuration.changes.modes.php
+* Extensions
+  * https://www.php.net/manual/en/intro.opcache.php
+* Garbage Collection
+  * https://www.php.net/gc_collect_cycles
+  * https://www.php.net/manual/en/features.gc.performance-considerations.php
+* XML
+  * https://www.w3schools.com/xml/xpath_intro.asp
+* DateTime
+  * Examples of `DateInterval` format codes: https://www.php.net/manual/en/dateinterval.createfromdatestring.php
+  * Formats: https://www.php.net/manual/en/datetime.formats.php
 ## Repo Setup:
 ### Setup Docker / Docker Compose
 * Install `docker`
