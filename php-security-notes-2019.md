@@ -72,19 +72,22 @@ CREATE TABLE `bfdetect` (
 * Here is the virtual host definition for `http://sandbox/`:
 ```
 <VirtualHost *:80>
-	 ServerName sandbox
-	 DocumentRoot /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public
-	 <Directory /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public/>
-		 Options Indexes FollowSymlinks MultiViews
-		 AllowOverride All
-		 Require all granted
-	 </Directory>
+     ServerName sandbox
+     DocumentRoot /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public
+     <Directory /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public/>
+         Options Indexes FollowSymlinks MultiViews
+         AllowOverride All
+         Require all granted
+     </Directory>
  </VirtualHost>
 ```
 
 ### CLASS NOTES
 * Pay close attention to anything that Enrico says:
   * https://www.zimuel.it/
+* Good presentation on cryptography:
+  * http://www.cs.columbia.edu/~suman/security_arch/crypto_summary.pdf
+
 ## LATEST
 * SQL Injection
   * .NET: https://visualstudiomagazine.com/articles/2019/10/22/top-net-attacks.aspx
@@ -300,7 +303,7 @@ $document->getElementById("name-output"); // doesn't have querySelector by defau
     * DO NOT use the word "token" to identify the field
     * Use a random string of characters, and store that info in the session
 * 7: Once a token is used, throw it away - that makes sense, but I've always wondered what to do with tokens that are _not_ used. Seems like a vulnerability having many active tokens as many users navigate complex sites with many forms.
-	* Set some sort of expiration, otherwise you have active, valid, unused tokens sitting around.
+    * Set some sort of expiration, otherwise you have active, valid, unused tokens sitting around.
 LAB: quick test: download form, make a change, submit manually, and see that you've change the password
 
 ## Session Protection:
@@ -1898,8 +1901,8 @@ $acl->allow('admin', '37b51d194a7513e45b56f6524f2d51f2');
 if(isset($_GET['img'])) {
     $resourceID = $_GET['img'];
     if(isset($resources[$resourceID]) && $acl->isAllowed($user, $resourceID)) {
-	$image = $resources[$resourceID];
-	$html = "<img src='vulnerabilities/idor/source/img/$image'>";
+    $image = $resources[$resourceID];
+    $html = "<img src='vulnerabilities/idor/source/img/$image'>";
     }
 
 }
