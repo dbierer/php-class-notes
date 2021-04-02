@@ -1,8 +1,4 @@
-# PHP Test Prep -- Apr 2020
-
-## TODO
-* Check on answers to 2/56
-* Question 2/58: question contradicts the answer
+# PHP Test Prep -- Apr 2021
 
 ## Links
 * Detailed list of topic areas:
@@ -67,6 +63,18 @@ docker exec -it php_cert /bin/bash
 * https://github.com/dbierer/php-class-notes/blob/master/php-cert-jun-2020.md
 
 ## ERRATA
-* 2/57  correct answer s/be B and C.  PSR-4 is only applicable if the question addresses directory structure and namespace
+* 2/56: correct answer s/be B and C.  PSR-4 is only applicable if the question addresses directory structure and namespace. Also, the test does not address the PSR standards.
+* 2/58: question contradicts the answer.  Better question: what is the output of the following?
+```
+<?php
+// 02-58-84.php
+namespace X {
+    define('HELLO', 'Hello');
+    const WORLD = 'World';
+}
+namespace Y {
+    echo HELLO . ' ' . WORLD;
+}
+```
 * 4/42: correct answer: `255 255.000000`
 * 5/17: array_search(): Returns element *key* value, or boolean false. A third boolean parameter includes type checking.
