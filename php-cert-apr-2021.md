@@ -15,6 +15,8 @@
   * https://www.php.net/manual/en/features.gc.performance-considerations.php
 * XML
   * https://www.w3schools.com/xml/xpath_intro.asp
+  * Great study of Soap + XML vs. REST + JSON
+    * https://www.ateam-oracle.com/performance-study-rest-vs-soap-for-mobile-applications
 * DateTime
   * Examples of `DateInterval` format codes: https://www.php.net/manual/en/dateinterval.createfromdatestring.php
   * Formats: https://www.php.net/manual/en/datetime.formats.php
@@ -24,6 +26,11 @@
   * MB String extension required
   * Unable to find any reference to `--enable-zend-multibyte` option in PHP 7.1 `configure --help`
   * See: https://www.php.net/manual/en/control-structures.declare.php
+### OOP
+* Make sure you're up to speed on magic methods
+  * https://www.php.net/manual/en/language.oop5.magic.php
+* Be sure to cover the `Serializable` interface!
+
 ## Repo Setup:
 ### Setup Docker / Docker Compose
 * Install `docker`
