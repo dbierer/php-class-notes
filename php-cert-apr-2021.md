@@ -1,6 +1,6 @@
 # PHP Test Prep -- Apr 2021
 
-## Links
+## Class Notes
 * Detailed list of topic areas:
   * https://www.zend.com/training/php-certification-exam
 * Bitwise tutorial:
@@ -18,6 +18,12 @@
 * DateTime
   * Examples of `DateInterval` format codes: https://www.php.net/manual/en/dateinterval.createfromdatestring.php
   * Formats: https://www.php.net/manual/en/datetime.formats.php
+* Alternate character encoding
+  * Can be set per script using `declare()`
+  * `zend.multibyte=1` php.ini directive required
+  * MB String extension required
+  * Unable to find any reference to `--enable-zend-multibyte` option in PHP 7.1 `configure --help`
+  * See: https://www.php.net/manual/en/control-structures.declare.php
 ## Repo Setup:
 ### Setup Docker / Docker Compose
 * Install `docker`
@@ -65,6 +71,10 @@ docker exec -it php_cert /bin/bash
 ## ERRATA
 * 2/56: correct answer s/be B and C.  PSR-4 is only applicable if the question addresses directory structure and namespace. Also, the test does not address the PSR standards.
 * 2/58: question contradicts the answer.  Better question: what is the output of the following?
+  A. "HelloWORLD" and a Notice
+  B. "HELLOWorld" and a Warning
+  C. "HelloWorld"
+  D. None of the above
 ```
 <?php
 // 02-58-84.php
@@ -73,8 +83,10 @@ namespace X {
     const WORLD = 'World';
 }
 namespace Y {
-    echo HELLO . ' ' . WORLD;
+    echo HELLO . WORLD;
 }
 ```
 * 4/42: correct answer: `255 255.000000`
+* 4/57: old question left over from PHP 5.5 exam
+  * Should be rewritten as follows: "C. The _zend.multibyte_ php.ini setting must be enabled"
 * 5/17: array_search(): Returns element *key* value, or boolean false. A third boolean parameter includes type checking.
