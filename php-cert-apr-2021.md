@@ -1,5 +1,8 @@
 # PHP Test Prep -- Apr 2021
 
+## TODO
+* How do you prevent an interface from being extended?
+
 ## Class Notes
 * Detailed list of topic areas:
   * https://www.zend.com/training/php-certification-exam
@@ -20,6 +23,8 @@
 * DateTime
   * Examples of `DateInterval` format codes: https://www.php.net/manual/en/dateinterval.createfromdatestring.php
   * Formats: https://www.php.net/manual/en/datetime.formats.php
+  * Yes, there is a date function that calculates Easter Day :-)
+    * https://www.php.net/manual/en/function.easter-date.php
 * Alternate character encoding
   * Can be set per script using `declare()`
   * `zend.multibyte=1` php.ini directive required
@@ -30,7 +35,11 @@
 * Make sure you're up to speed on magic methods
   * https://www.php.net/manual/en/language.oop5.magic.php
 * Be sure to cover the `Serializable` interface!
-
+  * https://www.php.net/manual/en/class.serializable.php
+* Late Static Binding
+  * https://www.php.net/manual/en/language.oop5.late-static-bindings.php
+* Traits
+  * https://www.php.net/traits
 ## Repo Setup:
 ### Setup Docker / Docker Compose
 * Install `docker`
@@ -70,7 +79,8 @@ docker exec -it php_cert /bin/bash
   * From Windows or Mac
     * Locate the running container in _Docker Desktop_
     * Click on the CLI `>_` icon to open a shell
-
+  * To access the database:
+    * From the CLI: `mysql -u root zend`
 ## Past Notes:
 * https://github.com/dbierer/php-class-notes/blob/master/php-cert-aug-2020.md
 * https://github.com/dbierer/php-class-notes/blob/master/php-cert-jun-2020.md
@@ -97,3 +107,5 @@ namespace Y {
 * 4/57: old question left over from PHP 5.5 exam
   * Should be rewritten as follows: "C. The _zend.multibyte_ php.ini setting must be enabled"
 * 5/17: array_search(): Returns element *key* value, or boolean false. A third boolean parameter includes type checking.
+* Mock Exam #2: "Given that $fp is a stream resource, enter the function that outputs a file's contents"
+  * Correct Answer: `fpassthru`
