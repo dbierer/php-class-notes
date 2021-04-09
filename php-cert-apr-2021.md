@@ -31,15 +31,19 @@
   * MB String extension required
   * Unable to find any reference to `--enable-zend-multibyte` option in PHP 7.1 `configure --help`
   * See: https://www.php.net/manual/en/control-structures.declare.php
+* Security
+  * Test is based on this: https://www.php.net/manual/en/security.php
+  * https://www.php.net/manual/en/ref.session.php
 ### OOP
 * Make sure you're up to speed on magic methods
   * https://www.php.net/manual/en/language.oop5.magic.php
-* Be sure to cover the `Serializable` interface!
+* Be sure to study the `Serializable` interface!
   * https://www.php.net/manual/en/class.serializable.php
 * Late Static Binding
   * https://www.php.net/manual/en/language.oop5.late-static-bindings.php
 * Traits
   * https://www.php.net/traits
+* Super important: make sure you study up on `ArrayObject`
 ## Repo Setup:
 ### Setup Docker / Docker Compose
 * Install `docker`
@@ -86,15 +90,16 @@ docker exec -it php_cert /bin/bash
 * https://github.com/dbierer/php-class-notes/blob/master/php-cert-jun-2020.md
 
 ## ERRATA
-* 2/56: correct answer s/be B and C.  PSR-4 is only applicable if the question addresses directory structure and namespace. Also, the test does not address the PSR standards.
-* 2/58: question contradicts the answer.  Better question: what is the output of the following?
-  A. "HelloWORLD" and a Notice
-  B. "HELLOWorld" and a Warning
-  C. "HelloWorld"
-  D. None of the above
+* 2/56/84: correct answer s/be B and C.  PSR-4 is only applicable if the question addresses directory structure and namespace. Also, the test does not address the PSR standards.
+* 2/58/85: question contradicts the answer.
+  * Better question: what is the output of the following?
+    * "HelloWORLD" and a Notice
+    * "HELLOWorld" and a Warning
+    * "HelloWorld"
+    * None of the above
 ```
 <?php
-// 02-58-84.php
+// see: 02-58-85.php in this repo
 namespace X {
     define('HELLO', 'Hello');
     const WORLD = 'World';
@@ -103,9 +108,23 @@ namespace Y {
     echo HELLO . WORLD;
 }
 ```
-* 4/42: correct answer: `255 255.000000`
-* 4/57: old question left over from PHP 5.5 exam
+* 4/41/175: correct answer: `255 255.000000`
+* 4/57: old question left over from PHP 5.5 exam: ignore
   * Should be rewritten as follows: "C. The _zend.multibyte_ php.ini setting must be enabled"
 * 5/17: array_search(): Returns element *key* value, or boolean false. A third boolean parameter includes type checking.
 * Mock Exam #2: "Given that $fp is a stream resource, enter the function that outputs a file's contents"
   * Correct Answer: `fpassthru`
+* 12/8/???: "Aggregate Catch Blocks"
+  * Example doesn't help.  How about this:
+```
+
+try {
+    $pdo = new PDO($params);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException | ArgumentCountException $e) {
+    error_log('Database error: ' . date('Y-m-d H:i:s'));
+} finally {
+    echo 'Database connection ';
+    echo ($pdo) ? 'succeeded' : 'failed';
+}
+```
