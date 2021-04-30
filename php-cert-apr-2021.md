@@ -1,7 +1,11 @@
-# PHP Test Prep -- Apr 2021
+# PHP Test Prep -- 2021
 
-## TODO
-* How do you prevent an interface from being extended?
+## HOMEWORK
+* For Mon 3 May 2021
+  * Quizzes for Section 4 (Strings and Patterns)
+  * Quizzes for Section 5 (Arrays)
+  * Quizzes for Section 6 (I/O)
+  * First Mock Exam!
 
 ## Class Notes
 * Detailed list of topic areas:
@@ -44,6 +48,7 @@
 * Traits
   * https://www.php.net/traits
 * Super important: make sure you study up on `ArrayObject`
+
 ## Repo Setup:
 ### Setup Docker / Docker Compose
 * Install `docker`
@@ -60,7 +65,7 @@
 * Unzip the zip file provided by your instructor into a directory `/path/to/repo`
 * From a terminal windows (or command prompt):
 ```
-cd /path/to/ repo
+cd /path/to/repo
 docker-compose build
 ```
 * To run the image:
@@ -85,18 +90,23 @@ docker exec -it php_cert /bin/bash
     * Click on the CLI `>_` icon to open a shell
   * To access the database:
     * From the CLI: `mysql -u root zend`
+* Code examples are located (inside the container) in `/srv/code`
 ## Past Notes:
 * https://github.com/dbierer/php-class-notes/blob/master/php-cert-aug-2020.md
 * https://github.com/dbierer/php-class-notes/blob/master/php-cert-jun-2020.md
 
 ## ERRATA
-* 2/56/84: correct answer s/be B and C.  PSR-4 is only applicable if the question addresses directory structure and namespace. Also, the test does not address the PSR standards.
+* 2/56/84: correct answer s/be B and C.
+  * PSR-4 is only applicable if the question addresses directory structure and namespace.
+  * Also, the test does not address the PSR standards.
+  * Finally: the PSR-4 standard wasn't available when PHP 7.1 was introduced (verify)
 * 2/58/85: question contradicts the answer.
+  * Mara + Kinga: D; Chloris: A
   * Better question: what is the output of the following?
-    * "HelloWORLD" and a Notice
-    * "HELLOWorld" and a Warning
-    * "HelloWorld"
-    * None of the above
+    * A. "HelloWORLD" and a Notice
+    * B. "HELLOWorld" and a Warning
+    * C. "HelloWorld"
+    * D. None of the above
 ```
 <?php
 // see: 02-58-85.php in this repo
@@ -107,7 +117,9 @@ namespace X {
 namespace Y {
     echo HELLO . WORLD;
 }
+// output: "HelloWORLD" + Notice: undefined constant
 ```
+* 2/67: Answer s/ have " 16"
 * 4/41/175: correct answer: `255 255.000000`
 * 4/57: old question left over from PHP 5.5 exam: ignore
   * Should be rewritten as follows: "C. The _zend.multibyte_ php.ini setting must be enabled"
