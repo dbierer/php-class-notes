@@ -1,6 +1,13 @@
 # PHP Test Prep -- 2021
 
+## TODO
+* Documentation on `--enable-zend-multibyte`
+
 ## HOMEWORK
+* For Wed 5 May 2021
+  * Quizzes for Section 7 (Functions)
+  * Quizzes for Section 8 (OOP)
+  * 2nd Mock Exam!!
 * For Mon 3 May 2021
   * Quizzes for Section 4 (Strings and Patterns)
   * Quizzes for Section 5 (Arrays)
