@@ -147,3 +147,6 @@ try {
     echo ($pdo) ? 'succeeded' : 'failed';
 }
 ```
+* Mock Exam 2
+  * "Of the options given, which satisfy the array type hint?"
+    * There *is* not array type hint!
