@@ -2,7 +2,6 @@
 
 ## TODO
 * Research other options to improve performance of VM on Mac
-* Which classes in PHP 8 no longer directly implement Iterator?
 
 ## VM
 Here are some things to do with the VM after installation
@@ -14,7 +13,9 @@ sudo apt install -y git
 ```
 
 ## Homework
-For Weds 26 May 2021
+For Fri 28 May 2021
+  * Lab: Built-in Web Server
+For Wed 26 May 2021
   * Setup Apache JMeter
   * Setup Jenkins CI
     * The CheckStyle plug-in reached end-of-life. All functionality has been integrated into the Warnings Next Generation Plugin.
@@ -33,7 +34,33 @@ Previous class notes:
   * https://github.com/dbierer/php-class-notes/blob/master/php-iii-jan-2021.md
 
 ## Class Notes
-`DateTime`
+Data type hints
+  * PHP 7.4 introduced property level data types
+```
+<?php
+declare(strict_types=1);
+class Test
+{
+	public function __construct(
+		public int $a = 0,
+		public int $b = 0) {}
+	public function add()
+	{
+		return $this->a + $this->b;
+	}
+}
+
+$test = new Test(2, 2);
+echo $test->add();
+echo "\n";
+
+$test->a = 2.222;
+$test->b = 1.111;
+echo $test->add();
+echo "\n";
+```
+
+DateTime
   * https://www.php.net/manual/en/intldateformatter.format.php
   * Example calculating date differences
 ```
@@ -120,6 +147,10 @@ foreach ($test as $letter)
 
 echo "\n";
 ```
+* PHP 8 classes that have migrated away from `Iterator` or `Traversable` into `IteratorAggregate`
+  * `PDOStatement`
+  * `mysqli_result`
+  * See: https://www.php.net/manual/en/migration80.other-changes.php
 * `Serializable` Interface
   * In a yet-to-be-announced future version of PHP, this will go away
   * To switch over to the new mechanism:
@@ -162,3 +193,81 @@ var_dump($obj);
   * Auto-assigned in PHP 8 if class defines `__toString()`
 Custom Compile PHP
   * See: https://lfphpcloud.net/articles/adventures_in_custom_compiling_php_8
+
+Strategy Pattern using an array of callbacks
+```
+<?php
+$strategies = [
+	'text/html' => function (iterable $arr) {
+		$out = '<ul>';
+		foreach ($arr as $item) $out .= '<li>' . $item . '</li>';
+		$out .= '</ul>';
+		return $out;
+	},
+	'application/json' => function (iterable $arr) {
+		return json_encode($arr, JSON_PRETTY_PRINT);
+	},
+];
+
+$data = ['A' => 111, 'B' => 222, 'C' => 333];
+$format = $_SERVER['HTTP_ACCEPT'] ?? 'text/html';
+if (!isset($strategies[$format]))
+	$format = 'text/html';
+echo $strategies[$format]($data);
+```
+Factory Pattern produces callbacks
+```
+<?php
+class CallbackFactory
+{
+	public function getCallback(string $x)
+	{
+		if (method_exists($this, $x)) {
+			return Closure::fromCallable([$this, $x]);
+		} else {
+			return NULL;
+		}
+	}
+	public function add($a, $b)
+	{
+		return $a + $b;
+	}
+	public function sub($a, $b)
+	{
+		return $a - $b;
+	}
+}
+$factory = new CallbackFactory();
+$add = $factory->getCallback('add');
+echo $add(2,2);
+```
+
+## SPL
+Retrieves an entire directory tree:
+```
+<?php
+$path = '/home/vagrant/Zend/workspaces/DefaultWorkspace/php3/src';
+$recurse = new RecursiveIteratorIterator(
+	new RecursiveDirectoryIterator($path));
+foreach ($recurse as $key => $value) {
+	// NOTE: $value is an SplFileInfo instance
+	echo $key . '[' . $value->getSize() . "]\n";
+}
+```
+
+## PHP CLI
+One-off PHP command inside a shell script:
+```
+#!/bin/bash
+php -r "echo base64_encode(random_bytes($1));"
+```
+Running PHP code inside a shell script:
+```
+#!/usr/bin/env php
+<?php
+echo __FILE__ . "\n";
+var_dump($_SERVER);
+```
+Getting CLI args:
+  * `$_SERVER['argv']` or
+  * `$argv[]`
