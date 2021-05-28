@@ -2,6 +2,7 @@
 
 ## TODO
 * Research other options to improve performance of VM on Mac
+* Why does the `runBitCoinFilter.php` example not work?
 
 ## VM
 Here are some things to do with the VM after installation
@@ -13,6 +14,16 @@ sudo apt install -y git
 ```
 
 ## Homework
+For Mon 31 May 2021
+  * Lab: Install the apcu extension using `pecl`
+    * To test: use this script: https://github.com/dbierer/php-iii-mar-2021/blob/main/apcu_test.php
+    * Need to add `apcu.enable=1` and `apc.shm_size=32M` to `/etc/php/8.0/apache2/php.ini` and run from a browser to have the demo work
+    * Restart the web server after modifying the `php.ini` file: `sudo service apache2 restart`
+  * Lab: New Functions (compile a new extension)
+  * Lab: Customized PHP Labs (all of them)
+  * Lab: Phing (all of them)
+  * Lab: Jenkins Freestyle (all of them)
+  * Lab: Load (Smoke) Testing (Apache JMeter)
 For Fri 28 May 2021
   * Lab: Built-in Web Server
 For Wed 26 May 2021
@@ -32,6 +43,7 @@ For Wed 26 May 2021
 Previous class notes:
   * https://github.com/dbierer/php-class-notes/blob/master/php-iii-mar-2021.md
   * https://github.com/dbierer/php-class-notes/blob/master/php-iii-jan-2021.md
+  * https://github.com/dbierer/php-iii-mar-2021
 
 ## Class Notes
 Data type hints
@@ -271,3 +283,30 @@ var_dump($_SERVER);
 Getting CLI args:
   * `$_SERVER['argv']` or
   * `$argv[]`
+
+## Q & A
+* Q: What is `opcache.interned_strings_buffer`?
+* A: The amount of memory used to store interned strings in MB
+* A: See: https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.interned-strings-buffer
+
+* Q: What is an "interned" string?
+* A: Any strings interned in the startup phase. Common to all the threads, won't be free'd until process exit. If we want an ability to add permanent strings even after startup, it would be still possible on costs of locking in the thread safe builds.
+* A: See: https://github.com/php/php-src/blob/master/Zend/zend_string.c
+
+* Q: What are the PHP 8 `JIT` flags?
+* A: For overview see: https://wiki.php.net/rfc/jit
+* A: For `php.ini` defaults see: https://wiki.php.net/rfc/jit#phpini_defaults
+
+* Q: Check out `runBitCoinFilter` ... bzip2 doesn't appear to be working
+* A: Run `stream_get_filters()` to see which are available for your PHP installation
+  * Run `php -i` or `phpinfo()` and look for filter support per extension
+  * Example for `zlib`:
+```
+zlib
+
+ZLib Support => enabled
+Stream Wrapper => compress.zlib://
+Stream Filter => zlib.inflate, zlib.deflate
+Compiled Version => 1.2.11
+Linked Version => 1.2.11
+```

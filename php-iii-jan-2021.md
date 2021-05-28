@@ -135,12 +135,16 @@ Linked Version => 1.2.11
 * Q: Examples of using `stream_socket_client`?
 * A: See: https://github.com/reactphp/socket
 * A: See: https://github.com/reactphp/socket/blob/master/src/TcpConnector.php::line 76
+
 * Q: Explanation of streams buckets?
 * A: See: https://stackoverflow.com/questions/27103269/what-is-a-bucket-brigade#31132646
+
 * Q: Is there an article on using `RecursiveDirectoryIterator`?
 * A: https://lfphpcloud.net/articles/spl-recursive-directory-iterator
+
 * Q: Find or create an example of storing and retrieving objects using `SplObjectStorage`
 * A: This article is 9 years old, but very informative: https://stackoverflow.com/questions/8520241/associative-array-versus-splobjectstorage
+
 * Q: Does PHP 8 automatically default to strict_types=1?
 * A: No: same behavior as PHP 7.4
 * A: Note: if `declare(strict_types=1);` is not enabled, the type hint acts as a type-cast.
