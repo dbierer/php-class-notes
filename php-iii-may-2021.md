@@ -2,7 +2,9 @@
 
 ## TODO
 * Research other options to improve performance of VM on Mac
-* Why does the `runBitCoinFilter.php` example not work?
+* RE: Lab: New Functions (compile a new extension)
+  * Rewrite `Makefile` and post new lab instructions
+* Get doc ref for HAL+JSON
 
 ## VM
 Here are some things to do with the VM after installation
@@ -14,6 +16,15 @@ sudo apt install -y git
 ```
 
 ## Homework
+For Wed 02 Jun 2021
+  * Lab: Docker (all)
+    * Image Build Lab:
+      * After step `4` you need to build the image!
+```
+docker build .
+```
+  * Lab: Docker Compose (esp. the Laminas API Tools lab)
+
 For Mon 31 May 2021
   * Lab: Install the apcu extension using `pecl`
     * To test: use this script: https://github.com/dbierer/php-iii-mar-2021/blob/main/apcu_test.php
@@ -284,6 +295,16 @@ Getting CLI args:
   * `$_SERVER['argv']` or
   * `$argv[]`
 
+## Docker
+More examples:
+  * https://github.com/zendtech/Laminas-Level-1-Attendee/blob/master/docker-compose.yml
+  * https://github.com/zendtech/Laminas-Level-1-Attendee/blob/master/docker/Dockerfile
+
+## Web APIs
+Oauth2 client:
+  * https://packagist.org/packages/league/oauth2-client
+  * You can then pick from around 60 different "providers" (e.g. authentication sources)
+
 ## Q & A
 * Q: What is `opcache.interned_strings_buffer`?
 * A: The amount of memory used to store interned strings in MB
@@ -309,4 +330,15 @@ Stream Wrapper => compress.zlib://
 Stream Filter => zlib.inflate, zlib.deflate
 Compiled Version => 1.2.11
 Linked Version => 1.2.11
+```
+* Transmitting binary data using base64
+```
+<?php
+$dir = '/home/vagrant/Downloads/';
+$src = 'napoleon.jpg';
+$dest = 'test.jpg';
+$str = file_get_contents($dir . $src);
+$encode = base64_encode($str);
+// let's assume this has been transmitted somewhere
+file_put_contents($dir . $dest, base64_decode($encode));
 ```
