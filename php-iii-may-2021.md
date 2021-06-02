@@ -16,14 +16,103 @@ sudo apt install -y git
 ```
 
 ## Homework
+For Fri 04 Jun 2021
+  * Lab: REST (using Laminas API Tools)
+    * You can also run the lab directly from the VM (not the Docker container) as follows:
+```
+cd ~/Zend/workspaces/DefaultWorkspace
+rm -rf apigility
+wget https://getcomposer.org/download/1.10.22/composer.phar
+php composer.phar create-project --ignore-platform-reqs laminas-api-tools/api-tools-skeleton apigility
+sudo chgrp -R www-data apigility
+sudo chmod -R 775 apigility
+```
+  * From the VM browser: `http://apigility/`
+  * Choose `phpcourse` as the database
+  * Use `orders` as the table, and change the fields according to this DB structure:
+```
+CREATE TABLE `orders` (
+  `id` int NOT NULL,
+  `date` varchar(32) NOT NULL,
+  `status` varchar(16) NOT NULL,
+  `amount` int NOT NULL,
+  `description` text NOT NULL,
+  `customer` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+```
+  * When you insert an order, you can use integer 1 to 5 for customer ID (`customer` field)
+  * Ignore the message (if you see it) "Error creating DB connect service"
+  * In the lab, substitute `http://apigility` in place of any references to `http://10.20.20.20/laminas-api-tools`
+
 For Wed 02 Jun 2021
   * Lab: Docker (all)
     * Image Build Lab:
+      * Might have to do the lab outside the VM (insufficient disk space!)
+      * Sample database is here: `https://opensource.unlikelysource.com/phpcourse.sql`
       * After step `4` you need to build the image!
 ```
 docker build .
 ```
+  * Example `Dockerfile` for the lab:
+```
+# Sample Dockerfile
+# Sample Dockerfile
+FROM asclinux/linuxforphp-8.2-ultimate:7.4-nts
+RUN \
+    echo "Installing Laminas API Tools ..." && \
+	cd /srv && \
+	wget https://getcomposer.org/download/1.10.22/composer.phar && \
+	php composer.phar create-project laminas-api-tools/api-tools-skeleton /srv/laminas-api-tools && \
+	mv -f /srv/www /srv/www.OLD && \
+	ln -s /srv/laminas-api-tools/public /srv/www && \
+	chown -R apache /srv/laminas-api-tools && \
+	chmod -R 775 /srv/laminas-api-tools
+RUN \
+    echo "Creating sample database and assigning permissions ..." && \
+    cd /tmp && \
+    /etc/init.d/mysql start && \
+    sleep 3 && \
+    mysql -uroot -v -e "CREATE DATABASE phpcourse;" && \
+    mysql -uroot -v -e "CREATE USER 'vagrant'@'localhost' IDENTIFIED BY 'vagrant';" && \
+    mysql -uroot -v -e "GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'localhost';" && \
+    mysql -uroot -v -e "FLUSH PRIVILEGES;" && \
+    echo "Restoring sample database ..." && \
+    wget https://opensource.unlikelysource.com/phpcourse.sql && \
+    mysql -uroot -e "SOURCE /tmp/phpcourse.sql;" phpcourse
+RUN \
+    echo "Installing phpMyAdmin ..." && \
+    cd /tmp && \
+    wget https://opensource.unlikelysource.com/phpmyadmin_install.sh && \
+    chmod +x *.sh && \
+    /tmp/phpmyadmin_install.sh
+CMD lfphp --mysql --phpfpm --apache
+```
   * Lab: Docker Compose (esp. the Laminas API Tools lab)
+    * Example `docker-compose.yml` file:
+```
+version: "3"
+services:
+  laminas-api-tools:
+    container_name: laminas-api-tools
+    hostname: laminas
+    image: laminas-api-tools
+    volumes:
+     - ".:/home"
+    ports:
+     - "8888:80"
+    build: .
+    restart: always
+    command: lfphp --mysql --phpfpm --apache
+    networks:
+      app_net:
+        ipv4_address: 10.10.10.10
+networks:
+  app_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: "10.10.10.0/24"
+```
 
 For Mon 31 May 2021
   * Lab: Install the apcu extension using `pecl`
