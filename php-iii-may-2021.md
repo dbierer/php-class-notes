@@ -5,6 +5,8 @@
 * RE: Lab: New Functions (compile a new extension)
   * Rewrite `Makefile` and post new lab instructions
 * Get doc ref for HAL+JSON
+* Find out why Laminas API tools is not saving fields
+* Get source code for Stratigility example in the slides and post somewhere
 
 ## VM
 Here are some things to do with the VM after installation
@@ -17,6 +19,29 @@ sudo apt install -y git
 
 ## Homework
 For Fri 04 Jun 2021
+  * Lab: Mezzio / Middleware (All Labs)
+    *  Need Composer 1.10 version:
+```
+cd ~/Zend/workspaces/DefaultWorkspace
+rm -rf expressive
+wget https://getcomposer.org/download/1.10.22/composer.phar
+```
+    * Options for Mezzio creation are slightly different with Composer 1:
+```
+php composer.phar create-project --ignore-platform-reqs mezzio/mezzio-skeleton expressive
+```
+  * Lab: Add Middleware (Stratigility lab)
+    * Source code: `wget https://opensource.unlikelysource.com/stratigility_src.zip`
+      * Remove `~/Zend/workspaces/DefaultWorkspace/stratigility` directory structure
+      * Unzip the source code into a directory on the VM from `~/Zend/workspaces/DefaultWorkspace/`
+      * Change to the newly unzipped `stratigility` directory
+      * Run `php composer.phar install --ignore-platform-reqs`
+      * Reset permissions:
+```
+sudo chgrp -R www-data *
+sudo chmod -R 775 *
+```
+      * Do the lab
   * Lab: REST (using Laminas API Tools)
     * You can also run the lab directly from the VM (not the Docker container) as follows:
 ```
@@ -24,8 +49,11 @@ cd ~/Zend/workspaces/DefaultWorkspace
 rm -rf apigility
 wget https://getcomposer.org/download/1.10.22/composer.phar
 php composer.phar create-project --ignore-platform-reqs laminas-api-tools/api-tools-skeleton apigility
-sudo chgrp -R www-data apigility
-sudo chmod -R 775 apigility
+cd apigility
+mv ../composer.phar .
+php composer.phar --ignore-platform-reqs require laminas/laminas-i18n
+sudo chgrp -R www-data *
+sudo chmod -R 775 *
 ```
   * From the VM browser: `http://apigility/`
   * Choose `phpcourse` as the database
@@ -71,7 +99,7 @@ RUN \
     echo "Creating sample database and assigning permissions ..." && \
     cd /tmp && \
     /etc/init.d/mysql start && \
-    sleep 3 && \
+    sleep 5 && \
     mysql -uroot -v -e "CREATE DATABASE phpcourse;" && \
     mysql -uroot -v -e "CREATE USER 'vagrant'@'localhost' IDENTIFIED BY 'vagrant';" && \
     mysql -uroot -v -e "GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'localhost';" && \
