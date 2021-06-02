@@ -84,7 +84,6 @@ docker build .
   * Example `Dockerfile` for the lab:
 ```
 # Sample Dockerfile
-# Sample Dockerfile
 FROM asclinux/linuxforphp-8.2-ultimate:7.4-nts
 RUN \
     echo "Installing Laminas API Tools ..." && \
@@ -132,10 +131,10 @@ services:
     restart: always
     command: lfphp --mysql --phpfpm --apache
     networks:
-      app_net:
+      ten_net:
         ipv4_address: 10.10.10.10
 networks:
-  app_net:
+  ten_net:
     ipam:
       driver: default
       config:
