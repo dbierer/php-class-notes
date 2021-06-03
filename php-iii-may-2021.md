@@ -2,11 +2,7 @@
 
 ## TODO
 * Research other options to improve performance of VM on Mac
-* RE: Lab: New Functions (compile a new extension)
-  * Rewrite `Makefile` and post new lab instructions
-* Get doc ref for HAL+JSON
 * Find out why Laminas API tools is not saving fields
-* Get source code for Stratigility example in the slides and post somewhere
 
 ## VM
 Here are some things to do with the VM after installation
@@ -147,6 +143,173 @@ For Mon 31 May 2021
     * Need to add `apcu.enable=1` and `apc.shm_size=32M` to `/etc/php/8.0/apache2/php.ini` and run from a browser to have the demo work
     * Restart the web server after modifying the `php.ini` file: `sudo service apache2 restart`
   * Lab: New Functions (compile a new extension)
+    * Install dependencies:
+```
+sudo apt install php8.0-dev
+```
+    * Install PHP-CPP (https://php-cpp.com)
+```
+cd ~/Zend/workspaces/DefaultWorkspace/php3/src/ModAdvancedTechniques/Extensions
+git clone https://github.com/CopernicaMarketingSoftware/PHP-CPP.git
+cd PHP-CPP
+make
+sudo make install
+```
+    * Here is the revised `main.cpp` file:
+```
+#include <phpcpp.h>
+#include <iostream>
+
+// function declaration with parameters
+void telemetryParams (Php::Parameters &params)
+{
+    int distance=params[0];
+    int speed=params[1];
+    std::cout<<"Distance: "<<distance<<std::endl;
+    std::cout<<"Speed: "<<speed<<std::endl;
+}
+
+// function declaration without parameters
+Php::Value telemetryRandom()
+{
+    if (rand() % 2 == 0) {
+        return "no remainder";
+    } else {
+        return "remainder";
+    }
+}
+
+// Tell the compiler that the get_module is a pure C function
+extern "C" {
+    /**
+     *  Function that is called by PHP right after the PHP process
+     *  has started, and that returns an address of an internal PHP
+     *  structure with all the details and features of your extension
+     *
+     *  This creates an extension object that is memory-resident during runtime.
+     */
+    PHPCPP_EXPORT void *get_module() {
+        static Php::Extension extension("telemetry", "0.0.1");
+        extension.add<telemetryParams>("telemetryParams", {
+            Php::ByVal("a", Php::Type::Numeric),
+            Php::ByVal("b", Php::Type::Numeric)
+        });
+        extension.add<telemetryRandom>("telemetryRandom");
+        return extension;
+    }
+}
+```
+    * Here is the revised `Makefile`:
+```
+#	This is the name of your extension. Based on this extension name, the
+#	name of the library file (name.so) and the name of the config file (name.ini)
+#	are automatically generated
+NAME				=	telemetry
+
+#
+#	Php.ini directories
+#
+#	In the past, PHP used a single php.ini configuration file. Today, most
+#	PHP installations use a conf.d directory that holds a set of config files,
+#	one for each extension. Use this variable to specify this directory.
+#
+INI_DIR				=	/etc/php/8.0/cli/conf.d
+
+#
+#	The extension dirs
+#
+#	This is normally a directory like /usr/lib/php5/20121221 (based on the
+#	PHP version that you use. We make use of the command line 'php-config'
+#	instruction to find out what the extension directory is, you can override
+#	this with a different fixed directory
+#
+EXTENSION_DIR		=	$(shell php-config --extension-dir)
+
+
+#
+#	The name of the extension and the name of the .ini file
+#
+#	These two variables are based on the name of the extension. We simply add
+#	a certain extension to them (.so or .ini)
+#
+EXTENSION 			=	${NAME}.so
+INI 				=	${NAME}.ini
+
+
+#
+#	Compiler
+#
+#	By default, the GNU C++ compiler is used. If you want to use a different
+#	compiler, you can change that here. You can change this for both the
+#	compiler (the program that turns the c++ files into object files) and for
+#	the linker (the program that links all object files into the single .so
+#	library file. By default, g++ (the GNU C++ compiler) is used for both.
+#
+COMPILER			=	g++
+LINKER				=	g++
+
+
+#
+#	Compiler and linker flags
+#
+#	This variable holds the flags that are passed to the compiler. By default,
+# 	we include the -O2 flag. This flag tells the compiler to optimize the code,
+#	but it makes debugging more difficult. So if you're debugging your application,
+#	you probably want to remove this -O2 flag. At the same time, you can then
+#	add the -g flag to instruct the compiler to include debug information in
+#	the library (but this will make the final libphpcpp.so file much bigger, so
+#	you want to leave that flag out on production servers).
+#
+#	If your extension depends on other libraries (and it does at least depend on
+#	one: the PHP-CPP library), you should update the LINKER_DEPENDENCIES variable
+#	with a list of all flags that should be passed to the linker.
+#
+COMPILER_FLAGS		=	-Wall -c -O2 -std=c++11 -fpic -o
+LINKER_FLAGS		=	-shared
+LINKER_DEPENDENCIES	=	-lphpcpp
+
+
+#
+#	Command to remove files, copy files and create directories.
+#
+#	I've never encountered a *nix environment in which these commands do not work.
+#	So you can probably leave this as it is
+#
+RM					=	rm -f
+CP					=	cp -f
+MKDIR				=	mkdir -p
+
+
+#
+#	All source files are simply all *.cpp files found in the current directory
+#
+#	A builtin Makefile macro is used to scan the current directory and find
+#	all source files. The object files are all compiled versions of the source
+#	file, with the .cpp extension being replaced by .o.
+#
+SOURCES				=	$(wildcard *.cpp)
+OBJECTS				=	$(SOURCES:%.cpp=%.o)
+
+
+#
+#	From here the build instructions start
+#
+all:					${OBJECTS} ${EXTENSION}
+
+${EXTENSION}:			${OBJECTS}
+						${LINKER} ${LINKER_FLAGS} -o $@ ${OBJECTS} ${LINKER_DEPENDENCIES}
+
+${OBJECTS}:
+						${COMPILER} ${COMPILER_FLAGS} $@ ${@:%.o=%.cpp}
+
+install:
+						${CP} ${EXTENSION} ${EXTENSION_DIR}
+						${CP} ${INI} ${INI_DIR}
+
+clean:
+						${RM} ${EXTENSION} ${OBJECTS}
+
+```
   * Lab: Customized PHP Labs (all of them)
   * Lab: Phing (all of them)
   * Lab: Jenkins Freestyle (all of them)
@@ -171,6 +334,10 @@ Previous class notes:
   * https://github.com/dbierer/php-class-notes/blob/master/php-iii-mar-2021.md
   * https://github.com/dbierer/php-class-notes/blob/master/php-iii-jan-2021.md
   * https://github.com/dbierer/php-iii-mar-2021
+
+Source code for Stratigility demo updated for Laminas:
+  * Source code: `https://opensource.unlikelysource.com/stratigility_src.zip`
+  * Sample data dump: `https://opensource.unlikelysource.com/phpcourse.sql`
 
 ## Class Notes
 Data type hints
@@ -422,6 +589,9 @@ Oauth2 client:
   * You can then pick from around 60 different "providers" (e.g. authentication sources)
 
 ## Q & A
+* Q: Do you have any documentation for HAL+JSON?
+* A: https://docs.mezzio.dev/mezzio-hal/v2/
+
 * Q: What is `opcache.interned_strings_buffer`?
 * A: The amount of memory used to store interned strings in MB
 * A: See: https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.interned-strings-buffer
