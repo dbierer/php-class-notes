@@ -3,6 +3,7 @@
 ## TODO
 * Research other options to improve performance of VM on Mac
 * Find out why Laminas API tools is not saving fields
+* Get the PHP unit slides
 
 ## VM
 Here are some things to do with the VM after installation
@@ -596,6 +597,15 @@ More examples:
 Oauth2 client:
   * https://packagist.org/packages/league/oauth2-client
   * You can then pick from around 60 different "providers" (e.g. authentication sources)
+
+## Software Design
+The original seminal work in this area:
+  * https://en.wikipedia.org/wiki/Design_Patterns
+  * https://www.amazon.com/Patterns-Enterprise-Application-Architecture-Martin/dp/0321127420
+
+## Just-In-Time Compiler
+Good foundational article: https://www.zend.com/blog/exploring-new-php-jit-compiler
+Article that describes JIT in PHP 8: https://wiki.php.net/rfc/jit
 
 ## Q & A
 * Q: Do you have any documentation for HAL+JSON?
