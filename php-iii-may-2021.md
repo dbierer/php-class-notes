@@ -154,6 +154,8 @@ git clone https://github.com/CopernicaMarketingSoftware/PHP-CPP.git
 cd PHP-CPP
 make
 sudo make install
+# NOTE: had a problem compiling PHP-CPP under PHP 8
+# Works OK in the Docker image created in class
 ```
     * Here is the revised `main.cpp` file:
 ```
@@ -293,22 +295,29 @@ OBJECTS				=	$(SOURCES:%.cpp=%.o)
 
 #
 #	From here the build instructions start
+#   VERY IMPORTANT: must be proper TABS (not spaces!) in front of each child ${ARG}
 #
-all:					${OBJECTS} ${EXTENSION}
+all:    ${OBJECTS} ${EXTENSION}
 
-${EXTENSION}:			${OBJECTS}
-						${LINKER} ${LINKER_FLAGS} -o $@ ${OBJECTS} ${LINKER_DEPENDENCIES}
+${EXTENSION}:   ${OBJECTS}
+        ${LINKER} ${LINKER_FLAGS} -o $@ ${OBJECTS} ${LINKER_DEPENDENCIES}
 
 ${OBJECTS}:
-						${COMPILER} ${COMPILER_FLAGS} $@ ${@:%.o=%.cpp}
+        ${COMPILER} ${COMPILER_FLAGS} $@ ${@:%.o=%.cpp}
 
 install:
-						${CP} ${EXTENSION} ${EXTENSION_DIR}
-						${CP} ${INI} ${INI_DIR}
+        ${CP} ${EXTENSION} ${EXTENSION_DIR}
+        ${CP} ${INI} ${INI_DIR}
 
 clean:
-						${RM} ${EXTENSION} ${OBJECTS}
-
+        ${RM} ${EXTENSION} ${OBJECTS}
+```
+    * Make sure you add `extension=/path/to/telemetry.so` in your `php.ini` file!
+    * Here is the test program:
+```
+<?php
+echo telemetryParams(500, 600);
+//for ($i=0; $i<7; $i++) echo(telemetryRandom()."\n");
 ```
   * Lab: Customized PHP Labs (all of them)
   * Lab: Phing (all of them)
