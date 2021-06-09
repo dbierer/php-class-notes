@@ -1,5 +1,13 @@
 # PHP-Exp Jun 2021
 
+## Homework
+For Fri 11 Jun 2021
+  * Lab: Array (all 4)
+  * Lab: First Program
+  * Lab: Additional Crew Members
+  * Lab: Conditionals (all 5)
+  * Lab: Loops (all 4)
+  
 ## VM Setup
 Download the source code.  From a terminal window in the VM:
 ```
@@ -141,3 +149,127 @@ Use PHP 8 `Attributes` in place of `doc blocks` to improve performance
 * https://www.php.net/manual/en/language.attributes.syntax.php
 * Not available in PHP 7 or below!
 
+Use the `empty()` function to evaluate the contents of a variable to determine if it has any value or not
+```
+<?php
+$arr = [
+	[],
+	FALSE,
+	0,
+	0.00,
+	'',
+	NULL,
+	$test['whatever']
+];
+foreach ($arr as $val) {
+	echo (empty($val)) ? 'Empty' : 'Not Empty';
+	echo "\n";
+}
+
+```
+Unpacking (or unwinding) arrays:
+```
+<?php
+$foo = [1, 2, 3];	
+$abc = ['A','B','C'];
+$bar = [...$foo, ...$abc];
+print_r($bar); 
+// [1,2,3,'A','B','C']
+```
+Examples of constants
+```
+<?php
+define('TEST', 'Test');
+
+class Test
+{
+	const TEST = 'Not Test';
+	public static $test  = 'Var Test';
+	public function getTest()
+	{
+		return self::TEST . ':' . TEST;
+	}
+}
+
+$test = new Test();
+echo TEST;
+echo "\n";
+echo Test::TEST;
+echo "\n";
+echo $test::TEST;
+echo "\n";
+echo $test::$test;
+echo "\n";
+echo $test->getTest();
+echo "\n";
+
+// output
+/*
+Test
+Not Test
+Not Test
+Var Test
+Not Test:Test
+*/
+```
+Example of multi-dimensional array with "Y" axis is numeric, "X" axis is string indices
+```
+<?php
+$arr = [
+	['first' => 'Fred', 'last' => 'Flintstone'],
+	['first' => 'Wilma', 'last' => 'Flintstone'],
+	['first' => 'Barney', 'last' => 'Rubble'],
+	['first' => 'Betty', 'last' => 'Rubble'],
+];
+echo $arr[2]['first'] . ' ' . $arr[2]['last'];
+```
+Diffs between PHP 7 and 8
+```
+<?php
+$arr[-5] = 'Fred';
+$arr[-4] = 'Wilma';
+$arr[-3] = 'Barney';
+$arr[]  = 'Betty';
+var_dump($arr);
+// In PHP 8, next highest index value is -2
+// In PHP 7, next highest index value is -0
+```
+Null Coalesce Operator
+```
+<?php
+// take the 1st non-null value
+$status = $_GET['status'] ?? $_POST['status'] ?? $_COOKIE['status'] ?? 99;
+$status = (int) $status;
+echo "Status: $status\n";
+```
+Match expression: alternative to `switch`
+```
+<?php
+$op = 'add';	
+$a  = 11;
+$b  = 22;
+$result = match ($op) {
+    'add' => $a + $b,
+    'sub' => $a - $b,
+	default => NULL
+};
+echo $result;
+```
+Using `list()` or `[]` to unroll a sub-array within a `foreach()` loop
+```
+<?php
+$data = [
+	['Fred','Flintstone'],
+	['Wilma','Flintstone'],
+	['Barney', 'Rubble'],
+	['Betty', 'Rubble'],
+];
+foreach ($data as [$first, $last]) echo "$first $last\n";
+// output:
+/*
+Fred Flintstone
+Wilma Flintstone
+Barney Rubble
+Betty Rubble
+*/
+```
