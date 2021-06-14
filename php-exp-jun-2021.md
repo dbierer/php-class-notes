@@ -1,6 +1,11 @@
 # PHP-Exp Jun 2021
 
+## TODO
+* Rework `uasort_example.php`
+
 ## Homework
+For Wed 16 Jun 2021
+  * Use this for homework: http://collabedit.com/yj28t
 For Fri 11 Jun 2021
   * Lab: Array (all 4)
   * Lab: First Program
@@ -272,4 +277,135 @@ Wilma Flintstone
 Barney Rubble
 Betty Rubble
 */
+```
+Alternate way of assigning intial array values
+```
+$astronaut = [
+	'0130' => ['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
+	'0497' => ['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
+	'1003' => ['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist'],
+	'0254' => ['firstName' => 'Alice', 'lastName' => 'Aaronson', 'specialty' => 'Pilot'],
+	'3392' => ['firstName' => 'Bob', 'lastName' => 'Builder', 'specialty' => 'Mechanic'],
+];
+```
+Three different approaches to array iteration without `foreach()`
+```
+<?php
+$invoice = ['keychain' => 2,  'calculator' =>  10, 'pencil' => 1];
+$keys = array_keys($invoice);
+$tax_rate = 0.06;
+while (!empty($keys)) {
+    $key = array_pop($keys);
+    $invoice[$key] = $invoice[$key] + $invoice[$key] * $tax_rate;
+    echo $key . ': $' . $invoice[$key] . "\n";
+}
+
+// using an iterator (preferred approach)
+$invoice = ['keychain' => 2,  'calculator' =>  10, 'pencil' => 1];
+$iter = new ArrayIterator($invoice);
+$tax_rate = 0.06;
+while ($iter->valid()) {
+	$key = $iter->key();
+	$value = $iter->current() * (1 + $tax_rate);
+	$iter->offsetSet($key, $value);
+	$iter->next();
+}
+var_dump($iter->getArrayCopy());
+
+// alternative approach (slightly old school)
+$invoice  = ['keychain' => 2,  'calculator' =>  10, 'pencil' => 1];
+$count    = count($invoice);
+$tax_rate = 0.06;
+$ctr      = 0;
+while ($ctr++ < $count) {
+	$key = key($invoice);
+	$value = current($invoice) * (1 + $tax_rate);
+	$invoice[$key] = $value;
+	next($invoice);
+}
+var_dump($invoice);
+```
+Example of `named parameters` (PHP 8 only):
+```
+// PHP 8 named parameters allow you to skips args (if defaults exist)
+setcookie (name:'cookie_name', value:'TEST', httponly: TRUE);
+```
+Example of `static` in a procedural sense doing a recursive directory scan
+```
+<?php
+$path = __DIR__;
+
+function parseDir($path)
+{
+	static $list = [];
+	$tmp = glob($path. '/*');
+	foreach ($tmp as $fn) {
+		echo $fn . "\n";
+		if (is_dir($fn)) {
+			parsedir($fn);
+		} else {
+			$list[] = $fn;
+		}
+	}
+	return $list;
+}
+
+var_dump(parseDir($path));
+
+```
+Example where the function should return boolean, but you want messages too
+```
+<?php
+// validating form data
+
+function validate_data(array $data, array &$msg) : bool
+{
+	$err = 0;
+	foreach ($data as $key => $val) {
+		// length check
+		if (strlen($val) > 8) {
+			$msg[] = 'All values must be 8 chars or less';
+			$err++;
+		}
+		// alnum check
+		if (!ctype_alpha($val)) {
+			$msg[] = 'Only letters or numbers accepted';
+			$err++;
+		}
+	}
+	return ($err === 0);
+}
+
+$data = [
+	'This does not #$%^ have alnum',
+	'this2ok',
+];
+$messages = [];
+echo (validate_data($data, $messages)) ? 'VALID' : 'INVALID';
+echo "\n";
+var_dump($messages);
+```
+Frequently used string functions:
+* To get docs: `https://php.net/FUNCTION`
+* substr()
+* trim()
+* strpos()
+* str_replace()
+Sort functions:
+* use `asort()` to retain key/value pairs
+Anonymous function example in a callback tree:
+* https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch11/php7_bc_break_scanner.php
+
+Example reading a tab-delimited file
+```
+// source: geonames.org
+$src = '/home/vagrant/Downloads/countryInfo.txt';
+$fh  = fopen($src, 'r');
+if (!$fh) exit('Unable to locate file');
+$data = [];
+while (!feof($fh)) {
+	$line = fgetcsv($fh, separator: "\t");
+	printf("%2s | %3s | %s\n", $line[0], $line[1], $line[4]);
+}
+
 ```
