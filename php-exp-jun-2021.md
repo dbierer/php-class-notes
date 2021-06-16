@@ -1,9 +1,12 @@
 # PHP-Exp Jun 2021
 
 ## TODO
-* Rework `uasort_example.php`
+* Why is `setcookie()` not working????
 
 ## Homework
+For Thu 17 Jun 2021
+  * http://collabedit.com/x4puv
+  * Lab: Embedded PHP
 For Wed 16 Jun 2021
   * Use this for homework: http://collabedit.com/yj28t
 For Fri 11 Jun 2021
@@ -393,6 +396,27 @@ Frequently used string functions:
 * str_replace()
 Sort functions:
 * use `asort()` to retain key/value pairs
+* `uasort()` example:
+```
+<?php
+$astronaut = [
+['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
+['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
+['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist'],
+['firstName' => 'Alice', 'lastName' => 'Aaronson', 'specialty' => 'Pilot'],
+['firstName' => 'Bob', 'lastName' => 'Builder', 'specialty' => 'Mechanic'],
+];
+$callback = function($a, $b) {
+	// NOTE: don't forget to return!!!
+	return $a['lastName'] <=> $b['lastName'];
+};
+uasort($astronaut, $callback);
+$pattern = "%10s : %10s : %20s\n";
+printf($pattern, 'First', 'Last', 'Specialty');
+printf($pattern, '-----', '----', '---------');
+foreach ($astronaut as $row)
+	vprintf($pattern, $row);
+```
 Anonymous function example in a callback tree:
 * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch11/php7_bc_break_scanner.php
 
@@ -408,4 +432,137 @@ while (!feof($fh)) {
 	printf("%2s | %3s | %s\n", $line[0], $line[1], $line[4]);
 }
 
+```
+Fibonacci Sequence
+```
+<?php
+function returnNth($n) {
+    if ($n === 1 || $n === 2) {
+        return 1;
+    }
+    else { 
+        return returnNth($n - 1) + returnNth($n - 2);
+    }
+}
+
+for ($x = 1; $x < 10; $x++) {
+	echo returnNth($x) . "\n";
+}
+// 0, 1, 2, 3, 5, 8, 13, 21, 34, 55
+```
+PHP Running in Async Mode:
+* Look for info on the Swoole extension
+* Good starting point: https://www.zend.com/blog/swoole
+Getting down to the TCP/UDP layers:
+* https://www.php.net/stream_socket_client
+
+How to do a redirect:
+```
+header('Location: http://www.example.com/');
+exit;
+```
+Main HTML with some PHP:
+```
+<?php
+$token = base64_encode(random_bytes(8));
+$data = ['Fred','Wilma','Barney','Betty'];
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>untitled</title>
+<meta name="generator" content="Geany 1.36" />
+</head>
+<body>
+Token: <?= $token ?>
+<br />
+Names:
+<ul>
+	<?php foreach ($data as $name) : ?>
+	<li><?= $name ?></li>
+	<?php endforeach; ?>
+</ul>
+</body>
+</html>
+```
+Example of using PHP to generate HTML:
+```
+<?php
+$token = base64_encode(random_bytes(8));
+$data = ['Fred','Wilma','Barney','Betty'];
+$out = '<!DOCTYPE html>';
+$out .= '<html lang="en">';
+$out .= '<head>';
+$out .= '<meta charset="utf-8" />';
+$out .= '<title>untitled</title>';
+$out .= '<meta name="generator" content="Geany 1.36" />';
+$out .= '</head>';
+$out .= '<body>';
+$out .= 'Token: ' . $token;
+$out .= '<br />';
+$out .= 'Names:';
+$out .= '<ul>';
+foreach ($data as $name) {
+	$out .= '<li>' . $name . '</li>';
+}
+$out .= '</ul>';
+$out .= '</body>';
+$out .= '</html>';
+echo $out;
+```
+Security functions:
+* `htmlspecialchars()` for "output escaping" (safeguarding suspect data when echoed)
+* `strip_tags()` sanitizes incoming data
+* `filter_var()` general filtering and sanitization
+* `ctype_*()` validation of data types (e.g. alpha, alnum, digits, etc.)
+* `str_replace()` used to replace suspect characters with benign substitutes
+How to get the incoming HTTP method:
+```
+$_SERVER['REQUEST_METHOD']
+```
+Example of multiple autoloaders
+* Assumes this directory structure:
+```
+├── src
+│   └── App
+│       └── Services
+│           ├── Bar.php
+│           ├── Base.php
+│           └── Foo.php
+├── test
+│   └── Something.php
+```
+* Multiple autoloaders:
+```
+<?php
+$loader = function ($class) {
+	$path = __DIR__ 
+		  . '/src/'
+		  . str_replace('\\', '/', $class)
+		  . '.php';
+	if (file_exists($path)) require $path;
+};
+function somethingLoader($class)
+{
+	$temp = explode('\\', $class);
+	$class = array_pop($temp);
+	require __DIR__ . '/test/' . $class . '.php';
+}
+
+spl_autoload_register($loader);
+spl_autoload_register('somethingLoader');
+
+use App\Services\ {Foo,Bar};
+use My\Really\Great\App\Something;
+
+$foo = new Foo();
+echo $foo->getFoo();
+$iterator = $foo->getIterator();
+
+$bar = new Bar();
+echo $bar->getBar();
+
+$some = new Something();
+echo $some->getSomething();
 ```
