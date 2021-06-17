@@ -1,9 +1,12 @@
 # PHP-Exp Jun 2021
 
 ## TODO
-* Why is `setcookie()` not working????
+* Why are you getting an error when overriding method in child class?
 
 ## Homework
+For Fri 18 Jun 2021
+  * http://collabedit.com/d7gky
+  * Lab: Namespace
 For Thu 17 Jun 2021
   * http://collabedit.com/x4puv
   * Lab: Embedded PHP
@@ -566,3 +569,189 @@ echo $bar->getBar();
 $some = new Something();
 echo $some->getSomething();
 ```
+## OOP
+* In PHP 8 you can use `Attributes` in place of doc blocks
+  * Better performance
+  * Core language construct
+  * Can't be accidentally turned by OpCache settings
+* Constructor property promotion example
+```
+<?php
+// works from PHP 5.3 and up
+class UserEntity {
+    public string $firstName = '';
+    public string $lastName  = '';
+    public function __construct(string $firstName, string $lastName) {
+        $this->firstName = $firstName ;
+        $this->lastName = $lastName ;
+    }
+}
+// PHP 8 only
+class CavemanEntity {
+    public function __construct(
+		public string $firstName = '',
+		public string $lastName  = '')
+	{}
+}
+ 
+$user[] = new UserEntity('Jack' , 'Ryan');
+$user[] = new UserEntity('Monte' , 'Python');
+$user[] = new CavemanEntity('Fred' , 'Flintstone');
+$user[] = new CavemanEntity('Barney' , 'Rubble');
+
+$user[0]->__construct('Test', 'One');	// reinitializes the object
+
+var_dump($user);
+```
+Use `get_object_vars()` inside the class to get all props
+* Same applies to `json_encode()`
+```
+<?php
+// works from PHP 5.3 and up
+class UserEntity {
+	private $status = 0;
+    public string $firstName = '';
+    public string $lastName  = '';
+    public function __construct(string $firstName, string $lastName) {
+		$this->status = rand(1000, 9999);
+        $this->firstName = $firstName ;
+        $this->lastName = $lastName ;
+    }
+    public function getArrayCopy()
+    {
+		return get_object_vars($this);
+	}
+	public function getJson()
+	{
+		return json_encode($this->getArrayCopy(), JSON_PRETTY_PRINT);
+	}
+}
+// PHP 8 only
+class CavemanEntity {
+    public function __construct(
+		public string $firstName = '',
+		public string $lastName  = '')
+	{}
+}
+ 
+$user[] = new UserEntity('Jack' , 'Ryan');
+$user[] = new UserEntity('Monte' , 'Python');
+$user[] = new CavemanEntity('Fred' , 'Flintstone');
+$user[] = new CavemanEntity('Barney' , 'Rubble');
+
+
+
+var_dump($user[0]->getArrayCopy());
+var_dump(get_object_vars($user[0]));
+
+echo $user[0]->getJson();
+echo "\n";
+echo json_encode($user[0], JSON_PRETTY_PRINT);
+echo "\n";
+```
+Example using anonymous class to implement a `FilterIterator`
+```
+<?php
+$iter = new ArrayIterator([1,2,3,4,5,6,7,8]);
+$filter = new class($iter) extends FilterIterator {
+	public function accept()
+	{
+		return ($this->current() % 2 === 0);
+	}
+};
+
+foreach ($filter as $value) echo $value . ' ';
+```
+Example of handling non-existent property access
+```
+<?php
+class UserEntity {
+    public function __construct(
+        public string $firstName,
+        public string $lastName
+    ) {}
+ 
+    // Returns an inaccessible property
+    public function __get($value) {
+		error_log(__CLASS__ . ': Attempt made to access non-existent property ' . $value);
+        return NULL;
+    }
+}
+ 
+$userEntity = new UserEntity('Mark', 'Watney');
+echo $userEntity->middleInitial; // outputs: "Mark"
+```
+Example of `serialize()` and `unserialize()` using `__sleep()` and `__wakeup()`
+```
+<?php
+class UserEntity {
+    public function __construct(
+        protected string $firstName,
+        protected string $lastName,
+        protected string $password) {
+    }
+    // whitelist of allowed properties
+    public function __sleep()
+    {
+		return ['firstName', 'lastName'];
+	}
+	// objectb initialization post unserialization
+	public function __wakeup()
+	{
+		$this->password = base64_encode(random_bytes(8));
+	}
+	// produces JSON encoding for this object
+	public function getJson()
+	{
+		$vars = get_object_vars($this);
+		// remove the password from the JSON string
+		unset($vars['password']);
+		return json_encode($vars);
+	}
+}
+ 
+$userEntity = new UserEntity('Mark', 'Watney', 'password');
+$string = serialize($userEntity);
+echo $string;
+$obj = unserialize($string);
+// original object is restored (minus the password)
+var_dump($obj);
+
+$json = $userEntity->getJson();
+echo $json;
+$obj = json_decode($json);
+// original object is not restored
+var_dump($obj);
+```
+Using `__call()` to implement a plugin architecture
+```
+<?php
+class Test
+{
+	public function __construct(public Plugin $plugin) {}
+	public function __call($method, $params)
+	{
+		if (method_exists($this->plugin, $method)) {
+			return $this->plugin->$method($params[0]);
+		} else {
+			throw new Exception('Method does not exist');
+		}
+	}
+}
+class Plugin
+{
+	public function add($args) { return $args[0] + $args[1]; }
+	public function sub($args) { return $args[0] - $args[1]; }
+	public function mul($args) { return $args[0] * $args[1]; }
+	public function div($args) { return $args[0] / $args[1]; }
+	public function whatever($args) { return 'whatever'; }
+}
+$test = new Test(new Plugin());
+echo "2 + 2 = " . $test->add([2,2]);
+```
+What is considered `callable`?
+* Any built-in or user defined procedural PHP function
+* An anonymous function
+* Any class that implements `__invoke()`
+* Any class method defined as `static`
+* Special array syntax: `[$obj, 'method']`
