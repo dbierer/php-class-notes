@@ -2,6 +2,10 @@
 
 ## TODO
 * Why are you getting an error when overriding method in child class?
+* Both visibility and data types can be "widened" in the child class, but *not* the other way around!
+  * See example below
+* Many-to-Many::How a single table row maps to a single row in another table.
+  * Need to correct this!
 
 ## Homework
 For Fri 18 Jun 2021
@@ -755,3 +759,160 @@ What is considered `callable`?
 * Any class that implements `__invoke()`
 * Any class method defined as `static`
 * Special array syntax: `[$obj, 'method']`
+
+Q: Why do I keep getting error messages in the `BadChild` class?
+A: Visiblity and data types can be "widened" in classes, but not the other way around.
+```
+<?php
+class Base
+{
+	protected $status = '';
+	// NOTE: data type hint is "narrow"
+	//       visibility is "narrow"
+	protected function setStatus(iterable $status)
+	{
+		$this->status = $status;
+	}
+}
+// this works
+class GoodChild extends Base
+{
+	// NOTE: data type is "wider"
+	//       visibility is "less restrictive == wider"
+	public function setStatus(mixed $status)
+	{
+		$this->status = $status;
+	}
+}
+// this does not work: violates the Liskov Substitution Principle
+// doesn't meet the criteria of a subclass
+class BadChild extends Base
+{
+	// NOTE: data type is "narrower"
+	//       visibility is "more restrictive == narrower"
+	private function setStatus(array $status)
+	{
+		$this->status = $status;
+	}
+}
+```
+Example of a Singleton, implementing the "Registry" design pattern
+```
+<?php
+class Registry
+{
+	protected static $instance = NULL;
+	public $storage = [];
+	private function __construct()
+	{
+		session_start();
+		$this->storage = $_SESSION[__CLASS__] ?? [];
+	}
+	public static function getInstance()
+	{
+		if (empty(self::$instance)) {
+			self::$instance = new self();
+		}
+		return self::$instance;
+	}
+	public function set($key, $value)
+	{
+		$this->storage[$key] = $value;
+	}
+	public function get($key)
+	{
+		return $this->storage[$key] ?? NULL;
+	}
+	public function __destruct()
+	{
+		$_SESSION[__CLASS__] = $this->storage;
+	}
+}
+
+$registry = Registry::getInstance();
+
+// do whatever
+$registry->set('start', microtime(TRUE));
+
+for ($x = 0; $x < 1_000; $x++) {
+	// do nothing
+	for ($y = 0; $y < 1000; $y++) {  /* do nothing */ }
+}
+
+$end = microtime(TRUE);
+$start = $registry->get('start');
+echo "Elapsed Time: " . ($end - $start);
+echo "\n";
+```
+Late static binding illustration:
+* see: https://www.php.net/manual/en/language.oop5.late-static-bindings.php
+```
+<?php
+class A {
+    public static function who() {
+        echo __CLASS__;
+    }
+    public static function test() {
+        self::who();
+        static::who();
+    }
+}
+
+class B extends A {
+    public static function who() {
+        echo __CLASS__;
+    }
+}
+
+class C extends B {
+    public static function who() {
+        echo __CLASS__;
+    }
+}
+
+A::test();
+B::test();
+C::test();
+
+// output: "AAABAC"
+```
+ 
+## Database
+Standard PDO query:
+```
+<?php
+$dsn = 'mysql:host=localhost;dbname=phpcourse';
+$usr = 'vagrant';
+$pwd = 'vagrant';
+$opt = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
+try {
+    // Get the connection instance    
+    $pdo = new PDO($dsn, $usr, $pwd, $opt);
+    // Statements ...
+    $sql = 'SELECT * FROM customers ORDER BY lastname';
+    $stmt = $pdo->query($sql);
+    $stmt->setFetchMode(PDO::FETCH_CLASS, 'ArrayObject');
+    while ($row = $stmt->fetch())
+		printf("%3d : %12s %12s\n", $row->id, $row->firstname, $row->lastname);
+} catch (PDOException $e ){
+    // Handle exception...
+}
+```
+
+## Internet Comm
+Modified `ETag` example
+```
+<?php
+// Add some comment whatever ...
+$etag = filemtime(__FILE__);
+if (isset($_SERVER['HTTP_IF_NONE_MATCH'])	
+    && $_SERVER['HTTP_IF_NONE_MATCH'] == $etag) {	
+    // We don't need to do anything except send a 'Not modified' header and exit
+    header('Not Modified', true, 304);	
+    exit();
+}
+// send out new ETag
+header('ETag: ' . $etag);
+// generate content
+phpinfo(INFO_VARIABLES);
+```
