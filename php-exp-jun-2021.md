@@ -916,3 +916,54 @@ header('ETag: ' . $etag);
 // generate content
 phpinfo(INFO_VARIABLES);
 ```
+JSON does not record class information: only returns `stdClass`
+```
+<?php
+$json = <<<EOT
+{
+    "firstName": "John",
+    "lastName": "Smith",
+    "isAlive": true,
+    "age": 25,
+    "address": {
+        "streetAddress": "21 2nd Street",
+        "city": "New York",
+        "state": "NY",
+        "postalCode": "10021-3100"
+    }
+}
+EOT;
+class Person
+{
+    public $firstName = 'John';
+    public $lastName = 'Smith';
+    public $isAlive  = true;
+    public $age      = 25;
+    public $address  = NULL;
+}
+class Address
+{
+	public $streetAddress = ';21 2nd Street';
+	public $city   = 'New York';
+	public $state  = 'NY';
+	public $postalCode = '10021-3100';
+}
+$person = new Person();
+$person->address = new Address();
+$json = json_encode($person, JSON_PRETTY_PRINT);
+echo $json . "\n";
+
+$obj = json_decode($json);
+var_dump($obj);
+
+$serial = serialize($person);
+echo $serial . "\n";
+$obj = unserialize($serial);
+var_dump($obj);
+```
+Working example of a SOAP client:
+  * https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php#L37
+  
+WordPress installation via Composer
+* https://wpackagist.org/
+* Install `Bedrock` first: that's the WordPress core
