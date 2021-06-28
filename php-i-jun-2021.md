@@ -3,124 +3,69 @@
 ## Homework Assignments
   * For Fri 25 Jun 2021: http://collabedit.com/mgfgu
   * For Mon 28 Jun 2021: use gists
+* Jnangoli:
 ```
-// Jnangoli
-Lab: Conditional If
-Will the following code work?
+#1: Lab: Defining and Calling a Function
+Define a function named getOrderTotal(...), which takes two arguments and returns the sum.
+Call the function and output the result.
 
-$foo = 10;
-$bar = 5;
-if ( $foo > $bar )
-    echo "Foo is greater than bar";
-    $foo = $bar;
-    echo "The value for Foo has changed";
-Which statement runs as part of the conditional?
+#2: Lab: F-Type Code Exercise
+Complete the following:
+
+Create code that opens a file as a resource with error handling.
+Write something to the file resource.
+Collect the bytes written, and echo the count.
+Close the file.
+
+#3: Lab: file_put_contents()
+Complete the following:
+
+Write code that uses file_put_contents() to create some string content.
+Over write the contents of a file.
+Test and echo for success.
 ```
-Katharina:
+
+* Katharina:
 ```
-Lab: Conditional If-Else Equality
-What is the output from each if-else construct?
+#1: Lab: Defining and Calling a Function
+Define a function named getOrderTotal(...), which takes two arguments and returns the sum.
+Call the function and output the result.
 
-$valueA = "50";
-$valueB = 50;
+#2: Lab: Write Array Lab
+Complete the following:
 
-if ($valueA == $valueB) {
-    echo "Equal <br>";
-} else {
-    echo "Not equal <br>";
+Create an array of text strings.
+Write the array content to a file.
+Using fopen(), create a resource.
+Read each line from the resource, and output the third character.
+```
+
+* Lazarus:
+```
+#1 :OrderApp Introduction
+Lab: Two Functions
+Build two functions, one to get an array element of configuration, and one that takes an array and builds an HTML select/option list.
+
+getConfig('some config'), returns an array of allowed statuses.
+htmlSelectHtml($config), returns a string contains an HTML <select> element with the status options.
+// Starting Code
+function getConfig(array $configFile, string $config_key) {
+    $config = include __DIR__ . '/config/' . $configFile;
+    return ... // fill in the rest of this statement
 }
 
-if ($valueA === $valueB) {
-    echo "Identical <br>";
-} else {
-    echo "Not identical <br>";
-}
-```
-Jnangoli:
-```
-Lab: Conditional If-Else Exclusive OR
-What is the output from each if/else construct?
-
-$valueA = 10;
-$valueB = 20;
-
-if ($valueA >= 50 xor $valueB === '20') {
-    echo "Apples <br>";
-} else {
-    echo "Oranges <br>";
+function htmlSelectHtml( $config ) {
+    $html = '<select>';
+    // loop through key / value pairs to create <option> tags            ...
+    $html .= '</select>';
+    return $html;
 }
 
-if ($valueA >= '5' xor $valueB === 20) {
-    echo "White <br>";
-} else {
-    echo "Black <br>";
-}
-```
-Katharina:
-```
-Lab: Conditional If-ElseIf
-Assume that people work in an office from Monday through Friday, and are off work on Saturday and Sunday.
+#2: Lab: file_get_contents()
+Complete the following:
 
-Modify the code below to handle the response if the day is either Saturday or Sunday?
-
-$dayOfWeek = "Monday";
-
-if ($dayOfWeek === "Friday") {
-    echo "See you on Monday";
-} else {
-    echo "See you tomorrow";
-}
-```
-Jnangoli:
-```
-Lab: Switch Construct
-An application needs to determine the country of origin for an astronaut applicant. Write a switch construct that evaluates multiple country use cases against a true boolean, and sets a variable based on the condition evaluated.
-```
-Katharina:
-```
-Lab: Foreach Loop
-A launch sequence application needs to iterate a launch checklist.
-
-Build a launch checklist with the six items.
-Iterate the launch checklist using a foreach loop, using keys and values.
-Conditionally test for a particular list item and build an output string.
-Echo the output.
-```
-Jnangoli:
-```
-Lab: For Loop
-This code is a prime number generator. Run and understand its execution.
-
-$max = 100;
-for ($x = 5; $x < $max; $x++)
-{
-    // This if evaluation checks to see if number is odd or even
-    $test = TRUE;
-    for($i = 3; $i < $x; $i++) {
-        if(($x % $i) === 0) {
-            $test = FALSE;
-            break;
-        }
-    }
-    if ($test) echo $x . ', ';
-}
-```
-Katharina:
-```
-Lab: While Loop
-An application has an invoicing system and must calculate a total for items in a list.
-
-Construct an associative array of invoice items.
-Instead of a foreach loop, which is used with arrays, construct a while loop and use it to iterate the associative array of list items, and add a tax value to each.
-Output each updated values.
-```
-Jnangoli:
-```
-Lab: Do...While Loop
-A new feature request has risen to top priority that requires showing a list of past purchases.
-
-Create an associative array with past purchase dates and amounts.
-Iterate the list using a do...while loop displaying the past purchases.
+Write code that uses file_get_contents(), and gets the contents of a file.
+Output the result.
 ```
 
 ## Class Notes
@@ -502,4 +447,170 @@ dump(new ArrayObject());
 // another example of ridiculous:
 // dump(true|false|bool $yesNo) {}
 
+```
+Array navigation functions example with `while()` loop
+```
+<?php
+$invoiceItems = [
+  ['invoiceNumber' => 123, 'invoiceAmount' => 100],
+  ['invoiceNumber' => 124, 'invoiceAmount' => 50],
+  ['invoiceNumber' => 125, 'invoiceAmount' => 150],
+  ['invoiceNumber' => 126, 'invoiceAmount' => 55],
+];
+
+$tax = 0.10;
+
+while ($items = current($invoiceItems)) {
+    $amountWithTax =  $items['invoiceAmount'] + ($items['invoiceAmount'] * $tax);
+    echo 'invoice #' . $items['invoiceNumber'] . ' with invoice amount ' . $items['invoiceAmount'] . ' has the final amount of ' .  $amountWithTax . ' after adding the tax';
+    echo "\n";
+    next($invoiceItems);
+}
+```
+You can also assign a reference to a single array element
+```
+<?php
+$mission = [
+    'STS395' => [
+        ['firstName' => 'Fred', 'lastName' => 'Flintstone', 'specialty' => 'Caveman'],
+        ['firstName' => 'Barney', 'lastName' => 'Rubble', 'specialty' => 'Caveman Assistant'],
+    ],
+    'STS396' => [
+        ['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
+        ['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
+        ['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist'],
+    ],
+];
+
+$name = &$mission['STS395'][1]['firstName'];
+$name = 'Betty';
+
+var_dump($mission);
+```
+Example using pass-by-reference for validation
+```
+<?php
+function validate(array $data, string &$err_msg) : bool
+{
+	$error = 0;
+	// checks for only alpha characters
+	if (!ctype_alpha($data['name'])) {
+		$err_msg .= "Only letters are allowed in the name\n";
+		$error++;
+	}
+	if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+		$err_msg .= "Invalid email address\n";
+		$error++;
+	}
+	return ($error === 0);
+}
+
+$data = [
+	'name' => 12345,
+	'email' => 'bad.email.address'
+];
+$message = '';
+if (validate($data, $message)) {
+	echo "All OK\n";
+} else {
+	echo $message;
+}
+```
+Calling program for the Forms demo in VM:
+```
+<?php
+// place this calling program into:
+// /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public/form.php
+// call from a browser: http://sandbox/form.php
+$config = include __DIR__ . '/../../orderapp/config/config.php';
+include __DIR__ . '/../../orderapp/src/Forms.php';
+echo getForm($config, 'new_order', NULL);
+```
+Example of `vprintf` + `printf()`
+```
+<?php
+$a = 5398;
+printf('%016b', $a);
+echo "\n";
+
+$data =	[
+	['Fred', 999.99, 'Caveman'],
+	['Wilma', 888.88, 'Cavewoman'],
+];
+
+foreach ($data as $row)
+	vprintf('Name: %12s : Amount %8.2f : Title: %12s' . "\n", $row);
+```
+Example of using `substr()` to extract a filename extension
+```
+<?php
+$fn = 'whatever.php';
+$allowed = ['jpg', 'png', 'gif'];
+$ext = substr(trim($fn), -3);
+echo (in_array($ext, $allowed)) ? 'Allowed' : 'Denied';
+echo "\n";
+// comes back as "Denied" because the extension is not on the allowed list
+```
+Sanitizing a filename
+```
+<?php
+$alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+echo $alpha[0] . $alpha[2] . $alpha[4];
+
+$path = '/home/vagrant//Zend/workspaces/DefaultWorkspace/sandbox/public';
+$fn   = 'test.php';
+// alternative syntax:
+// if ($path[-1] === '/') {
+if ($path[strlen($path) - 1] === '/') {
+	$final = $path . $fn;
+} else {
+	$final = $path . '/' . $fn;
+}
+echo str_replace('//', '/', $final) . "\n";
+```
+Example of a callback tree that produces output in different formats
+* Uses anonymous functions
+```
+<?php
+$arr = ['A' => 111,'B' => 222,'C' => 333];
+
+$callbacks = [
+	// arrow function works well here
+	'json' => fn(array $data) => json_encode($data, JSON_PRETTY_PRINT),
+	// needs multiple lines of code, so we use an anonymous function
+	'html' => function (array $data) {
+		$out = '<table>';
+		foreach ($data as $key => $value)
+			$out .= '<tr><th>' . $key . '</th><td>' . $value . '</td></tr>';
+		$out .= '</table>';
+		return $out; }
+];
+
+echo $callbacks['json']($arr);
+echo "\n";
+echo $callbacks['html']($arr);
+echo "\n";
+```
+
+## I/O
+Example using `fopen()` and `fgetcsv()` to read a data file
+```
+<?php
+// data source: https://download.geonames.org/export/dump/countryInfo.txt
+$fn = '/home/vagrant/Downloads/countryInfo.txt';
+$fh = fopen($fn, 'r');
+$data = [];
+while (!feof($fh)) {
+	$temp = fgetcsv($fh, separator:"\t");
+	if (empty($temp) || $temp[0][0] === '#') continue;
+	$data[] = $temp;
+}
+var_dump($data);
+```
+Example accessing a remote website
+```
+<?php
+$contents = file_get_contents('https://google.com');
+$contents = str_ireplace('Google', 'Boogle', $contents);
+echo $contents;
 ```
