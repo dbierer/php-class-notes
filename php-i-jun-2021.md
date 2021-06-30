@@ -1,71 +1,62 @@
 # PHP-I Jun 2021
 
+## TODO
+* Look up Internet access stats
+
 ## Homework Assignments
   * For Fri 25 Jun 2021: http://collabedit.com/mgfgu
   * For Mon 28 Jun 2021: use gists
+  * For Fri 02 Jul 2021: use gists
 * Jnangoli:
 ```
-#1: Lab: Defining and Calling a Function
-Define a function named getOrderTotal(...), which takes two arguments and returns the sum.
-Call the function and output the result.
+#1: Lab: Read Directories
+Read the directories and files in the class project root and output the following:
 
-#2: Lab: F-Type Code Exercise
+File Name
+File Size
+Number of lines in the file
+
+#2: Lab: Secure Input Handling
 Complete the following:
 
-Create code that opens a file as a resource with error handling.
-Write something to the file resource.
-Collect the bytes written, and echo the count.
-Close the file.
+Create a script that takes input from a login form (username, password, and email address).
+Filter and validate all inputs.
+Display a message for both invalid and valid input.
 
-#3: Lab: file_put_contents()
-Complete the following:
-
-Write code that uses file_put_contents() to create some string content.
-Over write the contents of a file.
-Test and echo for success.
 ```
 
 * Katharina:
 ```
-#1: Lab: Defining and Calling a Function
-Define a function named getOrderTotal(...), which takes two arguments and returns the sum.
-Call the function and output the result.
+#1: Lab: Embedded PHP
+Build an standard HTML form with embedded PHP. Account for:
 
-#2: Lab: Write Array Lab
-Complete the following:
+Form tag attributes.
+Input tags for both username and password.
+Dynamic attributes for each input tags.
+A submit button.
+Some starting code:
 
-Create an array of text strings.
-Write the array content to a file.
-Using fopen(), create a resource.
-Read each line from the resource, and output the third character.
+//variable assignments as necessary
+<form
+// Additional tag attributes and inputs with embeded PHP
+</form>
+
+#2: Lab: Escaping Exercise
+Update the email sanitizing script you wrote in a previous exercise, escaping the output.
+
 ```
 
 * Lazarus:
 ```
-#1 :OrderApp Introduction
-Lab: Two Functions
-Build two functions, one to get an array element of configuration, and one that takes an array and builds an HTML select/option list.
+Lab: PHP Form String
+Only using PHP, build a simple login form and output the HTML to the browser:
 
-getConfig('some config'), returns an array of allowed statuses.
-htmlSelectHtml($config), returns a string contains an HTML <select> element with the status options.
 // Starting Code
-function getConfig(array $configFile, string $config_key) {
-    $config = include __DIR__ . '/config/' . $configFile;
-    return ... // fill in the rest of this statement
-}
+$html = '<form';
 
-function htmlSelectHtml( $config ) {
-    $html = '<select>';
-    // loop through key / value pairs to create <option> tags            ...
-    $html .= '</select>';
-    return $html;
-}
+// code …
 
-#2: Lab: file_get_contents()
-Complete the following:
-
-Write code that uses file_get_contents(), and gets the contents of a file.
-Output the result.
+$html .= '</form>’;
 ```
 
 ## Class Notes
@@ -613,4 +604,155 @@ Example accessing a remote website
 $contents = file_get_contents('https://google.com');
 $contents = str_ireplace('Google', 'Boogle', $contents);
 echo $contents;
+```
+Example using `file_get_contents()` to post form data
+* https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch12/php8_chat_front_end.php
+```
+<?php
+$target   = 'http://' . $host . '/ch12/php8_chat_ajax.php';
+$response = 'Default';
+if ($_POST) {
+    $user = $_POST['from'] ?? '';
+    $_SESSION['user'] = $user;
+    $headers = [
+        'Accept: text/html',
+        'Content-type: application/x-www-form-urlencoded',
+    ];
+    $opts = [
+        'http' => [
+            'method'  => 'POST',
+            'header'  => implode("\r\n", $headers),
+            'content' => http_build_query($_POST)
+        ]
+    ];
+    $context = stream_context_create($opts);
+    $response = file_get_contents($target, FALSE, $context);
+    $data = json_decode($response, TRUE);
+}
+```
+Example from labs
+```
+<?php
+$name = 'data.txt';
+$textArray = ['Some ', 'text', 'abc', 'jiofsjij'];
+$file = fopen($name, 'w+');
+foreach($textArray as $text) {
+  fwrite($file, $text . "\n");
+}
+rewind($file);
+// another approach
+echo substr(fread($file, 4096), 2, 2);
+fclose($file);
+$contents = file($name);
+var_dump($contents);
+```
+Getting a list of files in a directory
+```
+<?php
+// single directory
+$path = __DIR__;
+$list = glob($path . '/*');
+foreach ($list as $fn) echo $fn . "\n";
+
+// or grab an entire directory tree
+// see: https://php.net/SPL
+$iter = new RecursiveDirectoryIterator($path);
+$all  = new RecursiveIteratorIterator($iter);
+// $obj === SplFileInfo instance
+foreach ($all as $fn => $obj) echo $fn . "\n";
+```
+PHP Packages
+* Composer:
+  * https://getcomposer.org/
+* Package Websites:
+  * https://packagist.org/
+  * https://wpackagist.org/
+
+## Web Concepts
+* Use `parse_url()` to breakdown a URL into its parts
+```
+<?php
+$url = 'https://mars-express.com/path/to/whatever?id=124&mission=STS395';
+$parsed = parse_url($url);
+var_dump($parsed);
+// output
+/*
+ * array(4) {
+  ["scheme"]=>
+  string(5) "https"
+  ["host"]=>
+  string(16) "mars-express.com"
+  ["path"]=>
+  string(17) "/path/to/whatever"
+  ["query"]=>
+  string(21) "id=124&mission=STS395"
+}
+*/
+```
+* Also use `urlencode()` for any data added to the base URL
+```
+<?php
+$url = 'https://mars-express.com/path/to/whatever?';
+echo $url . urlencode('status=Is this going to work?');
+```
+To see what's coming into your PHP program from HTTP:
+```
+<?php
+phpinfo(INFO_VARIABLES);
+```
+Various form styles
+* Mainly HTML with PHP mixed in
+* Includes example of validating the `name` field
+```
+<?php
+$days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+$allowed = ['Mon','Tue','Wed','Thu','Fri'];
+$error = 0;
+$name = '';
+$email = '';
+$message = '';
+$daySelect = '';
+$dayCheck  = [];
+if (!empty($_POST)) {
+	// validate name
+	$name = $_POST['name'] ?? '';
+	if ($name) {
+		if (strlen($name) > 16) {
+			$message .= "Name must be 16 chars or less\n";
+			$error++;
+		}
+		if (!ctype_alpha($name)) {
+			$message .= "Name must have only letters\n";
+			$error++;
+		}
+		// example of filtering
+		$name = strip_tags($name);
+	}
+	// validate day_select
+	$daySelect = $_POST['day_select'] ?? '';
+	if (!in_array($daySelect, $allowed)) {
+		$message .= "Day was not included in the set of allowed days\n";
+		$error++;
+	}
+}
+$message .= ($error === 0) ? "Form data is valid\n" : "Form data has errors\n";
+?>
+<form method="post">
+Name: <input type="text" name="name" value="<?= htmlspecialchars($name) ?>" />
+<br />Email: <input type="email" name="email" />
+<br />Date: <input type="date" name="date" />
+<br /><select name="day_select">
+<?php foreach ($days as $day) echo '<option>' . $day . '</option>'; ?>
+</select>
+<br />
+<?php
+foreach ($days as $day) {
+	echo '<input type="checkbox" name="day_check[]" value="' . $day . '" />' . $day . '&nbsp;';
+}
+?>
+</select>
+<br /><input type="submit" />
+</form>
+<?= nl2br($message); ?>
+<?php phpinfo(INFO_VARIABLES); ?>
 ```
