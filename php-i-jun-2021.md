@@ -3,67 +3,24 @@
 ## TODO
 * Look up Internet access stats
 
-## Homework Assignments
-  * For Fri 25 Jun 2021: http://collabedit.com/mgfgu
-  * For Mon 28 Jun 2021: use gists
-  * For Fri 02 Jul 2021: use gists
-* Jnangoli:
-```
-#1: Lab: Read Directories
-Read the directories and files in the class project root and output the following:
-
-File Name
-File Size
-Number of lines in the file
-
-#2: Lab: Secure Input Handling
-Complete the following:
-
-Create a script that takes input from a login form (username, password, and email address).
-Filter and validate all inputs.
-Display a message for both invalid and valid input.
-
-```
-
-* Katharina:
-```
-#1: Lab: Embedded PHP
-Build an standard HTML form with embedded PHP. Account for:
-
-Form tag attributes.
-Input tags for both username and password.
-Dynamic attributes for each input tags.
-A submit button.
-Some starting code:
-
-//variable assignments as necessary
-<form
-// Additional tag attributes and inputs with embeded PHP
-</form>
-
-#2: Lab: Escaping Exercise
-Update the email sanitizing script you wrote in a previous exercise, escaping the output.
-
-```
-
-* Lazarus:
-```
-Lab: PHP Form String
-Only using PHP, build a simple login form and output the HTML to the browser:
-
-// Starting Code
-$html = '<form';
-
-// code …
-
-$html .= '</form>’;
-```
-
 ## Class Notes
+Statistics
+* Database engine rankings:
+  * https://db-engines.com/en/ranking
+* Programming language rankings:
+  * https://w3techs.com/technologies/overview/programming_language
+* Web server ranking:
+  * https://news.netcraft.com/archives/2021/06/29/june-2021-web-server-survey.html
+* OS market share:
+  * https://gs.statcounter.com/os-market-share
+General examples of many concepts covered in class
+* https://github.com/dbierer/classic_php_examples
 Great explanation on how PHP works
 * https://www.zend.com/blog/exploring-new-php-jit-compiler
 An alternative way to run PHP is in "async" mode
 * https://www.zend.com/blog/swoole
+Lots of PHP 8 specific examples
+* https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices
 Default location for test programs:
 ```
 /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public
@@ -756,3 +713,49 @@ foreach ($days as $day) {
 <?= nl2br($message); ?>
 <?php phpinfo(INFO_VARIABLES); ?>
 ```
+Example from file labs
+```
+<?php
+// single directory
+$path = __DIR__;
+$list = glob($path . '/*');
+echo '<table>';
+echo '<tr><th>Name</th><th>Size in Bytes</th><th>Lines</th></tr>';
+foreach ($list as $fn) {
+	echo '<tr>';
+	echo "<td>" . basename($fn) . "</td>";
+	echo '<td>' . filesize($fn) . '</td>';
+	$lines = count(file($fn)) - 1;
+	echo "<td>$lines</td>";
+	echo '</tr>';
+}
+echo "</table>\n";
+```
+Example of cookie usage:
+* https://github.com/dbierer/classic_php_examples/blob/master/web/cookie_counter.php
+Example of session usage:
+* https://github.com/dbierer/classic_php_examples/blob/master/web/session_counter.php
+
+## Database Operations
+Basic query example
+```
+<?php
+$conn = mysqli_connect('localhost', 'vagrant', 'vagrant', 'phpcourse');
+$result = mysqli_query($conn, 'SELECT * FROM customers');
+$num_rows = mysqli_row_count($result);	// especially useful for INSERT, UPDATE and DELETE
+// gives results 1 row at a time
+// use this if you anticipate a large result set
+while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+	var_dump($row);
+}
+
+
+// gives you all rows at once
+// use this is expected return is no more than 1000 to 2000 rows
+// $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+```
+
+## Miscellaneous
+Highly recommended JavaScript library
+* https://jquery.com/
