@@ -1,6 +1,11 @@
 # PHP-Exp Aug 2021
 
+## TODO
+* Q: Example of nested ternary that could be a problem?
+* Q: Enable JIT to test Prime Number generation example
+
 ## Homework
+* For Fri 13 Aug 2021: http://collabedit.com/vsh4c
 
 ## Class Notes
 * Data types, max int size, etc.
@@ -123,6 +128,155 @@ echo PHP_EOL;
 echo $test->getAbc();
 echo PHP_EOL;
 ```
+* Unicode Escape Syntax Example
+  * Must be in double quotes
+  * Inside the curly braces, you can put any unicode character
+  * Browser must support the character
+  * See: https://unicode-table.com/en/
+```
+<?php
+echo "\u{1F60E}\u{1F44D}";
+```
+* Rewritten multi-dimensional array initialization
+```
+<?php
+// Build the crew.
+$mission = [
+	'STS395' => [
+		'botanist' => ['firstName' => 'Mark', 'lastName' => 'Watney'],
+		'commander' => ['firstName' => 'Melissa', 'lastName' => 'Lewis'],
+		'specialist' => ['firstName' => 'Beth', 'lastName' => 'Johanssen'],
+	],
+	'STS396' => [
+		'botanist' => ['firstName' => 'Mark', 'lastName' => 'Watney'],
+		'commander' => ['firstName' => 'Melissa', 'lastName' => 'Lewis'],
+		'specialist' => ['firstName' => 'Beth', 'lastName' => 'Johanssen'],
+	],
+];
+
+// list titles
+echo implode("\n", array_keys($mission['STS395']));
+
+// add a new role to STS395
+$mission['STS395']['mechanic'] = ['firstName' => 'Fred', 'lastName' => 'Flintstone'];
+
+// Output all elements.
+//print_r($mission);
+```
+* Null coalesce operator
+```
+<?php
+// example taking a value from:
+// (1) the URL or 
+// (2) a form post or 
+// (3) the session or 
+// (4) the cookie or 
+// (5) the default
+$token = $_GET['token'] ?? $_POST['token'] ?? $_SESSION['token'] ?? $_COOKIE['token'] ?? 0;
+```
+* Match expression can substitute for `switch`
+```
+<?php
+// use  a callback if you need more than one line of code
+$func = function ($val) { 
+	// do something
+	// do something
+	return strtoupper($val);
+};
+
+// this is an example of an "arrow" function
+$callback = fn ($val) => strtoupper($val);
+
+$val = 'xyz';
+$result = match ($val) {	
+    0 => 'Foo',
+    1 => 'Bar',
+    default => $callback($val)
+}; // Fatal error
+
+echo $result;
+```
+* Example of `continue` and `break`
+```
+<?php
+$start = microtime(TRUE);
+$max = 100000;
+for ($x = 5; $x < $max; $x++)
+{
+    // This if evaluation checks to see if number is odd or even
+    if (($x % 2) === 0) continue;
+    $test = TRUE;
+    for($i = 3; $i < $x; $i++) {
+        if(($x % $i) === 0) {
+            $test = FALSE;
+            break;
+        }
+    }
+    if ($test) echo $x . ', ';
+}
+echo "Elapsed Time: " . microtime(TRUE) - $start;
+echo "\n";
+```
+* Examples of `list()` operator
+```
+<?php
+$city = [34.9852, -17.0039];
+list($lat, $lon) = $city;
+var_dump($lat, $lon);
+
+// use this if array is "numeric"
+[$lat, $lon] = $city;
+var_dump($lat, $lon);
+
+// use this if array is "associative"
+$latLon = ['lat' => 34.9852, 'lon' => -17.0039];
+['lat' => $lat, 'lon' => $lon] = $latLon;
+
+$city = [
+	'Seattle' => [34.9852, -17.0039],
+	'DC' => [12.0057, -23.4451],
+	'Baltimore' => [44.0045, -62.7781],
+];
+
+foreach ($city as $name => [$lat, $lon])
+	echo "The lat/lon for $name is: $lat / $lon \n";
+```
+* You can do something similar to `list()` by using `extract()`
+```
+<?php
+$mission = [
+	'STS395' => [
+		'botanist' => ['firstName' => 'Mark', 'lastName' => 'Watney'],
+		'commander' => ['firstName' => 'Melissa', 'lastName' => 'Lewis'],
+		'specialist' => ['firstName' => 'Beth', 'lastName' => 'Johanssen'],
+	],
+	'STS396' => [
+		'botanist' => ['firstName' => 'Mark', 'lastName' => 'Watney'],
+		'commander' => ['firstName' => 'Melissa', 'lastName' => 'Lewis'],
+		'specialist' => ['firstName' => 'Beth', 'lastName' => 'Johanssen'],
+	],
+];
+
+foreach ($mission as $id => $titles) {
+	foreach ($titles as $title => $info) {
+		// extract() turns keys into variables
+		extract($info);
+		echo "$firstName $lastName is a $title\n";
+	}
+}
+```
+* `declare()` is used on a file-by-file basis for:
+  * Strict type checking
+  * Character encoding
+  * Setting the `tick` count (used for asynchronous coding)
+    * See also: https://www.php.net/manual/en/book.pcntl.php
+    * If interested in PHP async, check out the Swoole extension and the ReactPHP framework
+
+
+
+
+
+
 
 ## Resources
 Previous class notes:
