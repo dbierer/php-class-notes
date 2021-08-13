@@ -5,6 +5,7 @@
 * Q: Enable JIT to test Prime Number generation example
 
 ## Homework
+* For Mon 16 Aug 2021: http://collabedit.com/ukcwu
 * For Fri 13 Aug 2021: http://collabedit.com/vsh4c
 
 ## Class Notes
@@ -271,6 +272,134 @@ foreach ($mission as $id => $titles) {
   * Setting the `tick` count (used for asynchronous coding)
     * See also: https://www.php.net/manual/en/book.pcntl.php
     * If interested in PHP async, check out the Swoole extension and the ReactPHP framework
+* Type-hinting
+```
+<?php
+// "iterable" is a super-type that allows for any array or object that 
+// is acceptable to foreach()
+function sum_of_values(iterable $a)
+{
+	$total = 0;
+	foreach ($a as $price) {
+		$total += $price;
+	}
+	return $total;
+}
+
+$a = [1,2,3,4,5];
+echo "Sum is: " . sum_of_values($a) . "\n";
+$a = new ArrayIterator([1,2,3,4,5]);
+echo "Sum is: " . sum_of_values($a) . "\n";
+$a = new ArrayObject([1,2,3,4,5]);
+echo "Sum is: " . sum_of_values($a) . "\n";
+```
+* Type declarations: https://www.php.net/manual/en/language.types.declarations.php
+* Name parameters (named arguments)
+```
+<?php
+// NOTE: any version of PHP:
+setcookie('TEST1', 1111, 0, '', '', FALSE, TRUE);
+
+// NOTE: PHP 8 only!!! :
+setcookie('TEST2', 2222, httponly:TRUE);
+
+```
+* Use the variadics operator to provide an unlimited number of args
+```
+<?php
+function super_dump(...$params) : void
+{
+	foreach ($params as $item)
+		var_dump($item);
+}
+
+$a = [1,2,3];
+$b = 'TEST';
+$c = 99999.99;
+super_dump($a);
+super_dump($b, $c);
+super_dump('A', 'B', 'C', 'D');
+```
+* Use `static` if you need to retain the value for successive function calls
+```
+<?php
+define('TOKEN_FN', __DIR__ . '/token.txt');
+function getToken()
+{
+	static $token = NULL;
+	if (empty($token)) $token = file_get_contents(TOKEN_FN);
+	return $token;
+	//return file_get_contents(TOKEN_FN);
+}
+
+$start = microtime(TRUE);
+for ($x = 0; $x < 100000; $x++) echo getToken();
+
+echo 'Elapsed time: ' . (microtime(TRUE) - $start) . "\n";
+```
+* Example of a data validation mechanism using pass-by-reference for the `$err` array
+```
+<?php
+// example using pass-by-ref for error messages
+
+function checkAlnum(string $val, array &$err) : bool
+{
+	$valid = ctype_alnum($val);
+	if (!$valid)
+		$err[] = $val . ' must only contain letters or numbers';
+	return $valid;
+}
+
+function checkLength(string $val, int $min, int $max, array &$err) : bool
+{
+	$valid = (strlen($val) >= $min && strlen($val) <= $max);
+	if (!$valid)
+		$err[] = "$val must be between $min and $max characters in length";
+	return $valid;
+}
+
+$data = [
+	'12345',
+	'some_username',
+	'abc',
+];
+
+$err = [];
+$actual = 0;
+$expected = count($data) * 2;
+foreach ($data as $item) {
+	$actual += checkAlnum($item, $err);
+	$actual += checkLength($item, 1, 5, $err);
+}
+if ($actual === $expected) {
+	echo "Valid data\n";
+} else {
+	echo implode("\n", $err);
+}
+```
+* You can reference individual characters in a string using array syntax
+```
+<?php
+$file = __FILE__;
+echo $file;
+
+echo ($file[0] === '/') ? 'Starts with leading slash' : 'Starts with a character';
+
+$max = strlen($file);
+for ($x = 0; $x < $max; $x++) echo $file[$x] . PHP_EOL;
+```
+* Redirect home after failing to open a file
+```
+<?php
+$fh = fopen('file_does_not_exist.txt', 'r');
+if ($fh === FALSE) {
+	// redirect back home
+	header('Location: /');
+	exit;
+}
+fpassthru($fh);
+fclose($fh);
+```
 
 
 
