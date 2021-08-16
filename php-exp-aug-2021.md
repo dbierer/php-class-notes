@@ -2,9 +2,13 @@
 
 ## TODO
 * Q: Example of nested ternary that could be a problem?
+* A: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch02/php8_nested_ternary.php
+* A: This won't work in PHP 8 without using parentheses
+
 * Q: Enable JIT to test Prime Number generation example
 
 ## Homework
+* For Wed 18 Aug 2021: http://collabedit.com/pbdfh
 * For Mon 16 Aug 2021: http://collabedit.com/ukcwu
 * For Fri 13 Aug 2021: http://collabedit.com/vsh4c
 
@@ -400,7 +404,56 @@ if ($fh === FALSE) {
 fpassthru($fh);
 fclose($fh);
 ```
+* Two ways to get a list of files in a directory:
+```
+<?php
+// see: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch02/php8_nested_ternary.php
+$path = realpath(__DIR__ . '/..');
+$list = glob($path . '/*');
+var_dump($list);
 
+$iter = new RecursiveDirectoryIterator($path);
+var_dump(iterator_to_array($iter));
+```
+* Capturing checkbox data, where you are using a key (not empty `[]` )
+  * Also: filtering, validation and escaping
+```
+<?php
+$item = '';
+$err  = [];
+if (!empty($_POST)) {
+	$item = $_POST['item'] ?? '';
+	// validation:
+	if (!ctype_alnum($item)) $err[] = 'ERROR: item can only contain letters and numbers';
+	// filtering:
+	$item = strip_tags(trim($item));
+}
+?>
+<form action="/test.php" method="post">	
+    <fieldset>
+        <legend>Add Checklist Item</legend>
+        <label for="item">Enter the checklist item</label>
+        <!-- output escaping: -->
+        <input type="text" name="item" id="item" value="<?= htmlspecialchars($item) ?>">
+        <label for="priority">Enter the priority</label>
+        <input type="text" name="priority" id="priority">
+        <br />
+        <input type="checkbox" value="M" name="gender[M]" /> Male
+        <input type="checkbox" value="F" name="gender[F]" /> Female
+        <input type="checkbox" value="X" name="gender[X]" /> Other
+        <input type="submit" value="Submit">
+    </fieldset>
+</form>
+<?php if (!empty($err)) echo implode('<br />', $err); ?>
+<?php 
+$male = $_POST['gender']['M'] ?? '';
+echo ($male) ? 'You are a man' : 'You are NOT a man';
+phpinfo(INFO_VARIABLES); 
+?>
+```
+* Autoloading examples:
+  * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_autoload_example.php
+  * https://github.com/dbierer/php-ii-jun-2021/blob/master/autoload_example.php
 
 
 
@@ -410,6 +463,8 @@ fclose($fh);
 ## Resources
 Previous class notes:
 * https://github.com/dbierer/php-class-notes/blob/master/php-exp-jun-2021.md
+Web server survey
+* https://news.netcraft.com/archives/2021/05/31/may-2021-web-server-survey.html
 
 ## VM Setup
 Download the source code.  From a terminal window in the VM:
@@ -445,3 +500,5 @@ sudo gedit /etc/hosts
 127.0.0.1 sandbox
 ```
 
+
+## CURRENT HOMEWORK
