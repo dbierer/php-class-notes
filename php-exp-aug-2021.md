@@ -1,6 +1,8 @@
 # PHP-Exp Aug 2021
 
 ## TODO
+* Q: Example of anonymous class using `FilterIterator`
+
 * Q: Example of nested ternary that could be a problem?
 * A: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch02/php8_nested_ternary.php
 * A: This won't work in PHP 8 without using parentheses
@@ -455,9 +457,203 @@ phpinfo(INFO_VARIABLES);
   * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_autoload_example.php
   * https://github.com/dbierer/php-ii-jun-2021/blob/master/autoload_example.php
 
+## OOP
+PHP 8 provides "constructor argument promotion"
+```
+<?php
+class UserEntity {	
+    public function __construct(
+        public string $firstName = 'Default',
+        public string $lastName = 'Default'
+    ) 
+    {
+		// any body processing is optional
+		$this->lastName = strtoupper($lastName);
+	}
+}
+$user[] = new UserEntity();	
+$user[] = new UserEntity('Jack' , 'Ryan');	
+$user[] = new UserEntity('Monte' , 'Python');
 
+var_dump($user);
+```
+This returns object properties in the form an array:
+```
+<?php
+class Test
+{
+	protected $title = 'Test Title';
+	protected $test = 'TEST';
+	protected $status = 'Open';
+	public function getArrayCopy()
+	{
+		return get_object_vars($this);
+	}
+}
 
+$test = new Test();
+var_dump($test->getArrayCopy());
+```
+Use `ArrayObject` if you need to access properties as an array
+```
+<?php
+class Test extends ArrayObject
+{
+	public function __construct(
+		protected $title = 'Test Title',
+		protected $test = 'TEST',
+		protected $status = 'Open'
+	)
+	{
+		parent::__construct(get_object_vars($this));
+	}
+}
 
+$test = new Test();
+var_dump($test->getArrayCopy());
+
+$test = new Test('New Title', 'NEW TEST', 'Closed');
+var_dump($test->getArrayCopy());
+```
+Anonymous classes
+* See: https://github.com/dbierer/classic_php_examples/tree/master/oop
+Magic Methods
+* See: https://www.php.net/manual/en/language.oop5.magic.php
+* `__destruct()` method example: cleans up old CAPTCHA image files
+  * https://github.com/dbierer/SimpleHtml/blob/main/src/Common/Image/Captcha.php
+* `__get()` and `__set()` example
+  * See: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_magic_get_set.php
+* `__call()` used to implement "plugins"
+  * See: https://github.com/laminas/laminas-mvc/blob/4.0.x/src/Controller/AbstractController.php
+Serialization native PHP vs. JSON
+```
+<?php
+class Test extends ArrayObject
+{
+	public function __construct(
+		public $title = 'Test Title',
+		protected $test = 'TEST',
+		protected $status = 'Open'
+	)
+	{
+		parent::__construct(get_object_vars($this));
+	}
+}
+
+$test = new Test('New Title', 'NEW TEST', 'Closed');
+$str  = serialize($test);
+$json = json_encode($test);
+echo $str . "\n";
+echo $json . "\n";
+
+$obj = json_decode($json);
+var_dump($obj);
+
+$obj2 = unserialize($str);	// full object Test is restored
+var_dump($obj2);
+var_dump($obj2->getArrayCopy());
+```
+Class example of an Abstract class:
+* https://www.php.net/FilterIterator
+Interfaces make excellent type-hints and serve as pseudo datatypes
+```
+<?php
+interface ArrayCopyInterface
+{
+	public function getArrayCopy() : array;
+}
+class Test implements ArrayCopyInterface
+{
+	public function __construct(
+		public $title = 'Test Title',
+		protected $test = 'TEST',
+		protected $status = 'Open'
+	)
+	{
+	}
+	public function getArrayCopy() : array
+	{
+		return get_object_vars($this);
+	}
+}
+
+$test = new Test('New Title', 'NEW TEST', 'Closed');
+var_dump($test->getArrayCopy());
+
+echo ($test instanceof Test) ? 'Instance of Test' : 'Not Instance';
+echo "\n";
+echo ($test instanceof ArrayCopyInterface) ? 'Instance of ArrayCopyInterface' : 'Not Instance';
+echo "\n";
+```
+Callable examples
+* See: https://github.com/dbierer/php-ii-jun-2021/blob/master/autoload_example.php
+Using Interfaces as type hints
+* See: https://github.com/laminas/laminas-db/blob/master/src/Adapter/Adapter.php
+Strict type checking
+```
+<?php
+declare(strict_types=1);
+class Test
+{
+	public function add(int $a, int $b)
+	{
+		return $a + $b;
+	}
+}
+
+$test = new Test();
+// works OK
+echo $test->add(222, 111);
+echo PHP_EOL;
+// this is a Fatal Error only if strict_types=1
+echo $test->add(222.777, 111.888);
+echo PHP_EOL;
+// this is a Fatal Error only if strict_types=1
+echo $test->add(222, '111');
+echo PHP_EOL;
+// Fatal Error regardless: non-numeric strings are unacceptable
+echo $test->add(222, '111x');
+echo PHP_EOL;
+```
+Late static binding
+```
+<?php
+// also: see https://www.php.net/manual/en/language.oop5.late-static-bindings.php
+class Base
+{
+	public static function getInstance() : self
+	{
+		return new self();
+	}
+}
+class Child extends Base {}
+
+class Base2
+{
+	public static function getInstance() : static
+	{
+		return new static();
+	}
+}
+class Child2 extends Base2 {}
+
+$base = Base::getInstance();
+echo get_class($base);
+echo PHP_EOL;
+
+$child = Child::getInstance();
+echo get_class($child);
+echo PHP_EOL;
+
+$base = Base2::getInstance();
+echo get_class($base);
+echo PHP_EOL;
+
+$child = Child2::getInstance();
+echo get_class($child);
+echo PHP_EOL;
+
+```
 
 
 ## Resources
