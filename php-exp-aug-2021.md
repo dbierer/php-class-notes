@@ -2,6 +2,7 @@
 
 ## TODO
 * Q: Example of anonymous class using `FilterIterator`
+* A: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_spl_filteriterator_anon_class.php
 
 * Q: Example of nested ternary that could be a problem?
 * A: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch02/php8_nested_ternary.php
@@ -20,15 +21,15 @@
 <?php
 class Test
 {
-	public int $neg = 0;
-	public int $max = 0;
-	public float $float = 0.0;
-	public function getInfo()
-	{
-		$vars = get_object_vars($this);
-		foreach ($vars as $key => $value)
-			var_dump($this->$key);
-	}
+        public int $neg = 0;
+        public int $max = 0;
+        public float $float = 0.0;
+        public function getInfo()
+        {
+                $vars = get_object_vars($this);
+                foreach ($vars as $key => $value)
+                        var_dump($this->$key);
+        }
 }
 $test = new Test();
 $test->getInfo();
@@ -45,7 +46,7 @@ var_dump(++$test->max);
 * If you have a long-running, memory intensive program, use `ini_set()` to override these settings:
 ```
 ini_set('memory_limit', '1G');
-ini_set('max_execution_time', 30);	// 30 seconds
+ini_set('max_execution_time', 30);      // 30 seconds
 ```
 * Comments can be expressed as `Attributes` in PHP 8
   * Part of the language
@@ -53,7 +54,7 @@ ini_set('max_execution_time', 30);	// 30 seconds
   * See: https://www.php.net/manual/en/language.attributes.syntax.php
 * Assignments create copies except for objects which are by reference
 ```
-<?php 
+<?php
 $a = new ArrayIterator(['A' => 111, 'B' => 222, 'C' =>333]);
 // all object assignments are by reference
 $b = $a;
@@ -72,16 +73,16 @@ var_dump($c);
 ```
 <?php
 $books = [
-	1 => [
-		'title' => "Ender's Game",
-		'publisher' => 'Tor',
-		'author' => 'Orson Scott Card',
-	],
-	2 => [
-		'title' => 'Tarzan of the Apes',
-		'publisher' => 'Ballantine',
-		'author' => 'Edgar Rice Burroughs',
-	]
+        1 => [
+                'title' => "Ender's Game",
+                'publisher' => 'Tor',
+                'author' => 'Orson Scott Card',
+        ],
+        2 => [
+                'title' => 'Tarzan of the Apes',
+                'publisher' => 'Ballantine',
+                'author' => 'Edgar Rice Burroughs',
+        ]
 ];
 
 echo $books[2]['author'];
@@ -101,7 +102,7 @@ echo "\n";
 ```
 <?php
 $foo = [1, 2, 3];
-$bar = [4, 5, 6];	
+$bar = [4, 5, 6];
 $baz = [$foo, $bar];
 print_r($baz);
 
@@ -118,15 +119,15 @@ define('BASE_DIR', __DIR__);
 const ABC = 'XYZ';
 class Test
 {
-	const ABC = 'DEF';
-	public function getDir()
-	{
-		return BASE_DIR;
-	}
-	public function getAbc()
-	{
-		return ABC . self::ABC;
-	}
+        const ABC = 'DEF';
+        public function getDir()
+        {
+                return BASE_DIR;
+        }
+        public function getAbc()
+        {
+                return ABC . self::ABC;
+        }
 }
 
 $test = new Test();
@@ -149,16 +150,16 @@ echo "\u{1F60E}\u{1F44D}";
 <?php
 // Build the crew.
 $mission = [
-	'STS395' => [
-		'botanist' => ['firstName' => 'Mark', 'lastName' => 'Watney'],
-		'commander' => ['firstName' => 'Melissa', 'lastName' => 'Lewis'],
-		'specialist' => ['firstName' => 'Beth', 'lastName' => 'Johanssen'],
-	],
-	'STS396' => [
-		'botanist' => ['firstName' => 'Mark', 'lastName' => 'Watney'],
-		'commander' => ['firstName' => 'Melissa', 'lastName' => 'Lewis'],
-		'specialist' => ['firstName' => 'Beth', 'lastName' => 'Johanssen'],
-	],
+        'STS395' => [
+                'botanist' => ['firstName' => 'Mark', 'lastName' => 'Watney'],
+                'commander' => ['firstName' => 'Melissa', 'lastName' => 'Lewis'],
+                'specialist' => ['firstName' => 'Beth', 'lastName' => 'Johanssen'],
+        ],
+        'STS396' => [
+                'botanist' => ['firstName' => 'Mark', 'lastName' => 'Watney'],
+                'commander' => ['firstName' => 'Melissa', 'lastName' => 'Lewis'],
+                'specialist' => ['firstName' => 'Beth', 'lastName' => 'Johanssen'],
+        ],
 ];
 
 // list titles
@@ -174,10 +175,10 @@ $mission['STS395']['mechanic'] = ['firstName' => 'Fred', 'lastName' => 'Flintsto
 ```
 <?php
 // example taking a value from:
-// (1) the URL or 
-// (2) a form post or 
-// (3) the session or 
-// (4) the cookie or 
+// (1) the URL or
+// (2) a form post or
+// (3) the session or
+// (4) the cookie or
 // (5) the default
 $token = $_GET['token'] ?? $_POST['token'] ?? $_SESSION['token'] ?? $_COOKIE['token'] ?? 0;
 ```
@@ -185,17 +186,17 @@ $token = $_GET['token'] ?? $_POST['token'] ?? $_SESSION['token'] ?? $_COOKIE['to
 ```
 <?php
 // use  a callback if you need more than one line of code
-$func = function ($val) { 
-	// do something
-	// do something
-	return strtoupper($val);
+$func = function ($val) {
+        // do something
+        // do something
+        return strtoupper($val);
 };
 
 // this is an example of an "arrow" function
 $callback = fn ($val) => strtoupper($val);
 
 $val = 'xyz';
-$result = match ($val) {	
+$result = match ($val) {
     0 => 'Foo',
     1 => 'Bar',
     default => $callback($val)
@@ -240,36 +241,36 @@ $latLon = ['lat' => 34.9852, 'lon' => -17.0039];
 ['lat' => $lat, 'lon' => $lon] = $latLon;
 
 $city = [
-	'Seattle' => [34.9852, -17.0039],
-	'DC' => [12.0057, -23.4451],
-	'Baltimore' => [44.0045, -62.7781],
+        'Seattle' => [34.9852, -17.0039],
+        'DC' => [12.0057, -23.4451],
+        'Baltimore' => [44.0045, -62.7781],
 ];
 
 foreach ($city as $name => [$lat, $lon])
-	echo "The lat/lon for $name is: $lat / $lon \n";
+        echo "The lat/lon for $name is: $lat / $lon \n";
 ```
 * You can do something similar to `list()` by using `extract()`
 ```
 <?php
 $mission = [
-	'STS395' => [
-		'botanist' => ['firstName' => 'Mark', 'lastName' => 'Watney'],
-		'commander' => ['firstName' => 'Melissa', 'lastName' => 'Lewis'],
-		'specialist' => ['firstName' => 'Beth', 'lastName' => 'Johanssen'],
-	],
-	'STS396' => [
-		'botanist' => ['firstName' => 'Mark', 'lastName' => 'Watney'],
-		'commander' => ['firstName' => 'Melissa', 'lastName' => 'Lewis'],
-		'specialist' => ['firstName' => 'Beth', 'lastName' => 'Johanssen'],
-	],
+        'STS395' => [
+                'botanist' => ['firstName' => 'Mark', 'lastName' => 'Watney'],
+                'commander' => ['firstName' => 'Melissa', 'lastName' => 'Lewis'],
+                'specialist' => ['firstName' => 'Beth', 'lastName' => 'Johanssen'],
+        ],
+        'STS396' => [
+                'botanist' => ['firstName' => 'Mark', 'lastName' => 'Watney'],
+                'commander' => ['firstName' => 'Melissa', 'lastName' => 'Lewis'],
+                'specialist' => ['firstName' => 'Beth', 'lastName' => 'Johanssen'],
+        ],
 ];
 
 foreach ($mission as $id => $titles) {
-	foreach ($titles as $title => $info) {
-		// extract() turns keys into variables
-		extract($info);
-		echo "$firstName $lastName is a $title\n";
-	}
+        foreach ($titles as $title => $info) {
+                // extract() turns keys into variables
+                extract($info);
+                echo "$firstName $lastName is a $title\n";
+        }
 }
 ```
 * `declare()` is used on a file-by-file basis for:
@@ -281,15 +282,15 @@ foreach ($mission as $id => $titles) {
 * Type-hinting
 ```
 <?php
-// "iterable" is a super-type that allows for any array or object that 
+// "iterable" is a super-type that allows for any array or object that
 // is acceptable to foreach()
 function sum_of_values(iterable $a)
 {
-	$total = 0;
-	foreach ($a as $price) {
-		$total += $price;
-	}
-	return $total;
+        $total = 0;
+        foreach ($a as $price) {
+                $total += $price;
+        }
+        return $total;
 }
 
 $a = [1,2,3,4,5];
@@ -315,8 +316,8 @@ setcookie('TEST2', 2222, httponly:TRUE);
 <?php
 function super_dump(...$params) : void
 {
-	foreach ($params as $item)
-		var_dump($item);
+        foreach ($params as $item)
+                var_dump($item);
 }
 
 $a = [1,2,3];
@@ -332,10 +333,10 @@ super_dump('A', 'B', 'C', 'D');
 define('TOKEN_FN', __DIR__ . '/token.txt');
 function getToken()
 {
-	static $token = NULL;
-	if (empty($token)) $token = file_get_contents(TOKEN_FN);
-	return $token;
-	//return file_get_contents(TOKEN_FN);
+        static $token = NULL;
+        if (empty($token)) $token = file_get_contents(TOKEN_FN);
+        return $token;
+        //return file_get_contents(TOKEN_FN);
 }
 
 $start = microtime(TRUE);
@@ -350,37 +351,37 @@ echo 'Elapsed time: ' . (microtime(TRUE) - $start) . "\n";
 
 function checkAlnum(string $val, array &$err) : bool
 {
-	$valid = ctype_alnum($val);
-	if (!$valid)
-		$err[] = $val . ' must only contain letters or numbers';
-	return $valid;
+        $valid = ctype_alnum($val);
+        if (!$valid)
+                $err[] = $val . ' must only contain letters or numbers';
+        return $valid;
 }
 
 function checkLength(string $val, int $min, int $max, array &$err) : bool
 {
-	$valid = (strlen($val) >= $min && strlen($val) <= $max);
-	if (!$valid)
-		$err[] = "$val must be between $min and $max characters in length";
-	return $valid;
+        $valid = (strlen($val) >= $min && strlen($val) <= $max);
+        if (!$valid)
+                $err[] = "$val must be between $min and $max characters in length";
+        return $valid;
 }
 
 $data = [
-	'12345',
-	'some_username',
-	'abc',
+        '12345',
+        'some_username',
+        'abc',
 ];
 
 $err = [];
 $actual = 0;
 $expected = count($data) * 2;
 foreach ($data as $item) {
-	$actual += checkAlnum($item, $err);
-	$actual += checkLength($item, 1, 5, $err);
+        $actual += checkAlnum($item, $err);
+        $actual += checkLength($item, 1, 5, $err);
 }
 if ($actual === $expected) {
-	echo "Valid data\n";
+        echo "Valid data\n";
 } else {
-	echo implode("\n", $err);
+        echo implode("\n", $err);
 }
 ```
 * You can reference individual characters in a string using array syntax
@@ -399,9 +400,9 @@ for ($x = 0; $x < $max; $x++) echo $file[$x] . PHP_EOL;
 <?php
 $fh = fopen('file_does_not_exist.txt', 'r');
 if ($fh === FALSE) {
-	// redirect back home
-	header('Location: /');
-	exit;
+        // redirect back home
+        header('Location: /');
+        exit;
 }
 fpassthru($fh);
 fclose($fh);
@@ -424,14 +425,14 @@ var_dump(iterator_to_array($iter));
 $item = '';
 $err  = [];
 if (!empty($_POST)) {
-	$item = $_POST['item'] ?? '';
-	// validation:
-	if (!ctype_alnum($item)) $err[] = 'ERROR: item can only contain letters and numbers';
-	// filtering:
-	$item = strip_tags(trim($item));
+        $item = $_POST['item'] ?? '';
+        // validation:
+        if (!ctype_alnum($item)) $err[] = 'ERROR: item can only contain letters and numbers';
+        // filtering:
+        $item = strip_tags(trim($item));
 }
 ?>
-<form action="/test.php" method="post">	
+<form action="/test.php" method="post">
     <fieldset>
         <legend>Add Checklist Item</legend>
         <label for="item">Enter the checklist item</label>
@@ -447,10 +448,10 @@ if (!empty($_POST)) {
     </fieldset>
 </form>
 <?php if (!empty($err)) echo implode('<br />', $err); ?>
-<?php 
+<?php
 $male = $_POST['gender']['M'] ?? '';
 echo ($male) ? 'You are a man' : 'You are NOT a man';
-phpinfo(INFO_VARIABLES); 
+phpinfo(INFO_VARIABLES);
 ?>
 ```
 * Autoloading examples:
@@ -461,18 +462,18 @@ phpinfo(INFO_VARIABLES);
 PHP 8 provides "constructor argument promotion"
 ```
 <?php
-class UserEntity {	
+class UserEntity {
     public function __construct(
         public string $firstName = 'Default',
         public string $lastName = 'Default'
-    ) 
+    )
     {
-		// any body processing is optional
-		$this->lastName = strtoupper($lastName);
-	}
+                // any body processing is optional
+                $this->lastName = strtoupper($lastName);
+        }
 }
-$user[] = new UserEntity();	
-$user[] = new UserEntity('Jack' , 'Ryan');	
+$user[] = new UserEntity();
+$user[] = new UserEntity('Jack' , 'Ryan');
 $user[] = new UserEntity('Monte' , 'Python');
 
 var_dump($user);
@@ -482,13 +483,13 @@ This returns object properties in the form an array:
 <?php
 class Test
 {
-	protected $title = 'Test Title';
-	protected $test = 'TEST';
-	protected $status = 'Open';
-	public function getArrayCopy()
-	{
-		return get_object_vars($this);
-	}
+        protected $title = 'Test Title';
+        protected $test = 'TEST';
+        protected $status = 'Open';
+        public function getArrayCopy()
+        {
+                return get_object_vars($this);
+        }
 }
 
 $test = new Test();
@@ -499,14 +500,14 @@ Use `ArrayObject` if you need to access properties as an array
 <?php
 class Test extends ArrayObject
 {
-	public function __construct(
-		protected $title = 'Test Title',
-		protected $test = 'TEST',
-		protected $status = 'Open'
-	)
-	{
-		parent::__construct(get_object_vars($this));
-	}
+        public function __construct(
+                protected $title = 'Test Title',
+                protected $test = 'TEST',
+                protected $status = 'Open'
+        )
+        {
+                parent::__construct(get_object_vars($this));
+        }
 }
 
 $test = new Test();
@@ -530,14 +531,14 @@ Serialization native PHP vs. JSON
 <?php
 class Test extends ArrayObject
 {
-	public function __construct(
-		public $title = 'Test Title',
-		protected $test = 'TEST',
-		protected $status = 'Open'
-	)
-	{
-		parent::__construct(get_object_vars($this));
-	}
+        public function __construct(
+                public $title = 'Test Title',
+                protected $test = 'TEST',
+                protected $status = 'Open'
+        )
+        {
+                parent::__construct(get_object_vars($this));
+        }
 }
 
 $test = new Test('New Title', 'NEW TEST', 'Closed');
@@ -549,7 +550,7 @@ echo $json . "\n";
 $obj = json_decode($json);
 var_dump($obj);
 
-$obj2 = unserialize($str);	// full object Test is restored
+$obj2 = unserialize($str);      // full object Test is restored
 var_dump($obj2);
 var_dump($obj2->getArrayCopy());
 ```
@@ -560,21 +561,21 @@ Interfaces make excellent type-hints and serve as pseudo datatypes
 <?php
 interface ArrayCopyInterface
 {
-	public function getArrayCopy() : array;
+        public function getArrayCopy() : array;
 }
 class Test implements ArrayCopyInterface
 {
-	public function __construct(
-		public $title = 'Test Title',
-		protected $test = 'TEST',
-		protected $status = 'Open'
-	)
-	{
-	}
-	public function getArrayCopy() : array
-	{
-		return get_object_vars($this);
-	}
+        public function __construct(
+                public $title = 'Test Title',
+                protected $test = 'TEST',
+                protected $status = 'Open'
+        )
+        {
+        }
+        public function getArrayCopy() : array
+        {
+                return get_object_vars($this);
+        }
 }
 
 $test = new Test('New Title', 'NEW TEST', 'Closed');
@@ -595,10 +596,10 @@ Strict type checking
 declare(strict_types=1);
 class Test
 {
-	public function add(int $a, int $b)
-	{
-		return $a + $b;
-	}
+        public function add(int $a, int $b)
+        {
+                return $a + $b;
+        }
 }
 
 $test = new Test();
@@ -621,19 +622,19 @@ Late static binding
 // also: see https://www.php.net/manual/en/language.oop5.late-static-bindings.php
 class Base
 {
-	public static function getInstance() : self
-	{
-		return new self();
-	}
+        public static function getInstance() : self
+        {
+                return new self();
+        }
 }
 class Child extends Base {}
 
 class Base2
 {
-	public static function getInstance() : static
-	{
-		return new static();
-	}
+        public static function getInstance() : static
+        {
+                return new static();
+        }
 }
 class Child2 extends Base2 {}
 
@@ -676,18 +677,18 @@ sudo cp /etc/apache2/sites-available/orderapp.conf /etc/apache2/sites-available/
 Apache vhost definition:
 ```
 <VirtualHost *:80>
-	 ServerName sandbox
-	 DocumentRoot /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox
-	 <Directory /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/>
-		 Options Indexes FollowSymlinks MultiViews
-		 AllowOverride All
-		 Require all granted
-	 </Directory>
+         ServerName sandbox
+         DocumentRoot /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox
+         <Directory /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/>
+                 Options Indexes FollowSymlinks MultiViews
+                 AllowOverride All
+                 Require all granted
+         </Directory>
  </VirtualHost>
 ```
 Enable the virtual host
 ```
-sudo a2ensite sandbox.conf 
+sudo a2ensite sandbox.conf
 sudo service apache2 restart
 ```
 Add an entry to the `/etc/hosts` for `sandbox`
