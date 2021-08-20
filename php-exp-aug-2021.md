@@ -1,6 +1,12 @@
 # PHP-Exp Aug 2021
 
 ## TODO
+* Q: Please post correct versio of eTag example in this notes page
+
+* Q: Where do I find the PDO connection string ("dsn")?
+* A: Look up PDO docs (php.net/pdo) and go to the "Drivers" section
+* A: Look for the reference to "XXX_DSN"
+
 * Q: Example of anonymous class using `FilterIterator`
 * A: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_spl_filteriterator_anon_class.php
 
@@ -655,14 +661,42 @@ echo get_class($child);
 echo PHP_EOL;
 
 ```
+* Example using `clone` with `DateTime` 
+```
+<?php
+$date = new DateTime(); // today's date
+for ($x = 30; $x < 100; $x += 30) {
+    $day[$x] = clone $date;
+    $day[$x]->add(new DateInterval('P' . $x . 'D'));
+    echo '<br>' . $day[$x]->format('Y-m-d') . PHP_EOL;
+}
 
+var_dump($day);
+```
+* Example of the "factory" pattern
+  * https://github.com/laminas/laminas-diactoros/blob/master/src/ServerRequestFactory.php
+
+## Other Notes
+ETag Browser cache manipulation example:
+* https://github.com/dbierer/classic_php_examples/blob/master/web/etag.php
+API Calls
+* REST example: https://github.com/dbierer/classic_php_examples/blob/master/web/rest_api_call_us_weather_svc.php
+* SOAP example: https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
 
 ## Resources
 Previous class notes:
 * https://github.com/dbierer/php-class-notes/blob/master/php-exp-jun-2021.md
+Related repositories:
+* https://github.com/dbierer/php-ii-aug-2021
+* https://github.com/dbierer/php-ii-jun-2021
 Web server survey
 * https://news.netcraft.com/archives/2021/05/31/may-2021-web-server-survey.html
-
+PHPUnit: https://phpunit.de/
+PHPDocumenter: https://phpdoc.org
+`php.ini` directives: https://www.php.net/manual/en/ini.list.php
+JIT
+* Code examples for testing: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/tree/main/ch10
+* Settings: 
 ## VM Setup
 Download the source code.  From a terminal window in the VM:
 ```
