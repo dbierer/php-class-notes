@@ -1,0 +1,67 @@
+# PHP Certification - Aug 2021
+
+## Homework
+* For Fri 28 Aug 2021
+  * Quiz questions for course module 2 "PHP Basics"
+
+## Docker Container Setup
+* Download the ZIP file from the URL given by the instructor
+* Unzip into a new folder `/path/to/zip`
+* Follow the setup instructions in `/path/to/zip/README.md`
+
+## TODO
+
+
+## Class Notes
+Overview of topics: https://www.zend.com/training/php-certification-exam
+Good overview of typical PHP program operation:
+* https://www.zend.com/blog/exploring-new-php-jit-compiler
+
+### Bitwise Operators
+Tutorial oriented towards the exam:
+* https://www.w3resource.com/php/operators/bitwise-operators.php
+Truth table:
+```
+<?php
+echo "Logical AND\n";
+printf("%04b\n", 0b00 & 0b00);
+printf("%04b\n", 0b00 & 0b01);
+printf("%04b\n", 0b01 & 0b00);
+printf("%04b\n", 0b01 & 0b01);
+
+echo "Logical OR\n";
+printf("%04b\n", 0b00 | 0b00);
+printf("%04b\n", 0b00 | 0b01);
+printf("%04b\n", 0b01 | 0b00);
+printf("%04b\n", 0b01 | 0b01);
+
+echo "Logical XOR\n";
+printf("%04b\n", 0b00 ^ 0b00);
+printf("%04b\n", 0b00 ^ 0b01);
+printf("%04b\n", 0b01 ^ 0b00);
+printf("%04b\n", 0b01 ^ 0b01);
+```
+Left/right shift illustration:
+```
+<?php
+echo 16 << 3;
+echo "\n";
+echo 0b10000000;
+echo "\n";
+
+echo 16 >> 3;
+echo "\n";
+echo 0b00000010;
+echo "\n";
+
+echo 15 >> 3;
+echo "\n";
+echo 0b00000001;
+echo "\n";
+```
+* Study up on `gc_collect_cycles()`
+
+## Data Formats
+Read up on `SimpleXMLElement`
+* https://www.php.net/manual/en/simplexml.examples-basic.php
+* XPath Tutorial: https://www.w3schools.com/xml/xpath_intro.asp
