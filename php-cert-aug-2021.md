@@ -3,6 +3,7 @@
 ## Homework
 * For Fri 28 Aug 2021
   * Quiz questions for course module 2 "PHP Basics"
+  * Quiz questions for course module 3 "Data Formats ..."
 
 ## Docker Container Setup
 * Download the ZIP file from the URL given by the instructor
@@ -65,3 +66,19 @@ echo "\n";
 Read up on `SimpleXMLElement`
 * https://www.php.net/manual/en/simplexml.examples-basic.php
 * XPath Tutorial: https://www.w3schools.com/xml/xpath_intro.asp
+* `DateTime` examples
+```
+<?php
+$date[] = new DateTime('third thursday of next month');
+$date[] = new DateTime('now', new DateTimeZone('CET'));
+$date[] = new DateTime('@' . time());
+$date[] = (new DateTime())->add(new DateInterval('P3D'));
+
+var_dump($date);
+```
+  * Study on `DateTimeInterval` and `DateTimeZone` and also "relative" time formats
+  * In addition, be aware of the basic time format codes
+
+## Strings
+* Study the docs on `sprintf()` to get format codes for that family of functions
+* Tutorial on PHP regex: https://www.w3schools.com/php/php_regex.asp
