@@ -1,7 +1,12 @@
 # PHP Certification - Aug 2021
 
 ## Homework
-* For Fri 28 Aug 2021
+* For Mon 30 Aug 2021
+  * Quiz questions for course module 4 "Strings and Patterns"
+  * Quiz questions for course module 5 "Arrays"
+  * Quiz questions for course module 6 "I/O"
+  * Mock Exam #1
+* For Fri 27 Aug 2021
   * Quiz questions for course module 2 "PHP Basics"
   * Quiz questions for course module 3 "Data Formats ..."
 
@@ -82,3 +87,25 @@ var_dump($date);
 ## Strings
 * Study the docs on `sprintf()` to get format codes for that family of functions
 * Tutorial on PHP regex: https://www.w3schools.com/php/php_regex.asp
+* Using regex to swap sub-patterns
+```
+<?php
+$text = 'Doug Bierer';
+$patt = '/(.*)\s(.*)/';
+echo preg_replace($patt, '$2, $1', $text);
+```
+
+
+## Change Request
+* 2-57: answers s/be B & C; D answer makes assumption not born out by the question
+* 6-19: s/be:
+```
+
+$options = [
+    'http' => [
+        'method'  => 'POST',
+        'header'  => implode("\r\n", $headers),
+        'content' => $query
+    ]
+];
+```
