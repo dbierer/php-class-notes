@@ -1,6 +1,10 @@
 # PHP Certification - Aug 2021
 
 ## Homework
+* For Wed 01 Sep 2021
+  * Quiz questions for course module 7 "Functions"
+  * Quiz questions for course module 8 "OOP"
+  * Mock Exam #2
 * For Mon 30 Aug 2021
   * Quiz questions for course module 4 "Strings and Patterns"
   * Quiz questions for course module 5 "Arrays"
@@ -16,7 +20,7 @@
 * Follow the setup instructions in `/path/to/zip/README.md`
 
 ## TODO
-
+* Find out where in the docs you would learn about `--enable-zend-multibyte`
 
 ## Class Notes
 Overview of topics: https://www.zend.com/training/php-certification-exam
@@ -95,6 +99,19 @@ $patt = '/(.*)\s(.*)/';
 echo preg_replace($patt, '$2, $1', $text);
 ```
 
+## Functions
+* Read up on `Closure::bindTo()`
+  * https://www.php.net/manual/en/closure.bindto.php
+
+## OOP
+* Read up on magic methods!
+  * https://www.php.net/manual/en/language.oop5.magic.php
+  * Don't worry about any methods added after PHP 7.1
+  * `__destruct()` called when object goes out-of-scope
+    * End of program
+    * `unset()`
+    * Called in a function and function call ends
+    * Overwritten
 
 ## Change Request
 * 2-57: answers s/be B & C; D answer makes assumption not born out by the question
@@ -109,3 +126,5 @@ $options = [
     ]
 ];
 ```
+* 8-16: "Class Member Overrides"
+  * Example doesn't work because the child class fails to define the method in compliance with parent method requirements
