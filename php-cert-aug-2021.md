@@ -20,7 +20,9 @@
 * Follow the setup instructions in `/path/to/zip/README.md`
 
 ## TODO
-* Find out where in the docs you would learn about `--enable-zend-multibyte`
+* Q: Find out where in the docs you would learn about `zend.multibyte` php.ini directive?
+* A: It's listed under the _Language Options_ section of the core php.ini settings documentation
+* A: See: https://www.php.net/manual/en/ini.core.php#ini.sect.language-options
 
 ## Class Notes
 Overview of topics: https://www.zend.com/training/php-certification-exam
