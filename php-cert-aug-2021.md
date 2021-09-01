@@ -1,6 +1,12 @@
 # PHP Certification - Aug 2021
 
 ## Homework
+* For Fri 03 Sep 2021
+  * Quiz questions for course module 9 "Database"
+  * Quiz questions for course module 10 "Security"
+  * Quiz questions for course module 11 "Web Features"
+  * Quiz questions for course module 12 "Error Handling"
+  * Final Mock Exam
 * For Wed 01 Sep 2021
   * Quiz questions for course module 7 "Functions"
   * Quiz questions for course module 8 "OOP"
@@ -20,6 +26,8 @@
 * Follow the setup instructions in `/path/to/zip/README.md`
 
 ## TODO
+* Q: What is the class name used if `unserialize()` can't find the class def?
+
 * Q: Find out where in the docs you would learn about `zend.multibyte` php.ini directive?
 * A: It's listed under the _Language Options_ section of the core php.ini settings documentation
 * A: See: https://www.php.net/manual/en/ini.core.php#ini.sect.language-options
@@ -114,6 +122,23 @@ echo preg_replace($patt, '$2, $1', $text);
     * `unset()`
     * Called in a function and function call ends
     * Overwritten
+* SPL
+  * Make sure you study:
+    * `*Iterator*` : just know what they are
+    * `ArrayIterator` and `ArrayObject` make sure you're up to speed on these!
+  * Just be aware of the "classic" data structure classes
+* Generators
+  * https://www.php.net/manual/en/class.generator.php
+* Late Static Binding
+  * https://www.php.net/manual/en/language.oop5.late-static-bindings.php
+* Traits
+  * https://www.php.net/manual/en/language.oop5.traits.php
+
+## Security Topic
+Questions are drawn from here:
+* https://www.php.net/manual/en/security.php
+Read up on the `crypt()` function
+* https://www.php.net/manual/en/function.crypt.php
 
 ## Change Request
 * 2-57: answers s/be B & C; D answer makes assumption not born out by the question
@@ -130,3 +155,6 @@ $options = [
 ```
 * 8-16: "Class Member Overrides"
   * Example doesn't work because the child class fails to define the method in compliance with parent method requirements
+* 8-97:
+  * C ans is also correct, can use `iterator_to_array()` because `ArrayObject` is iterable
+
