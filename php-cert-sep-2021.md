@@ -3,6 +3,8 @@
 ## Homework
 For Wed 22 Sep:
 * Quiz questions for course module 2 "PHP Basics"
+
+For Fri 24 Sep:
 * Quiz questions for course module 3 "Data Formats ..."
 
 ## Docker Container Setup
@@ -60,6 +62,10 @@ echo 0b00000001;
 echo "\n";
 ```
 * Study up on `gc_collect_cycles()`
+
+## Garbage Collection
+Have a look at this article:
+https://www.php.net/manual/en/features.gc.performance-considerations.php
 
 ## Data Formats
 Read up on `SimpleXMLElement`
