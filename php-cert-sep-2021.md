@@ -1,6 +1,13 @@
 # PHP Certification - Sep 2021
 
+## TODO
+Get updated PDF to Kevin
+
 ## Homework
+For Thu 23 Sep:
+* Quiz questions for course module 3 "Data Formats and Types"
+* Quiz questions for course module 4 "Strings and Patterns"
+
 For Wed 22 Sep:
 * Quiz questions for course module 2 "PHP Basics"
 
@@ -81,8 +88,9 @@ $date[] = (new DateTime())->add(new DateInterval('P3D'));
 
 var_dump($date);
 ```
-  * Study on `DateTimeInterval` and `DateTimeZone` and also "relative" time formats
-  * In addition, be aware of the basic time format codes
+* Study on `DateTimeInterval` and `DateTimeZone` and also "relative" time formats
+* In addition, be aware of the basic time format codes
+* https://www.php.net/manual/en/datetime.formats.relative.php
 
 ## Strings
 * Study the docs on `sprintf()` to get format codes for that family of functions
@@ -93,6 +101,17 @@ var_dump($date);
 $text = 'Doug Bierer';
 $patt = '/(.*)\s(.*)/';
 echo preg_replace($patt, '$2, $1', $text);
+```
+* `preg_replace()` and `preg_match()` example using sub-patterns:
+```
+<?php
+$string = 'April 15, 2003';
+$pattern = '/(\w+) (\d+), (\d+)/i';
+$replacement = '$2 $1 $3';
+echo preg_replace($pattern, $replacement, $string);
+
+preg_match($pattern, $string, $matches);
+var_dump($matches);
 ```
 
 ## Functions
@@ -144,3 +163,13 @@ $options = [
 * 8-97:
   * C ans is also correct, can use `iterator_to_array()` because `ArrayObject` is iterable
 
+
+* This needs a space in front of "16"
+```
+
+$x = 0x10;   $y = 020;  $z = "16";
+$x += 0b100; $y += "4"; $z += 04;
+echo $x;
+echo $y;
+echo $z;
+```
