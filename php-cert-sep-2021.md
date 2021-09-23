@@ -4,6 +4,12 @@
 Get updated PDF to Kevin
 
 ## Homework
+For Mon 27 Sep:
+* Quiz questions for course module 5 "Arrays"
+* Quiz questions for course module 6 "I/O"
+* Quiz questions for course module 7 "Functions"
+* First Mock Exam
+
 For Thu 23 Sep:
 * Quiz questions for course module 3 "Data Formats and Types"
 * Quiz questions for course module 4 "Strings and Patterns"
@@ -113,6 +119,16 @@ echo preg_replace($pattern, $replacement, $string);
 preg_match($pattern, $string, $matches);
 var_dump($matches);
 ```
+## I/O
+Streams
+* Don't have to study *all* functions, just certain of the more common ones
+* https://www.php.net/streams
+  * `stream_context_create()`
+  * `stream_wrapper_register()`
+  * `stream_filter_register()`
+  * `stream_filter_append()`
+  * `stream_socket_client()`
+
 
 ## Functions
 * Read up on `Closure::bindTo()`
@@ -173,3 +189,5 @@ echo $x;
 echo $y;
 echo $z;
 ```
+* PDF pg. 202 / 5-17
+  * `array_search()` returns the *key* (if found), not the value!
