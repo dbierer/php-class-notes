@@ -1,9 +1,13 @@
 # PHP Certification - Sep 2021
 
 ## TODO
-Get updated PDF to Kevin
+
 
 ## Homework
+For Wed 29 Sep:
+* Quiz questions for course module 8 "OOP"
+* Second Mock Exam
+
 For Mon 27 Sep:
 * Quiz questions for course module 5 "Arrays"
 * Quiz questions for course module 6 "I/O"
@@ -191,3 +195,53 @@ echo $z;
 ```
 * PDF pg. 202 / 5-17
   * `array_search()` returns the *key* (if found), not the value!
+
+* PDF 8-16: child class definition should match that of the parent class!  Otherwise:
+```
+Warning: Declaration of Container\ControllerServiceContainer::set(string $name, $value) should be compatible with Container\ServiceContainer::set($name, $value) in /srv/code/test.php on line 20
+```
+* Should be like this:
+```
+<?php
+
+namespace Container;
+use FactoryInterface;
+class ServiceContainer {
+    protected $services = [];
+
+    public function set($name, $value) {
+        $this->services[$name] = $value;
+    }
+}
+
+class ControllerServiceContainer extends ServiceContainer {
+    protected $factories = [];
+
+    public function set($name, $value) {
+        ($value instanceof FactoryInterface) ? $this->factories[$name] = $value :
+            parent::set($name, $value);
+    }
+}
+```
+* 8-22: parent `__construct()` cannot `final` in this example!  Should be:
+```
+
+namespace Container;
+use FactoryInterface;
+abstract class ServiceContainer {
+    protected const PATH = '/path';
+    protected $services = [];
+    public function __construct($name, $service) {
+        $this->services[$name] = $service;
+    }
+}
+class ControllerServiceContainer extends ServiceContainer {
+    protected $factories = [];
+    public function __construct(string $name, $value) {
+        ($value instanceof FactoryInterface)? $this->factories[$name] = $value :
+            parent::__construct($name, $value);
+    }
+}
+
+$container = new ControllerServiceContainer('created_date', new \Datetime('now'))
+```
