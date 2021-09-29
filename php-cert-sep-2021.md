@@ -4,6 +4,10 @@
 
 
 ## Homework
+For Fri 01 Oct:
+* All remaining quiz questions (course modules 9 - 12)
+* Final Mock Exam
+
 For Wed 29 Sep:
 * Quiz questions for course module 8 "OOP"
 * Second Mock Exam
@@ -245,3 +249,15 @@ class ControllerServiceContainer extends ServiceContainer {
 
 $container = new ControllerServiceContainer('created_date', new \Datetime('now'))
 ```
+
+Mock Exam #2
+* Ques 1
+  * First answers use `$data` so result is impossible
+  * D and E are correct: answer key needs updating
+  * Change `$data` to `$str` and change to choose 3
+* Ques 5
+  * Leading sentence bad
+* Ques 12
+  * Leading sentence bad
+
+
