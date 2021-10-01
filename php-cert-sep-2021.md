@@ -168,6 +168,13 @@ Questions are drawn from here:
 * https://www.php.net/manual/en/security.php
 Read up on the `crypt()` function
 * https://www.php.net/manual/en/function.crypt.php
+Make sure you read up on `htmlspecialchars()`
+* https://www.php.net/htmlspecialchars
+Do a quick read on the `crypt()` function
+* `password_hash()` leverages this
+* Might be on the test
+File upload documentation
+* https://www.php.net/manual/en/features.file-upload.php
 
 ## Change Request
 * 2-57: answers s/be B & C; D answer makes assumption not born out by the question
@@ -249,6 +256,22 @@ class ControllerServiceContainer extends ServiceContainer {
 
 $container = new ControllerServiceContainer('created_date', new \Datetime('now'))
 ```
+* http://localhost:9999/#/10/26
+  * `random_int()` needs 2 args
+* http://localhost:9999/#/12/8
+```
+try {
+    $pdo = new PDO($params);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (Exception | PDOException $e) {
+    error_log('Database error: ' . $e->getMessage()));
+} catch (Throwable $t) {
+    error_log('General error: ' . $t->getMessage()));
+} finally {
+    echo 'Database connection ';
+    echo ($pdo) ? 'succeeded' : 'failed';
+}
+```
 
 Mock Exam #2
 * Ques 1
@@ -260,4 +283,10 @@ Mock Exam #2
 * Ques 12
   * Leading sentence bad
 
-
+Mock Final Exam:
+* Question 3: missing code block
+* Question 5: maybe not use the word "listing"
+* Question 13: missing \\
+* Question 21: need to add "None of the above"
+* Question 25: missing end };
+* Question 27: missing " in 2nd SQL statement
