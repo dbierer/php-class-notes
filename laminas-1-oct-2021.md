@@ -5,8 +5,13 @@ Oct 2021
 * Get docs on Laminas console commands (and examples)
 * Debug stacked view models example
 * Why are partials able to read variable info from the calling view template?
+* Find examples of Laminas code
+* Get the name of the ZF1 equivalent to listeners and events
 
 ## Homework
+For 27 Oct 2021
+* Lab: Manipulating Views and Layouts
+* Lab: Forms, Filters and Validators
 For 25 Oct 2021
 * Lab: Creating and Accessing a Service
 For 22 Oct 2021
@@ -254,3 +259,12 @@ One: <?= $this->one; ?>
   * Contoller plugin s/be doing something more useful!
 * http://localhost:9999/#/5/20
   * Command shown needs to have namespace using double \\
+* Lab: Creating and Accessing a Service
+  * Step 1: the path s/include `Application` not `application`
+* http://localhost:9999/#/7/13
+  * `WhiteList` is now `AllowList`
+  * `BlackList` is now `DenyList`
+* Lab: Forms, Filters, Validators, Step 10
+  * http://localhost:9999/#/7/53
+  * CAPTCHA: `imgUrl => '/onlinemarket.work/captcha'`
+  * Also: need to create the `captcha` directory and assign permissions to the `apache` group
