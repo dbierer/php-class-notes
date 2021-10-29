@@ -1,14 +1,24 @@
 # Laminas Fundamentals Class Notes
 Oct 2021
 
-## TODO
+## TDO
+Get updated PDF to Jeff when available
+
+## Q & A
 * Get docs on Laminas console commands (and examples)
-* Debug stacked view models example
-* Why are partials able to read variable info from the calling view template?
+  * https://docs.laminas.dev/laminas-cli/intro/
 * Find examples of Laminas code
+  * https://github.com/dbierer/laminas-1-feb-2021
 * Get the name of the ZF1 equivalent to listeners and events
+  * https://framework.zend.com/manual/1.12/en/zend.event-manager.event-manager.html
+* ZF1 Resource Plugins
+  * https://framework.zend.com/manual/1.12/en/zend.application.available-resources.html
+* ZF1 App: https://github.com/dbierer/zf.unlikelysource.net
+ * Demo: http://zf.unlikelysource.net/
 
 ## Homework
+For 29 Oct 2021
+* Lab: Events
 For 27 Oct 2021
 * Lab: Manipulating Views and Layouts
 * Lab: Forms, Filters and Validators
@@ -249,6 +259,25 @@ One: <?= $this->one; ?>
 <br />
 <?= $this->escapeHtml($this->bad); ?>
 ```
+Form generation using configuration:
+* https://github.com/dbierer/laminas-1-feb-2021
+
+Example using SQL generation
+```
+    public function indexAction()
+    {
+		$category = $this->params()->fromRoute('category');
+		$sql = new Sql($this->adapter);
+		$select = $sql->select()->from('listings')->where(['category' => $category]);
+        $queryString = $sql->buildSqlString($select);
+        $result = $this->adapter->query($queryString, Adapter::QUERY_MODE_EXECUTE);
+        return new ViewModel(['category' => $category, 'list' => $result]);
+    }
+```
+Mapping between `module.config.php` keys and `Module` class `get*Config()` methods:
+* https://docs.laminas.dev/laminas-modulemanager/module-manager/#module-manager-listeners
+  * about in the middle of the page
+
 ## Errata
 * "General Troubleshooting"
   * `docker exec -it laminas_1 /bin/bash`
@@ -268,3 +297,18 @@ One: <?= $this->one; ?>
   * http://localhost:9999/#/7/53
   * CAPTCHA: `imgUrl => '/onlinemarket.work/captcha'`
   * Also: need to create the `captcha` directory and assign permissions to the `apache` group
+  * NOTE: same goes for onlinemarket.complete
+* http://localhost:9999/#/9/45
+  * The following line is corrected as follows:
+```
+$rowset = $userTableGateway->selectWith($select);
+```
+* http://localhost:9999/#/10/14
+  * revise this:
+```
+configuration array returned by /config/module.config.php.
+```
+  * To this:
+```
+configuration array returned by /config/modules.config.php.
+```
