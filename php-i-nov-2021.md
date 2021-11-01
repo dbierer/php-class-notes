@@ -1,6 +1,192 @@
 # PHP-I Nov 2021
 
+## TODO
+* Provide links to suggested editors
+* Why is this not working?
+```
+<?php
+$a = '11';
+$b = 2;
+if (ctype_digit($a) && ctype_digit($b)) {
+    $c = $a + $b;
+    var_dump($a, $b, $c);
+} else {
+    echo 'Invalid data encountered';
+}
+```
+
+## Homework
+* For Weds 3 Nov 2021
+  * Create a `hello.php` program in `/home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public`
+    * You use `echo` to output something
+    * Run it from the browser (in the VM): `http://sandbox/hello.php`
+
+
 ## Class Notes
+Example of validating data prior to performing an operation:
+```
+<?php
+$a = '11';
+$b = 2;
+if (filter_var($a, FILTER_VALIDATE_INT) && filter_var($b, FILTER_VALIDATE_INT)) {
+    $c = $a + $b;
+    var_dump($a, $b, $c);
+} else {
+    echo 'Invalid data encountered';
+}
+```
+Forced typecasting is also a form of security:
+```
+<?php
+$a = $_GET['a'] ?? 0;
+$b = $_GET['b'] ?? 0;
+$a = (float) $a;
+$b = (float) $b;
+$c = $a + $b;
+echo "The sum of $a and $b is $c";
+```
+* If the input for `$b` is `http://sandbox/test.php?a=111&b=%3Cscript%3Ealert(%27test%27);%3C/script%3E`
+  * The JavaScript is converted to (int) 0, no harm done
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Good overview of the actual PHP program process
+* https://www.zend.com/blog/exploring-new-php-jit-compiler
 Statistics
 * Database engine rankings:
   * https://db-engines.com/en/ranking
