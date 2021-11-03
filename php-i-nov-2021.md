@@ -1,6 +1,7 @@
 # PHP-I Nov 2021
 
 ## TODO
+* Provide reference to `open_basedir` directive
 * Provide links to suggested editors
 * Why is this not working?
 ```
@@ -16,6 +17,8 @@ if (ctype_digit($a) && ctype_digit($b)) {
 ```
 
 ## Homework
+* For Fri 5 Nov 2021
+  * http://collabedit.com/g4bnj
 * For Weds 3 Nov 2021
   * Create a `hello.php` program in `/home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public`
     * You use `echo` to output something
@@ -23,6 +26,53 @@ if (ctype_digit($a) && ctype_digit($b)) {
 
 
 ## Class Notes
+Array Unpacking:
+```
+<?php
+$foo = [1, 2, 3];
+$baz = [4, 5, 6];
+$bar = [$foo, $baz];
+print_r($bar); //[1, 2, 3]
+$bat = [...$foo, ...$baz];
+print_r($bat); //[1, 2, 3]
+$boo = array_merge($foo, $baz);
+print_r($boo); //[1, 2, 3]
+```
+Different ways of assigning multi-dimensional arrays:
+```
+<?php
+// Plan A
+$mission = [
+	'STS395' => [
+		['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
+		['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
+		['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist'],
+	]
+];
+
+// Output all elements
+print_r($mission);
+
+// Plan B
+$mission = [
+	'STS395' => [
+		'botanist' => ['firstName' => 'Mark', 'lastName' => 'Watney'],
+		'commander' => ['firstName' => 'Melissa', 'lastName' => 'Lewis'],
+		'computer specialist' => ['firstName' => 'Beth', 'lastName' => 'Johanssen'],
+	]
+];
+
+// Output all elements
+print_r($mission);
+```
+
+Predefined constants:
+* https://www.php.net/manual/en/reserved.constants.php
+Virtual Host Settings
+* Apache: https://httpd.apache.org/docs/2.4/vhosts/examples.html
+* Nginx: https://docs.nginx.com/nginx-ingress-controller/configuration/virtualserver-and-virtualserverroute-resources/
+* In the VM: `/etc/apache2/sites-available`
+
 Example of validating data prior to performing an operation:
 ```
 <?php
@@ -48,15 +98,50 @@ echo "The sum of $a and $b is $c";
 * If the input for `$b` is `http://sandbox/test.php?a=111&b=%3Cscript%3Ealert(%27test%27);%3C/script%3E`
   * The JavaScript is converted to (int) 0, no harm done
 
+Form data acquisition and validation
+```
+<?php
+// acquire data
+$name = $_GET['name'] ?? '';
+$age  = $_GET['age']  ?? 0;
+$title = $_GET['title'] ?? '';
+// validation
+$expected = 3;
+$valid = 0;
+if (ctype_alpha($name)) $valid++;
+if ((int) $age > 0) $valid++;
+if (ctype_alpha($title)) $valid++;
+// validation outcome
+if ($expected === $valid) {
+	echo 'Valid Data';
+} else {
+	echo 'Data is invalid';
+}
+```
+Example of `ternary` operation
+```
+<?php
+$gender = $_GET['gender'] ?? 'M';
+$text = ($gender === 'F') ? 'She' : 'He';
+echo $text . ' said that today is ' . date('l');
+```
+Takes the first non-NULL value:
+```
+<?php
+$token = $_GET['token'] ?? $_POST['token'] ?? $_COOKIE['token'] ?? 'xxx';
+```
+Nested ternary construct requires parentheses in PHP 8
+```
+<?php
+$gender = $_GET['gender'] ?? 'X';
+$text = ($gender === 'F') ? 'She' : (($gender === 'M') ? 'He' : 'He/She');
+echo $text . ' said that today is ' . date('l');
+```
 
-
-
-
-
-
-
-
-
+## Errata
+* http://localhost:8888/#/4/14
+  * S/be as follows:
+```
 
 
 
@@ -942,3 +1027,9 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 ## Miscellaneous
 Highly recommended JavaScript library
 * https://jquery.com/
+How do you get rid of `System Program Error Detected` messages in the VM?
+* Run this command:
+```
+sudo rm /var/crash/*
+```
+* The `sudo` password is `vagrant`
