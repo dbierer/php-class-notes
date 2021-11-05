@@ -1,5 +1,17 @@
 # PHP-I Nov 2021
 
+## IMPORTANT
+Clocks change in the US on 7 November (Sunday)
+* Class is scheduled at 4 AM Eastern Time
+* Make sure you adjust for the time difference
+These are the corresponding times for your meeting:
+
+Location	Local Time	Time Zone	UTC Offset
+New York (USA - New York)	Monday, 8 November 2021, 04:00:00	EST	UTC-5 hours
+London (United Kingdom - England)	Monday, 8 November 2021, 09:00:00	GMT	UTC
+Amsterdam (Netherlands)	Monday, 8 November 2021, 10:00:00	CET	UTC+1 hour
+Corresponding UTC (GMT)	Monday, 8 November 2021, 09:00:00
+
 ## TODO
 * Provide reference to `open_basedir` directive
 * Provide links to suggested editors
@@ -17,6 +29,11 @@ if (ctype_digit($a) && ctype_digit($b)) {
 ```
 
 ## Homework
+* For Mon 8 Nov 2021
+  * http://collabedit.com/vubjm
+  * Extra: build a PHP program `select.php` that generates an HTML SELECT element (dropdown list)
+    * Do this in the VM
+	* Create the `select.php` program in `/home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public`
 * For Fri 5 Nov 2021
   * http://collabedit.com/g4bnj
 * For Weds 3 Nov 2021
@@ -1022,6 +1039,128 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 // use this is expected return is no more than 1000 to 2000 rows
 // $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
+```
+Example of `match` expression
+```
+<?php
+$case = $_GET['case'] ?? 1;
+$case = (int) $case;
+$data = $_GET['data'] ?? 'Default';
+$data = match($case) {
+    0 => strtolower($data),
+    1 => strtoupper($data),
+    default => $data
+};
+echo $data;
+```
+How to do a redirect in PHP:
+```
+header('Location: ' . $url);
+exit;
+```
+Using `foreach()` to generate an HTML `SELECT` element
+```
+<?php
+$donuts = [
+    'glazed' => 'Glazed Donuts',
+    'choco'  => 'Chocolate Donut',
+    'cherry' => 'Cherry Filled',
+    'creme'  => 'Creme Filled',
+];
+$html = '';
+$html .= '<select name="donut">';
+foreach ($donuts as $key => $val) {
+	$html .= '<option value="' . $key . '">' . $val . '</option>';
+}
+$html .= '</select>';
+?>
+<form method="post">
+<?= $html ?>
+<br />
+<input type="submit" />
+</form>
+```
+Example of `for()` loop
+```
+<?php
+$alpha = range('A', 'Z');
+$start = 13;
+$length = 6;
+for ($x = $start; $x < ($start + $length); $x++) {
+    echo $alpha[$x];
+}
+```
+Example of `while()` loop using `time()` as the criteria
+```
+<?php
+$interval = 5;
+$start    = time();
+$end      = $start + $interval;
+$count    = 0;
+while (time() < $end) {
+    echo '.';
+    $count += 1;
+}
+echo "We just displayed $count number of dots in $interval seconds\n";
+```
+Example of `continue` as part of a form sanitization example
+```
+<?php
+$post = $_POST;
+$hash = bin2hex(random_bytes(8));
+$clean = [];
+foreach ($post as $key => $value) {
+    if ($key === 'hash') continue;
+    $clean[$key] = trim(strip_tags($value));
+}
+var_dump($clean);
+?>
+<form method="post">
+<br>First: <input type="text" name="first" />
+<br>Last: <input type="text" name="last" />
+<br>City: <input type="text" name="city" />
+<input type="hidden" name="hash" value="<?= $hash ?>" />
+<br><input type="submit" />
+</form>
+```
+Using `list()` to unpack an inner array
+```
+<?php
+$mission = [
+    'STS395' => [
+        ['firstName' => 'Fred', 'lastName' => 'Flintstone', 'specialty' => 'Caveman'],
+        ['firstName' => 'Barney', 'lastName' => 'Rubble', 'specialty' => 'Caveman Assistant'],
+    ],
+    'STS396' => [
+        ['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
+        ['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
+        ['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist'],
+    ],
+];
+
+foreach ($mission as $id => $astronauts) {
+	echo "Processing $id\n";
+	foreach ($astronauts as list('firstName' => $first, 'lastName' => $last, 'specialty' => $special)) {
+		echo "$first $last $special\n";
+	}
+}
+```
+Ticks
+* https://www.php.net/manual/en/control-structures.declare.php#control-structures.declare.ticks
+* This is used by certain PHP Async frameworks such as ReactPHP
+
+The primary reason why you must provide type-hints is if a component in the function is sensitive to a particular data-type
+* Example: the `foreach()` loop requires an `array` or an "iterable" equivalent:
+```
+<?php
+function sum(array $arr) : float
+{
+    $sum = 0;
+    foreach ($arr as $item) $sum += $item;
+    return $sum;
+}
+
+echo sum(1,2,3,4,);
 ```
 
 ## Miscellaneous
