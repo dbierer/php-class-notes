@@ -6,16 +6,26 @@ Clocks change in the US on 7 November (Sunday)
 * Make sure you adjust for the time difference
 These are the corresponding times for your meeting:
 
-Location	Local Time	Time Zone	UTC Offset
-New York (USA - New York)	Monday, 8 November 2021, 04:00:00	EST	UTC-5 hours
-London (United Kingdom - England)	Monday, 8 November 2021, 09:00:00	GMT	UTC
-Amsterdam (Netherlands)	Monday, 8 November 2021, 10:00:00	CET	UTC+1 hour
-Corresponding UTC (GMT)	Monday, 8 November 2021, 09:00:00
+| Location | Local Time | UTC Offset |
+| :------- | :--------- | :--------- |
+| New York (USA - New York) | Monday, 8 November 2021, 04:00:00 EST | UTC-5 hours |
+| London (United Kingdom - England) | Monday, 8 November 2021, 09:00:00 GMT | UTC+0 |
+| Amsterdam (Netherlands) | Monday, 8 November 2021, 10:00:00 CET | UTC+1 hour |
+| UTC (GMT) | Monday, 8 November 2021, 09:00:00 | UTC |
 
-## TODO
-* Provide reference to `open_basedir` directive
-* Provide links to suggested editors
-* Why is this not working?
+## Q & A
+* Q: Provide reference to `open_basedir` directive
+* A: Limit the files that can be accessed by PHP to the specified directory-tree, including the file itself.
+* A: https://www.php.net/manual/en/ini.core.php#ini.open-basedir
+
+* Q: Provide links to suggested editors.  All of these support PHP. NetBeans and Eclipse are Java oriented, but support PHP.  PHPStorm is specifically designed for PHP, but is not free.  Geany is the fastest.
+* A: Geany (open source, free): https://geany.org/
+* A: VSCode (Microsoft, free for now): https://code.visualstudio.com/
+* A: NetBeans (Apache Software Foundation, open source, free): https://netbeans.apache.org/
+* A: Eclipse: (Eclipse Foundation, open source, free): https://www.eclipse.org/eclipseide/
+* A: PhpStorm: (Jetbrains, not free): https://www.jetbrains.com/phpstorm/
+
+* Q: Why is this not working?
 ```
 <?php
 $a = '11';
@@ -27,13 +37,35 @@ if (ctype_digit($a) && ctype_digit($b)) {
     echo 'Invalid data encountered';
 }
 ```
+* A: If a numeric argument is supplied, ctype_digit() converts it to an ASCII character if it's between -128 and 255 and then checks to see if the ASCII character is within range of "0-9"
+* A: Have a look at this example:
+```
+<?php
+// Best Practice: only supply data type "string" as an argument to ctype_digit()
+// See: https://www.php.net/ctype_digit
+
+$a = ['1111', 49, '99.99', 'xxx', 42];
+foreach ($a as $item) {
+    echo "$item does ";
+    echo (ctype_digit($item)) ? '' : 'NOT';
+    echo " contain only digits\n";
+}
+// output:
+/*
+1111 does  contain only digits
+49 does  contain only digits
+99.99 does NOT contain only digits
+xxx does NOT contain only digits
+42 does NOT contain only digits
+ */
+```
 
 ## Homework
 * For Mon 8 Nov 2021
   * http://collabedit.com/vubjm
   * Extra: build a PHP program `select.php` that generates an HTML SELECT element (dropdown list)
     * Do this in the VM
-	* Create the `select.php` program in `/home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public`
+        * Create the `select.php` program in `/home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public`
 * For Fri 5 Nov 2021
   * http://collabedit.com/g4bnj
 * For Weds 3 Nov 2021
@@ -60,11 +92,11 @@ Different ways of assigning multi-dimensional arrays:
 <?php
 // Plan A
 $mission = [
-	'STS395' => [
-		['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
-		['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
-		['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist'],
-	]
+        'STS395' => [
+                ['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
+                ['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
+                ['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist'],
+        ]
 ];
 
 // Output all elements
@@ -72,11 +104,11 @@ print_r($mission);
 
 // Plan B
 $mission = [
-	'STS395' => [
-		'botanist' => ['firstName' => 'Mark', 'lastName' => 'Watney'],
-		'commander' => ['firstName' => 'Melissa', 'lastName' => 'Lewis'],
-		'computer specialist' => ['firstName' => 'Beth', 'lastName' => 'Johanssen'],
-	]
+        'STS395' => [
+                'botanist' => ['firstName' => 'Mark', 'lastName' => 'Watney'],
+                'commander' => ['firstName' => 'Melissa', 'lastName' => 'Lewis'],
+                'computer specialist' => ['firstName' => 'Beth', 'lastName' => 'Johanssen'],
+        ]
 ];
 
 // Output all elements
@@ -130,9 +162,9 @@ if ((int) $age > 0) $valid++;
 if (ctype_alpha($title)) $valid++;
 // validation outcome
 if ($expected === $valid) {
-	echo 'Valid Data';
+        echo 'Valid Data';
 } else {
-	echo 'Data is invalid';
+        echo 'Data is invalid';
 }
 ```
 Example of `ternary` operation
@@ -154,138 +186,6 @@ $gender = $_GET['gender'] ?? 'X';
 $text = ($gender === 'F') ? 'She' : (($gender === 'M') ? 'He' : 'He/She');
 echo $text . ' said that today is ' . date('l');
 ```
-
-## Errata
-* http://localhost:8888/#/4/14
-  * S/be as follows:
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 Good overview of the actual PHP program process
 * https://www.zend.com/blog/exploring-new-php-jit-compiler
@@ -326,7 +226,7 @@ http://sandbox/NAME_OF_PROGRAM.php
  */
 function add(int $a, int $b) : int
 {
-	return $a + $b;
+        return $a + $b;
 }
 
 echo add(2,2);
@@ -338,7 +238,7 @@ echo "\n";
 #[returns(a - b)]
 function sub(int $a, int $b) : int
 {
-	return $a - $b;
+        return $a - $b;
 }
 
 echo sub(2,2);
@@ -388,8 +288,8 @@ $baz = 99;
 // this use of the variadics operator
 // has the effect of "packing" the array
 function sum(...$args){
-	// if you allow for an unlimited # arguments
-	// you need to write you function to account for that
+        // if you allow for an unlimited # arguments
+        // you need to write you function to account for that
     return array_sum($args);
 }
 echo sum($foo, $bar, $baz, 9999); // 15
@@ -435,11 +335,11 @@ When assigning multi-dimensional arrays, if the values are known in advance, use
 <?php
 // Build the crew
 $mission = [
-	'STS395' => [
-		['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
-		['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
-		['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist'],
-	]
+        'STS395' => [
+                ['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
+                ['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
+                ['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist'],
+        ]
 ];
 
 // Output all elements
@@ -477,12 +377,12 @@ $id = $_GET['id'] ?? $_POST['id'] ?? $_SESSION['id'] ?? $_COOKIE['id'] ?? 0;
 // in PHP 8 use of parentheses are mandatory
 // NOT recommended!
 $id = ((!empty($_GET['id']))
-	? $_GET['id']
-	: ((!empty($_POST['id']))
-		? $_POST['id']
-		: ((!empty($_SESSION['id']))
-			? $_SESSION['id']
-			: 0)));
+        ? $_GET['id']
+        : ((!empty($_POST['id']))
+                ? $_POST['id']
+                : ((!empty($_SESSION['id']))
+                        ? $_SESSION['id']
+                        : 0)));
 ```
 Example of nested `foreach()` loops
 ```
@@ -500,10 +400,10 @@ $mission = [
 ];
 
 foreach ($mission as $key => $value) {
-	echo "Mission: $key\n";
-	foreach ($value as $i => $entry) {
-		echo $entry['firstName'] . ' ' . $entry['lastName'] . "\n";
-	}
+        echo "Mission: $key\n";
+        foreach ($value as $i => $entry) {
+                echo $entry['firstName'] . ' ' . $entry['lastName'] . "\n";
+        }
 }
 ```
 Example of unpacking an array into individual variables:
@@ -522,18 +422,18 @@ $mission = [
 ];
 
 foreach ($mission as $key => $value) {
-	echo "Mission: $key\n";
-	foreach ($value as $i => list('firstName' => $first, 'lastName' => $last)) {
-		echo $first . ' ' . $last . "\n";
-	}
+        echo "Mission: $key\n";
+        foreach ($value as $i => list('firstName' => $first, 'lastName' => $last)) {
+                echo $first . ' ' . $last . "\n";
+        }
 }
 
 foreach ($mission as $key => $value) {
-	echo "Mission: $key\n";
-	foreach ($value as $i => $entry) {
-		extract($entry);
-		echo $firstName . ' ' . $lastName . "\n";
-	}
+        echo "Mission: $key\n";
+        foreach ($value as $i => $entry) {
+                extract($entry);
+                echo $firstName . ' ' . $lastName . "\n";
+        }
 }
 
 
@@ -551,19 +451,19 @@ $mission = [
 
 // unpack a numeric array in the foreach() directly
 foreach ($mission as $key => $value) {
-	echo "Mission: $key\n";
-	foreach ($value as $i => list($first, $last, $specialty)) {
-		echo "$first $last is a $specialty\n";
-	}
+        echo "Mission: $key\n";
+        foreach ($value as $i => list($first, $last, $specialty)) {
+                echo "$first $last is a $specialty\n";
+        }
 }
 
 // unpack a numeric array inside the foreach() loop
 foreach ($mission as $key => $value) {
-	echo "Mission: $key\n";
-	foreach ($value as $i => $entry) {
-		[$first, $last, $specialty] = $entry;
-		echo "$first $last is a $specialty\n";
-	}
+        echo "Mission: $key\n";
+        foreach ($value as $i => $entry) {
+                [$first, $last, $specialty] = $entry;
+                echo "$first $last is a $specialty\n";
+        }
 }
 ```
 Once the objective has been achieved: exit the loop.
@@ -571,24 +471,24 @@ In this example, once an 'ERROR' has been found, we're done!
 ```
 <?php
 $messages = [
-	'Operation succeeded',
-	'ERROR 402',
-	'Parse ERROR',
-	'Everything OK',
+        'Operation succeeded',
+        'ERROR 402',
+        'Parse ERROR',
+        'Everything OK',
 ];
 
 $found = 0;
 $search = 'ERROR';
 foreach ($messages as $item) {
     // "str_contains()" is only available in PHP 8!
-	if (str_contains($item, $search)) {
-		$found++;
-		break;
-	}
+        if (str_contains($item, $search)) {
+                $found++;
+                break;
+        }
 }
 echo ($found)
-	? 'ERROR found'
-	: 'All OK';
+        ? 'ERROR found'
+        : 'All OK';
 echo "\n";
 ```
 You should provide a data type hint for functions with components that are sensitive to the wrong data type
@@ -597,26 +497,26 @@ You should provide a data type hint for functions with components that are sensi
 ```
 function searchForError(array $messages) : int
 {
-	$found = 0;
-	$search = 'ERROR';
-	foreach ($messages as $item) {
-		if (str_contains($item, $search)) {
-			$found++;
-			break;
-		}
-	}
-	return $found;
+        $found = 0;
+        $search = 'ERROR';
+        foreach ($messages as $item) {
+                if (str_contains($item, $search)) {
+                        $found++;
+                        break;
+                }
+        }
+        return $found;
 }
 $messages = [
-	'Operation succeeded',
-	'ERROR 402',
-	'Parse ERROR',
-	'Everything OK',
+        'Operation succeeded',
+        'ERROR 402',
+        'Parse ERROR',
+        'Everything OK',
 ];
 
 echo (searchForError('WHATEVER'))
-	? 'ERROR found'
-	: 'All OK';
+        ? 'ERROR found'
+        : 'All OK';
 ```
 Use `declare(strict_types=1)` to enforce all type hints for that file
 ```
@@ -626,7 +526,7 @@ declare(strict_types=1);
 // Example of function using "type hinting"
 function add(int $a, int $b) : int
 {
-	return $a + $b;
+        return $a + $b;
 }
 
 echo "The sum of 2 and 2 is " . add(2, 2) . "\n";
@@ -640,7 +540,7 @@ Nullable type: `?string` === `string|null`
 
 function get_full_name(string $first, string $last, string|null $middle = NULL)
 {
-	return ($middle) ? "$first $middle $last\n" : "$first $last\n";
+        return ($middle) ? "$first $middle $last\n" : "$first $last\n";
 }
 
 echo get_full_name('Fred', 'Flintstone', 'John');
@@ -651,7 +551,7 @@ echo get_full_name('Barney', 'Rubble');
 
 function get_full_name2(string $first, string $last, ?string $middle = NULL)
 {
-	return ($middle) ? "$first $middle $last\n" : "$first $last\n";
+        return ($middle) ? "$first $middle $last\n" : "$first $last\n";
 }
 
 echo get_full_name2('Fred', 'Flintstone', 'John');
@@ -663,7 +563,7 @@ Union types can go overboard:
 // a bit ridiculous:
 function dump(int|float|string|bool|array|object $whatever)
 {
-	var_dump($whatever);
+        var_dump($whatever);
 }
 
 dump(new ArrayObject());
@@ -672,7 +572,7 @@ dump([1,2,3,4,5]);
 // this makes more sense:
 function dump2(mixed $whatever)
 {
-	var_dump($whatever);
+        var_dump($whatever);
 }
 
 dump(new ArrayObject());
@@ -725,28 +625,28 @@ Example using pass-by-reference for validation
 <?php
 function validate(array $data, string &$err_msg) : bool
 {
-	$error = 0;
-	// checks for only alpha characters
-	if (!ctype_alpha($data['name'])) {
-		$err_msg .= "Only letters are allowed in the name\n";
-		$error++;
-	}
-	if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-		$err_msg .= "Invalid email address\n";
-		$error++;
-	}
-	return ($error === 0);
+        $error = 0;
+        // checks for only alpha characters
+        if (!ctype_alpha($data['name'])) {
+                $err_msg .= "Only letters are allowed in the name\n";
+                $error++;
+        }
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                $err_msg .= "Invalid email address\n";
+                $error++;
+        }
+        return ($error === 0);
 }
 
 $data = [
-	'name' => 12345,
-	'email' => 'bad.email.address'
+        'name' => 12345,
+        'email' => 'bad.email.address'
 ];
 $message = '';
 if (validate($data, $message)) {
-	echo "All OK\n";
+        echo "All OK\n";
 } else {
-	echo $message;
+        echo $message;
 }
 ```
 Calling program for the Forms demo in VM:
@@ -766,13 +666,13 @@ $a = 5398;
 printf('%016b', $a);
 echo "\n";
 
-$data =	[
-	['Fred', 999.99, 'Caveman'],
-	['Wilma', 888.88, 'Cavewoman'],
+$data = [
+        ['Fred', 999.99, 'Caveman'],
+        ['Wilma', 888.88, 'Cavewoman'],
 ];
 
 foreach ($data as $row)
-	vprintf('Name: %12s : Amount %8.2f : Title: %12s' . "\n", $row);
+        vprintf('Name: %12s : Amount %8.2f : Title: %12s' . "\n", $row);
 ```
 Example of using `substr()` to extract a filename extension
 ```
@@ -795,9 +695,9 @@ $fn   = 'test.php';
 // alternative syntax:
 // if ($path[-1] === '/') {
 if ($path[strlen($path) - 1] === '/') {
-	$final = $path . $fn;
+        $final = $path . $fn;
 } else {
-	$final = $path . '/' . $fn;
+        $final = $path . '/' . $fn;
 }
 echo str_replace('//', '/', $final) . "\n";
 ```
@@ -808,15 +708,15 @@ Example of a callback tree that produces output in different formats
 $arr = ['A' => 111,'B' => 222,'C' => 333];
 
 $callbacks = [
-	// arrow function works well here
-	'json' => fn(array $data) => json_encode($data, JSON_PRETTY_PRINT),
-	// needs multiple lines of code, so we use an anonymous function
-	'html' => function (array $data) {
-		$out = '<table>';
-		foreach ($data as $key => $value)
-			$out .= '<tr><th>' . $key . '</th><td>' . $value . '</td></tr>';
-		$out .= '</table>';
-		return $out; }
+        // arrow function works well here
+        'json' => fn(array $data) => json_encode($data, JSON_PRETTY_PRINT),
+        // needs multiple lines of code, so we use an anonymous function
+        'html' => function (array $data) {
+                $out = '<table>';
+                foreach ($data as $key => $value)
+                        $out .= '<tr><th>' . $key . '</th><td>' . $value . '</td></tr>';
+                $out .= '</table>';
+                return $out; }
 ];
 
 echo $callbacks['json']($arr);
@@ -834,9 +734,9 @@ $fn = '/home/vagrant/Downloads/countryInfo.txt';
 $fh = fopen($fn, 'r');
 $data = [];
 while (!feof($fh)) {
-	$temp = fgetcsv($fh, separator:"\t");
-	if (empty($temp) || $temp[0][0] === '#') continue;
-	$data[] = $temp;
+        $temp = fgetcsv($fh, separator:"\t");
+        if (empty($temp) || $temp[0][0] === '#') continue;
+        $data[] = $temp;
 }
 var_dump($data);
 ```
@@ -956,26 +856,26 @@ $message = '';
 $daySelect = '';
 $dayCheck  = [];
 if (!empty($_POST)) {
-	// validate name
-	$name = $_POST['name'] ?? '';
-	if ($name) {
-		if (strlen($name) > 16) {
-			$message .= "Name must be 16 chars or less\n";
-			$error++;
-		}
-		if (!ctype_alpha($name)) {
-			$message .= "Name must have only letters\n";
-			$error++;
-		}
-		// example of filtering
-		$name = strip_tags($name);
-	}
-	// validate day_select
-	$daySelect = $_POST['day_select'] ?? '';
-	if (!in_array($daySelect, $allowed)) {
-		$message .= "Day was not included in the set of allowed days\n";
-		$error++;
-	}
+        // validate name
+        $name = $_POST['name'] ?? '';
+        if ($name) {
+                if (strlen($name) > 16) {
+                        $message .= "Name must be 16 chars or less\n";
+                        $error++;
+                }
+                if (!ctype_alpha($name)) {
+                        $message .= "Name must have only letters\n";
+                        $error++;
+                }
+                // example of filtering
+                $name = strip_tags($name);
+        }
+        // validate day_select
+        $daySelect = $_POST['day_select'] ?? '';
+        if (!in_array($daySelect, $allowed)) {
+                $message .= "Day was not included in the set of allowed days\n";
+                $error++;
+        }
 }
 $message .= ($error === 0) ? "Form data is valid\n" : "Form data has errors\n";
 ?>
@@ -989,7 +889,7 @@ Name: <input type="text" name="name" value="<?= htmlspecialchars($name) ?>" />
 <br />
 <?php
 foreach ($days as $day) {
-	echo '<input type="checkbox" name="day_check[]" value="' . $day . '" />' . $day . '&nbsp;';
+        echo '<input type="checkbox" name="day_check[]" value="' . $day . '" />' . $day . '&nbsp;';
 }
 ?>
 </select>
@@ -1007,12 +907,12 @@ $list = glob($path . '/*');
 echo '<table>';
 echo '<tr><th>Name</th><th>Size in Bytes</th><th>Lines</th></tr>';
 foreach ($list as $fn) {
-	echo '<tr>';
-	echo "<td>" . basename($fn) . "</td>";
-	echo '<td>' . filesize($fn) . '</td>';
-	$lines = count(file($fn)) - 1;
-	echo "<td>$lines</td>";
-	echo '</tr>';
+        echo '<tr>';
+        echo "<td>" . basename($fn) . "</td>";
+        echo '<td>' . filesize($fn) . '</td>';
+        $lines = count(file($fn)) - 1;
+        echo "<td>$lines</td>";
+        echo '</tr>';
 }
 echo "</table>\n";
 ```
@@ -1027,11 +927,11 @@ Basic query example
 <?php
 $conn = mysqli_connect('localhost', 'vagrant', 'vagrant', 'phpcourse');
 $result = mysqli_query($conn, 'SELECT * FROM customers');
-$num_rows = mysqli_row_count($result);	// especially useful for INSERT, UPDATE and DELETE
+$num_rows = mysqli_row_count($result);  // especially useful for INSERT, UPDATE and DELETE
 // gives results 1 row at a time
 // use this if you anticipate a large result set
 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-	var_dump($row);
+        var_dump($row);
 }
 
 
@@ -1070,7 +970,7 @@ $donuts = [
 $html = '';
 $html .= '<select name="donut">';
 foreach ($donuts as $key => $val) {
-	$html .= '<option value="' . $key . '">' . $val . '</option>';
+        $html .= '<option value="' . $key . '">' . $val . '</option>';
 }
 $html .= '</select>';
 ?>
@@ -1139,10 +1039,10 @@ $mission = [
 ];
 
 foreach ($mission as $id => $astronauts) {
-	echo "Processing $id\n";
-	foreach ($astronauts as list('firstName' => $first, 'lastName' => $last, 'specialty' => $special)) {
-		echo "$first $last $special\n";
-	}
+        echo "Processing $id\n";
+        foreach ($astronauts as list('firstName' => $first, 'lastName' => $last, 'specialty' => $special)) {
+                echo "$first $last $special\n";
+        }
 }
 ```
 Ticks
@@ -1172,3 +1072,9 @@ How do you get rid of `System Program Error Detected` messages in the VM?
 sudo rm /var/crash/*
 ```
 * The `sudo` password is `vagrant`
+
+## Errata
+* http://localhost:8888/#/4/14
+  * S/be as follows:
+```
+```
