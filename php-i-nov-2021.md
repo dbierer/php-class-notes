@@ -13,6 +13,23 @@ These are the corresponding times for your meeting:
 | Amsterdam (Netherlands) | Monday, 8 November 2021, 10:00:00 CET | UTC+1 hour |
 | UTC (GMT) | Monday, 8 November 2021, 09:00:00 | UTC |
 
+## Homework
+* For Wed 10 Nov 2021
+  * Review the "OrderApp"
+  * Come to class with any questions
+* For Mon 8 Nov 2021
+  * http://collabedit.com/vubjm
+  * Extra: build a PHP program `select.php` that generates an HTML SELECT element (dropdown list)
+    * Do this in the VM
+        * Create the `select.php` program in `/home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public`
+* For Fri 5 Nov 2021
+  * http://collabedit.com/g4bnj
+* For Weds 3 Nov 2021
+  * Create a `hello.php` program in `/home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public`
+    * You use `echo` to output something
+    * Run it from the browser (in the VM): `http://sandbox/hello.php`
+
+
 ## Q & A
 * Q: Provide reference to `open_basedir` directive
 * A: Limit the files that can be accessed by PHP to the specified directory-tree, including the file itself.
@@ -59,20 +76,6 @@ xxx does NOT contain only digits
 42 does NOT contain only digits
  */
 ```
-
-## Homework
-* For Mon 8 Nov 2021
-  * http://collabedit.com/vubjm
-  * Extra: build a PHP program `select.php` that generates an HTML SELECT element (dropdown list)
-    * Do this in the VM
-        * Create the `select.php` program in `/home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public`
-* For Fri 5 Nov 2021
-  * http://collabedit.com/g4bnj
-* For Weds 3 Nov 2021
-  * Create a `hello.php` program in `/home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public`
-    * You use `echo` to output something
-    * Run it from the browser (in the VM): `http://sandbox/hello.php`
-
 
 ## Class Notes
 Array Unpacking:
@@ -1062,6 +1065,190 @@ function sum(array $arr) : float
 
 echo sum(1,2,3,4,);
 ```
+Homework example from Marc rewritten slightly:
+```
+<?php
+$pastPurchases = [
+    '001' => [
+        'product' => 'Swimming Pool',
+        'price' => 1000,
+        'amount' => 2,
+        'date' => time()
+    ],
+    '002' => [
+        'product' => 'Car',
+        'price' => 25000,
+        'amount' => 1,
+        'date' => time()
+    ],
+    '003' => [
+        'product' => 'Rocket Launcher',
+        'price' => 10,
+        'amount' => 20,
+        'date' => time()
+    ],
+    '004' => [
+        'product' => 'Coffee Robot',
+        'price' => 25,
+        'amount' => 10,
+        'date' => time()
+    ]
+];
+$i = 0;
+$max = count($pastPurchases);
+do {
+	$orderNum = key($pastPurchases);
+	$orderInfo = current($pastPurchases);
+	echo "\n\n\nOrder number: $orderNum contains \n";
+	foreach ($orderInfo as $key => $value){
+		echo "$key:   $value \n";
+	}
+	next($pastPurchases);
+    $i++;
+} while ($i < $max);
+
+// OOP style:
+$iterator = new ArrayIterator($pastPurchases);
+do {
+	$orderNum = $iterator->key();
+	$orderInfo = $iterator->current();
+	echo "\n\n\nOrder number: $orderNum contains \n";
+	foreach ($orderInfo as $key => $value){
+		echo "$key:   $value \n";
+	}
+	$iterator->next();
+} while ($iterator->valid());
+```
+Type hinting
+* If `declare(strict_types=1);` is not set, the type for float, int, boolean and string serves as a type-cast only
+* If you do set strict types, the type hint is strictly enforced
+```
+<?php
+// if this is not in effect, the example works:
+declare(strict_types=1);
+function sum(int $a, int $b) : int
+{
+	return $a + $b;
+}
+echo sum('88', '22');
+```
+In PHP 7 and below to add `NULL` as a type hint, just precede the existing type hint with a `?`
+```
+<?php
+declare(strict_types=1);
+// "?string" is the same as "string|null"
+function welcome(?string $arg = 'JavaScript',) :string {
+    return "Welcome to the wonderful world of $arg coding";
+}
+
+echo welcome();
+echo welcome('PHP');
+echo welcome(NULL);
+```
+In PHP 8 and above, you can skip intermediary params (if they have defaults) and name only the one you want:
+```
+<?php
+// this works in PHP 8
+setcookie('test', date('Ymd'), httponly:TRUE);
+
+// in PHP 7, you'd have to do this:
+setcookie('test', date('Ymd'), 0, '', '', FALSE, TRUE);
+```
+Example of unlimited args:
+```
+<?php
+// older way to define a function with unlimited args:
+function superVarDump()
+{
+	$args = func_get_args();
+	var_dump(...$args);
+}
+// this approach does the same thing, but is preferred:
+function superVarDump2(...$args)
+{
+	var_dump(...$args);
+}
+
+
+$a = [1,2,3];
+$b = 'TEST';
+$c = TRUE;
+$d = 111.222;
+
+superVarDump($a, $b, $c, $d);
+echo "\n";
+superVarDump2($a, $b, $c, $d);
+```
+Example using `substr()` to secure output of sensitive data
+```
+<?php
+function process($ccNum, $amount)
+{
+	// do something
+	return TRUE;
+}
+
+$payments = [
+	'1111-2222-3333-4444' => 99.99,
+	'2222-3333-4444-5555' => 99.99,
+	'3333-4444-5555-6666' => 99.99,
+];
+
+foreach ($payments as $ccNum => $amount) {
+	if (process($ccNum, $amount)) {
+		// takes the substring counting from the beginning:
+		// $secure = '****-****-****-' . substr($ccNum, 15);
+		// takes the substring counting from the end:
+		$secure = '****-****-****-' . substr($ccNum, -4);
+		echo "$secure successfully process $amount\n";
+	}
+}
+```
+Another approach using `explode()` to split the CC number by the `-`
+```
+foreach ($payments as $ccNum => $amount) {
+	if (process($ccNum, $amount)) {
+		$ccData = explode('-', $ccNum);
+		$secure = '****-****-****-' . array_pop($ccData);
+		echo "$secure successfully process $amount\n";
+	}
+}
+```
+
+For representings date based upon locale, use this class:
+* https://www.php.net/IntlDateFormatter
+To get info on incoming information:
+```
+<?php
+phpinfo(INFO_VARIABLES);
+```
+Example using Anonymous Functions as a form post data filtering mechanism
+```
+<?php
+$clean = [];
+$filter = [
+    'trim' => function ($data) { return trim($data); },
+    'strip'=> function ($data) { return strip_tags($data); },
+];
+if (!empty($_POST)) {
+    foreach ($_POST as $key => $item) {
+        foreach ($filter as $filt => $func) {
+            $item = $func($item);
+    	}
+    	$clean[$key] = $item;
+    }
+}
+?>
+<form method="post">
+Name: <input type="text" name="name" />
+<br />City: <input type="text" name="city" />
+<br />Email: <input type="email" name="email" />
+<br />Date: <input type="date" name="date" />
+<br /><input type="submit" />
+</form>
+<?= implode('< br/>', $clean) ?>
+```
+
 
 ## Miscellaneous
 Highly recommended JavaScript library
@@ -1077,4 +1264,10 @@ sudo rm /var/crash/*
 * http://localhost:8888/#/4/14
   * S/be as follows:
 ```
+```
+* http://localhost:8888/#/5/26
+  * As written, the `mysqli_connect()` return value is not assigned, therefore it's useless
+  * s/be
+```
+$connect = mysqli_connect(xxx, yyy, etc.);
 ```
