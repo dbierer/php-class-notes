@@ -1,19 +1,12 @@
 # PHP-I Nov 2021
 
-## IMPORTANT
-Clocks change in the US on 7 November (Sunday)
-* Class is scheduled at 4 AM Eastern Time
-* Make sure you adjust for the time difference
-These are the corresponding times for your meeting:
+## TO DO
+* Track down contents of `php1` folder and make available
 
-| Location | Local Time | UTC Offset |
-| :------- | :--------- | :--------- |
-| New York (USA - New York) | Monday, 8 November 2021, 04:00:00 EST | UTC-5 hours |
-| London (United Kingdom - England) | Monday, 8 November 2021, 09:00:00 GMT | UTC+0 |
-| Amsterdam (Netherlands) | Monday, 8 November 2021, 10:00:00 CET | UTC+1 hour |
-| UTC (GMT) | Monday, 8 November 2021, 09:00:00 | UTC |
 
 ## Homework
+* For Fri 12 Nov 2021
+  * http://collabedit.com/22wkm
 * For Wed 10 Nov 2021
   * Review the "OrderApp"
   * Come to class with any questions
@@ -78,6 +71,7 @@ xxx does NOT contain only digits
 ```
 
 ## Class Notes
+Web Server Survey: https://news.netcraft.com/archives/category/web-server-survey/
 Array Unpacking:
 ```
 <?php
@@ -1248,7 +1242,92 @@ Name: <input type="text" name="name" />
 </form>
 <?= implode('< br/>', $clean) ?>
 ```
-
+Same example, but rewritten using "arrow functions"
+```
+$filter = [
+    'trim' => fn ($data) => trim($data),
+    'strip'=> fn ($data) => strip_tags($data),
+];
+```
+Using `geonames.org` post code data to lookup a city based upon postcode
+```
+<?php
+// assumes the geonames file has been downloaded
+function getCityFromPostCode(string $input)
+{
+	$fn = __DIR__ . '/../data/NL_full.txt';
+	$fh = fopen($fn, 'r');
+	while ($row = fgetcsv($fh, 1024, "\t")) {
+		if (!empty($row[1])) {
+			$postCode = trim($row[1]);
+			$city     = trim($row[2]);
+			if ($postCode === $input) {
+				echo $city . "\n";
+				break;
+			}
+		}
+	}
+	fclose($fh);
+}
+$input = $_GET['postcode'] ?? '';
+if (!empty($input)) getCityFromPostCode($input);
+?>
+<form method="GET">
+Please enter a postcode:
+<input type="text" name="postcode" />
+<input type="submit" />
+</form>
+```
+Example using `file_get_contents()` and `str_ireplace()` to "re-purpose" a website:
+```
+<?php
+$text = file_get_contents('https://google.com');
+$text = str_ireplace('Google', 'Boogle', $text);
+echo $text;
+```
+Example using various HTML input types
+```
+<?php
+$clean = [];
+$filter = [
+    'trim' => fn ($data) => trim($data),
+    'strip'=> fn ($data) => strip_tags($data),
+];
+if (!empty($_POST)) {
+    foreach ($_POST as $key => $item) {
+        foreach ($filter as $filt => $func) {
+           if (is_array($item)) {
+           	foreach ($item as $a => $b) {
+           		$item[$a] = $func($b);
+           	}
+           } else {
+           	$item = $func($item);
+           }
+    	}
+    	$clean[$key] = $item;
+    }
+}
+$marital = ['M' => 'Married', 'S' => 'Single', 'I' => 'In-Between'];
+$interests = ['R' => 'Reading', 'C' => 'Cinema', 'S' => 'Sports', 'M' => 'Music'];
+?>
+<form method="post">
+Name: <input type="text" name="name" />
+<br />City: <input type="text" name="city" />
+<br />Email: <input type="email" name="email" />
+<br />Date: <input type="date" name="date" />
+<br />
+<?php foreach ($marital as $key => $val) : ?>
+<input type="radio" name="marital" value="<?= $key ?>"><?= $val ?>
+<?php endforeach; ?>
+<br />
+<?php foreach ($interests as $key => $val) : ?>
+<input type="checkbox" name="interest[]" value="<?= $key ?>"><?= $val ?>
+<?php endforeach; ?>
+<br /><input type="submit" />
+</form>
+<pre> <?= var_dump($clean) ?> </pre>
+ <?php phpinfo(INFO_VARIABLES) ?>
+ ```
 
 ## Miscellaneous
 Highly recommended JavaScript library
@@ -1271,3 +1350,8 @@ sudo rm /var/crash/*
 ```
 $connect = mysqli_connect(xxx, yyy, etc.);
 ```
+* OrderApp generates error upon entering new order
+* http://localhost:8888/#/7/24
+  * `if ($_POST` missing closing parenthesis and opening {
+* http://localhost:8888/#/7/25
+  * Same note as above
