@@ -2,7 +2,7 @@
 
 ## TO DO
 * Track down contents of `php1` folder and make available
-
+* Example of Fibonacci sequence code
 
 ## Homework
 * For Fri 12 Nov 2021
@@ -71,7 +71,13 @@ xxx does NOT contain only digits
 ```
 
 ## Class Notes
+PHPMailer: https://github.com/PHPMailer/PHPMailer
+SQL Tutorial: https://www.w3schools.com/sql/
+PHP Examples: https://github.com/dbierer/classic_php_examples
 Web Server Survey: https://news.netcraft.com/archives/category/web-server-survey/
+Handling file uploads:
+* https://www.php.net/manual/en/features.file-upload.php
+* https://github.com/dbierer/classic_php_examples/blob/master/web/f%E2%80%8Eile_upload.php
 Array Unpacking:
 ```
 <?php
@@ -1328,6 +1334,28 @@ Name: <input type="text" name="name" />
 <pre> <?= var_dump($clean) ?> </pre>
  <?php phpinfo(INFO_VARIABLES) ?>
  ```
+Example of performing an `INSERT` followed by `SELECT` statements:
+```
+<?php
+$config = require __DIR__ . '/../../orderapp/config/config.php';
+$db     = mysqli_connect($config['db']['dsn'],
+			  $config['db']['username'],
+			  $config['db']['password'],
+			  $config['db']['database']);
+$ins_sql = "INSERT INTO customers (firstname,lastname) VALUES ('Fred', 'Flintstone')";
+$num_rows = mysqli_query($db, $ins_sql);
+if ($num_rows > 0) {
+    echo "Success!\n";
+} else {
+    echo "Problem!\n";
+    error_log(mysqli_error($db));
+}
+$sql = 'SELECT * FROM customers';
+$result = mysqli_query($db, $sql);
+while ($row = mysqli_fetch_assoc($result)) {
+    var_dump($row);
+}
+```
 
 ## Miscellaneous
 Highly recommended JavaScript library
@@ -1339,6 +1367,46 @@ sudo rm /var/crash/*
 ```
 * The `sudo` password is `vagrant`
 
+## Example of uploading a file and sending it as an email attachment
+* Note: assumes PHPMailer is installed
+* Follow directions on https://github.com/PHPMailer/PHPMailer
+```
+<?php
+include __DIR__ . '/../vendor/autoload.php';
+use PHPMailer\PHPMailer\PHPMailer;
+if (!empty($_FILES)) {
+   if ( $_FILES['upload']['error'] == UPLOAD_ERR_OK ) {
+	if ( is_uploaded_file ($_FILES['upload']['tmp_name'] ) ) {
+           $tmp_name = $_FILES['upload']['tmp_name'] ?? '';
+           if (!empty($tmp_name)) {
+           	$fn = __DIR__ . '/../data/' . basename($_FILES['upload']['name']);
+           	if (move_uploaded_file($tmp_name, $fn)) {
+           	    // at this point, just follow the "Simple Example" on the Github PHPMailer page
+           	    // https://github.com/PHPMailer/PHPMailer
+           	    $mail = new PHPMailer(true);
+		    $mail->setFrom('from@example.com', 'Mailer');
+		    $mail->addAddress('joe@example.net', 'Joe User');     //Add a recipient
+		    $mail->addAttachment($fn);         //Add attachments
+		    $mail->isHTML(true);                                  //Set email format to HTML
+		    $mail->Subject = 'Here is the subject';
+		    $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+		    $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+		    $mail->send();
+               }
+           } else {
+               echo "Problem with temporary name";
+           }
+       } else {
+           echo "Not an uploaded file";
+       }
+   }
+}
+?>
+<form method="post" enctype="multipart/form-data">
+File: <input type="file" name="upload" />
+<input type="submit" />
+</form>
+```
 ## Errata
 * http://localhost:8888/#/4/14
   * S/be as follows:
