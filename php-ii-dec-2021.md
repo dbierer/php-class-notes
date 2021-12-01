@@ -1,6 +1,36 @@
 # PHP Fundamentals II - Dec 2021
 
+## Homework
+* For 3 Dec 2021: http://collabedit.com/awsnh
+Lab: Magic Methods
+Complete the following:
+
+Using the code from the previous exercises, add four magic methods, one of which is the magic constructor.
+The magic constructor should accepts parameters and set those parameters into the object on instantiation.
+Create an index.php file.
+Load, or autoload, the created classes.
+Instantiate object instances, and exercise the magic methods implemented.
+Lab complete.
+
+
+Lab: Abstract Classes
+Complete the following:
+
+Turn a superclass into an abstract class.
+In the abstract superclass, define an inheritable abstract method declaration that will instantiate an object of another class, and returns it.
+Extend the abstract superclass with a concrete subclass implementing the inherited abstract method.
+Instantiate a subclass instance.
+Call the method and retrieve the object it builds.
+Lab is complete.
+
+
+* For 1 Dec 2021: http://collabedit.com/5qf73
+
 ## TODO
+Get example of using `__call()` to implement a "plugin" architecture
+Get example from WP-CLI using `__invoke()` + other examples if available
+
+## Class Notes
 Get vhost (virtual host) definition to sandbox in VM to use as a website
 * From a terminal window (command prompt):
   * Run `gedit` as the root user:
@@ -42,27 +72,6 @@ sudo service apache2 restart
 ```
   * Access `sandbox` from the VM browser: `http://sandbox`
 
-## Homework
-* For 1 Dec 2021: http://collabedit.com/5qf73
-
-Lab: Namespace
-* Have a look at the OrderApp in the course VM.
-* Identify the namespaces used
-* How is autoloading initiated?
-
-Lab: Create a Class
-* Complete the following:
-  * Create a class definition that represents or models something. Give it a constant, some properties, and a few methods. Set appropriate visibilities for each.
-  * Instantiate a couple of objects, and execute the methods created producing some output.
-  * Create something which is realistic and appropriate to a current or future application for your domain.
-
-Lab: Create an Extensible Super Class
-* Complete the following:
-  * Using the code created in the previous exercise, create an extensible superclass definition. Set the properties and methods that subclasses will need.
-  * Create one or more subclasses that extend the superclass with constants, properties and methods specific to the subclass.
-  * Instantiate a couple of objects from the subclasses and execute the methods producing some output.
-
-## Class Notes
 * Example of properties and constants with default assignments
   * https://github.com/dbierer/FileCMS/blob/main/src/Common/Image/SingleChar.php
 * Example of a simple class in a directory `A\X` filename `Xyz.php`
@@ -96,7 +105,76 @@ $temp->fname = 'Fred';
 $temp->lname = 'Flintstone';
 echo $temp->getInfo();
 ```
+* Example of an anonymous class: https://github.com/dbierer/FileCMS/blob/main/src/Common/Page/Edit.php
+* Example of a "universal" class with unlimited properties
+```
+<?php
 
+class Universal {
+	protected array $whatever = [];
+    public function __set($prop, $value)
+    {
+		$this->whatever[$prop ] = $value;
+    }
+    public function __get($prop)
+    {
+		return $this->whatever[$prop ] ?? '';
+    }
+}
+
+$uni = new Universal();
+$uni->firstName = 'Fred';
+$uni->lastName = 'Flintstone';
+echo $uni->firstName . ' ' . $uni->lastName;
+var_dump($uni);
+```
+* Unlimited getters and setters: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_magic_call_unlimited_getters_setters.php
+* Example of interfaces, abstract class, and two variant child classes
+```
+<?php
+interface EncryptInterface
+{
+	public function encrypt() : string;
+}
+interface DecryptInterface
+{
+	public function decrypt(string $text) : string;
+}
+abstract class Security implements EncryptInterface, DecryptInterface
+{
+	const SUPPORTED_ALGOS = ['reverse','openssl'];
+	public function __construct(
+		public string $text,
+		public string $algo)
+	{}
+}
+class Reverse extends Security
+{
+	public function encrypt() : string
+	{
+		return strrev($this->text);
+	}
+	public function decrypt(string $text) : string
+	{
+		return strrev($text);
+	}
+}
+class OpenSsl extends Security
+{
+	public function encrypt() : string
+	{
+		return openssl_encrypt($this->text);
+	}
+	public function decrypt(string $text) : string
+	{
+		return openssl_decrypt($text);
+	}
+}
+$security = new Reverse('The quick brown fox jumped over the fence', 'reverse');
+$encrypted = $security->encrypt();
+echo $security->decrypt($encrypted);
+
+```
 ## Resources
 Previous class repos:
 * https://github.com/dbierer/php-ii-aug-2021
@@ -105,5 +183,15 @@ Previous class repos:
 
 
 ## Errata
-* http://localhost:9999/#/2/15
+* http://localhost:9999/#/2/15: "Class Property"
   * `$this->firstname` s/be `$this->firstName`
+* http://localhost:9999/#/2/45: "Final Declaration"
+  * Should appear as follows:
+```
+class GuestUser extends UserEntity {
+    // **** NOT ALLOWED!!! **** //
+    public function setFirstName($firstName, $mi = null) {
+        $this->firstname = ($mi) ? $firstName . ' ' . $mi : $firstName;
+    }
+}
+```
