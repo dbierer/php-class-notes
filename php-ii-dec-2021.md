@@ -1,7 +1,46 @@
 # PHP Fundamentals II - Dec 2021
 
 ## TODO
-* Get vhost definition to sandbox in VM to use as a website
+Get vhost (virtual host) definition to sandbox in VM to use as a website
+* From a terminal window (command prompt):
+  * Run `gedit` as the root user:
+```
+sudo gedit
+```
+  * Open the file `/etc/hosts`
+  * Add an entry to the local hosts file to simulate a server named "sandbox"
+```
+127.0.0.1 sandbox
+```
+  * Save the file
+  * Open a new file (press the "+" icon next to "Open")
+  * Paste this into the editor:
+```
+<VirtualHost *:80>
+   ServerName sandbox
+   DocumentRoot /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox
+   <Directory /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/>
+       Options Indexes FollowSymlinks MultiViews
+       AllowOverride All
+       Require all granted
+   </Directory>
+</VirtualHost>
+```
+  * Save as `/etc/apache2/sites-available/sandbox.conf`
+  * Exit `gedit`
+  * Test the new simulated server
+```
+ping -c3 sandbox
+```
+  * Enable the new vhost
+```
+sudo a2ensite sandbox
+```
+  * Restart Apache
+```
+sudo service apache2 restart
+```
+  * Access `sandbox` from the VM browser: `http://sandbox`
 
 ## Homework
 * For 1 Dec 2021: http://collabedit.com/5qf73
