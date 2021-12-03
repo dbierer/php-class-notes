@@ -1,6 +1,46 @@
 # PHP Fundamentals II - Dec 2021
 
+## VM
+To get rid of the message "System Problem Detected"
+```
+sudo rm /var/crash/*
+```
+To install Composer: have a look here: https://getcomposer.org
+
 ## Homework
+* For 6 Dec 2021: http://collabedit.com/p8ram
+ALSO: please look over course module 3: OrderApp
+Lab: Type Hinting
+Complete the following:
+
+Create a new class with some properties and methods.
+Add a constructor.
+Type hint in the constructor for the interface created in the last exercise.
+Instantiate an object from one of your previous subclasses.
+Add it as a dependent object to the new object created in step one, and store it.
+Lab is complete.
+
+Lab: Build Custom Exception Class
+Complete the following:
+
+Create a file and build a custom exception class with a constructor that accepts parameters.
+Call the parent Exception constructor.
+Add some new functionality in the custom exception constructor.
+Add a try/catch/catch/finally block set.
+In the try portion, throw an instance of the Exceptions object, and an instance of the custom exception class.
+Handle both by logging in the associated catch blocks.
+Echo something in the finally block.
+Lab is complete.
+
+Lab: Traits
+Complete the following:
+
+In separate files, create two traits, each with two methods, one of the methods named the same in both traits.
+In another file, create a class that uses the two traits.
+Resolve the naming collision, and change the method visibilities.
+Instantiate an instance of the class and execute the trait methods.
+This lab is complete.
+
 * For 3 Dec 2021: http://collabedit.com/awsnh
 Lab: Magic Methods
 Complete the following:
@@ -27,8 +67,20 @@ Lab is complete.
 * For 1 Dec 2021: http://collabedit.com/5qf73
 
 ## TODO
+
+## Q & A
 Get example of using `__call()` to implement a "plugin" architecture
+* https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractController.php
+  * Look for `Laminas\Mvc\Controller\AbstractController::__call()`
+  * S/be around line 277
+* Example of using `__call()` in the `Laravel Illuminate\Broadcasting\BroadcastManager` class to call the default driver:
+  * See: https://github.com/laravel/framework/blob/master/src/Illuminate/Broadcasting/BroadcastManager.php
+  * On line 379 note the use of `__call()` to call the default driver instance
 Get example from WP-CLI using `__invoke()` + other examples if available
+* See: https://make.wordpress.org/cli/handbook/guides/commands-cookbook/#required-registration-arguments
+* https://github.com/dbierer/php-ii-aug-2021/blob/main/callable_examples.php
+* Have a look at the classes shown here: https://github.com/dbierer/FileCMS/tree/main/src/Transform
+  * This set of classes is used by the `Transform` class here: https://github.com/dbierer/FileCMS/tree/main/src/Common/Transform
 
 ## Class Notes
 Get vhost (virtual host) definition to sandbox in VM to use as a website
@@ -175,6 +227,73 @@ $encrypted = $security->encrypt();
 echo $security->decrypt($encrypted);
 
 ```
+* Discussion on late static binding: https://www.php.net/manual/en/language.oop5.late-static-bindings.php
+* Example of polymorphism
+```
+<?php
+interface T
+{
+	const WHATEVER = 'whatever';
+	public function getName() : string;
+}
+class A implements T
+{
+	public string $name = 'TEST';
+	public function getName() : string
+	{
+		return $this->name;
+	}
+}
+class B extends A
+{
+	public string $status = 'OK';
+}
+class C extends B
+{
+	public float $amount = 99.99;
+}
+class X implements T
+{
+	public string $xyz = 'XYZ';
+	public function getName() : string
+	{
+		return $this->xyz;
+	}
+}
+
+function test(T $a)
+{
+	echo $a->getName() . "\n";
+}
+
+$a = new A();
+test($a);
+
+$b= new B();
+test($b);
+
+$c = new C();
+test($c);
+
+$x = new X();
+test($x);
+
+// output:
+/*
+TEST
+TEST
+TEST
+XYZ
+
+
+------------------
+(program exited with code: 0)
+ */
+```
+* Example of trait usage in a Laminas component: matching trait + interface combination:
+  * https://github.com/laminas/laminas-eventmanager/blob/master/src/EventManagerAwareInterface.php
+  * https://github.com/laminas/laminas-eventmanager/blob/master/src/EventManagerAwareTrait.php
+
 ## Resources
 Previous class repos:
 * https://github.com/dbierer/php-ii-aug-2021
