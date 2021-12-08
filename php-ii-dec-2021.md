@@ -8,97 +8,39 @@ Example of `preg_replace_callback_array()`
 ## Homework
 * For 10 Dec 2021
 Lab: Prepared Statements
+```
 Complete the following:
 
 Create a prepared statement script.
 Add a try/catch construct.
 Add a new customer record binding the customer parameters.
+```
 
 Lab: Stored Procedure
+```
 Complete the following:
 
 Create a stored procedure script.
 Add the SQL to the database.
 Call the stored procedure with parameters.
+```
 
 Lab: Transaction
+```
 Complete the following:
 
 Create a transaction script.
 Execute two SQL statements.
 Handle any exceptions.
+```
 
 Lab: Validate an Email Address
+```
 Use preg_match() to validate an email address
-
-
-* For 8 Dec 2021:
-Lab: SQL Statements
-Identify the result of each of the following SQL statements:
-
-SELECT * FROM users;
-SELECT firstname, lastname FROM users AS u WHERE u.id = 25;
-INSERT INTO users (firstname, lastname) VALUES(James, Bond);
-UPDATE users SET firstname=Rube, lastname=Goldberg WHERE users.id=420;
-DELETE FROM users WHERE firstname=Rube;
-SELECT * FROM users ORDER BY lastname DESC;
+```
 
 * For 6 Dec 2021: http://collabedit.com/p8ram
-ALSO: please look over course module 3: OrderApp
-Lab: Type Hinting
-Complete the following:
-
-Create a new class with some properties and methods.
-Add a constructor.
-Type hint in the constructor for the interface created in the last exercise.
-Instantiate an object from one of your previous subclasses.
-Add it as a dependent object to the new object created in step one, and store it.
-Lab is complete.
-
-Lab: Build Custom Exception Class
-Complete the following:
-
-Create a file and build a custom exception class with a constructor that accepts parameters.
-Call the parent Exception constructor.
-Add some new functionality in the custom exception constructor.
-Add a try/catch/catch/finally block set.
-In the try portion, throw an instance of the Exceptions object, and an instance of the custom exception class.
-Handle both by logging in the associated catch blocks.
-Echo something in the finally block.
-Lab is complete.
-
-Lab: Traits
-Complete the following:
-
-In separate files, create two traits, each with two methods, one of the methods named the same in both traits.
-In another file, create a class that uses the two traits.
-Resolve the naming collision, and change the method visibilities.
-Instantiate an instance of the class and execute the trait methods.
-This lab is complete.
-
 * For 3 Dec 2021: http://collabedit.com/awsnh
-Lab: Magic Methods
-Complete the following:
-
-Using the code from the previous exercises, add four magic methods, one of which is the magic constructor.
-The magic constructor should accepts parameters and set those parameters into the object on instantiation.
-Create an index.php file.
-Load, or autoload, the created classes.
-Instantiate object instances, and exercise the magic methods implemented.
-Lab complete.
-
-
-Lab: Abstract Classes
-Complete the following:
-
-Turn a superclass into an abstract class.
-In the abstract superclass, define an inheritable abstract method declaration that will instantiate an object of another class, and returns it.
-Extend the abstract superclass with a concrete subclass implementing the inherited abstract method.
-Instantiate a subclass instance.
-Call the method and retrieve the object it builds.
-Lab is complete.
-
-
 * For 1 Dec 2021: http://collabedit.com/5qf73
 
 ## VM
