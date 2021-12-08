@@ -1,13 +1,48 @@
 # PHP Fundamentals II - Dec 2021
 
-## VM
-To get rid of the message "System Problem Detected"
-```
-sudo rm /var/crash/*
-```
-To install Composer: have a look here: https://getcomposer.org
+## TODO
+Example of `preg_replace_callback_array()`
+* Code converter: Converts PHP 5 to PHP 7
+* https://github.com/dbierer/php7cookbook/blob/master/source/Application/Parse/Convert.php
 
 ## Homework
+* For 10 Dec 2021
+Lab: Prepared Statements
+Complete the following:
+
+Create a prepared statement script.
+Add a try/catch construct.
+Add a new customer record binding the customer parameters.
+
+Lab: Stored Procedure
+Complete the following:
+
+Create a stored procedure script.
+Add the SQL to the database.
+Call the stored procedure with parameters.
+
+Lab: Transaction
+Complete the following:
+
+Create a transaction script.
+Execute two SQL statements.
+Handle any exceptions.
+
+Lab: Validate an Email Address
+Use preg_match() to validate an email address
+
+
+* For 8 Dec 2021:
+Lab: SQL Statements
+Identify the result of each of the following SQL statements:
+
+SELECT * FROM users;
+SELECT firstname, lastname FROM users AS u WHERE u.id = 25;
+INSERT INTO users (firstname, lastname) VALUES(James, Bond);
+UPDATE users SET firstname=Rube, lastname=Goldberg WHERE users.id=420;
+DELETE FROM users WHERE firstname=Rube;
+SELECT * FROM users ORDER BY lastname DESC;
+
 * For 6 Dec 2021: http://collabedit.com/p8ram
 ALSO: please look over course module 3: OrderApp
 Lab: Type Hinting
@@ -66,7 +101,22 @@ Lab is complete.
 
 * For 1 Dec 2021: http://collabedit.com/5qf73
 
-## TODO
+## VM
+To get rid of the message "System Problem Detected"
+```
+sudo rm /var/crash/*
+```
+To install Composer: have a look here: https://getcomposer.org
+
+Instructions to update phpMyAdmin in the VM???
+* In the VM, open a terminal window and do this:
+```
+// NOTE: work in progress
+cd \tmp
+wget https://files.phpmyadmin.net/phpMyAdmin/5.1.1/phpMyAdmin-5.1.1-all-languages.zip
+sudo unzip phpMyAdmin-5.1.1-all-languages.zip -d /usr/share
+sudo mv /usr/share/phpMyAdmin-5.1.1-all-languages /usr/share/phpmyadmin
+```
 
 ## Q & A
 Get example of using `__call()` to implement a "plugin" architecture
@@ -293,6 +343,75 @@ XYZ
 * Example of trait usage in a Laminas component: matching trait + interface combination:
   * https://github.com/laminas/laminas-eventmanager/blob/master/src/EventManagerAwareInterface.php
   * https://github.com/laminas/laminas-eventmanager/blob/master/src/EventManagerAwareTrait.php
+* Example of building an SQL statement from a User entity instance
+  * Assumes you have created a method `getArrayCopy()`
+```
+<?php
+$sql = 'Insert into User (firstName, lastName, phoneNumber, gender) values (';
+foreach ($userDetails->getArrayCopy() as $value) $sql .= "'" . $value . "',";
+$sql = substr($sql, 0, -1);
+$sql .= ');';
+```
+* Same example as above, but using prepared statements
+```
+<?php
+$sql = 'Insert into User (firstName, lastName, phoneNumber, gender) values (?,?,?,?)';
+$stmt = $this->pdo->prepare($sql);
+$result = $stmt->execute($userDetails->getArrayCopy());
+```
+* Example from Marc's codebase
+```
+<?php
+namespace MX\Models\DB;
+use PDO;
+use PDOException;
+use Throwable;
+class DB
+{
+	public string $servername;
+	public string $username;
+	public string $password;
+	public string $dbname;
+	// this needs to be supplied by the calling program
+	public function dbConnection(array $config)
+	{
+		$servername = $config['servername'];
+		$username = $config['username'];
+		$password = $config['password'];
+		$dbname = $config['dbname'];
+		$dsn = 'mysql:host=localhost;dbname=' . $dbname;
+		try {
+		    $conn = new PDO($dsn, $username, $password);\
+		    // for PHP 7.4 only:
+		    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		} catch (Throwable $t) {
+		   error_log($t->getMessage());
+		   $conn = FALSE;
+		}
+		return $conn;
+	}
+}
+```
+* Using the PDO instance (`$conn`)
+```
+// from UserController
+    public function DisplayUsers(array $config)
+    {
+	      $db = new DB($config);
+	      $db = $db->dbConnection();
+	      $sql = "SELECT * FROM users";
+	      $result = $conn->query($sql);
+	      return $result;	// this will be a PDOStatement instance
+    }
+```
+* Display the results
+```
+<!-- comes from UserController::displayUsers() -->
+<?php while($row = $result->fetch(PDO::FETCH_ASSOC)) : ?>
+<!-- display the results from the array -->
+<?php endwhile;?>
+```
+
 
 ## Resources
 Previous class repos:
@@ -314,3 +433,15 @@ class GuestUser extends UserEntity {
     }
 }
 ```
+* http://localhost:9999/#/4/41: "Stored Procedure: Loading"
+  * s/be `DefaultWorkspace/php2/src/ModDB/*`
+* http://localhost:9999/#/6/5: "Positioning"
+  * s/b `\Z` : Absolute end
+* http://localhost:9999/#/6/10: "Custom Character Classes"
+  * Duplicates previous slide
+* http://localhost:9999/#/6/12: "Quantifiers"
+  * Last regex should be:
+    * `/http(s)?:\/\/\w*/`
+    * `!http(s)?://\w*!`
+* http://localhost:9999/#/6/13: "Precision Quantifiers"
+  * Last example s/be: `/([A-Z]\d[A-Z] \d[A-Z]\d)|([A-Z]{1,2}\d{1,2} \d{1,2}[A-Z]{2})/i`
