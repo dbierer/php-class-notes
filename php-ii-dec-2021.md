@@ -353,6 +353,17 @@ class DB
 <!-- display the results from the array -->
 <?php endwhile;?>
 ```
+REST Examples
+* Using CURL: https://github.com/dbierer/classic_php_examples/blob/master/web/curl.php
+Output Escaping:
+```
+<?php
+$data = '<script>alert("test");</script>The Rest of the Data';
+echo htmlspecialchars($data);
+
+// output:
+// &lt;script&gt;alert(&quot;test&quot;);&lt;/script&gt;The Rest of the Data
+```
 
 
 ## Resources
@@ -360,7 +371,41 @@ Previous class repos:
 * https://github.com/dbierer/php-ii-aug-2021
 * https://github.com/dbierer/php-ii-mar-2021
 * https://github.com/dbierer/php-ii-nov-2020
+Testing: https://phpunit.de
+Documentation: https://phpdoc.org
+Attributes: https://www.php.net/manual/en/language.attributes.syntax.php
 
+Web services examples:
+* https://github.com/dbierer/classic_php_examples/tree/master/web
+Alternative WP installation using Composer:
+* https://wpackagist.org/
+* NOTE: you can start with a core WP installation using "Bedrock"
+Some notes on JSON
+```
+<?php
+class Test
+{
+	public string $name = 'Fred';
+	protected int $status = 123;
+	public function getStatus()
+	{
+		return $this->status;
+	}
+}
+
+$test = new Test();
+echo $test->getStatus() . "\n";
+var_dump($test);
+
+// problem #1: can't access non-public properties
+$json = json_encode($test, JSON_PRETTY_PRINT);
+echo $json . "\n";
+
+// problem #2: the original object class is not restored
+$obj = json_decode($json);
+var_dump($obj);
+```
+SOAP vs. REST: https://www.ateam-oracle.com/post/performance-study-rest-vs-soap-for-mobile-applications
 
 ## Errata
 * http://localhost:9999/#/2/15: "Class Property"
@@ -387,3 +432,7 @@ class GuestUser extends UserEntity {
     * `!http(s)?://\w*!`
 * http://localhost:9999/#/6/13: "Precision Quantifiers"
   * Last example s/be: `/([A-Z]\d[A-Z] \d[A-Z]\d)|([A-Z]{1,2}\d{1,2} \d{1,2}[A-Z]{2})/i`
+* http://localhost:9999/#/8/12
+  * S/b: `Laminas\Http\Client`
+* http://localhost:9999/#/8/22
+  * Laminas API Tools
