@@ -1,19 +1,38 @@
 # PHP-Exp Aug 2021
 
-## TODO
-* Q: Example of anonymous class using `FilterIterator`
-* A: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_spl_filteriterator_anon_class.php
-
-* Q: Example of nested ternary that could be a problem?
-* A: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch02/php8_nested_ternary.php
-* A: This won't work in PHP 8 without using parentheses
-
-* Q: Enable JIT to test Prime Number generation example
-
-## Homework
-* For Wed 18 Aug 2021: http://collabedit.com/pbdfh
-* For Mon 16 Aug 2021: http://collabedit.com/ukcwu
-* For Fri 13 Aug 2021: http://collabedit.com/vsh4c
+## Additional VM Setup
+Download the source code.  From a terminal window in the VM:
+```
+cd ~/Zend/workspaces/DefaultWorkspace
+wget https://opensource.unlikelysource.com/php-exp-src.zip
+unzip php-exp-src.zip
+```
+Set up the `sandbox` as an Apache virtual host
+```
+sudo cp /etc/apache2/sites-available/orderapp.conf /etc/apache2/sites-available/sandbox.conf
+```
+Apache vhost definition:
+```
+<VirtualHost *:80>
+    ServerName sandbox
+    DocumentRoot /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox
+    <Directory /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/>
+        Options Indexes FollowSymlinks MultiViews
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+```
+Enable the virtual host
+```
+sudo a2ensite sandbox.conf
+sudo service apache2 restart
+```
+Add an entry to the `/etc/hosts` for `sandbox`
+```
+sudo gedit /etc/hosts
+127.0.0.1 sandbox
+```
 
 ## Class Notes
 * Data types, max int size, etc.
@@ -521,7 +540,7 @@ Anonymous classes
 Magic Methods
 * See: https://www.php.net/manual/en/language.oop5.magic.php
 * `__destruct()` method example: cleans up old CAPTCHA image files
-  * https://github.com/dbierer/SimpleHtml/blob/main/src/Common/Image/Captcha.php
+  * https://github.com/dbierer/filecms-core/blob/main/src/Common/Image/Captcha.php
 * `__get()` and `__set()` example
   * See: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_magic_get_set.php
 * `__call()` used to implement "plugins"
@@ -656,46 +675,23 @@ echo PHP_EOL;
 
 ```
 
-
 ## Resources
-Previous class notes:
+Other pertinent class notes:
 * https://github.com/dbierer/php-class-notes/blob/master/php-exp-jun-2021.md
+* https://github.com/dbierer/php-class-notes/blob/master/php-i-nov-2021.md
+* https://github.com/dbierer/php-class-notes/blob/master/php-ii-dec-2021.md
 Web server survey
 * https://news.netcraft.com/archives/2021/05/31/may-2021-web-server-survey.html
 
-## VM Setup
-Download the source code.  From a terminal window in the VM:
-```
-cd ~/Zend/workspaces/DefaultWorkspace
-wget https://opensource.unlikelysource.com/php-exp-src.zip
-unzip php-exp-src.zip
-```
-Set up the `sandbox` as an Apache virtual host
-```
-sudo cp /etc/apache2/sites-available/orderapp.conf /etc/apache2/sites-available/sandbox.conf
-```
-Apache vhost definition:
-```
-<VirtualHost *:80>
-         ServerName sandbox
-         DocumentRoot /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox
-         <Directory /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/>
-                 Options Indexes FollowSymlinks MultiViews
-                 AllowOverride All
-                 Require all granted
-         </Directory>
- </VirtualHost>
-```
-Enable the virtual host
-```
-sudo a2ensite sandbox.conf
-sudo service apache2 restart
-```
-Add an entry to the `/etc/hosts` for `sandbox`
-```
-sudo gedit /etc/hosts
-127.0.0.1 sandbox
-```
+## Q & A
+* Q: Example of anonymous class using `FilterIterator`
+* A: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_spl_filteriterator_anon_class.php
 
+* Q: Example of nested ternary that could be a problem?
+* A: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch02/php8_nested_ternary.php
+* A: This won't work in PHP 8 without using parentheses
 
-## CURRENT HOMEWORK
+* Q: Enable JIT to test Prime Number generation example
+* A: https://github.com/PacktPublishing/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch10/php8_jit_reset.php
+* A: https://github.com/PacktPublishing/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch10/php8_jit_mandelbrot.php
+
