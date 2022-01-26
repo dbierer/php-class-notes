@@ -141,6 +141,8 @@ CREATE TABLE `bfdetect` (
   * https://www.sec-consult.com/en/blog/advisories/insecure-direct-object-reference-in-testlink-open-source-test-management/index.html
   * Demo: http://sweetscomplete.bad.local/
 * CSRF
+  * Excellent description of the vulnerability and how to mitigate its effects:
+    * https://www.gspann.com/resources/blogs/prevention-of-cross-site-request-forgery-vulnerability/
   * usualToolCMS: https://github.com/fdbao/UsualToolCMS/issues/1
   * ZBlogPHP: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-9153
   * Vanguard Financial Services: https://github.com/d4wner/Vulnerabilities-Report/blob/master/Vanguard.md

@@ -1,5 +1,40 @@
 # PHP-Exp Aug 2021
 
+<<<<<<< HEAD
+## Additional VM Setup
+Download the source code.  From a terminal window in the VM:
+```
+cd ~/Zend/workspaces/DefaultWorkspace
+wget https://opensource.unlikelysource.com/php-exp-src.zip
+unzip php-exp-src.zip
+```
+Set up the `sandbox` as an Apache virtual host
+```
+sudo cp /etc/apache2/sites-available/orderapp.conf /etc/apache2/sites-available/sandbox.conf
+```
+Apache vhost definition:
+```
+<VirtualHost *:80>
+    ServerName sandbox
+    DocumentRoot /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox
+    <Directory /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/>
+        Options Indexes FollowSymlinks MultiViews
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+```
+Enable the virtual host
+```
+sudo a2ensite sandbox.conf
+sudo service apache2 restart
+```
+Add an entry to the `/etc/hosts` for `sandbox`
+```
+sudo gedit /etc/hosts
+127.0.0.1 sandbox
+```
+=======
 ## TODO
 * Q: Please post correct versio of eTag example in this notes page
 
@@ -20,6 +55,7 @@
 * For Wed 18 Aug 2021: http://collabedit.com/pbdfh
 * For Mon 16 Aug 2021: http://collabedit.com/ukcwu
 * For Fri 13 Aug 2021: http://collabedit.com/vsh4c
+>>>>>>> 3a3da9a8a65f88190a0e17624fa29b62e4c1da67
 
 ## Class Notes
 * Data types, max int size, etc.
@@ -676,6 +712,8 @@ var_dump($day);
 * Example of the "factory" pattern
   * https://github.com/laminas/laminas-diactoros/blob/master/src/ServerRequestFactory.php
 
+<<<<<<< HEAD
+=======
 ## Other Notes
 ETag Browser cache manipulation example:
 * https://github.com/dbierer/classic_php_examples/blob/master/web/etag.php
@@ -683,12 +721,13 @@ API Calls
 * REST example: https://github.com/dbierer/classic_php_examples/blob/master/web/rest_api_call_us_weather_svc.php
 * SOAP example: https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
 
+>>>>>>> 3a3da9a8a65f88190a0e17624fa29b62e4c1da67
 ## Resources
 Other pertinent class notes:
 * https://github.com/dbierer/php-class-notes/blob/master/php-exp-jun-2021.md
-Related repositories:
-* https://github.com/dbierer/php-ii-aug-2021
-* https://github.com/dbierer/php-ii-jun-2021
+<<<<<<< HEAD
+* https://github.com/dbierer/php-class-notes/blob/master/php-i-nov-2021.md
+* https://github.com/dbierer/php-class-notes/blob/master/php-ii-dec-2021.md
 Web server survey
 * https://news.netcraft.com/archives/2021/05/31/may-2021-web-server-survey.html
 
@@ -699,6 +738,52 @@ Web server survey
 * Q: Example of nested ternary that could be a problem?
 * A: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch02/php8_nested_ternary.php
 * A: This won't work in PHP 8 without using parentheses
+=======
+Related repositories:
+* https://github.com/dbierer/php-ii-aug-2021
+* https://github.com/dbierer/php-ii-jun-2021
+Web server survey
+* https://news.netcraft.com/archives/2021/05/31/may-2021-web-server-survey.html
+PHPUnit: https://phpunit.de/
+PHPDocumenter: https://phpdoc.org
+`php.ini` directives: https://www.php.net/manual/en/ini.list.php
+JIT
+* Code examples for testing: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/tree/main/ch10
+* Settings: 
+## VM Setup
+Download the source code.  From a terminal window in the VM:
+```
+cd ~/Zend/workspaces/DefaultWorkspace
+wget https://opensource.unlikelysource.com/php-exp-src.zip
+unzip php-exp-src.zip
+```
+Set up the `sandbox` as an Apache virtual host
+```
+sudo cp /etc/apache2/sites-available/orderapp.conf /etc/apache2/sites-available/sandbox.conf
+```
+Apache vhost definition:
+```
+<VirtualHost *:80>
+         ServerName sandbox
+         DocumentRoot /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox
+         <Directory /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/>
+                 Options Indexes FollowSymlinks MultiViews
+                 AllowOverride All
+                 Require all granted
+         </Directory>
+ </VirtualHost>
+```
+Enable the virtual host
+```
+sudo a2ensite sandbox.conf
+sudo service apache2 restart
+```
+Add an entry to the `/etc/hosts` for `sandbox`
+```
+sudo gedit /etc/hosts
+127.0.0.1 sandbox
+```
+>>>>>>> 3a3da9a8a65f88190a0e17624fa29b62e4c1da67
 
 * Q: Enable JIT to test Prime Number generation example
 * A: https://github.com/PacktPublishing/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch10/php8_jit_reset.php
