@@ -1,5 +1,39 @@
 # PHP-Exp Aug 2021
 
+## VM Setup
+Download the source code.  From a terminal window in the VM:
+```
+cd ~/Zend/workspaces/DefaultWorkspace
+wget https://opensource.unlikelysource.com/php-exp-src.zip
+unzip php-exp-src.zip
+```
+Set up the `sandbox` as an Apache virtual host
+```
+sudo cp /etc/apache2/sites-available/orderapp.conf /etc/apache2/sites-available/sandbox.conf
+```
+Apache vhost definition:
+```
+<VirtualHost *:80>
+	 ServerName sandbox
+	 DocumentRoot /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox
+	 <Directory /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/>
+		 Options Indexes FollowSymlinks MultiViews
+		 AllowOverride All
+		 Require all granted
+	 </Directory>
+ </VirtualHost>
+```
+Enable the virtual host
+```
+sudo a2ensite sandbox.conf
+sudo service apache2 restart
+```
+Add an entry to the `/etc/hosts` for `sandbox`
+```
+sudo gedit /etc/hosts
+127.0.0.1 sandbox
+```
+
 ## Class Notes
 * Data types, max int size, etc.
 ```
@@ -652,6 +686,33 @@ var_dump($day);
 ```
 * Example of the "factory" pattern
   * https://github.com/laminas/laminas-diactoros/blob/master/src/ServerRequestFactory.php
+* Pass by reference in an array
+```
+<?php
+$arr = ['A' => 111, 'B' => 222, 'C' => 333];
+
+// assign by reference
+$b = &$arr['B'];
+var_dump($arr);
+echo "\n$b\n";
+
+// change the value
+$b = 444;
+var_dump($arr);
+echo "\n$b\n";
+```
+* Example of pass by reference:
+  * https://github.com/dbierer/filecms-core/blob/main/src/Common/Contact/Email.php
+  * Look at `processPost()`
+
+* Anonymous function example:
+  * https://github.com/dbierer/classic_php_examples/blob/master/basics/anon_function_callable.php
+
+* Arrow function example:
+  * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch02/php8_arrow_func_3.php
+
+* Great coverage of software design patterns:
+  * http://www.cs.kent.edu/~jmaletic/cs63901/lectures/patterns.pdf
 
 ## Other Notes
 ETag Browser cache manipulation example:
@@ -670,6 +731,14 @@ Related repositories:
 * https://github.com/dbierer/php-ii-jun-2021
 Web server survey
 * https://news.netcraft.com/archives/2021/05/31/may-2021-web-server-survey.html
+WordPress Packagist
+* https://wpackagist.org/
+
+## FYI
+In the recorded sessions you might notice a reference to:
+* https://github.com/dbierer/FileCMS
+This has now been changed to this:
+* https://github.com/dbierer/filecms-core
 
 ## Q & A
 * Q: Example of anonymous class using `FilterIterator`
