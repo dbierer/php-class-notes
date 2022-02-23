@@ -1,6 +1,7 @@
 # PHP-I Feb 2022
 
 ## TODO
+* Example of emoji
 
 ## Homework
 
@@ -20,6 +21,11 @@ Great explanation on how PHP works
 * https://www.zend.com/blog/exploring-new-php-jit-compiler
 An alternative way to run PHP is in "async" mode
 * https://www.zend.com/blog/swoole
+* ReactPHP framework
+Request/Response
+* https://www.php-fig.org/psr/psr-7/
+PHP via Fast CGI
+* https://www.php.net/manual/en/install.fpm.php
 Lots of PHP 8 specific examples
 * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices
 Default location for test programs:
@@ -760,3 +766,72 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 ## Miscellaneous
 Highly recommended JavaScript library
 * https://jquery.com/
+
+## Basic
+* Testing for TRUE/FALSE
+```
+<?php
+$offline = 1;
+$status = (empty($offline)) ? 'ONLINE' : 'OFFLINE';
+echo "The system is $status\n";
+$status = ($offline === 0) ? 'ONLINE' : 'OFFLINE';
+echo "The system is $status\n";
+$status = ($offline) ? 'ONLINE' : 'OFFLINE';
+echo "The system is $status\n";
+```
+* Using objects to store multiple properties
+```
+<?php
+class CaveMan
+{
+	// PHP 7 syntax
+	public string $first;
+	public string $last;
+	public function __construct(string $first, string $last)
+	{
+		$this->first = $first;
+		$this->last  = $last;
+	}
+	// PHP 8 syntax
+	/*
+	public function __construct(
+		public string $first,
+		public string $last) {}
+	*/
+}
+$whatever[] = new CaveMan('Fred','Flintstone');
+$whatever[] = new CaveMan('Wilma','Flintstone');
+$whatever[] = new CaveMan('Barney','Rubble');
+$whatever[] = new CaveMan('Betty','Rubble');
+var_dump($whatever);
+
+```
+* Unicode escape characters
+```
+<?php
+// see: https://unicode-table.com/en/sets/top-emoji/
+$emoji = "\u{1F602}"
+	   . "\u{1F60D}"
+	   . "\u{1F923}"
+	   . "\u{1F60A}"
+	   . "\u{1F60E}"
+	   . "\u{1F606}"
+	   . "\u{1F601}"
+	   . "\u{1F609}"
+	   . "\u{1F914}"
+	   . "\u{1F605}"
+	   . "\u{1F614}"
+	   . "\u{1F644}";
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>untitled</title>
+<meta name="generator" content="Geany 1.34.1" />
+</head>
+<body>
+<?= $emoji ?>
+</body>
+</html>
+```
