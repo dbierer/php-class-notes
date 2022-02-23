@@ -4,8 +4,11 @@
 * Example of emoji
 
 ## Homework
+* For Fri 25: https://collabedit.com/p2456
 
 ## Class Notes
+Predefined Constants
+* https://www.php.net/manual/en/reserved.constants.php
 Statistics
 * Database engine rankings:
   * https://db-engines.com/en/ranking
@@ -835,3 +838,60 @@ $emoji = "\u{1F602}"
 </body>
 </html>
 ```
+* Running an OS command using "back ticks"
+```
+<?php
+$path = 'C:\Users\ACER\Repos\classic_php_examples';
+$cmd  = 'ls -l ' . $path;
+if (PHP_OS_FAMILY === 'Windows') {
+	$out  = `dir *.*`;
+} else {
+	$out  = `ls -l *`;
+}
+echo $out;
+```
+* Using the "spread" operator (also called "splat" operator) to flatten two arrays
+```
+<?php
+$a = [111, 222, 333];
+$b = [444, 555, 666];
+$c = [...$a, ...$b];
+echo $c[5]; // would like to see "666"
+var_dump($c);
+
+// gives the same results as $c
+$d = array_merge($a, $b);
+echo $d[5]; // would like to see "666"
+var_dump($d);
+```
+* Example using the "spread" operator to "pack" arguments into an array
+```
+<?php
+function sum_of_values($label, ...$a)
+{
+	return $label . ' ' . array_sum($a);
+}
+
+echo sum_of_values('The sum is', 1, 2, 3, 4, 5, 6);
+echo "\n";
+echo sum_of_values('The total is', 11, 22, 33);
+```
+* Alternate array assignment example
+```
+<?php
+// Build the crew
+$mission = [
+	'STS395' => [
+		2176 => ['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
+		3294 => ['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
+		1122 => ['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist']
+	]
+];
+
+// Output all elements
+echo $mission['STS395'][2176]['lastName'];
+```
+
+## ERRATA
+* http://localhost:8888/#/3/12
+  * Values s/be 10, 11, 12, 11, 10
