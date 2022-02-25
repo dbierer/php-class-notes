@@ -2,9 +2,11 @@
 
 ## TODO
 * Example of emoji
+* Extreme nested ternary example
 
 ## Homework
 * For Fri 25: https://collabedit.com/p2456
+* For Mon 28: https://collabedit.com/uq5bu
 
 ## Class Notes
 Predefined Constants
@@ -25,6 +27,9 @@ Great explanation on how PHP works
 An alternative way to run PHP is in "async" mode
 * https://www.zend.com/blog/swoole
 * ReactPHP framework
+  * https://reactphp.org/
+* Also: many frameworks are async enabled
+  * Just set a config setting
 Request/Response
 * https://www.php-fig.org/psr/psr-7/
 PHP via Fast CGI
@@ -891,7 +896,108 @@ $mission = [
 // Output all elements
 echo $mission['STS395'][2176]['lastName'];
 ```
+* Searching for a value in a multi-dimensional array
+```
+// Build the crew
+$mission = [
+    'STS395' => [
+        ['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
+        ['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
+        ['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist'],
+        // use this approach if pre-assigning values
+        ['firstName' => 'Betty', 'lastName' => 'Rubble', 'specialty' => 'Cavewoman'],
+    ]
+];
+// typical for a progammatic add someplace in your code at runtime
+$mission['STS395'][] = ['firstName' => 'Fred', 'lastName' => 'Flintstone', 'specialty' => 'Caveman'];
+echo "\n {$mission['STS395'][4]['firstName']}  {$mission['STS395'][4]['lastName']}\n"; // output: Fred Flintstone
+var_dump($mission);
+echo "\n" . __LINE__ . "\n";
 
+// extract the last names from the multi-dim array:
+$lastNames = array_column($mission['STS395'], 'lastName');
+var_dump($lastNames);
+// locate the key of the last name specified:
+$key = array_search('Flintstone', $lastNames);
+if (!empty($key)) echo implode(',',$mission['STS395'][$key]);
+```
+* Using `list()` to unpack an array into variables in a `foreach()` loop:
+```
+<?php
+$mission = [
+	'STS395' => [
+		2176 => ['Mark', 'Watney', 'Botanist'],
+		3294 => ['Melissa', 'Lewis', 'Commander'],
+		1122 => ['Beth', 'Johanssen', 'Computer Specialist']
+	]
+];
+
+foreach ($mission['STS395'] as list($first, $last, $spec)) {
+	echo "$first $last is a $spec\n";
+}
+
+$mission = [
+	'STS395' => [
+		2176 => ['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
+		3294 => ['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
+		1122 => ['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist']
+	]
+];
+
+foreach ($mission['STS395'] as list('firstName' => $first, 'lastName' => $last, 'specialty' => $spec)) {
+	echo "$first $last is a $spec\n";
+}
+
+// conventional approach:
+foreach ($mission['STS395'] as $val) {
+	$first = $val['firstName'] ?? '';
+	$last = $val['lastName'] ?? '';
+	$spec = $val['specialty'] ?? '';
+	echo "$first $last is a $spec\n";
+}
+
+```
+* Why you need to use type-hinting
+```
+<?php
+function parse1($arr)
+{
+	$out = '';
+	foreach ($arr as $key => $val)
+		$out .= $key . ':' . $val . "\n";
+	return $out;
+}
+
+// this works
+$whatever = ['AAA' => 111, 'BBB' => 222, 'CCC' => 333];
+echo parse1($whatever);
+
+// Without type hinting, the error leads you to the wrong place
+// The problem is not in the `foreach()` loop, the problem is on line 17!
+// PHP Warning:  foreach() argument must be of type array|object, string given on line 5
+echo parse1('ABC');
+
+// use type hinting to protect vulnerable statements inside the function
+// in this case it's the `foreach()` loop:
+function parse2(iterable $arr)
+{
+	$out = '';
+	foreach ($arr as $key => $val)
+		$out .= $key . ':' . $val . "\n";
+	return $out;
+}
+
+// With type hinting, the error points to the correct place
+// Fatal error: Uncaught TypeError: parse2(): Argument #1 ($arr) must be of type iterable,
+// string given, called in test.php on line 32 ...
+echo parse2('ABC');
+```
 ## ERRATA
 * http://localhost:8888/#/3/12
   * Values s/be 10, 11, 12, 11, 10
+* http://localhost:8888/#/4/14
+  * s/be `$data` not `data`
+* http://localhost:8888/#/4/47
+  * this is *not* an example of `break`
+* http://localhost:8888/#/4/50
+  * reference array element not limited to PHP 8!
