@@ -5,8 +5,9 @@
 * Extreme nested ternary example
 
 ## Homework
-* For Fri 25: https://collabedit.com/p2456
-* For Mon 28: https://collabedit.com/uq5bu
+* For Fri Feb 25: https://collabedit.com/p2456
+* For Mon Feb 28: https://collabedit.com/uq5bu
+* For Wed Mar 02: https://collabedit.com/8ydqj
 
 ## Class Notes
 Predefined Constants
@@ -992,6 +993,31 @@ function parse2(iterable $arr)
 // string given, called in test.php on line 32 ...
 echo parse2('ABC');
 ```
+* Example using a lookup array for static list of state codes
+```
+<?php
+$states = [
+	'CA' => 'California',
+	'NY' => 'New York',
+	'RI' => 'Rhode Island',
+	'MA' => 'Massachusetts',
+	'NJ' => 'New Jersey',
+];
+
+$code = $_GET['state'] ?? '';
+// validate the input
+if (!isset($states[$code])) {
+	error_log('Invalid state code input');
+	exit('Not found');
+}
+echo $states[$code];
+```
+* Example using named parameters to set a cookie with the `httponly` flag
+```
+<?php
+setcookie('test', 111, httponly: TRUE);
+```
+
 ## ERRATA
 * http://localhost:8888/#/3/12
   * Values s/be 10, 11, 12, 11, 10
