@@ -8,6 +8,7 @@
 * For Fri Feb 25: https://collabedit.com/p2456
 * For Mon Feb 28: https://collabedit.com/uq5bu
 * For Wed Mar 02: https://collabedit.com/8ydqj
+* For Mon Mar 07: https://collabedit.com/wpnex
 
 ## Class Notes
 Predefined Constants
@@ -1017,6 +1018,8 @@ echo $states[$code];
 <?php
 setcookie('test', 111, httponly: TRUE);
 ```
+* FYI: you can use the `__destruct()` method as a way to clean up old files
+  * See: https://github.com/dbierer/filecms-core/blob/main/src/Common/Image/Captcha.php
 
 ## ERRATA
 * http://localhost:8888/#/3/12
