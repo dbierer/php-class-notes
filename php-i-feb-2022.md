@@ -1,9 +1,5 @@
 # PHP-I Feb 2022
 
-## TODO
-* Example of emoji
-* Extreme nested ternary example
-
 ## Homework
 * For Fri Feb 25: https://collabedit.com/p2456
 * For Mon Feb 28: https://collabedit.com/uq5bu
@@ -11,6 +7,9 @@
 * For Mon Mar 07: https://collabedit.com/wpnex
 
 ## Class Notes
+Micro Frameworks
+* https://docs.mezzio.dev/
+* https://www.slimframework.com/
 Predefined Constants
 * https://www.php.net/manual/en/reserved.constants.php
 Statistics
@@ -1020,6 +1019,19 @@ setcookie('test', 111, httponly: TRUE);
 ```
 * FYI: you can use the `__destruct()` method as a way to clean up old files
   * See: https://github.com/dbierer/filecms-core/blob/main/src/Common/Image/Captcha.php
+* `php.ini` settings:
+  * https://www.php.net/manual/en/ini.list.php
+* Setting limits on memory usage and form postings:
+  * https://www.php.net/manual/en/ini.core.php#ini.post-max-size
+* NOTE: `session_destroy()` only wipes out session data
+  * Also need to unset the session cookie
+  * See: https://www.php.net/manual/en/function.session-destroy.php
+* To check if a session is active:
+```
+if (session_status() === PHP_SESSION_ACTIVE) {
+  // good to go!
+}
+```
 
 ## ERRATA
 * http://localhost:8888/#/3/12
@@ -1030,3 +1042,10 @@ setcookie('test', 111, httponly: TRUE);
   * this is *not* an example of `break`
 * http://localhost:8888/#/4/50
   * reference array element not limited to PHP 8!
+* http://localhost:8888/#/7/52
+  * "Remove a cookie 1 hour after receipt" s/be "Set a cookie valid for 1 hour"
+  * Need to add an example of expiring a cookie
+```
+// delete the cookie by setting time in the past
+setcookie('myCookie', 'some value', time() - 60*60*24);
+```
