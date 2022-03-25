@@ -312,6 +312,168 @@ $b = Xyz::getInstance();
 echo var_dump($a);	// Instance of Test
 echo var_dump($b);  // Instance of Xyz
 ```
+Exceptions
+```
+<?php
+// `catch` blocks need to go from specific to general
+// the order is *extremely* important
+try {
+    // ...
+} catch (PDOException $e) {
+    $logEntry = date('Y-m-d H:i:s') . '|' . get_class($e) . ':' . $e->getMessage() . PHP_EOL;
+    error_log($logEntry, 3, 'path/to/database_error.log');
+} catch (Exception $e ) {
+    $logEntry = date('Y-m-d H:i:s') . '|' . get_class($e) . ':' . $e->getMessage() . PHP_EOL;
+    error_log($logEntry, 3, 'path/to/error.log');
+} catch (Throwable $t ) {
+    $logEntry = date('Y-m-d H:i:s') . '|' . get_class($t) . ':' . $t->getMessage() . PHP_EOL;
+    error_log($logEntry, 3, 'path/to/really_bad_situation.log');
+}
+// from here ... don't really do too much
+// maybe redirect, but that's about it
+// the Zend engine is potentially in an unstable state!
+```
+Late Static Binding
+```
+<?php
+// See: https://www.php.net/manual/en/language.oop5.late-static-bindings.php
+class A {
+    public static function who() {
+        echo __CLASS__;
+    }
+    public static function test() {
+		self::who();
+        static::who();
+    }
+}
+
+class B extends A {
+    public static function who() {
+        echo __CLASS__;
+    }
+}
+
+A::test();
+B::test();
+
+// output: "AAAB"
+```
+Traits
+* Often, various frameworks will provide a trait to match an interface
+  * https://github.com/laminas/laminas-db/blob/master/src/Adapter/AdapterAwareInterface.php
+  * https://github.com/laminas/laminas-db/blob/master/src/Adapter/AdapterAwareTrait.php
+* If a class implements `AdapterAwareInterface`, then all the developer needs to do is to use `AdapterAwareTrait`
+Clone
+* PHP automatically assigns objects by reference
+* If you want a *different* copy, use `clone`
+* Example:
+```
+<?php
+class User
+{
+	public $firstName = 'Fred';
+	public $lastName  = 'Flintstone';
+}
+
+$user = new User();
+$other = $user;
+$other->firstName = 'Wilma';
+var_dump($user, $other);
+
+/*
+object(User)#1 (2) {
+  ["firstName"]=>
+  string(5) "Wilma"
+  ["lastName"]=>
+  string(10) "Flintstone"
+}
+object(User)#1 (2) {
+  ["firstName"]=>
+  string(5) "Wilma"
+  ["lastName"]=>
+  string(10) "Flintstone"
+}
+ */
+
+$user = new User();
+$other = clone $user;
+$other->firstName = 'Wilma';
+var_dump($user, $other);
+
+/*
+object(User)#1 (2) {
+  ["firstName"]=>
+  string(4) "Fred"
+  ["lastName"]=>
+  string(10) "Flintstone"
+}
+object(User)#2 (2) {
+  ["firstName"]=>
+  string(5) "Wilma"
+  ["lastName"]=>
+  string(10) "Flintstone"
+}
+ */
+```
+* If you need the `__construct()` to run when you clone, you can do it this way:
+```
+<?php
+class User
+{
+	public $firstName = 'Fred';
+	public $lastName  = 'Flintstone';
+	public $hash = '';
+	public function __construct()
+	{
+		$this->hash = bin2hex(random_bytes(8));
+	}
+	public function __clone()
+	{
+		static::__construct();
+	}
+}
+
+$user = new User();
+$other = $user;
+$other->firstName = 'Wilma';
+var_dump($user, $other);
+
+$user = new User();
+$other = clone $user;
+$other->firstName = 'Wilma';
+var_dump($user, $other);
+```
+Enumerations
+```
+<?php
+enum Gender : string
+{
+    case MALE   = 'M';
+    case FEMALE = 'F';
+    case OTHER  = 'X';
+}
+
+class Signup
+{
+    public function __construct(
+        public string $username,
+        public string $password,
+        public string $dateOfBirth,
+        // NOTE: using the Gender enum shown in an earlier slide
+        public Gender $gender)
+    {}
+    public function getGender()
+    {
+		return $this->gender->value;
+	}
+}
+
+$fred = new Signup('fred', 'pass', '1970-01-01', Gender::MALE);
+var_dump($fred);
+echo $fred->getGender();
+echo "\n";
+foreach(Gender::cases() as $item) echo $item->value;
+```
 
 ## Errata
 * http://localhost:8888/#/3/23
