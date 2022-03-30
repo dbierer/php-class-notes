@@ -477,7 +477,91 @@ echo $fred->getGender();
 echo "\n";
 foreach(Gender::cases() as $item) echo $item->value;
 ```
+Example of an Abstract class
+```
+<?php
+<?php
+// example of an abstract class
 
+abstract class AbstractTable
+{
+	public string $tableName = '';
+	public function __construct(public array $fieldNames = []) {}
+	public abstract function select();
+	public abstract function insert();
+	public abstract function update();
+	public abstract function delete();
+	public function buildInsert()
+	{
+		return 'INSERT INTO ' . $this->tableName
+			 . ' ('
+			 . implode(',', $this->fieldNames)
+			 . ') VALUES (:'
+			 . implode(',:', $this->fieldNames)
+			 . ');';
+	}
+}
+// you would then extend this class and define specifics for each table
+// and override the $tableName property in the child classes
+class UserTable extends AbstractTable
+{
+	public string $tableName = 'user';
+	public function select() { /* do something */ }
+	public function insert() { /* do something */ }
+	public function update() { /* do something */ }
+	public function delete() { /* do something */ }
+	public function findUserById (int $id) { /* do something */ }
+	// etc.
+}
+$table = new UserTable(['first','last','email','password']);
+```
+PDO Connect Info
+```
+<?php
+try {
+    // Get the connection instance
+    $options = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
+    $pdo = new PDO('mysql:host=localhost;dbname=phpcourse', 'vagrant', 'vagrant', $options);
+    // Statements ...
+} catch (PDOException $e ){
+    // Handle exception...
+} catch (Throwable $e ){
+    // Handle everything else
+}
+```
+PDO example using stored procedure
+```
+<?php
+
+try {
+    // Get the connection instance
+    $pdo = new PDO('mysql:host=localhost;dbname=phpcourse','vagrant','vagrant',
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+
+    // Hard coded input parameters (simulates filtered, validated and sanitized inputs)
+    $fname = 'Mark';
+    $lname = 'Watney';
+
+    // Prepare an SQL statement and get a statement object
+    $sql  = 'CALL newCustomer (' . $pdo->quote($fname) . ',' . $pdo->quote($lname) . ')';
+    $stmt = $pdo->query($sql);
+
+    // Execute the SQL statement
+    if ($stmt->rowCount() > 0) {
+        echo "New user $fname  $lname added";
+    }
+} catch (PDOException $e){
+    //Handle PDO runtime problems
+} catch (Throwable $t){
+    //Handle error
+}
+```
 ## Errata
 * http://localhost:8888/#/3/23
   * s/be `$this->lastName = $lastName ;` not `$this->lastnNme = $lastName ;`
+* http://localhost:8888/#/5/36
+  * s/be
+```
+$options = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
+$pdo = new PDO('mysql:host=localhost;dbname=phpcourse', 'vagrant', 'vagrant', $options);
+```
