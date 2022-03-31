@@ -3,6 +3,26 @@
 ## Homework
 * For Wed 23 Mar 2022: https://collabedit.com/kh4b6
 * For Fri 25 Mar 2022: https://collabedit.com/y5ea7
+* For Thu 31 Mar 2022: https://collabedit.com/pscdf
+
+## TODO
+* Change request for Errata
+* Send copy to Nick
+* Check on POSIX usage
+```
+<?php
+$num = '800-555-1212';
+
+// uses the "shortcut" syntax
+$pat = '/(\d+)-(\d+)-(\d+)/';
+preg_match_all($pat, $num, $match);
+var_dump($match);
+
+// uses the "POSIX" syntax
+$pat = '/([:digit:]+)-([:digit:]+)-([:digit:]+)/';
+preg_match_all($pat, $num, $match);
+var_dump($match);
+```
 
 ## Q & A
 * Q: Example of a class that implements multiple interfaces?
@@ -556,12 +576,77 @@ try {
     //Handle error
 }
 ```
+Regex Examples
+```
+<?php
+$fn = 'some_graphic.jjpg';
+$pt = '/.*.jpg$/';	// matches *any* character followed by "jpg" at the end
+echo (preg_match($pt, $fn)) ? 'Valid' : 'Invalid';	// Valid
+echo "\n";
+$pt = '/.*\.jpg$/';	// if you're looking for ".", you need to escape it!
+echo (preg_match($pt, $fn)) ? 'Valid' : 'Invalid';	// Invalid
+echo "\n";
+```
+* Alternatives + sub-patterns
+```
+<?php
+$txt = '<b>First</b><i>Second</i><p>Third</p>';
+$pt  = '!(<b>(.*?)<\/b>)|(<i>(.*?)</i>)!';
+preg_match_all($pt, $txt, $match);
+var_dump($match);
+```
+* Using word boundary in a pattern
+```
+<?php
+$txt = 'The quick,brown,fox jumped? Yes,over the "fence," I think.';
+$pt  = '!\b(\w+?)\b!';
+preg_match_all($pt, $txt, $match);
+var_dump($match);
+
+// submatch portion of output:
+/*
+  [1]=>
+  array(11) {
+    [0]=>
+    string(3) "The"
+    [1]=>
+    string(5) "quick"
+    [2]=>
+    string(5) "brown"
+    [3]=>
+    string(3) "fox"
+    [4]=>
+    string(6) "jumped"
+    [5]=>
+    string(3) "Yes"
+    [6]=>
+    string(4) "over"
+    [7]=>
+    string(3) "the"
+    [8]=>
+    string(5) "fence"
+    [9]=>
+    string(1) "I"
+    [10]=>
+    string(5) "think"
+  }
+*/
+```
+
 ## Errata
+
 * http://localhost:8888/#/3/23
   * s/be `$this->lastName = $lastName ;` not `$this->lastnNme = $lastName ;`
-* http://localhost:8888/#/5/36
+* http://localhost:8888/#/5/36 * and all similar examples!
   * s/be
 ```
 $options = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
 $pdo = new PDO('mysql:host=localhost;dbname=phpcourse', 'vagrant', 'vagrant', $options);
 ```
+* http://localhost:8888/#/6/11
+  * s/be no "$"
+```
+$to = 'Clark <clark@zend.com>';
+```
+* http://localhost:8888/#/7/8
+  * s/b "three" different forms
