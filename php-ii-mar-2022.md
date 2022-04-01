@@ -25,6 +25,9 @@ var_dump($match);
 ```
 
 ## Q & A
+* Q: What's faster, SOAP or REST?
+* A: See: https://www.ateam-oracle.com/post/performance-study-rest-vs-soap-for-mobile-applications
+
 * Q: What are the main changes in PHP 8.1?
 * A: See: https://www.zend.com/blog/php-8-1
 * A: See: https://www.php.net/manual/en/migration81.php
@@ -650,7 +653,127 @@ php php8_fibers_blocked.php
 // now run the same set of callbacks using fibers and note the elapsed time:
 php php8_fibers_unblocked.php
 ```
+Abstract Class and Interface
+```
+<?php
+namespace OrderApp\Core\Form\Inputs;
 
+interface GetInputInterface
+{
+    public function getInput() : string;
+}
+// NOTE: because this class fails to implement `getInput()`
+//       as mandated  by GetInputInterface
+//       it must be declared abstract (passes the buck down the line)
+abstract class ClassName implements GetInputInterface
+{
+    // PHP 8 constructor argument promotion:
+	public string $fullname = '';
+    public function __construct(
+        public array $usernames = [],
+        public string $fname = '',
+        public string $lname = '',
+        public string $type = 'text')
+    {
+        $this->fullname = $fname . ' ' . $lname;
+	}
+}
+
+class AnotherClass extends ClassName
+{
+	public function getInput() : string
+	{
+		$input = "<input type=\"$this->type\"";
+		$input .= '>';
+		return $input;
+	}
+}
+
+$another = new AnotherClass(['A','B','C'], 'Fred', 'Flintstone', 'html');
+var_dump($another);
+```
+Example of an XML-based service:
+* See: https://graphical.weather.gov/xml/
+SimpleXML Example
+```
+<?php
+$doc = <<<EOT
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<produce xmlns:ea = "test">
+    <vegetables>
+        <vegetable unit = "pound">
+            <name> tomatoes </name>
+            <price> 2.99 </price>
+        </vegetable>
+        <vegetable unit = "ounce">
+            <name>carrots</name>
+            <price>1.99</price>
+        </vegetable>
+        <vegetable unit = "pkg">
+            <name>broccoli</name>
+            <price>4.99</price>
+        </vegetable>
+    </vegetables>
+</produce>
+EOT;
+
+$xml = new SimpleXMLElement($doc);
+
+// Get the vegies
+$vegies = $xml->vegetables;
+
+// Get the first vegie using array notation
+echo __LINE__ . ':' . $vegies->vegetable[0]->name;
+
+// Output item data
+foreach ( $vegies->vegetable as $node ) {
+    echo "Content: " . $node->name . "\n" ;
+}
+
+// Output XML from the SimpleXMLElement object
+echo $xml->asXML();
+
+// Output to an xml file
+$xml->asXML( 'newproduce.xml' );
+
+// xpath query
+
+$result = $xml->xpath('//name');
+var_dump($result);
+```
+SOAP Client Request
+* See: https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
+
+REST Requests using Streams
+* You can use `file_get_contents()` or `fopen()` followed by `fgets()`
+* If you want an HTTP method other than `GET`, use `stream_context_create()` and supply that as the 4th argument
+* OR ... better yet: use the cURL extension!
+
+Resource to object migration
+```
+<?php
+// create a new cURL resource
+$ch = curl_init();
+
+// this will *FAIL* in PHP 8 and above:
+// if (!is_resource($ch)) exit('ERROR: problem creating connection');
+
+// do this instead:
+// works in *all* versions of PHP including PHP 8 and above
+if (empty($ch)) exit('ERROR: problem creating connection');
+
+// set URL and other appropriate options
+curl_setopt($ch, CURLOPT_URL, "http://api.unlikelysource.com/api?city=Rochester&country=US");
+curl_setopt($ch, CURLOPT_HEADER, 0);
+
+// grab URL and pass it to the browser
+$result = curl_exec($ch);
+
+// close cURL resource, and free up system resources
+curl_close($ch);
+
+var_dump($result);
+```
 
 ## Errata
 
