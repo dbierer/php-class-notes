@@ -25,6 +25,13 @@ var_dump($match);
 ```
 
 ## Q & A
+* Q: What are the main changes in PHP 8.1?
+* A: See: https://www.zend.com/blog/php-8-1
+* A: See: https://www.php.net/manual/en/migration81.php
+
+* Q: Any examples using PHP 8.1 fibers?
+* A: See: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/tree/main/ch12
+
 * Q: Example of a class that implements multiple interfaces?
 * A: `ArrayObject` (see: https://www.php.net/arrayobject)
 
@@ -505,33 +512,33 @@ Example of an Abstract class
 
 abstract class AbstractTable
 {
-	public string $tableName = '';
-	public function __construct(public array $fieldNames = []) {}
-	public abstract function select();
-	public abstract function insert();
-	public abstract function update();
-	public abstract function delete();
-	public function buildInsert()
-	{
-		return 'INSERT INTO ' . $this->tableName
-			 . ' ('
-			 . implode(',', $this->fieldNames)
-			 . ') VALUES (:'
-			 . implode(',:', $this->fieldNames)
-			 . ');';
-	}
+    public string $tableName = '';
+    public function __construct(public array $fieldNames = []) {}
+    public abstract function select();
+    public abstract function insert();
+    public abstract function update();
+    public abstract function delete();
+    public function buildInsert()
+    {
+        return 'INSERT INTO ' . $this->tableName
+             . ' ('
+             . implode(',', $this->fieldNames)
+             . ') VALUES (:'
+             . implode(',:', $this->fieldNames)
+             . ');';
+    }
 }
 // you would then extend this class and define specifics for each table
 // and override the $tableName property in the child classes
 class UserTable extends AbstractTable
 {
-	public string $tableName = 'user';
-	public function select() { /* do something */ }
-	public function insert() { /* do something */ }
-	public function update() { /* do something */ }
-	public function delete() { /* do something */ }
-	public function findUserById (int $id) { /* do something */ }
-	// etc.
+    public string $tableName = 'user';
+    public function select() { /* do something */ }
+    public function insert() { /* do something */ }
+    public function update() { /* do something */ }
+    public function delete() { /* do something */ }
+    public function findUserById (int $id) { /* do something */ }
+    // etc.
 }
 $table = new UserTable(['first','last','email','password']);
 ```
@@ -580,11 +587,11 @@ Regex Examples
 ```
 <?php
 $fn = 'some_graphic.jjpg';
-$pt = '/.*.jpg$/';	// matches *any* character followed by "jpg" at the end
-echo (preg_match($pt, $fn)) ? 'Valid' : 'Invalid';	// Valid
+$pt = '/.*.jpg$/';  // matches *any* character followed by "jpg" at the end
+echo (preg_match($pt, $fn)) ? 'Valid' : 'Invalid';  // Valid
 echo "\n";
-$pt = '/.*\.jpg$/';	// if you're looking for ".", you need to escape it!
-echo (preg_match($pt, $fn)) ? 'Valid' : 'Invalid';	// Invalid
+$pt = '/.*\.jpg$/'; // if you're looking for ".", you need to escape it!
+echo (preg_match($pt, $fn)) ? 'Valid' : 'Invalid';  // Invalid
 echo "\n";
 ```
 * Alternatives + sub-patterns
@@ -632,6 +639,18 @@ var_dump($match);
   }
 */
 ```
+PHP 8.1 Fibers
+* Clone this repo: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices.git
+* Go to the `/path/to/repo/ch12` directory
+* Make sure you're running PHP 8.1
+* Now try this:
+```
+// run the callbacks without using fibers and note the elapsed time:
+php php8_fibers_blocked.php
+// now run the same set of callbacks using fibers and note the elapsed time:
+php php8_fibers_unblocked.php
+```
+
 
 ## Errata
 
