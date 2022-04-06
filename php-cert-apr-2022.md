@@ -1,9 +1,16 @@
 # PHP Certification - April 2022
 
 ## TODO
+* Q: Which extensions are enabled by default?
+* A: TBD
 
+* Q: In what PHP version was `SoapClient::__call()` deprecated?
 
 ## Homework
+* For Fri 8 Apr 2022
+  * Quizzes for Topic Area #1 (PHP Basics)
+  * Quizzes for Topic Area #2 (Data Types and Formats)
+  * Quizzes for Topic Area #2 (Strings and Patterns)
 
 ## Docker Container Setup
 * Download the ZIP file from the URL given by the instructor
@@ -83,9 +90,17 @@ echo "\n";
 echo 0b00000001;
 echo "\n";
 ```
-* Study up on `gc_collect_cycles()`
+`php.ini` file settings:
+* https://www.php.net/manual/en/ini.list.php
+Extensions
+* These are in the core:
+  * https://github.com/php/php-src/tree/PHP-7.1.30/ext
+  * *but* not all are enabled by default
+  * You're only tested on the extenions enabled by default
+
 
 ## Garbage Collection
+* Study up on `gc_collect_cycles()`
 Have a look at this article:
 https://www.php.net/manual/en/features.gc.performance-considerations.php
 
@@ -103,12 +118,24 @@ $date[] = (new DateTime())->add(new DateInterval('P3D'));
 
 var_dump($date);
 ```
+* Don't forget that to run a SOAP request, you can also use:
+  * `SoapClient::__soapCall()`
+  * `SoapClient::__doRequest()`
+
 * Study on `DateTimeInterval` and `DateTimeZone` and also "relative" time formats
 * In addition, be aware of the basic time format codes
 * https://www.php.net/manual/en/datetime.formats.relative.php
 
 ## Strings
 * Study the docs on `sprintf()` to get format codes for that family of functions
+* Example using negative offsets:
+```
+<?php
+$dir = '/home/doug/some/directory/';
+if (substr($dir, 0, 1) === '/') echo 'Leading slash' . PHP_EOL;
+if (substr($dir, -1) === '/') echo 'Trailing slash' . PHP_EOL;
+if ($dir[-1] === '/') echo 'Trailing slash' . PHP_EOL;
+```
 * Tutorial on PHP regex: https://www.w3schools.com/php/php_regex.asp
 * Using regex to swap sub-patterns
 ```
