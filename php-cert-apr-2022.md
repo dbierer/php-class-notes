@@ -10,7 +10,12 @@
 * For Fri 8 Apr 2022
   * Quizzes for Topic Area #1 (PHP Basics)
   * Quizzes for Topic Area #2 (Data Types and Formats)
-  * Quizzes for Topic Area #2 (Strings and Patterns)
+  * Quizzes for Topic Area #3 (Strings and Patterns)
+* For Mon 11 Apr 2022
+  * First Mock Exam
+  * Quizzes for Topic Area #4 (Arrays)
+  * Quizzes for Topic Area #5 (I/O)
+  * Quizzes for Topic Area #6 (Functions)
 
 ## Docker Container Setup
 * Download the ZIP file from the URL given by the instructor
@@ -155,6 +160,19 @@ echo preg_replace($pattern, $replacement, $string);
 preg_match($pattern, $string, $matches);
 var_dump($matches);
 ```
+## Arrays
+For iterating through an array beginning-to-end don't forget about these functions:
+* `array_walk()`
+* `array_walk_recursive()`
+* `array_map()`
+Also: please don't forget the array *navigation* functions:
+* `reset()`: sets pointer to top
+* `end()`  : sets pointer to end
+* `prev()` : advances array pointer
+* `next()` : un-advances array pointer
+* `key()`  : returns index value at array pointer
+* `current()` : returns value of element at array pointer
+
 ## I/O
 Streams
 * Don't have to study *all* functions, just certain of the more common ones
@@ -164,7 +182,11 @@ Streams
   * `stream_filter_register()`
   * `stream_filter_append()`
   * `stream_socket_client()`
-
+In addition to the informational file functions mentioned, you also have:
+* `fileatime()`
+* `filemtime()`
+* `filectime()`
+etc.
 
 ## Functions
 * Read up on `Closure::bindTo()`
@@ -205,19 +227,4 @@ File upload documentation
 * https://www.php.net/manual/en/features.file-upload.php
 
 ## Change Request
-* http://localhost:9999/#/10/26
-  * `random_int()` needs 2 args
-* http://localhost:9999/#/12/8
-```
-try {
-    $pdo = new PDO($params);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (Exception | PDOException $e) {
-    error_log('Database error: ' . $e->getMessage()));
-} catch (Throwable $t) {
-    error_log('General error: ' . $t->getMessage()));
-} finally {
-    echo 'Database connection ';
-    echo ($pdo) ? 'succeeded' : 'failed';
-}
-```
+* s/ not be "Ksy and Value Introspections"
