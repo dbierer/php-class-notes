@@ -6,6 +6,9 @@
 
 * Q: In what PHP version was `SoapClient::__call()` deprecated?
 
+
+* Q: What is the special syntax needed to use `time()` in `DateTime()` constructor?
+
 ## Homework
 * For Fri 8 Apr 2022
   * Quizzes for Topic Area #1 (PHP Basics)
@@ -16,6 +19,9 @@
   * Quizzes for Topic Area #4 (Arrays)
   * Quizzes for Topic Area #5 (I/O)
   * Quizzes for Topic Area #6 (Functions)
+* For Wed 13 Apr 2022
+  * Second Mock Exam
+  * Quizzes for Topic Area #7 (OOP)
 
 ## Docker Container Setup
 * Download the ZIP file from the URL given by the instructor
@@ -201,6 +207,50 @@ etc.
     * `unset()`
     * Called in a function and function call ends
     * Overwritten
+* Serialization example:
+```
+<?php
+class User
+{
+	public $first = 'Fred';
+	public $last  = 'Flintstone';
+	public $role  = 'Cavemen';
+	public $test  = [1,2,3];
+	public $hash  = '';
+	public function __construct()
+	{
+		$this->hash = bin2hex(random_bytes(8));
+	}
+	public function getName()
+	{
+		return $this->first . ' ' . $this->last;
+	}
+	public function __sleep()
+	{
+		return ['first','last','role','test'];
+	}
+	public function __wakeup()
+	{
+		$this->__construct();
+	}
+}
+
+echo '<pre>';
+$user = new User();
+echo $user->getName();
+echo "\n";
+
+$str = serialize($user);
+echo $str . "\n";
+var_dump($user);
+echo "\n";
+
+$obj = unserialize($str);
+echo $obj->getName();
+echo "\n";
+var_dump($obj);
+echo '</pre>';
+```
 * SPL
   * Make sure you study:
     * `*Iterator*` : just know what they are
@@ -228,3 +278,5 @@ File upload documentation
 
 ## Change Request
 * s/ not be "Ksy and Value Introspections"
+* Mock #1:
+  * Ques 12: reword 1st answer: "foo element containing the a child node bar tag"
