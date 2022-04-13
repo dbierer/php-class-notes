@@ -9,6 +9,9 @@
 
 * Q: What is the special syntax needed to use `time()` in `DateTime()` constructor?
 
+* Get revised slides (if done in timely manner)
+* Get revised mock exams to students
+
 ## Homework
 * For Fri 8 Apr 2022
   * Quizzes for Topic Area #1 (PHP Basics)
@@ -22,6 +25,9 @@
 * For Wed 13 Apr 2022
   * Second Mock Exam
   * Quizzes for Topic Area #7 (OOP)
+* For Fri 15 Apr 2022
+  * Final Mock Exam
+  * Quizzes for all remaining Topics
 
 ## Docker Container Setup
 * Download the ZIP file from the URL given by the instructor
@@ -263,6 +269,10 @@ echo '</pre>';
 * Traits
   * https://www.php.net/manual/en/language.oop5.traits.php
 
+## Database Topic
+Fetch Modes:
+* Focus on array and object fetch modes
+
 ## Security Topic
 Questions are drawn from here:
 * https://www.php.net/manual/en/security.php
@@ -280,3 +290,20 @@ File upload documentation
 * s/ not be "Ksy and Value Introspections"
 * Mock #1:
   * Ques 12: reword 1st answer: "foo element containing the a child node bar tag"
+* Mock #2:
+  * Ques: 1: 1st needs to be `$str` not `$data`
+* http://localhost:9999/#/9/27
+  * Code example doesn't work as written.  Correct syntax is:
+```
+// build a DSN using "host"
+try {
+    // create the PDO instance using the DSN + credentials
+    $pdo = new PDO( <dsn>, <user>, <password>);
+    $result = $pdo->query('SELECT * FROM customers',
+                          PDO::FETCH_INTO,
+                          new ArrayObject());
+    foreach ($result as $obj) echo $obj->firstname . ' ' . $obj->lastname . PHP_EOL;
+} catch (PDOException $e) {
+    echo get_class($e) . ':' . $e->getMessage();
+}
+```
