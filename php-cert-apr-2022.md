@@ -9,6 +9,8 @@
 
 * Q: What is the special syntax needed to use `time()` in `DateTime()` constructor?
 
+* Q: Documentation on HTTP methods
+
 * Get revised slides (if done in timely manner)
 * Get revised mock exams to students
 
@@ -286,6 +288,22 @@ Do a quick read on the `crypt()` function
 File upload documentation
 * https://www.php.net/manual/en/features.file-upload.php
 
+## Error Handling
+Example of aggregated Catch block:
+```
+try {
+    $pdo = new PDO($params);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException | Exception $e) {
+    error_log('Database error: ' . date('Y-m-d H:i:s'));
+} catch (Throwable $e) {
+    error_log('Any and all errors or exceptions: ' . date('Y-m-d H:i:s'));
+} finally {
+    echo 'Database connection ';
+    echo ($pdo) ? 'succeeded' : 'failed';
+}
+```
+
 ## Change Request
 * s/ not be "Ksy and Value Introspections"
 * Mock #1:
@@ -307,3 +325,11 @@ try {
     echo get_class($e) . ':' . $e->getMessage();
 }
 ```
+* http://localhost:9999/#/11/23
+  * The `E` answer is not correct.  S/be this:
+```
+Create a class which implements SessionHandlerInterface and defines these methods: open, read, write, destroy, gc, close
+```
+* Final Mock Exam
+  * Question 3: no code!
+
