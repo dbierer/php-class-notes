@@ -2,7 +2,11 @@
 
 ## TODO
 * Q: Can you use the keyword "new" in property or const definition in 8.1?
+* A: Yes, but with restrictions.
+* A: Full discussion: https://wiki.php.net/rfc/new_in_initializers
+
 * Q: Locate original article on why `__unserialize()` was introduced
+* A: https://wiki.php.net/rfc/custom_object_serialization
 
 ## Homework
 For Wed 20 Apr 2022
@@ -11,9 +15,12 @@ For Wed 20 Apr 2022
 * Lab: Create an Extensible Super Class [optional]
 For Fri 22 Apr 2022
 * https://collabedit.com/5duxj
+For Mon 25 Apr 2022
+* https://collabedit.com/bxbb6
 
 ## Resources
 Code examples: https://github.com/dbierer/classic_php_examples
+PHP Road Map: https://wiki.php.net/rfc
 
 ## Class Notes
 
@@ -209,3 +216,5 @@ class Test
 ```
 Example of Abstract class with abstract method:
 * https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractController.php
+Examples of what is `callable`
+* https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_examples.php
