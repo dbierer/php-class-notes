@@ -8,6 +8,11 @@
 * Q: Locate original article on why `__unserialize()` was introduced
 * A: https://wiki.php.net/rfc/custom_object_serialization
 
+* Q: URL for database survey website
+* A:
+
+* Q: Find example of multi-use PDO prepare/execute for Geonames data insert
+
 ## Homework
 For Wed 20 Apr 2022
 * Lab: Namespace
@@ -17,10 +22,14 @@ For Fri 22 Apr 2022
 * https://collabedit.com/5duxj
 For Mon 25 Apr 2022
 * https://collabedit.com/bxbb6
+For Wed 27 Apr 2022
+* https://collabedit.com/xcxhk
 
 ## Resources
 Code examples: https://github.com/dbierer/classic_php_examples
 PHP Road Map: https://wiki.php.net/rfc
+Where it all started:
+* Seminal work: "Design Patterns: Elements of Reusable Object-Oriented Software"
 
 ## Class Notes
 
@@ -218,3 +227,33 @@ Example of Abstract class with abstract method:
 * https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractController.php
 Examples of what is `callable`
 * https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_examples.php
+
+## PDO
+Adding options as 4th argument:
+```
+try {
+    // Get the connection instance
+    $opts = [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
+    $pdo = new PDO('mysql:host=localhost;dbname=phpcourse', 'vagrant', 'vagrant', $opts);
+    // Statements ...
+} catch (PDOException $e ){
+    // Handle exception...
+}
+```
+To find the exact DSN for a given database in PDO, look at the Driver class documentation
+* Example: DSN for PostgreSQL: https://www.php.net/manual/en/ref.pdo-pgsql.connection.php
+Example of handling a large result set:
+```
+try {
+    // Execute a one-off SQL statement and get a statement object
+    $stmt = $pdo->query('SELECT * FROM orders');
+
+    // Returns an associative array indexed by column name
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC) {
+		// do something with the resulting row
+	}
+
+} catch (PDOException $e){
+    //Handle error
+}
+```
