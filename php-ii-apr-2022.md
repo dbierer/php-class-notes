@@ -9,9 +9,10 @@
 * A: https://wiki.php.net/rfc/custom_object_serialization
 
 * Q: URL for database survey website
-* A:
+* A: https://db-engines.com/en/ranking
 
 * Q: Find example of multi-use PDO prepare/execute for Geonames data insert
+* A: 
 
 ## Homework
 For Wed 20 Apr 2022
