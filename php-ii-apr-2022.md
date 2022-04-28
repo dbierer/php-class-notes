@@ -12,7 +12,8 @@
 * A: https://db-engines.com/en/ranking
 
 * Q: Find example of multi-use PDO prepare/execute for Geonames data insert
-* A: 
+* A: Will be published here by next week (not published yet):
+  * https://github.com/dbierer/classic_php_examples/blob/master/db/db_pdo_multi_prepare_execute_create_geonames_table.php
 
 ## Homework
 For Wed 20 Apr 2022
@@ -25,6 +26,8 @@ For Mon 25 Apr 2022
 * https://collabedit.com/bxbb6
 For Wed 27 Apr 2022
 * https://collabedit.com/xcxhk
+For Thu 28 Apr 2022
+* https://collabedit.com/kpbsk
 
 ## Resources
 Code examples: https://github.com/dbierer/classic_php_examples
@@ -257,4 +260,60 @@ try {
 } catch (PDOException $e){
     //Handle error
 }
+```
+Alternative way to execute without using `bindParam()`
+* Modifies: https://github.com/ealebrun/PHPII/blob/main/HW-2022-04-27
+```
+$data = [
+	'eventTitle' => 'Wagner, Bryant',
+	'eventURL' => 'http://bryant.prestosports.com/sports/bsb/2021-22/schedule#6irpaohben8y4ati',
+	'eventDescription' => 'Baseball on May 21, 2022 at 3:00 PM: Wagner, Bryant, Conaty Park',
+	'eventCategory' => 'Baseball',
+	'eventDateString' => 'Sat, 21 May 2022 19:00:00 GMT',
+	'eventGUID' => 'http://bryant.prestosports.com/sports/bsb/2021-22/schedule#6irpaohben8y4at',
+	'eventOpponent' => 'Wagner',
+];
+$stmt->execute($data);
+```
+Example of `PDO::FETCH_CLASS` mode:
+* See: https://github.com/dbierer/classic_php_examples/blob/master/db/db_pdo_fetch_class.php
+
+## Output Buffering
+To start output buffering automatically, in the `php.ini` file:
+```
+// sets buffer size to 4K + activates it
+output_buffering=4096
+```
+* See: https://www.php.net/manual/en/outcontrol.configuration.php#ini.output-buffering
+## Email
+Headers can include any valid headers as per RFC 2822
+* See: http://www.faqs.org/rfcs/rfc2822
+
+## Regex
+Alternatives to finding chars at beginning or end of a string:
+```
+<?php
+$str = '/home/doug/whatever/';
+
+// Any PHP above 4
+echo ($str[0] ==='/') ? 'Y' : 'N';
+echo ($str[-1] ==='/') ? 'Y' : 'N';
+
+// PHP 8
+echo (str_starts_with($str,'/')) ? 'Y' : 'N';
+echo (str_ends_with($str,'/')) ? 'Y' : 'N';
+```
+Examples using sub-patterns
+```
+<?php
+$str = '<p>One</p><p>Two</p><p>Three</p>';
+$pat = '/<p>(.*?)<\/p>/';
+preg_match_all($pat, $str, $match);
+var_dump($match);
+
+
+$str = 'Click here to go to <a target="_blank" href="http://zend.com/">Zend</a>!';
+$pat = '/<a.*?href=("|\')(.*?)("|\').*?>/';
+preg_match_all($pat, $str, $match);
+var_dump($match);
 ```
