@@ -317,3 +317,30 @@ $pat = '/<a.*?href=("|\')(.*?)("|\').*?>/';
 preg_match_all($pat, $str, $match);
 var_dump($match);
 ```
+## Composer
+Example of advanced usage including scripts
+* https://github.com/laminas/laminas-mvc-skeleton/blob/master/composer.json
+You can add alternates to `packagist.org` using the `repositories` key in the composer.json file
+* Example: https://wpackagist.org/
+
+## Web Services
+Example of SOAP Client
+* https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
+How to generate an HTTP `PUT`, `POST`, etc.
+* See: https://www.php.net/stream_context_create
+```
+<?php
+$data = array ('foo' => 'bar', 'bar' => 'baz');
+$data = http_build_query($data);
+$context_options = array (
+        'http' => array (
+            'method' => 'POST',
+            'header'=> "Content-type: application/x-www-form-urlencoded\r\n"
+                . "Content-Length: " . strlen($data) . "\r\n",
+            'content' => $data
+            )
+        );
+
+$context = stream_context_create($context_options)
+$fp = fopen('https://url', 'r', false, $context);
+```
