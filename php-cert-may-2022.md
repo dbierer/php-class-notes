@@ -3,6 +3,10 @@
 ## TODO
 
 ## Homework
+For Weds 3 May 2022
+* Quizzes for Topic #1 (Basics)
+For Fri 5 May 2022
+* Quizzes for Topic #2 (Data Formats and Types)
 
 ## Docker Container Setup
 * Download the ZIP file from the URL given by the instructor
@@ -82,6 +86,11 @@ echo "\n";
 echo 0b00000001;
 echo "\n";
 ```
+Null coalesce operator example
+```
+$token = $_GET['token'] ?? $_POST['token'] ?? $_COOKIE['token'] ?? 'DEFAULT';
+ ```
+
 `php.ini` file settings:
 * https://www.php.net/manual/en/ini.list.php
 Extensions
@@ -103,11 +112,12 @@ Read up on `SimpleXMLElement`
 * `DateTime` examples
 ```
 <?php
+// for relative formats see:
+// https://www.php.net/manual/en/datetime.formats.relative.php
 $date[] = new DateTime('third thursday of next month');
 $date[] = new DateTime('now', new DateTimeZone('CET'));
 $date[] = new DateTime('@' . time());
 $date[] = (new DateTime())->add(new DateInterval('P3D'));
-
 var_dump($date);
 ```
 * Don't forget that to run a SOAP request, you can also use:
@@ -116,7 +126,12 @@ var_dump($date);
 
 * Study on `DateTimeInterval` and `DateTimeZone` and also "relative" time formats
 * In addition, be aware of the basic time format codes
-* https://www.php.net/manual/en/datetime.formats.relative.php
+  * https://www.php.net/manual/en/datetime.format.php
+* Example of a soap client:
+  * https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
+* PayPal has a SOAP API that is publically accessible
+* REST vs. SOAP:
+  * See: https://www.ateam-oracle.com/post/performance-study-rest-vs-soap-for-mobile-applications
 
 ## Strings
 * Study the docs on `sprintf()` to get format codes for that family of functions
@@ -278,3 +293,10 @@ try {
 ```
 
 ## Change Request
+
+
+
+## php_cert Repo for Class Demo
+* http://localhost:8888/show.php?f=02-58-84.php
+  * Need to add ' ' to output
+
