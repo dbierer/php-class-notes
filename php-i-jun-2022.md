@@ -5,6 +5,7 @@
 * Upload the files for the PHP1 folder
 * Most recent NetCraft survey
 * Example of web server config file for PHP-FPM
+* Example of unicode escape syntax
 
 ## Homework
 * For Weds 29 Jun 2022
@@ -12,10 +13,14 @@
   * Update phpMyAdmin (instructions to be provided via email)
 
 ## Class Notes
+If you need to run an OS command, use `shell_exec()`
+* https://www.php.net/shell_exec
+
 Performance enhancements for PHP
 * https://www.zend.com/blog/exploring-new-php-jit-compiler
 * https://www.zend.com/blog/swoole
-
+Formal definition of "doc blocks":
+* https://phpdoc.org/
 New version of PHP:
 * ZendPHP (see
 Micro Frameworks
