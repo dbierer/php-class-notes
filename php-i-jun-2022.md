@@ -9,6 +9,7 @@ sudo apt remove php8.0
 * When prompted remove phpMyAdmin database and configuration
 * Follow the ZendPHP Installation Instructions
   * See: https://help.zend.com/zendphp/current/content/installation/linux_installation_zendphpctl.htm
+* Install the `zendphpctl` utlity
 ```
 curl -L https://repos.zend.com/zendphp/zendphpctl -o zendphpctl
 curl -L https://repos.zend.com/zendphp/zendphpctl.sig -o zendphpctl.sig
