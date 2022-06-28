@@ -1,15 +1,94 @@
 # PHP-I Jun 2022
 
 ## TODO
-* Pass the ZendPHP instructions for the VM to attendees
+### ZendPHP instructions
+* Remove existing PHP installation
+```
+sudo apt remove php8.0
+```
+* When prompted remove phpMyAdmin database and configuration
+* Follow the ZendPHP Installation Instructions
+  * See: https://help.zend.com/zendphp/current/content/installation/linux_installation_zendphpctl.htm
+```
+curl -L https://repos.zend.com/zendphp/zendphpctl -o zendphpctl
+curl -L https://repos.zend.com/zendphp/zendphpctl.sig -o zendphpctl.sig
+echo "$(cat zendphpctl.sig) zendphpctl" | sha256sum --check
+rm zendphpctl.sig
+chmod +x zendphpctl
+sudo mv zendphpctl /usr/local/sbin
+```
+* Test to make sure `zendphpctl` is working ok
+```
+sudo zendphpctl
+```
+* Install repository
+```
+sudo zendphpctl repo-install
+```
+* Install PHP 8.1
+```
+sudo zendphpctl php-install 8.1
+```
+* Check the version
+```
+php --version
+```
+### PHP-FPM Installation
+* Install the php-fpm package
+```
+sudo apt-get install php8.1-zend-fpm
+```
+* Enable Apache bindings
+```
+sudo a2enmod proxy_fcgi setenvif
+sudo a2enconf php8.1-zend-fpm
+```
+* Start the php-fpm pool and Apache2:
+```
+sudo systemctl start php8.1-zend-fpm
+sudo systemctl restart apache2
+```
+* Test from the VM browser: `http://sandbox/`
+
+## Other TODO
 * Upload the files for the PHP1 folder
-* Most recent NetCraft survey
+  * Will do that in-class
 * Example of web server config file for PHP-FPM
+```
+# /etc/apache2/conf-enabled/php8.1-zend-fpm.conf
+# Redirect to local php-fpm if mod_php is not available
+<IfModule !mod_php8.c>
+<IfModule proxy_fcgi_module>
+    # Enable http authorization headers
+    <IfModule setenvif_module>
+    SetEnvIfNoCase ^Authorization$ "(.+)" HTTP_AUTHORIZATION=$1
+    </IfModule>
+
+    <FilesMatch ".+\.ph(ar|p|tml)$">
+        SetHandler "proxy:unix:/run/php/php8.1-zend-fpm.sock|fcgi://localhost"
+    </FilesMatch>
+    <FilesMatch ".+\.phps$">
+        # Deny access to raw php sources by default
+        # To re-enable it's recommended to enable access to the files
+        # only in specific virtual host or directory
+        Require all denied
+    </FilesMatch>
+    # Deny access to files without filename (e.g. '.php')
+    <FilesMatch "^\.ph(ar|p|ps|tml)$">
+        Require all denied
+    </FilesMatch>
+</IfModule>
+</IfModule>
+```
 * Example of unicode escape syntax
+ * See: https://github.com/dbierer/classic_php_examples/blob/master/basics/unicode_escape_characters.php
 
 ## Homework
 * For Weds 29 Jun 2022
   * Update the VM to PHP 8.1 using ZendPHP (instructions to be provided via email)
+```
+sudo a2dismod php8.0
+
   * Update phpMyAdmin (instructions to be provided via email)
 
 ## Class Notes
