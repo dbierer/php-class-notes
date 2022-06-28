@@ -7,8 +7,6 @@
 sudo apt remove php8.0
 ```
 * When prompted remove phpMyAdmin database and configuration
-* Follow the ZendPHP Installation Instructions
-  * See: https://help.zend.com/zendphp/current/content/installation/linux_installation_zendphpctl.htm
 * Install the `zendphpctl` utlity
 ```
 curl -L https://repos.zend.com/zendphp/zendphpctl -o zendphpctl
@@ -50,6 +48,9 @@ sudo systemctl start php8.1-zend-fpm
 sudo systemctl restart apache2
 ```
 * Test from the VM browser: `http://sandbox/`
+
+NOTE: full instructions are here:
+* https://help.zend.com/zendphp/current/content/installation/linux_installation_zendphpctl.htm
 
 ## Other TODO
 * Upload the files for the PHP1 folder
