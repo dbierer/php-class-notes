@@ -1,6 +1,22 @@
 # PHP-I Jun 2022
 
+## Homework
+For Fri 1 Jul 2022
+* Create a "Hello World" program
+  * Put it under `sandbox/public`
+* https://collabedit.com/gpvud
+
 ## TODO
+NOTE: we'll deal with phpMyAdmin later!
+* Find Dilbert with Spaghetti code guy
+* Any way to mute video for non-video attendees
+* Install PHP 7.4 to show difference in this:
+```
+$foo = 5;
+$bar = 10;
+echo "sum: " . $foo + $bar;
+```
+
 ### ZendPHP instructions
 * Remove existing PHP installation
 ```
@@ -1055,6 +1071,32 @@ foreach ($mission['STS395'] as $val) {
 }
 
 ```
+* Ternary vs. standard if/then:
+```
+<?php
+$foo = 10;
+
+// approach #1
+if ($foo > 10) {
+	echo 10;
+} else {
+	echo 'Null';
+}
+
+// approach #2
+echo ($foo > 10) ? 10 : 'Null';
+
+// #1 is logically equivalent to #2
+// BUT ... #1 allows for multiple statement execution
+//         #2 only allows a single command to be executed
+```
+* Example using Null Coalesce Operator
+```
+<?php
+$name = $argv[1] ?? $_GET['name'] ?? $_POST['name'] ?? $_COOKIE['name'] ?? $_SESSION['name'] ?? 'No Name';
+echo htmlspecialchars($name);	// safeguards when you echo from an untrustes source
+echo "\n";
+```
 * Why you need to use type-hinting
 ```
 <?php
@@ -1129,5 +1171,11 @@ if (session_status() === PHP_SESSION_ACTIVE) {
   // good to go!
 }
 ```
+## Update Notes
+Things to watch out for when migrating from PHP 7 to 8
+* Order of precedence for concatenate operartor has been *demoted* in PHP 8!
+  * Solution: use parentheses to be clear
+* In PHP 8 constants are *only* case sensitive whereas in PHP 7, the 3rd arg to `define()` lets you switch that
+  * Look for any code using `define()` with *three arguments* === DANGER
 
 ## ERRATA
