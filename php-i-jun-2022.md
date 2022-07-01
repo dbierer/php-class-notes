@@ -1,6 +1,8 @@
 # PHP-I Jun 2022
 
 ## Homework
+For Tues 5 Jul 2022
+* https://collabedit.com/s8b8e
 For Fri 1 Jul 2022
 * Create a "Hello World" program
   * Put it under `sandbox/public`
@@ -106,7 +108,7 @@ NOTE: full instructions are here:
   * Update the VM to PHP 8.1 using ZendPHP (instructions to be provided via email)
 ```
 sudo a2dismod php8.0
-
+```
   * Update phpMyAdmin (instructions to be provided via email)
 
 ## Class Notes
@@ -1097,6 +1099,33 @@ $name = $argv[1] ?? $_GET['name'] ?? $_POST['name'] ?? $_COOKIE['name'] ?? $_SES
 echo htmlspecialchars($name);	// safeguards when you echo from an untrustes source
 echo "\n";
 ```
+* Examples using the `list()` (or `[]`) in a `foreach()` loop
+```
+<?php
+// all three examples produce the same results
+$data = [
+	['Fred', 'Flintstone','Caveman'],
+	['Wilma','Flintstone','Cavewoman'],
+];
+
+//
+foreach ($data as [$first,$last,$role])
+	echo "$first $last is a $role\n";
+
+$data = [
+	['first' => 'Fred', 'last' => 'Flintstone', 'role' => 'Caveman'],
+	['first' => 'Wilma','last' => 'Flintstone','role' => 'Cavewoman'],
+];
+//
+foreach ($data as ['first' => $first,'last' => $last,'role' => $role])
+	echo "$first $last is a $role\n";
+
+// this makes more sense:
+foreach ($data as $row)
+	echo "{$row['first']} {$row['last']} is a {$row['role']}\n";
+
+```
+
 * Why you need to use type-hinting
 ```
 <?php
@@ -1154,7 +1183,11 @@ echo $states[$code];
 * Example using named parameters to set a cookie with the `httponly` flag
 ```
 <?php
-setcookie('test', 111, httponly: TRUE);
+// in PHP 7 you have to specify *all* params to get to the last one
+setcookie('test', 12345, 0, '', '', FALSE, TRUE);
+
+// in PHP 8 you can use named params
+setcookie('test', 12345, httponly:TRUE);
 ```
 * FYI: you can use the `__destruct()` method as a way to clean up old files
   * See: https://github.com/dbierer/filecms-core/blob/main/src/Common/Image/Captcha.php
@@ -1171,11 +1204,16 @@ if (session_status() === PHP_SESSION_ACTIVE) {
   // good to go!
 }
 ```
+
 ## Update Notes
 Things to watch out for when migrating from PHP 7 to 8
 * Order of precedence for concatenate operartor has been *demoted* in PHP 8!
   * Solution: use parentheses to be clear
 * In PHP 8 constants are *only* case sensitive whereas in PHP 7, the 3rd arg to `define()` lets you switch that
   * Look for any code using `define()` with *three arguments* === DANGER
+* `each()` has been *removed* in PHP 8!
+  * Most likely use the `...` to unpack rather than `each()`
 
 ## ERRATA
+* http://localhost:8888/#/5/7
+  * Revise this slide
