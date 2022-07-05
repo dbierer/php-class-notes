@@ -1,6 +1,8 @@
 # PHP-I Jun 2022
 
 ## Homework
+For Wed 6 Jul
+* https://collabedit.com/hsyq7
 For Tues 5 Jul 2022
 * https://collabedit.com/s8b8e
 For Fri 1 Jul 2022
@@ -10,6 +12,11 @@ For Fri 1 Jul 2022
 
 ## TODO
 NOTE: we'll deal with phpMyAdmin later!
+* Demonstrate sorting different in PHP 8 where duplicate values are retained in their original add order
+* Update VirtualBox
+  * Or, re-run Vagrant up
+  * Check update log for Windoze
+* Get the "php1" source code (code from the slides)
 * Find Dilbert with Spaghetti code guy
 * Any way to mute video for non-video attendees
 * Install PHP 7.4 to show difference in this:
@@ -1204,6 +1211,117 @@ if (session_status() === PHP_SESSION_ACTIVE) {
   // good to go!
 }
 ```
+* Example of pre-loading form fields
+  * Calling program `test.php`:
+```
+<?php
+$name = 'Fred';
+$email = 'whatever@zend.com';
+include 'html_form.php';
+```
+  * Form program `html_form.php`;
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>untitled</title>
+<meta name="generator" content="Geany 1.34.1" />
+</head>
+<body>
+<form>
+	Name: <input type="text" name="name" value="<?= htmlspecialchars($name ?? '') ?>" />
+	<br />
+	Email: <input type="email" name="email" value="<?= htmlspecialchars($email ?? '') ?>" />
+</form>
+</body>
+
+</html>
+```
+* Post data sanitization using pass-by-reference
+```
+<?php
+$post = [
+	'name' => '<script>hahaha</script>',
+	'email' => 'test@zend.com',
+];
+
+function sanitize(array &$data)
+{
+	$expected = count($data);
+	$actual   = 0;
+	foreach ($data as $key => $value) {
+		$clean = strip_tags($value);
+		$data[$key] = $clean;
+		$actual += (int) ($clean === $value);
+	}
+	return ($actual === $expected);
+}
+
+if (sanitize($post)) {
+	echo 'Data is clean';
+} else {
+	echo 'Dirty data';
+}
+echo "\n";
+var_dump($post);
+```
+* Dealing with trailing commas:
+```
+<?php
+
+$arr = ['A','B','C','D'];
+$out = '';
+foreach ($arr as $value)
+	$out .= $value . ',';
+
+echo substr($out, 0, -1);
+// output: "A,B,C,D"
+
+```
+* Example using anonymous functions in a callback tree for form data processing
+```
+<?php
+$post = [
+	'name'  => '<script>hahaha</script>',
+	'email' => 'test;@zend.com',
+	'pwd'   => 'password<script></script>',
+];
+$callbacks = [
+	'name'  => function ($name) { return strip_tags($name); },
+	'email' => function ($email) { return filter_var($email, FILTER_SANITIZE_EMAIL); },
+	'pwd'   => function ($pwd) { return $pwd; }
+];
+function sanitize(array &$data, array $callbacks)
+{
+	$expected = count($data);
+	$actual   = 0;
+	foreach ($data as $key => $value) {
+		$clean = $callbacks[$key]($value);
+		$data[$key] = $clean;
+		$actual += (int) ($clean === $value);
+	}
+	return ($actual === $expected);
+}
+
+sanitize($post, $callbacks);
+var_dump($post);
+
+```
+* Same as above but using "arrow function" syntax
+```
+$callbacks = [
+	// key     array value == a callback
+	// ---     ------------------------------------------------------
+	'name'  => fn($name)  => strip_tags($name),
+	'email' => fn($email) => filter_var($email, FILTER_SANITIZE_EMAIL),
+	'pwd'   => fn($pwd)   => $pwd
+];
+```
+* Example of a "storage" class that reads/writes data in various formats:
+  * CSV: https://github.com/dbierer/filecms-core/blob/main/src/Common/Data/Strategy/Csv.php
+  * Driver: https://github.com/dbierer/filecms-core/blob/main/src/Common/Data/Storage.php
+  * Clicks: https://github.com/dbierer/filecms-core/blob/main/src/Common/Stats/Clicks.php
 
 ## Update Notes
 Things to watch out for when migrating from PHP 7 to 8
