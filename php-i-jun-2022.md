@@ -1,6 +1,8 @@
 # PHP-I Jun 2022
 
 ## Homework
+For Fri 8 Jul 2022
+* https://collabedit.com/pf4d4
 For Wed 6 Jul
 * https://collabedit.com/hsyq7
 For Tues 5 Jul 2022
@@ -12,11 +14,14 @@ For Fri 1 Jul 2022
 
 ## TODO
 NOTE: we'll deal with phpMyAdmin later!
+
+## Q & A
 * Demonstrate sorting different in PHP 8 where duplicate values are retained in their original add order (stable sort)
   * Discussion: https://wiki.php.net/rfc/stable_sorting
   * Example: https://github.com/dbierer/classic_php_examples/blob/master/basics/sort_stable.php
 * Get the "php1" source code (code from the slides)
   * I'll give you the URL in class for opensource/php1.zip
+  * Unzip in the VM into `Zend/workspaces/DefaultWorkspace`
 * Find Dilbert with Spaghetti code guy
   * https://dilbert.com/strip/1994-06-10
 * Black screen VM problem
@@ -28,6 +33,7 @@ NOTE: we'll deal with phpMyAdmin later!
       * Run file system check
       * Run anything else that looks like it will repair the file system
       * Select "Resume Normal Boot"
+  * It might also be simple monitor/resolution issue. Try getting out of "scaled mode" and see if that works. Or switch monitors if available.
   * If all else fails, erase the VM and all files and rebuild using `vagrant up`
 
 ### ZendPHP instructions
@@ -1326,6 +1332,33 @@ $callbacks = [
   * CSV: https://github.com/dbierer/filecms-core/blob/main/src/Common/Data/Strategy/Csv.php
   * Driver: https://github.com/dbierer/filecms-core/blob/main/src/Common/Data/Storage.php
   * Clicks: https://github.com/dbierer/filecms-core/blob/main/src/Common/Stats/Clicks.php
+* `parse_url()` example:
+```
+<?php
+$url = parse_url('http://user:password@mars-express.com/this/is/the/path?id=124&mission=STS395');
+var_dump($url);
+// output:
+/*
+array(6) {
+  ["scheme"]=>
+  string(4) "http"
+  ["host"]=>
+  string(16) "mars-express.com"
+  ["user"]=>
+  string(4) "user"
+  ["pass"]=>
+  string(8) "password"
+  ["path"]=>
+  string(17) "/this/is/the/path"
+  ["query"]=>
+  string(21) "id=124&mission=STS395"
+}
+*/
+```
+* Built in PHP web server:
+```
+ php -S localhost:9999 -t /path/to/document/root
+```
 
 ## Update Notes
 Things to watch out for when migrating from PHP 7 to 8
