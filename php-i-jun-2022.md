@@ -14,6 +14,7 @@ For Fri 1 Jul 2022
 
 ## TODO
 NOTE: we'll deal with phpMyAdmin later!
+Send email to Nicole re: follow-on August class for PHP II
 
 ## Q & A
 * Demonstrate sorting different in PHP 8 where duplicate values are retained in their original add order (stable sort)
@@ -1358,6 +1359,12 @@ array(6) {
 * Built in PHP web server:
 ```
  php -S localhost:9999 -t /path/to/document/root
+```
+* Cookie Example: https://github.com/dbierer/classic_php_examples/blob/master/web/cookie_counter.php
+* Session Example: https://github.com/dbierer/classic_php_examples/blob/master/web/session_counter.php
+* To check for an active session:
+```
+$active = (bool) (session_status() === PHP_SESSION_ACTIVE_);
 ```
 
 ## Update Notes
