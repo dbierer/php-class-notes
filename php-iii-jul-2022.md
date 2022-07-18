@@ -1,5 +1,17 @@
 # PHP III -- Jul 2022 -- Notes
 
+## TODO
+* Get example of new PHP 8 serialization
+  * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_magic_sleep_wakeup.php
+  * Article on why `__unserialize()` was introduced: https://wiki.php.net/rfc/custom_object_serialization
+  * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_magic_serialize_unserialize.php
+
+## Homework
+For Wed 20 Jul 2022
+* Update the VM as per class notes (see below)
+* Set up Apache JMeter
+* Set up Jenkins (follow the lab in the PDF)
+
 ## VM
 Here are some things to do with the VM after installation
 * Update everything
@@ -399,7 +411,13 @@ foreach ($list as $num) {
 foreach ($arr as $obj)
 	echo $obj->format($fmt) . "\n";
 ```
-
+Example using a UNIX timestamp
+```
+<?php
+$date = new DateTime('@' . time());
+echo $date->format('l, Y-m-d');
+echo "\n";
+```
 DatePeriod` Example
   * https://github.com/dbierer/classic_php_examples/blob/master/date_time/date_time_date_period.php
 Relative `DateTime` formats
@@ -411,10 +429,40 @@ Generators
   * Use `getReturn()` to get final value from `Generator` instance
     * Can only run this method after iteration is complete
 Anonymous Classes
+* Usage example
+```
+<?php
+class Test
+{
+	public function __construct(public array $arr) {}
+	public function output()
+	{
+		return new class($this->arr) {
+			public function __construct(public array $arr) {}
+			public function asHtml()
+			{
+				$out = '<table>' . PHP_EOL;
+				$out .= '<tr><td>' . implode('</td><td>', $this->arr) .  '</td></tr>' . PHP_EOL;
+				$out .= '</table>' . PHP_EOL;
+				return $out;
+			}
+			public function asJson()
+			{
+				return json_encode($this->arr, JSON_PRETTY_PRINT);
+			}
+		};
+	}
+}
+
+$test = new Test([1,2,3,4,5]);
+echo $test->output()->asJson();
+echo $test->output()->asHtml();
+```
 * Some differences in handling in PHP 8:
 ```
 <?php
 $anon = new class (2, 2) extends ArrayIterator {
+	// PHP 8 "constructor argument promotion" syntax
 	public function __construct(
 		public int $a = 0,
 		public int $b = 0)
@@ -427,12 +475,13 @@ $anon = new class (2, 2) extends ArrayIterator {
 
 echo $anon->add();
 echo "\n";
+// also PHP 8: `::class` is an operator that produces a full namespaced-class name
 echo $anon::class;
 ```
-* IteratorAggregate
-  * Easy way to make a class iterable
-  * A *lot* less work then implementing `Iterator`!
-  * Example:
+IteratorAggregate
+* Easy way to make a class iterable
+* A *lot* less work then implementing `Iterator`!
+* Example:
 ```
 <?php
 $arr = range('A','Z');
@@ -452,6 +501,23 @@ foreach ($test as $letter)
 
 echo "\n";
 ```
+Example of `ArrayObject`
+```
+<?php
+$arr = ['A' => 111, 'B' => 222, 'C' => 333];
+$obj = new ArrayObject($arr);
+
+echo $obj['B'] . PHP_EOL;
+echo $obj->offsetGet('B') . PHP_EOL;
+
+foreach ($obj as $key => $val) echo "$key : $val\n";
+```
+Classic `__sleep()` and `__wakeup()` example
+* https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_magic_sleep_wakeup.php
+* Article on why `__unserialize()` was introduced: https://wiki.php.net/rfc/custom_object_serialization
+New `__serialize()` and `__unserialize()`
+* https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_magic_serialize_unserialize.php
+
 * PHP 8 classes that have migrated away from `Iterator` or `Traversable` into `IteratorAggregate`
   * `PDOStatement`
   * `mysqli_result`
@@ -494,6 +560,9 @@ echo "\n";
 $obj = unserialize($str);
 var_dump($obj);
 ```
+* Example of anonymous functions used for form validation/filtering
+  * https://github.com/dbierer/classic_php_examples/blob/master/web/form_with_filtering_and_validation.php
+
 * `Stringable` Interface
   * Auto-assigned in PHP 8 if class defines `__toString()`
 Custom Compile PHP
