@@ -1,10 +1,15 @@
 # PHP Certification - Jul 2022
 
 ## TODO
+Add reference to PCRE POSIX functionality
 
 ## Homework
-For Thu 14 Jul 2022
+For Tues 19 Jul 2022
 * Review quiz questions for Topic 1 (course module 2) (Basics)
+* Review quiz questions for Topic 2 (course module 3) (Data Formats and Types)
+* Review quiz questions for Topic 3 (course module 4) (Strings and Patterns)
+* First Mock Exam
+
 
 ## Docker Container Setup
 * Download the ZIP file from the URL given by the instructor
@@ -128,10 +133,11 @@ var_dump($date);
 * Don't forget that to run a SOAP request, you can also use:
   * `SoapClient::__soapCall()`
   * `SoapClient::__doRequest()`
-
 * Study on `DateTimeInterval` and `DateTimeZone` and also "relative" time formats
 * In addition, be aware of the basic time format codes
   * https://www.php.net/manual/en/datetime.format.php
+* Pay close attention to `strftime()`
+  * https://www.php.net/manual/en/function.strftime.php
 * Example of a soap client:
   * https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
 * PayPal has a SOAP API that is publically accessible
@@ -298,7 +304,8 @@ try {
 ```
 
 ## Change Request
-
+* http://localhost:9999/#/4/16
+  * Remove `similar_text()`
 
 
 ## php_cert Repo for Class Demo
