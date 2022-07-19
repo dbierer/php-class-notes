@@ -4,11 +4,14 @@
 Add reference to PCRE POSIX functionality
 
 ## Homework
+For Thu 21 Jul 2022
+* Review quiz questions for Topic 4 (course module 5) (Arrays)
+* Review quiz questions for Topic 5 (course module 6) (I/O)
+* First Mock Exam
 For Tues 19 Jul 2022
 * Review quiz questions for Topic 1 (course module 2) (Basics)
 * Review quiz questions for Topic 2 (course module 3) (Data Formats and Types)
 * Review quiz questions for Topic 3 (course module 4) (Strings and Patterns)
-* First Mock Exam
 
 
 ## Docker Container Setup
@@ -306,7 +309,10 @@ try {
 ## Change Request
 * http://localhost:9999/#/4/16
   * Remove `similar_text()`
-
+* http://localhost:9999/#/2/59
+  * s/be No space in "C" answer!
+## Change Request for Code Repo
+* http://localhost:8888/show.php?f=02-58-84.php s/be a space!
 
 ## php_cert Repo for Class Demo
 * http://localhost:8888/show.php?f=02-58-84.php
