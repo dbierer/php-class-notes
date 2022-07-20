@@ -5,6 +5,12 @@
   * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_magic_sleep_wakeup.php
   * Article on why `__unserialize()` was introduced: https://wiki.php.net/rfc/custom_object_serialization
   * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_magic_serialize_unserialize.php
+* Do union types also apply to class properties?
+* Example of nullsafe operator
+* Example of `SplFixedArray`
+* Practical example of `SplObjectStorage`
+* Find examples of ArrayIterator::STD_PROP_LIST and ArrayIterator::ARRAY_AS_PROPS
+* Example of FilterIterator
 
 ## Homework
 For Wed 20 Jul 2022
@@ -562,6 +568,12 @@ var_dump($obj);
 ```
 * Example of anonymous functions used for form validation/filtering
   * https://github.com/dbierer/classic_php_examples/blob/master/web/form_with_filtering_and_validation.php
+Using interfaces as type-hints and abstract classes the implement interfaces
+* https://github.com/laminas/laminas-db/blob/2.16.x/src/Adapter/Driver/ConnectionInterface.php
+* https://github.com/laminas/laminas-db/blob/2.16.x/src/Adapter/Driver/AbstractConnection.php
+* https://github.com/laminas/laminas-db/blob/2.16.x/src/Adapter/Driver/Oci8/Connection.php
+`callable` examples:
+* https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_examples.php
 
 * `Stringable` Interface
   * Auto-assigned in PHP 8 if class defines `__toString()`
@@ -628,6 +640,8 @@ foreach ($recurse as $key => $value) {
 	echo $key . '[' . $value->getSize() . "]\n";
 }
 ```
+Anonymous class with `FilterIterator` example:
+* https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_spl_filteriterator_anon_class.php
 
 ## PHP CLI
 One-off PHP command inside a shell script:
