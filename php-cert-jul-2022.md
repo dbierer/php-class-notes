@@ -4,6 +4,10 @@
 Add reference to PCRE POSIX functionality
 
 ## Homework
+For Tue 26 Jul 2022
+* Review quiz questions for Topic 6 (course module 6) (Functions)
+* Review quiz questions for Topic 7 (course module 7) (OOP)
+* Second Mock Exam
 For Thu 21 Jul 2022
 * Review quiz questions for Topic 4 (course module 5) (Arrays)
 * Review quiz questions for Topic 5 (course module 6) (I/O)

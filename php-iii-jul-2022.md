@@ -5,12 +5,25 @@
   * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_magic_sleep_wakeup.php
   * Article on why `__unserialize()` was introduced: https://wiki.php.net/rfc/custom_object_serialization
   * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_magic_serialize_unserialize.php
-* Do union types also apply to class properties?
-* Example of nullsafe operator
-* Example of `SplFixedArray`
-* Practical example of `SplObjectStorage`
-* Find examples of ArrayIterator::STD_PROP_LIST and ArrayIterator::ARRAY_AS_PROPS
-* Example of FilterIterator
+* Q: Do union types also apply to class properties?
+* A: Yes, it does
+* A: See: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_union_typed_property.php
+
+* Q: Example of nullsafe operator?
+* A: See: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch02/php8_nullsafe_short.php
+* A: See: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch02/php8_nullsafe_xml.php
+
+* Q: Example of `SplFixedArray`?
+* A: See: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch10/php7_spl_fixed_arr_size.php
+
+* Q: Practical example of `SplObjectStorage`?
+* A: See: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch10/php8_spl_obj_storage.php
+
+* QW: Example of FilterIterator
+* A: See: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_spl_filteriterator_anon_class.php
+
+* Q: Find examples of ArrayIterator::STD_PROP_LIST and ArrayIterator::ARRAY_AS_PROPS?
+STILL RESEARCHING THIS
 
 ## Homework
 For Wed 20 Jul 2022
