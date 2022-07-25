@@ -64,6 +64,19 @@ sudo apt install -y git
 Increase the disk size (needed for the Docker labs!)
 * See: https://recoverit.wondershare.com/computer-problems/increase-virtualbox-disk-size.html
 
+Refresh the `Zend/workspaces/DefaultWorkspace/php3` folder
+* Change to the default workspace directory
+```
+cd
+cd Zend/workspaces/DefaultWorkspace
+```
+* Retrieve the update for July
+```
+wget
+https://opensource.unlikelysource.com/php3_update_jul_2022.zip
+unzip -o php3_update_jul_2022.zip
+```
+
 ## Lab Notes
 ### Setup Jenkins CI
 * The CheckStyle plug-in reached end-of-life. All functionality has been integrated into the Warnings Next Generation Plugin.
@@ -76,48 +89,34 @@ Increase the disk size (needed for the Docker labs!)
   * replace `htmlpublisher` with `Build-Publisher` (???)
   * replace `version number` with `Version Number`
 
+### Custom PHP labs
+Lab: Install the apcu extension using `pecl`
+* To test: use this script: https://github.com/dbierer/php-iii-mar-2021/blob/main/apcu_test.php
+* Need to add `apcu.enable=1` and `apc.shm_size=32M` to `/etc/php/8.0/apache2/php.ini` and run from a browser to have the demo work
+* Restart the web server after modifying the `php.ini` file: `sudo service apache2 restart`
+Lab: New Functions (compile a new extension)
+* Install dependencies:
+```
+sudo apt install php8.0-dev
+```
+Lab: OpCache and JIT
+* Change the last line of code to output not using scientific notation!
+```
+printf("%8.12f\n", microtime(TRUE) - $start);
+```
+* Don't forget to set this parameter in the CLI `php.ini` file!
+```
+opcache.enable_cli=1
+```
+* JIT demo video: https://studio.youtube.com/video/eJHEpZZtc0c/edit
+  * Source code referenced in the video:
+  * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices.git
+
 ### Docker Labs
 Lab: Docker (all)
 * Image Build Lab:
   * Might have to do the lab outside the VM (insufficient disk space!)
-  * Sample database is here: `https://opensource.unlikelysource.com/phpcourse.sql`
-  * After step `4` you need to build the image!
-```
-docker build .
-```
-  * Example `Dockerfile` for the lab:
-```
-# Sample Dockerfile
-FROM asclinux/linuxforphp-8.2-ultimate:7.4-nts
-RUN \
-    echo "Installing Laminas API Tools ..." && \
-    cd /srv && \
-    wget https://getcomposer.org/download/1.10.22/composer.phar && \
-    php composer.phar create-project laminas-api-tools/api-tools-skeleton /srv/laminas-api-tools && \
-    mv -f /srv/www /srv/www.OLD && \
-    ln -s /srv/laminas-api-tools/public /srv/www && \
-    chown -R apache /srv/laminas-api-tools && \
-    chmod -R 775 /srv/laminas-api-tools
-RUN \
-    echo "Creating sample database and assigning permissions ..." && \
-    cd /tmp && \
-    /etc/init.d/mysql start && \
-    sleep 5 && \
-    mysql -uroot -v -e "CREATE DATABASE phpcourse;" && \
-    mysql -uroot -v -e "CREATE USER 'vagrant'@'localhost' IDENTIFIED BY 'vagrant';" && \
-    mysql -uroot -v -e "GRANT ALL PRIVILEGES ON *.* TO 'vagrant'@'localhost';" && \
-    mysql -uroot -v -e "FLUSH PRIVILEGES;" && \
-    echo "Restoring sample database ..." && \
-    wget https://opensource.unlikelysource.com/phpcourse.sql && \
-    mysql -uroot -e "SOURCE /tmp/phpcourse.sql;" phpcourse
-RUN \
-    echo "Installing phpMyAdmin ..." && \
-    cd /tmp && \
-    wget https://opensource.unlikelysource.com/phpmyadmin_install.sh && \
-    chmod +x *.sh && \
-    /tmp/phpmyadmin_install.sh
-CMD lfphp --mysql --phpfpm --apache
-```
+  * Alternatively, expand the size of the virtual disk (See above)
 Lab: Docker Compose (esp. the Laminas API Tools lab)
 * Example `docker-compose.yml` file:
 ```
@@ -146,20 +145,6 @@ networks:
 ```
 
 ### REST API Labs
-
-### Middleware Labs
-Lab: Add Middleware (Stratigility lab)
-* Source code: `wget https://opensource.unlikelysource.com/stratigility_src.zip`
-  * Remove `~/Zend/workspaces/DefaultWorkspace/stratigility` directory structure
-  * Unzip the source code into a directory on the VM from `~/Zend/workspaces/DefaultWorkspace/`
-  * Change to the newly unzipped `stratigility` directory
-  * Run `php composer.phar install --ignore-platform-reqs`
-  * Reset permissions:
-```
-sudo chgrp -R www-data *
-sudo chmod -R 775 *
-```
-  * Do the lab
 Lab: REST (using Laminas API Tools)
 * You can also run the lab directly from the VM (not the Docker container) as follows:
 ```
@@ -190,187 +175,20 @@ CREATE TABLE `orders` (
   * Ignore the message (if you see it) "Error creating DB connect service"
   * In the lab, substitute `http://apigility` in place of any references to `http://10.20.20.20/laminas-api-tools`
 
-Lab: Install the apcu extension using `pecl`
-* To test: use this script: https://github.com/dbierer/php-iii-mar-2021/blob/main/apcu_test.php
-* Need to add `apcu.enable=1` and `apc.shm_size=32M` to `/etc/php/8.0/apache2/php.ini` and run from a browser to have the demo work
-* Restart the web server after modifying the `php.ini` file: `sudo service apache2 restart`
-Lab: New Functions (compile a new extension)
-* Install dependencies:
+
+### Middleware Labs
+Lab: Add Middleware (Stratigility lab)
+* Source code: `wget https://opensource.unlikelysource.com/stratigility_src.zip`
+  * Remove `~/Zend/workspaces/DefaultWorkspace/stratigility` directory structure
+  * Unzip the source code into a directory on the VM from `~/Zend/workspaces/DefaultWorkspace/`
+  * Change to the newly unzipped `stratigility` directory
+  * Run `php composer.phar install --ignore-platform-reqs`
+  * Reset permissions:
 ```
-sudo apt install php8.0-dev
+sudo chgrp -R www-data *
+sudo chmod -R 775 *
 ```
-* Install PHP-CPP (https://php-cpp.com)
-```
-cd ~/Zend/workspaces/DefaultWorkspace/php3/src/ModAdvancedTechniques/Extensions
-git clone https://github.com/CopernicaMarketingSoftware/PHP-CPP.git
-cd PHP-CPP
-make
-sudo make install
-# NOTE: had a problem compiling PHP-CPP under PHP 8
-# Works OK in the Docker image created in class
-```
-* Here is the revised `main.cpp` file:
-```
-#include <phpcpp.h>
-#include <iostream>
-
-// function declaration with parameters
-void telemetryParams (Php::Parameters &params)
-{
-    int distance=params[0];
-    int speed=params[1];
-    std::cout<<"Distance: "<<distance<<std::endl;
-    std::cout<<"Speed: "<<speed<<std::endl;
-}
-
-// function declaration without parameters
-Php::Value telemetryRandom()
-{
-    if (rand() % 2 == 0) {
-        return "no remainder";
-    } else {
-        return "remainder";
-    }
-}
-
-// Tell the compiler that the get_module is a pure C function
-extern "C" {
-    /**
-     *  Function that is called by PHP right after the PHP process
-     *  has started, and that returns an address of an internal PHP
-     *  structure with all the details and features of your extension
-     *
-     *  This creates an extension object that is memory-resident during runtime.
-     */
-    PHPCPP_EXPORT void *get_module() {
-        static Php::Extension extension("telemetry", "0.0.1");
-        extension.add<telemetryParams>("telemetryParams", {
-            Php::ByVal("a", Php::Type::Numeric),
-            Php::ByVal("b", Php::Type::Numeric)
-        });
-        extension.add<telemetryRandom>("telemetryRandom");
-        return extension;
-    }
-}
-```
-* Here is the revised `Makefile`:
-```
-#       This is the name of your extension. Based on this extension name, the
-#       name of the library file (name.so) and the name of the config file (name.ini)
-#       are automatically generated
-NAME                            =       telemetry
-
-#
-#       Php.ini directories
-#
-#       In the past, PHP used a single php.ini configuration file. Today, most
-#       PHP installations use a conf.d directory that holds a set of config files,
-#       one for each extension. Use this variable to specify this directory.
-#
-INI_DIR                         =       /etc/php/8.0/cli/conf.d
-
-#
-#       The extension dirs
-#
-#       This is normally a directory like /usr/lib/php5/20121221 (based on the
-#       PHP version that you use. We make use of the command line 'php-config'
-#       instruction to find out what the extension directory is, you can override
-#       this with a different fixed directory
-#
-EXTENSION_DIR           =       $(shell php-config --extension-dir)
-
-
-#
-#       The name of the extension and the name of the .ini file
-#
-#       These two variables are based on the name of the extension. We simply add
-#       a certain extension to them (.so or .ini)
-#
-EXTENSION                       =       ${NAME}.so
-INI                             =       ${NAME}.ini
-
-
-#
-#       Compiler
-#
-#       By default, the GNU C++ compiler is used. If you want to use a different
-#       compiler, you can change that here. You can change this for both the
-#       compiler (the program that turns the c++ files into object files) and for
-#       the linker (the program that links all object files into the single .so
-#       library file. By default, g++ (the GNU C++ compiler) is used for both.
-#
-COMPILER                        =       g++
-LINKER                          =       g++
-
-
-#
-#       Compiler and linker flags
-#
-#       This variable holds the flags that are passed to the compiler. By default,
-#       we include the -O2 flag. This flag tells the compiler to optimize the code,
-#       but it makes debugging more difficult. So if you're debugging your application,
-#       you probably want to remove this -O2 flag. At the same time, you can then
-#       add the -g flag to instruct the compiler to include debug information in
-#       the library (but this will make the final libphpcpp.so file much bigger, so
-#       you want to leave that flag out on production servers).
-#
-#       If your extension depends on other libraries (and it does at least depend on
-#       one: the PHP-CPP library), you should update the LINKER_DEPENDENCIES variable
-#       with a list of all flags that should be passed to the linker.
-#
-COMPILER_FLAGS          =       -Wall -c -O2 -std=c++11 -fpic -o
-LINKER_FLAGS            =       -shared
-LINKER_DEPENDENCIES     =       -lphpcpp
-
-
-#
-#       Command to remove files, copy files and create directories.
-#
-#       I've never encountered a *nix environment in which these commands do not work.
-#       So you can probably leave this as it is
-#
-RM                                      =       rm -f
-CP                                      =       cp -f
-MKDIR                           =       mkdir -p
-
-
-#
-#       All source files are simply all *.cpp files found in the current directory
-#
-#       A builtin Makefile macro is used to scan the current directory and find
-#       all source files. The object files are all compiled versions of the source
-#       file, with the .cpp extension being replaced by .o.
-#
-SOURCES                         =       $(wildcard *.cpp)
-OBJECTS                         =       $(SOURCES:%.cpp=%.o)
-
-
-#
-#       From here the build instructions start
-#   VERY IMPORTANT: must be proper TABS (not spaces!) in front of each child ${ARG}
-#
-all:    ${OBJECTS} ${EXTENSION}
-
-${EXTENSION}:   ${OBJECTS}
-        ${LINKER} ${LINKER_FLAGS} -o $@ ${OBJECTS} ${LINKER_DEPENDENCIES}
-
-${OBJECTS}:
-        ${COMPILER} ${COMPILER_FLAGS} $@ ${@:%.o=%.cpp}
-
-install:
-        ${CP} ${EXTENSION} ${EXTENSION_DIR}
-        ${CP} ${INI} ${INI_DIR}
-
-clean:
-        ${RM} ${EXTENSION} ${OBJECTS}
-```
-* Make sure you add `extension=/path/to/telemetry.so` in your `php.ini` file!
-* Here is the test program:
-```
-<?php
-echo telemetryParams(500, 600);
-//for ($i=0; $i<7; $i++) echo(telemetryRandom()."\n");
-```
+  * Do the lab
 
 ## Resources
 Previous class notes:
@@ -688,8 +506,22 @@ Getting CLI args:
 
 ## Docker
 More examples:
-  * https://github.com/zendtech/Laminas-Level-1-Attendee/blob/master/docker-compose.yml
-  * https://github.com/zendtech/Laminas-Level-1-Attendee/blob/master/docker/Dockerfile
+* https://github.com/zendtech/Laminas-Level-1-Attendee/blob/master/docker-compose.yml
+* https://github.com/zendtech/Laminas-Level-1-Attendee/blob/master/docker/Dockerfile
+Docker Swarm
+* Lets you create a cluster of servers running docker
+* Shares containers between servers
+* You can also use Kubernetes for the same thing
+  * Kubernetes is much more complicated to configure and get up and running
+* Dockerfile
+  * `ENTRYPOINT` is the point-of-entry when you run an image
+  * `CMD` is the command provided to the entrypoint
+  * Example:
+```
+ENTRYPOINT /bin/bash
+CMD ps -ax
+```
+
 
 ## Web APIs
 Oauth2 client:
@@ -703,7 +535,13 @@ The original seminal work in this area:
 
 ## Just-In-Time Compiler
 Good foundational article: https://www.zend.com/blog/exploring-new-php-jit-compiler
-Article that describes JIT in PHP 8: https://wiki.php.net/rfc/jit
+* Article that describes JIT in PHP 8: https://wiki.php.net/rfc/jit
+* You can enable PCRE to use JIT for pattern compilation using this `php.ini` setting:
+```
+; Enables or disables JIT compilation of patterns. This requires the PCRE
+; library to be compiled with JIT support.
+pcre.jit=1
+```
 
 ## Q & A
 * Q: Do you have any documentation for HAL+JSON?
