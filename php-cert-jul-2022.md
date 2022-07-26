@@ -4,10 +4,10 @@
 Add reference to PCRE POSIX functionality
 
 ## Homework
-For Tue 26 Jul 2022
-* Review quiz questions for Topic 6 (course module 6) (Functions)
-* Review quiz questions for Topic 7 (course module 7) (OOP)
+For Thu 28 Jul 2022
 * Second Mock Exam
+* Review quiz questions for Topic 6 (course module 7) (Functions)
+* Review quiz questions for Topic 7 (course module 8) (OOP)
 For Thu 21 Jul 2022
 * Review quiz questions for Topic 4 (course module 5) (Arrays)
 * Review quiz questions for Topic 5 (course module 6) (I/O)
@@ -221,49 +221,42 @@ etc.
     * `unset()`
     * Called in a function and function call ends
     * Overwritten
+* Late static binding
+  * https://www.php.net/manual/en/language.oop5.late-static-bindings.php
 * Serialization example:
 ```
 <?php
-class User
+class Test
 {
-	public $first = 'Fred';
-	public $last  = 'Flintstone';
-	public $role  = 'Cavemen';
-	public $test  = [1,2,3];
-	public $hash  = '';
-	public function __construct()
+	public $a = 0;
+	public $b = 0;
+    public $c = 'Test';
+    public $d = [];
+    public $e = '';
+	public function __construct(int $a, float $b, string $c, array $d)
 	{
-		$this->hash = bin2hex(random_bytes(8));
-	}
-	public function getName()
-	{
-		return $this->first . ' ' . $this->last;
+		$this->a = $a;
+		$this->b = $b;
+		$this->c = $c;
+		$this->d = $d;
+		$this->e = md5(rand(1111,9999));
 	}
 	public function __sleep()
 	{
-		return ['first','last','role','test'];
+		return ['a','b','c','d'];
 	}
 	public function __wakeup()
 	{
-		$this->__construct();
+		$this->e = md5(rand(1111,9999));
 	}
 }
-
-echo '<pre>';
-$user = new User();
-echo $user->getName();
-echo "\n";
-
-$str = serialize($user);
-echo $str . "\n";
-var_dump($user);
-echo "\n";
+$test = new Test(222, 3.456, 'TEST', [1,2,3]);
+var_dump($test);
+$str = serialize($test);
+echo $str . PHP_EOL;
 
 $obj = unserialize($str);
-echo $obj->getName();
-echo "\n";
 var_dump($obj);
-echo '</pre>';
 ```
 * SPL
   * Make sure you study:
