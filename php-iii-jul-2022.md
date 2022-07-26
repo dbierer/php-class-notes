@@ -1,11 +1,14 @@
 # PHP III -- Jul 2022 -- Notes
 
 ## TODO
+* Q: VM source code update?
+* A: See: https://opensource.unlikelysource.com/php3_update_jul_2022.zip
+
 * Q: Jenkins up and running?
+TBD
 
-* Q: Example using `STDIN` to listen for raw input
-
-* Q: ReactPHP Examples
+* Q: Async examples: ReactPHP, Swoole and PHP 8.1 fibers?
+* A: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/tree/main/ch12
 
 * Get example of new PHP 8 serialization
   * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_magic_sleep_wakeup.php
@@ -29,9 +32,17 @@
 * A: See: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_spl_filteriterator_anon_class.php
 
 * Q: Find examples of ArrayIterator::STD_PROP_LIST and ArrayIterator::ARRAY_AS_PROPS?
-STILL RESEARCHING THIS
+* A: Couldn't find any examples, but ran across this article:
+  * https://stackoverflow.com/questions/14910599/what-does-the-flags-parameter-of-arrayiterator-and-arrayobject-do
 
 ## Homework
+For Wed 27 Jul 2022
+* Lab: OpCache and JIT
+* Lab: Existing Extension
+  * The `pecl` command probably doesn't work
+  * Follow the instructions here: https://openswoole.com/docs/get-started/installation#installing-via-open-swoole-ubuntu-ppa
+* Lab: FFI
+
 For Wed 20 Jul 2022
 * Update the VM as per class notes (see below)
 * Set up Apache JMeter
@@ -113,35 +124,120 @@ opcache.enable_cli=1
   * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices.git
 
 ### Docker Labs
-Lab: Docker (all)
-* Image Build Lab:
-  * Might have to do the lab outside the VM (insufficient disk space!)
-  * Alternatively, expand the size of the virtual disk (See above)
-Lab: Docker Compose (esp. the Laminas API Tools lab)
-* Example `docker-compose.yml` file:
+Docker Build Lab:
+* Create an empty directory and change to it
 ```
-version: "3"
-services:
-  laminas-api-tools:
-    container_name: laminas-api-tools
-    hostname: laminas
-    image: laminas-api-tools
-    volumes:
-     - ".:/home"
-    ports:
-     - "8888:80"
-    build: .
-    restart: always
-    command: lfphp --mysql --phpfpm --apache
-    networks:
-      ten_net:
-        ipv4_address: 10.10.10.10
-networks:
-  ten_net:
-    ipam:
-      driver: default
-      config:
-        - subnet: "10.10.10.0/24"
+mkdir docker_test
+cd docker_test
+```
+* Create `Dockerfile` as follows:
+```
+FROM alpine:latest
+RUN \
+    echo "Installing basic utils ..." && \
+    apk add bash
+RUN \
+    echo "Installing PHP + PHP-FPM ..." && \
+    apk add php && \
+    apk add php-fpm
+RUN \
+    echo "Installing nginx ..." && \
+    apk add nginx && \
+    mv /etc/nginx/http.d/default.conf /etc/nginx/http.d/default.conf.old && \
+    mkdir /var/www/html && \
+    chown -R nginx /var/www/html
+COPY default.conf /etc/nginx/http.d/default.conf
+COPY info.php /var/www/html/info.php
+COPY startup.sh /usr/sbin/startup.sh
+RUN chmod +x /usr/sbin/*.sh
+ENTRYPOINT /usr/sbin/startup.sh
+```
+* Create nginx config file `default.conf` :
+```
+server {
+    listen                  80;
+    root                    /var/www/html;
+    index                   index.html index.htm index.php;
+    server_name             _;
+    client_max_body_size    32m;
+    error_page              500 502 503 504  /50x.html;
+    location = /50x.html {
+          root              /var/lib/nginx/html;
+    }
+    location ~ \.php$ {
+          fastcgi_pass      127.0.0.1:9000;
+          fastcgi_index     index.php;
+          include           fastcgi.conf;
+    }
+}
+```
+* Create entry point startup script `startup.sh`
+```
+#!/bin/bash
+
+export VER=8
+# Start the first process
+/usr/sbin/php-fpm$VER
+status=$?
+if [ $status -ne 0 ]; then
+  echo "Failed to start php-fpm: $status"
+  exit $status
+fi
+echo "Started php-fpm succesfully"
+
+# Start the second process
+/usr/sbin/nginx
+status=$?
+if [ $status -ne 0 ]; then
+  echo "Failed to start nginx: $status"
+  exit $status
+fi
+echo "Started nginx succesfully"
+
+# Naive check runs checks once a minute to see if either of the processes exited.
+# This illustrates part of the heavy lifting you need to do if you want to run
+# more than one service in a container. The container exits with an error
+# if it detects that either of the processes has exited.
+# Otherwise it loops forever, waking up every 60 seconds
+
+while sleep 60; do
+  ps |grep php-fpm$VER |grep -v grep
+  PROCESS_1_STATUS=$?
+  ps |grep nginx |grep -v grep
+  PROCESS_2_STATUS=$?
+  # If the greps above find anything, they exit with 0 status
+  # If they are not both 0, then something is wrong
+  if [ -f $PROCESS_1_STATUS -o -f $PROCESS_2_STATUS ]; then
+    echo "One of the processes has already exited."
+    exit 1
+  fi
+done
+```
+* Create test PHP script `info.php`:
+```
+<?php
+phpinfo();
+```
+* Build the image:
+```
+docker build -t docker_test .
+```
+* Run the image:
+```
+docker run -d -p 8008:80 --name docker_test_run docker_test
+```
+* Confirm it's running:
+```
+docker container ls
+```
+* Test from browser: `http://localhost:8008/info.php`
+* Shell into the image:
+```
+docker exec -it docker_test /bin/bash
+```
+* Stop the container:
+```
+docker container stop docker_test_run
 ```
 
 ### REST API Labs
