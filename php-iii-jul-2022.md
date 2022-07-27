@@ -1,5 +1,23 @@
 # PHP III -- Jul 2022 -- Notes
 
+## Homework
+For Fri 29 Jul 2022
+* Lab: API Tools [Optional]
+* Lab: Middleware (see directions below)
+For Wed 27 Jul 2022
+* Lab: OpCache and JIT
+* Lab: Existing Extension
+  * The `pecl` command probably doesn't work
+  * Follow the instructions here: https://openswoole.com/docs/get-started/installation#installing-via-open-swoole-ubuntu-ppa
+  * Alternatively use `zendphpctl`
+    * See: https://help.zend.com/zendphp/current/content/installation/zendphpctl.htm
+* Lab: FFI
+
+For Wed 20 Jul 2022
+* Update the VM as per class notes (see below)
+* Set up Apache JMeter
+* Set up Jenkins (follow the lab in the PDF)
+
 ## TODO
 * Q: VM source code update?
 * A: `git clone https://github.com/dbierer/php-iii-jul-2022.git`
@@ -36,19 +54,6 @@ TBD
 * Q: Find examples of ArrayIterator::STD_PROP_LIST and ArrayIterator::ARRAY_AS_PROPS?
 * A: Couldn't find any examples, but ran across this article:
   * https://stackoverflow.com/questions/14910599/what-does-the-flags-parameter-of-arrayiterator-and-arrayobject-do
-
-## Homework
-For Wed 27 Jul 2022
-* Lab: OpCache and JIT
-* Lab: Existing Extension
-  * The `pecl` command probably doesn't work
-  * Follow the instructions here: https://openswoole.com/docs/get-started/installation#installing-via-open-swoole-ubuntu-ppa
-* Lab: FFI
-
-For Wed 20 Jul 2022
-* Update the VM as per class notes (see below)
-* Set up Apache JMeter
-* Set up Jenkins (follow the lab in the PDF)
 
 ## VM
 Here are some things to do with the VM after installation
@@ -101,7 +106,8 @@ git clone https://github.com/dbierer/php-iii-jul-2022.git
   * replace `version number` with `Version Number`
 
 ### Custom PHP labs
-Lab: Install the apcu extension using `pecl`
+Lab: Install the apcu extension using `zendphpctl`
+* See https://help.zend.com/zendphp/current/content/installation/linux_installation_zendphpctl.htm
 * To test: use this script: https://github.com/dbierer/php-iii-mar-2021/blob/main/apcu_test.php
 * Need to add `apcu.enable=1` and `apc.shm_size=32M` to `/etc/php/8.0/apache2/php.ini` and run from a browser to have the demo work
 * Restart the web server after modifying the `php.ini` file: `sudo service apache2 restart`
@@ -512,7 +518,8 @@ CMD ps -ax
 Oauth2 client:
   * https://packagist.org/packages/league/oauth2-client
   * You can then pick from around 60 different "providers" (e.g. authentication sources)
-
+PHP Utility that facilitates API requests
+  * `checkdnsrr`: very useful "deep" validation (e.g. email address "MX" records)
 ## Software Design
 The original seminal work in this area:
   * https://en.wikipedia.org/wiki/Design_Patterns
