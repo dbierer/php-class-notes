@@ -1,9 +1,16 @@
 # PHP Certification - Jul 2022
 
 ## TODO
-Add reference to PCRE POSIX functionality
+* Add reference to PCRE POSIX functionality
+* Get updated mock exams to students
 
 ## Homework
+For Thu 04 Aug 2022
+* Review quiz questions for Topic 8 (course module 9) (Database)
+* Review quiz questions for Topic 9 (course module 10) (Security)
+* Review quiz questions for Topic 10 (course module 11) (Web Features)
+* Review quiz questions for Topic 11 (course module 12) (Error Handling)
+Final Mock Exam
 For Thu 28 Jul 2022
 * Second Mock Exam
 * Review quiz questions for Topic 6 (course module 7) (Functions)
@@ -308,6 +315,19 @@ try {
   * Remove `similar_text()`
 * http://localhost:9999/#/2/59
   * s/be No space in "C" answer!
+* http://localhost:9999/#/9/19
+  * s/be "All records in B that *do not* match records in A"
+* http://localhost:9999/#/10/26
+  * `random_int()` takes 2 arguments!
+* http://localhost:9999/#/10/57
+  * Looks like the "C" answer is also correct
+* http://localhost:9999/#/12/8
+  * The code doesn't show aggregate Catch blocks (see example above)
+
+## Mock Exam 2
+Question 3 is wrong.
+Number s/be "999.000.000,00"
+
 ## Change Request for Code Repo
 * http://localhost:8888/show.php?f=02-58-84.php s/be a space!
 
