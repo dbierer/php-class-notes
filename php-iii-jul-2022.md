@@ -578,3 +578,23 @@ file_put_contents($dir . $dest, base64_decode($encode));
 
 ## Change Request
 * Move course module 5 (Targeted Server Environments) to the end
+* http://localhost:9933/#/8/11
+  * Title s/be "Insert Handler"
+* Middle app: error on DELETE
+```
+): Middleware\DbService::remove()
+#2 /home/vagrant/php-iii-jul-2022/middleware/public/index.php(62): Middleware\DeleteHandler->process()
+#3 {main}
+  thrown in /home/vagrant/php-iii-jul-2022/middleware/src/Middleware/DbService.php on line 55
+[Fri Aug  5 06:37:36 2022] 127.0.0.1:57260 [500]: DELETE / - Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '* FROM orders WHERE id = '0'' at line 1 in /home/vagrant/php-iii-jul-2022/middleware/src/Middleware/DbService.php:55
+Stack trace:
+#0 /home/vagrant/php-iii-jul-2022/middleware/src/Middleware/DbService.php(55): PDOStatement->execute()
+#1 /home/vagrant/php-iii-jul-2022/middleware/src/Middleware/DeleteHandler.php(19): Middleware\DbService::remove()
+#2 /home/vagrant/php-iii-jul-2022/middleware/public/index.php(62): Middleware\DeleteHandler->process()
+#3 {main}
+  thrown in /home/vagrant/php-iii-jul-2022/middleware/src/Middleware/DbService.php on line 55
+
+```
+* In `swoole_server.php` the `city_select` field is bypassed
+* http://localhost:9933/#/9/27 and http://localhost:9933/#/9/28 are out of order
+  * S/be in the Mezzio Swoole Support section
