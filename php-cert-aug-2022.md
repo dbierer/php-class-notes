@@ -1,6 +1,8 @@
 # PHP Certification - Aug 2022
 
 ## Homework
+For Weds 10 Aug 2022
+* Quiz questions for Topic 1 (Syntax/Basics)
 
 ## TODO
 
@@ -101,7 +103,13 @@ Extensions
   * https://github.com/php/php-src/tree/PHP-7.1.30/ext
   * *but* not all are enabled by default
   * You're only tested on the extensions enabled by default
-
+PECL
+* See https://pecl.php.net
+PEAR
+* See https://pear.php.net
+## Caching
+See: https://www.zend.com/blog/exploring-new-php-jit-compiler
+* Look for the "Before JIT" section
 
 ## Garbage Collection
 * Study up on `gc_collect_cycles()`
@@ -290,6 +298,8 @@ try {
 ```
 
 ## Change Request
+* http://localhost:4444/#/2/82
+  Answer s/be "max_memory_limit"
 * http://localhost:9999/#/4/16
   * Remove `similar_text()`
 * http://localhost:9999/#/2/59

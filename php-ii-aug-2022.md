@@ -2,6 +2,8 @@
 
 ## TODO
 ## Homework
+For Tue 16 Aug 2022
+* https://collabedit.com/8vfp3
 
 ## VM Notes
 Info
@@ -17,13 +19,8 @@ sudo apt -y upgrade
 * NOTE: this task might take some time
 
 Install phpMyAdmin
-* Remove old version:
-```
-sudo rm -rf /usr/share/phpmyadmin
-```
 * Download the latest version from `https://www.phpmyadmin.net`
 * Make note of the version number (e.g. `5.2.0`)
-* From the command line, unzip into `/usr/share/phpmyadmin`
 ```
 cd
 VER=5.2.0
@@ -62,6 +59,10 @@ Where it all started:
 ## Class Notes
 
 ### Namespaces
+Autoloader Examples:
+* https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_autoload_example.php
+* https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_autoload_class_example.php
+
 Class example:
 ```
 <?php
@@ -121,6 +122,27 @@ class Test
 $test = new Test();
 echo $test->getName();
 ```
+Example using `__construct()`
+```
+<?php
+class UserEntity {
+    protected string $firstName;
+    protected string $lastName;
+    public function __construct($firstName, $lastName) {
+        $this->firstName = $firstName ;
+        $this->lastName = $lastName ;
+    }
+    public function getName()
+    {
+		return $this->firstName . ' ' . $this->lastName;
+	}
+}
+
+$user[] = new UserEntity('Jack' , 'Ryan');
+$user[] = new UserEntity('Monte' , 'Python');
+foreach ($user as $obj)
+	echo $obj->getName() . "\n";
+```
 Constructor argument promotion example:
 ```
 <?php
@@ -153,9 +175,39 @@ echo $test2->getName();
 
 var_dump($test1, $test2);
 ```
+Practical anonymous class example:
+* https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_spl_filteriterator_anon_class.php
+
 ## Magic Methods
 Example of `__destruct()`
 * https://github.com/dbierer/filecms-core/blob/main/src/Common/Image/Captcha.php
+Serialization example:
+```
+<?php
+class UserEntity
+{
+	public $status = ['A','B','C'];
+    public function __construct(
+        protected string $firstName,
+        protected string $lastName,
+        protected float $balance,
+        protected int $id
+    ) {}
+	public function getFullName()
+	{
+		return $this->firstName . ' ' . $this->lastName;
+	}
+}
+$user = new UserEntity('Fred', 'Flintstone', 999.99, 101);
+$text = serialize($user);
+//$text = json_encode($user);
+echo $text . "\n";
+$obj = unserialize($text);
+//$obj = json_decode($text);
+echo $obj->getFullName() . "\n";
+var_dump($obj);
+
+```
 Example of `__sleep()` and `__wakeup()`
 ```
 <?php
@@ -209,12 +261,14 @@ class UserEntity {
 		return [
 			'firstName' => $this->firstName,
 			'lastName' => $this->lastName,
-			'date' => date('Y-m-d H:i:s')];
+			'sleep_date' => date('Y-m-d H:i:s')];
 	}
 	public function __unserialize($array)
 	{
 		// $array contains values restored from the serialization
 		$this->hash = bin2hex(random_bytes(8));
+		$this->firstName = $array['firstName'];
+		$this->lastName = $array['lastName'];
 	}
 	public function getFullName()
 	{
@@ -251,10 +305,61 @@ class Test
 	}
 }
 ```
+Example of controlled unlimited properties
+```
+<?php
+class Test
+{
+	public const FIELDS = ['fname','lname','balance'];
+	public $vars = [];
+    // Returns an inaccessible property
+    public function __set($key, $value) {
+        if (in_array($key, self::FIELDS)) {
+			$this->vars[$key] = $value;
+		}
+    }
+    public function __get($key) {
+        return $this->vars[$key] ?? '';
+    }
+}
+
+$test = new Test();
+$test->fname = 'Fred';
+$test->lname = 'Flintstone';
+$test->balance = 999.99;
+$test->doesNotExist = 'TEST';
+echo $test->fname . ' ' . $test->lname
+	 . ' has a balance of ' . $test->balance
+	 . ' and ' . $test->doesNotExist;
+```
+Other examples of magic methods:
+* https://github.com/dbierer/classic_php_examples/tree/master/oop
+* Look for `oop_magic*.php`
+
 Example of Abstract class with abstract method:
 * https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractController.php
 Examples of what is `callable`
 * https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_examples.php
+Example of going from a specific data type to a more general data type
+```
+<?php
+interface Foo {
+    public function test(array $input);
+}
+
+class Bar implements Foo {
+    // type omitted for $input
+    public function test(iterable $input) {
+		$text = '';
+		foreach($input as $item) $text .= ' ' . $item;
+        return 'You requested ' . trim($text);
+    }
+}
+
+$bar = new Bar();
+echo $bar->test(['A','B','C']);
+echo $bar->test(new ArrayIterator(['A','B','C']));
+```
 
 ## PDO
 Adding options as 4th argument:
@@ -368,6 +473,10 @@ $context_options = array (
 $context = stream_context_create($context_options)
 $fp = fopen('https://url', 'r', false, $context);
 ```
+
+## Change Request
+* http://localhost:2222/#/3/51
+  * Not a good example!
 
 ## Q & A
 * Q: Can you use the keyword "new" in property or const definition in 8.1?
