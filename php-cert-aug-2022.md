@@ -3,6 +3,12 @@
 ## Homework
 For Weds 10 Aug 2022
 * Quiz questions for Topic 1 (Syntax/Basics)
+For Wed 17 Aug 2022
+* Quiz questions for Topic 2 (Data Formats and Types)
+* Quiz questions for Topic 3 (Strings and Patterns)
+* Quiz questions for Topic 4 (Arrays)
+* Quiz questions for Topic 5 (I/O)
+* Mock Exam #1
 
 ## TODO
 
@@ -131,9 +137,64 @@ $date[] = new DateTime('@' . time());
 $date[] = (new DateTime())->add(new DateInterval('P3D'));
 var_dump($date);
 ```
+* SimpleXML example
+```
+<?php
+$xml = <<<EOT
+<outer>
+	<A>
+		<B>B11</B>
+		<B>B12</B>
+		<B>B13</B>
+	</A>
+	<A>
+		<B>B21</B>
+		<B>
+			<C>C1</C>
+			<C>C2</C>
+			<C>C3</C>
+		</B>
+		<B>B23</B>
+	</A>
+</outer>
+EOT;
+$obj = new SimpleXMLElement($xml);
+var_dump($obj);
+```
+* JSON example
+```
+<?php
+$json = <<<EOT
+{
+	"name":"Fred Flintstone",
+	"age" : 39,
+	"address": {
+		"city" : "Bedrock",
+		"state" : "Whatever",
+	},
+	"status": 999
+}
+EOT;
+try {
+	$data = json_decode($json);
+	var_dump($data);
+} catch (Throwable $t) {
+	echo $t;
+}
+if (json_last_error() !== JSON_ERROR_NONE) {
+	echo json_last_error();
+	echo "\n";
+	echo json_last_error_msg();
+	echo "\n";
+}
+```
+
 * Don't forget that to run a SOAP request, you can also use:
   * `SoapClient::__soapCall()`
   * `SoapClient::__doRequest()`
+* PayPal has a SOAP API that is publically accessible
+* Example of a SOAP client
+  * https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
 * Study on `DateTimeInterval` and `DateTimeZone` and also "relative" time formats
 * In addition, be aware of the basic time format codes
   * https://www.php.net/manual/en/datetime.format.php
@@ -141,11 +202,21 @@ var_dump($date);
   * https://www.php.net/manual/en/function.strftime.php
 * Example of a soap client:
   * https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
-* PayPal has a SOAP API that is publically accessible
 * REST vs. SOAP:
   * See: https://www.ateam-oracle.com/post/performance-study-rest-vs-soap-for-mobile-applications
 
 ## Strings
+* `stripos()` example of potential problem when used with `if`
+```
+<?php
+$str = 'The quick brown fox jumped over the fence.';
+echo (stripos($str, 'the')) ? '"the" was found' : '"the" was NOT found';
+echo " in $str\n"; // returns "NOT found"
+echo $str[0] . "\n";
+
+echo (stripos($str, 'the') !== FALSE) ? '"the" was found' : '"the" was NOT found';
+echo " in $str\n";	// returns "found"
+```
 * Study the docs on `sprintf()` to get format codes for that family of functions
 * Example using negative offsets:
 ```
@@ -156,6 +227,8 @@ if (substr($dir, -1) === '/') echo 'Trailing slash' . PHP_EOL;
 if ($dir[-1] === '/') echo 'Trailing slash' . PHP_EOL;
 ```
 * Tutorial on PHP regex: https://www.w3schools.com/php/php_regex.asp
+* Examples of regular expressions:
+  * https://github.com/dbierer/classic_php_examples/tree/master/regex
 * Using regex to swap sub-patterns
 ```
 <?php

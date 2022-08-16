@@ -55,6 +55,8 @@ Code examples: https://github.com/dbierer/classic_php_examples
 PHP Road Map: https://wiki.php.net/rfc
 Where it all started:
 * Seminal work: "Design Patterns: Elements of Reusable Object-Oriented Software"
+PHP Road Map:
+* https://wiki.php.net/rfc
 
 ## Class Notes
 
@@ -360,6 +362,71 @@ $bar = new Bar();
 echo $bar->test(['A','B','C']);
 echo $bar->test(new ArrayIterator(['A','B','C']));
 ```
+* Using `static` to get an instance of the lowest level in inheritance tree
+```
+<?php
+class Foo
+{
+	public function whatever()
+	{
+		return 'Whatever';
+	}
+	public function getInstance() : static
+	{
+		// this returns an error:
+		// return new self();
+		return new static();
+	}
+}
+class Bar extends Foo {}
+
+$foo = new Foo();
+$bar = new Bar();
+var_dump($foo->getInstance());	// Foo
+var_dump($bar->getInstance());	// Bar
+```
+Exception / Error example:
+```
+<?php
+try {
+	$pdo = new PDO('sqlite://xyz');
+} catch (PDOException $a) {
+	// catches PDOException
+	echo __LINE__ . ':' . get_class($a) . ':' . $a . "\n";
+} catch (Exception $a) {
+	echo __LINE__ . ':' . get_class($a) . ':' . $a . "\n";
+} catch (Error $a) {
+	echo __LINE__ . ':' . get_class($a) . ':' . $a . "\n";
+}
+
+try {
+	$pdo = new PDO();
+} catch (PDOException $a) {
+	echo __LINE__ . ':' . get_class($a) . ':' . $a . "\n";
+} catch (Exception $a) {
+	echo __LINE__ . ':' . get_class($a) . ':' . $a . "\n";
+} catch (Error $a) {
+	// catches Error
+	echo __LINE__ . ':' . get_class($a) . ':' . $a . "\n";
+}
+// actual output:
+/*
+6:PDOException:PDOException: SQLSTATE[HY000] [14] unable to open database file in C:\Users\ACER\Repos\classic_php_examples\oop\test.php:3
+Stack trace:
+#0 C:\Users\ACER\Repos\classic_php_examples\oop\test.php(3): PDO->__construct()
+#1 {main}
+21:ArgumentCountError:ArgumentCountError: PDO::__construct() expects at least 1 argument, 0 given in C:\Users\ACER\Repos\classic_php_examples\oop\test.php:14
+Stack trace:
+#0 C:\Users\ACER\Repos\classic_php_examples\oop\test.php(14): PDO->__construct()
+#1 {main}
+*/
+
+```
+Using `static` functionality to get a singleton instance
+* https://github.com/dbierer/filecms-core/blob/main/src/Common/Generic/Messages.php
+Other examples of `static` and `traits`
+* https://github.com/dbierer/classic_php_examples/tree/master/oop/*static*.php
+* https://github.com/dbierer/classic_php_examples/tree/master/oop/*trait*.php
 
 ## PDO
 Adding options as 4th argument:
