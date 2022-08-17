@@ -3,11 +3,12 @@
 ## Homework
 For Weds 10 Aug 2022
 * Quiz questions for Topic 1 (Syntax/Basics)
-For Wed 17 Aug 2022
+For Fri 19 Aug 2022
 * Quiz questions for Topic 2 (Data Formats and Types)
 * Quiz questions for Topic 3 (Strings and Patterns)
 * Quiz questions for Topic 4 (Arrays)
 * Quiz questions for Topic 5 (I/O)
+* Quiz questions for Topic 6 (Functions)
 * Mock Exam #1
 
 ## TODO
@@ -278,6 +279,21 @@ etc.
 ## Functions
 * Read up on `Closure::bindTo()`
   * https://www.php.net/manual/en/closure.bindto.php
+* Example with variable number of arguments:
+```
+<?php	
+function superDump()
+{
+	var_dump(func_get_args());
+}
+
+$a = new ArrayIterator([1,2,3]);
+$b = [4,5,6];
+$c = 'Test';
+
+superDump($a, $b, $c);
+
+```
 
 ## OOP
 * Read up on magic methods!
@@ -377,6 +393,8 @@ try {
   * Remove `similar_text()`
 * http://localhost:9999/#/2/59
   * s/be No space in "C" answer!
+* http://localhost:9999/#/8/4
+  * Missing "}" in 2nd method
 * http://localhost:9999/#/9/19
   * s/be "All records in B that *do not* match records in A"
 * http://localhost:9999/#/10/26
