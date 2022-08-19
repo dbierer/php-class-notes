@@ -1,6 +1,11 @@
 # PHP Certification - Aug 2022
 
 ## Homework
+For Mon 22 Aug 2022
+* Quiz Questions for Topic 7 (OOP)
+* Mock Exam #1
+* Mock Exam #2
+
 For Weds 10 Aug 2022
 * Quiz questions for Topic 1 (Syntax/Basics)
 For Fri 19 Aug 2022
@@ -19,6 +24,8 @@ For Fri 19 Aug 2022
 * Follow the setup instructions in `/path/to/zip/README.md`
 
 ## Class Notes
+Basic representation of integers
+* https://www.php.net/manual/en/language.types.integer.php
 What is considered "empty"?
 * https://www.php.net/manual/en/language.types.boolean.php#language.types.boolean.casting
 Overview of topics: https://www.zend.com/training/php-certification-exam
@@ -275,6 +282,8 @@ In addition to the informational file functions mentioned, you also have:
 * `filemtime()`
 * `filectime()`
 etc.
+Wrappers
+* https://www.php.net/manual/en/wrappers.php
 
 ## Functions
 * Read up on `Closure::bindTo()`
@@ -403,7 +412,14 @@ try {
   * Looks like the "C" answer is also correct
 * http://localhost:9999/#/12/8
   * The code doesn't show aggregate Catch blocks (see example above)
-
+* http://localhost:9999/#/3/30
+  * Remove "--" in front of "$xml"
+* http://localhost:9999/#/3/40
+  * "A" answer needs to be reworded
+* http://localhost:9999/#/4/39
+  * Please review this code block and make sure it works
+  * Also, the next slide has a slight difference remove `++` from `$pos++`
+   
 ## Mock Exam 2
 Question 3 is wrong.
 Number s/be "999.000.000,00"
