@@ -290,7 +290,7 @@ Wrappers
   * https://www.php.net/manual/en/closure.bindto.php
 * Example with variable number of arguments:
 ```
-<?php	
+<?php
 function superDump()
 {
 	var_dump(func_get_args());
@@ -350,6 +350,53 @@ echo $str . PHP_EOL;
 $obj = unserialize($str);
 var_dump($obj);
 ```
+Another example of `serialize()` and `unserialize()`
+```
+<?php
+class Test
+{
+	public $name = '';
+	public $address = ['city' => 'Surin', 'country' => 'TH'];
+	public $member = TRUE;
+	public $id = 101;
+	public $amount = 99.99;
+	public $time = NULL;
+	public $sensitive = '';
+	public function __construct()
+	{
+		$this->time = new DateTime('now');
+		$this->sensitive = md5(rand(100001,999999));
+	}
+	public function __toString()
+	{
+		return serialize($this);
+	}
+	public function __sleep()
+	{
+		return ['name','address','member','id','amount'];
+	}
+	public function __wakeup()
+	{
+		self::__construct();
+	}
+}
+$test = new Test();
+$str  = serialize($test);
+echo $test . PHP_EOL;
+echo $str . PHP_EOL;
+
+$obj = unserialize($str);
+echo ($test == $obj) ? 'SAME' : 'NOT SAME';
+echo PHP_EOL;
+echo $obj . PHP_EOL;
+
+var_dump($test);
+var_dump($obj);
+```
+* Things that are considered `callable`
+  * See: https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_examples.php
+  * NOTE: `fn => xxx` is not on the test! (PHP 7.4+)
+
 * SPL
   * Make sure you study:
     * `*Iterator*` : just know what they are
@@ -419,7 +466,7 @@ try {
 * http://localhost:9999/#/4/39
   * Please review this code block and make sure it works
   * Also, the next slide has a slight difference remove `++` from `$pos++`
-   
+
 ## Mock Exam 2
 Question 3 is wrong.
 Number s/be "999.000.000,00"

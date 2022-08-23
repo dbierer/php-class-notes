@@ -1,6 +1,8 @@
 # PHP II - Aug 2022
 
 ## TODO
+Locate URL for PHP 5 to 7 converter
+
 ## Homework
 For Tue 16 Aug 2022
 * https://collabedit.com/8vfp3
@@ -540,6 +542,47 @@ $context_options = array (
 $context = stream_context_create($context_options)
 $fp = fopen('https://url', 'r', false, $context);
 ```
+## Output Control
+Example using output buffering to create inner content
+```
+<?php
+ob_start ();
+
+$values = ['TH'=>'Thailand','GB'=>'Great Britain','FR'=>'France'];
+foreach ($values as $key => $val)
+	echo '<tr><th>' . $key . '</th><td>' . $val . '</td></tr>';
+
+$contents = ob_get_clean();
+
+echo '<h1>My Cool Webpage</h1>';
+echo '<table>';
+echo $contents;
+echo '</table>';
+```
+## Regex
+Misc examples
+```
+<?php
+$data = [
+	'/^[A-Z].*/'     => ['The quick brown fox', '12345'],
+	'/.*(jpg|png)$/' => ['image.png', 'info.php'],
+	'/\bERROR\b/'    => ['ERROR 309: undefined error','This contains ERROR_REPORTING'],
+	'/^[A-Za-z ]*$/'  => ['The quick brown fox', '9977 quick brown foxes'],
+	'/^[^A-Za-z]*$/' => ['997799989887777','The quick brown fox'],
+	'!^http(s)?://\w*!i' => ['https://zend.com','http://sandbox','ftp://whatever.com'],
+];
+
+foreach ($data as $pattern => $value) {
+	foreach ($value as $item) {
+		echo "Testing $item\n";
+		echo (preg_match($pattern, $item)) ? 'MATCH' : 'NO MATCH';
+		echo PHP_EOL;
+	}
+}
+```
+PHP 5 to PHP 7 code converter using `preg_replace_callback_array()`
+* https://github.com/dbierer/php7cookbook/blob/master/source/chapter01/chap_01_php5_to_php7_code_converter.php#L3
+* https://github.com/dbierer/php7cookbook/blob/master/source/Application/Parse/Convert.php
 
 ## Change Request
 * http://localhost:2222/#/3/51
