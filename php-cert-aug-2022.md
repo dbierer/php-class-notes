@@ -412,6 +412,8 @@ var_dump($obj);
 ## Database Topic
 Fetch Modes:
 * Focus on array and object fetch modes
+  * https://www.php.net/manual/en/pdostatement.fetch.php
+* Beware of the difference between `bindValue()`, `bindParam()` and `bindColumn()`
 
 ## Security Topic
 Questions are drawn from here:
@@ -443,6 +445,12 @@ try {
 ```
 
 ## Change Request
+
+//                            Module
+//                            | Slide w/in the module
+//                            | |
+Key: "http://localhost:4444/#/2/82"
+
 * http://localhost:4444/#/2/82
   Answer s/be "max_memory_limit"
 * http://localhost:9999/#/4/16

@@ -542,6 +542,8 @@ $context_options = array (
 $context = stream_context_create($context_options)
 $fp = fopen('https://url', 'r', false, $context);
 ```
+Study by Oracle that compares SOAP and REST
+* https://www.ateam-oracle.com/post/performance-study-rest-vs-soap-for-mobile-applications
 ## Output Control
 Example using output buffering to create inner content
 ```
