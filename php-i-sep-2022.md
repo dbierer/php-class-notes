@@ -1,5 +1,7 @@
 # PHP-I Jun 2022
 
+Last Slide: http://localhost:8881/#/3/5
+
 ## Homework
 
 ## VM Notes
@@ -65,7 +67,9 @@ Performance enhancements for PHP
 Formal definition of "doc blocks":
 * https://phpdoc.org/
 New version of PHP:
-* ZendPHP (see
+* ZendPHP
+PHP Road Map:
+* https://wiki.php.net/rfc
 Micro Frameworks
 * https://docs.mezzio.dev/
 * https://www.slimframework.com/
@@ -94,6 +98,30 @@ Request/Response
 * https://www.php-fig.org/psr/psr-7/
 PHP via Fast CGI
 * https://www.php.net/manual/en/install.fpm.php
+Boolean FALSE:
+```
+<?php
+$list = [
+	// these interpolate as FALSE:
+	0,
+	'',
+	"0",
+	[],
+	NULL,
+	FALSE,
+	// everything else is TRUE, including:
+	' ',
+	1,
+	-1,
+	['something']
+];
+
+foreach ($list as $item) {
+	var_dump((bool) $item);
+	echo PHP_EOL;
+}
+
+```
 Lots of PHP 8 specific examples
 * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices
 Default location for test programs:
