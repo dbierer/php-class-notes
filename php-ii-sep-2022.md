@@ -1,10 +1,17 @@
 # PHP II - Sep 2022
 
+Last Slide: http://localhost:8882/#/3/28
+
 ## TODO
 
 
 ## Homework
+For Thu 15 Sep 2022
 * Update the VM
+* Create a repository on github
+* Lab: Namespaces
+* Lab: Create a Class
+* Collabedit: https://collabedit.com/cknea
 
 ## VM Notes
 Info
@@ -602,8 +609,8 @@ PHP 5 to PHP 7 code converter using `preg_replace_callback_array()`
 * https://github.com/dbierer/php7cookbook/blob/master/source/Application/Parse/Convert.php
 
 ## Change Request
-* http://localhost:2222/#/3/51
-  * Not a good example!
+* http://localhost:8882/#/3/22
+  * "Some Mark Watney"???
 
 ## Q & A
 * Q: Can you use the keyword "new" in property or const definition in 8.1?
