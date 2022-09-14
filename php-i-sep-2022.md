@@ -1,8 +1,15 @@
 # PHP-I Jun 2022
 
-Last Slide: http://localhost:8881/#/3/5
+Last Slide: http://localhost:8881/#/4/13
+
+## TODO
+* Lookup Doctrine article on attributes
+  * https://www.doctrine-project.org/projects/doctrine-orm/en/2.13/reference/attributes-reference.html
+* Lookup RFC about deprecating back tics
 
 ## Homework
+For Fri 16 Sep 2022
+* https://collabedit.com/hcv2c
 
 ## VM Notes
 Info
@@ -59,6 +66,65 @@ sudo rm /var/crash/*
 ## Class Notes
 If you need to run an OS command, use `shell_exec()`
 * https://www.php.net/shell_exec
+String concatenation example:
+```
+$title = 'TEST';
+$html = '<html>'
+      . '<head>'
+      . '<title>'
+      . $title
+      . '</title>'
+      . '</head>'
+      . '</html>';
+echo $html;
+```
+Better example of `instanceof`
+```
+<?php
+class Person {}
+$human = new Person;
+echo ($human instanceof Person) ? 'TRUE' : 'FALSE';
+```
+Variadics Operator
+```
+<?php
+// Operator unpacking
+$a = [1, 2, 3];
+$b = [4, 5, 6];
+$twoDimArr = [$a, $b];
+$oneDimArr = [...$a, ...$b];
+print_r($twoDimArr); //[ 0 => [1, 2, 3], 1 => [4, 5, 6]]
+print_r($oneDimArr); //[1, 2, 3,4, 5, 6]
+
+// Argument packing
+$foo = 10;
+$bar = 5;
+
+function sum(...$args){
+    return var_export($args, TRUE);
+}
+echo sum(1, 2, 'A', 'B');
+echo PHP_EOL;
+/* Output:
+array (
+  0 => 1,
+  1 => 2,
+  2 => 'A',
+  3 => 'B',
+)
+*/
+```
+Deconstructing an array into variables:
+```
+<?php
+$a = ['Fred', 'Flintstone'];
+list($first, $last) = $a;
+echo "Hello $first $last\n";
+
+// available as of PHP 7:
+[$first, $last] = $a;
+echo "Hello $first $last\n";
+```
 PHP 7.4 End-of-Life
 * https://www.zend.com/blog/planning-php-7-4-eol
 Performance enhancements for PHP
@@ -73,8 +139,11 @@ PHP Road Map:
 Micro Frameworks
 * https://docs.mezzio.dev/
 * https://www.slimframework.com/
-Predefined Constants
-* https://www.php.net/manual/en/reserved.constants.php
+Constants
+  * Pre-defined
+	* https://www.php.net/manual/en/reserved.constants.php
+  * Magic Constants
+    * https://www.php.net/manual/en/language.constants.magic.php
 Statistics
 * Database engine rankings:
   * https://db-engines.com/en/ranking
@@ -268,6 +337,21 @@ If you want other formats, use one of these options:
 * `NumberFormatter` class
 * `number_format()` function
 * `printf()` family of functions (uses a format string)
+
+If vs. ternary
+```
+<?php
+// https://website.com?name=Doug
+// both examples yield the same results:
+
+// Using "if"
+$name = $_GET['name'];
+if (empty($name)) $name = 'Default';
+
+// Using ternary
+$name = (empty($_GET['name'])) ? 'Default' : $_GET['name'];
+
+```
 
 
 ## HTTP Basics
@@ -984,6 +1068,27 @@ $mission = [
 // Output all elements
 echo $mission['STS395'][2176]['lastName'];
 ```
+* Enumerations:
+  * https://www.php.net/manual/en/language.enumerations.php
+* Examples of outputing array values
+```
+<?php
+// all three outputs are the same
+// An astronaut array assignment
+$astronaut = ['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'];
+
+// Not very performant
+echo "{$astronaut['firstName']} {$astronaut['lastName']} will initially be left behind on Mars\n";
+
+// highly performant
+echo $astronaut['firstName'] . ' ' . $astronaut['lastName'] . ' will initially be left behind on Mars';
+echo PHP_EOL;
+
+// slightly more readable
+printf('%s %s will initially be left behind on Mars', $astronaut['firstName'], $astronaut['lastName']);
+echo PHP_EOL;
+```
+
 * Searching for a value in a multi-dimensional array
 ```
 // Build the crew
@@ -1333,3 +1438,10 @@ Things to watch out for when migrating from PHP 7 to 8
 ## ERRATA
 * http://localhost:8888/#/5/7
   * Revise this slide
+* http://localhost:8881/#/3/24
+  * s/be $days
+* http://localhost:8881/#/4/13
+  * Equivalent to:
+```
+// equivalent to: $ln = isset($user['lastname']) ? $user['lastname'] : 'not applicable';
+```
