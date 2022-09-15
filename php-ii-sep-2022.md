@@ -12,6 +12,47 @@ For Thu 15 Sep 2022
 * Lab: Namespaces
 * Lab: Create a Class
 * Collabedit: https://collabedit.com/cknea
+For Tues 20 Sep
+Lab: Create an Extensible Super Class
+```
+Complete the following:
+
+Using the code created in the previous exercise, create an extensible superclass definition. Set the properties and methods that subclasses will need.
+Create one or more subclasses that extend the superclass with constants, properties and methods specific to the subclass.
+Instantiate a couple of objects from the subclasses and execute the methods producing some output.
+Lab complete.
+```
+Lab: Magic Methods
+```
+Complete the following:
+
+Using the code from the previous exercises, add four magic methods, one of which is the magic constructor.
+The magic constructor should accepts parameters and set those parameters into the object on instantiation.
+Create an index.php file.
+Load, or autoload, the created classes.
+Instantiate object instances, and exercise the magic methods implemented.
+Lab complete.
+```
+Lab: Abstract Classes
+```
+Complete the following:
+
+Turn a superclass into an abstract class.
+In the abstract superclass, define an inheritable abstract method declaration that will instantiate an object of another class, and returns it.
+Extend the abstract superclass with a concrete subclass implementing the inherited abstract method.
+Instantiate a subclass instance.
+Call the method and retrieve the object it builds.
+Lab is complete.
+```
+Lab: Interfaces
+```
+Complete the following:
+
+Create an object interface with two methods.
+Implement the interface in your superclass.
+Add some code to the index.php file that calls one of the superclass methods implemented.
+Lab is completed.
+```
 
 ## VM Notes
 Info
@@ -201,8 +242,57 @@ echo $test2->getName();
 
 var_dump($test1, $test2);
 ```
+Inheritance example:
+```
+//             Transportation
+//             	  $capacity + $passengers
+//    Land           Sea                   Air
+//     etc.
+//  Car  Truck    Sailboat Freighter   PropPlane   Jet
+//   etc.
+```
+
 Practical anonymous class example:
 * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_spl_filteriterator_anon_class.php
+
+Restrictions when overriding a method:
+* When overriding a method, you can "expand" the data type in the signature
+* But you can't "narrow" it down
+* You are free to add additional arguments as long as you respect the data types of the original args
+* OR ... just remove the data type entirely which frees you from any restrictions
+```
+<?php
+class Base
+{
+	public int $a;
+	public int $b;
+	public function add(int $a, int $b)
+	{
+		return $a + $b;
+	}
+}
+
+//
+class Whatever extends Base
+{
+	// this works:
+	public function add(int|float $a, int|float $b, int|float $c = 0)
+	{
+		return $a + $b + $c;
+	}
+	/*
+	// this does *not* work:
+	public function add(float $a, float $b, float $c = 0)
+	{
+		return $a + $b + $c;
+	}
+	*/
+}
+
+$what = new Whatever();
+echo $what->add(1, 2, 3);
+
+```
 
 ## Magic Methods
 Example of `__destruct()`
@@ -364,6 +454,9 @@ Other examples of magic methods:
 
 Example of Abstract class with abstract method:
 * https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractController.php
+* https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractActionController.php
+* https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractRestfulController.php
+
 Examples of what is `callable`
 * https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_examples.php
 Example of going from a specific data type to a more general data type
