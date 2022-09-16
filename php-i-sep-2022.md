@@ -6,10 +6,115 @@ Last Slide: http://localhost:8881/#/4/13
 * Lookup Doctrine article on attributes
   * https://www.doctrine-project.org/projects/doctrine-orm/en/2.13/reference/attributes-reference.html
 * Lookup RFC about deprecating back tics
+* Get latest slides.pdf to Stefan
 
 ## Homework
 For Fri 16 Sep 2022
 * https://collabedit.com/hcv2c
+For Mon 19 Sep 2022
+Lab: Conditional If
+```
+Will the following code work?
+
+$foo = 10;
+$bar = 5;
+if ( $foo > $bar )
+    echo "Foo is greater than bar";
+    $foo = $bar;
+    echo "The value for Foo has changed";
+Which statement runs as part of the conditional?
+```
+Lab: Conditional If-Else Equality
+```
+What is the output from each if-else construct?
+
+$valueA = "50";
+$valueB = 50;
+
+if ($valueA == $valueB) {
+    echo "Equal <br>";
+} else {
+    echo "Not equal <br>";
+}
+
+if ($valueA === $valueB) {
+    echo "Identical <br>";
+} else {
+    echo "Not identical <br>";
+}
+```
+Lab: Conditional If-Else Exclusive OR
+```
+What is the output from each if/else construct?
+
+$valueA = 10;
+$valueB = 20;
+
+if ($valueA >= 50 xor $valueB === '20') {
+    echo "Apples <br>";
+} else {
+    echo "Oranges <br>";
+}
+
+if ($valueA >= '5' xor $valueB === 20) {
+    echo "White <br>";
+} else {
+    echo "Black <br>";
+}
+```
+Lab: Conditional If-ElseIf
+```
+Assume that people work in an office from Monday through Friday, and are off work on Saturday and Sunday.
+
+Modify the code below to handle the response if the day is either Saturday or Sunday?
+
+$dayOfWeek = "Monday";
+
+if ($dayOfWeek === "Friday") {
+    echo "See you on Monday";
+} else {
+    echo "See you tomorrow";
+}
+```
+Lab: Switch and MatchConstruct
+```
+An application needs to determine the country of origin for an astronaut applicant. Write a switch construct that evaluates multiple country use cases against a true boolean, and sets a variable based on the condition evaluated.
+Once you've create the switch{} construct, do the same thing but use "match" instead.
+
+```
+Lab: For Loop
+What does this program do?
+
+```
+$max = 100;
+for ($x = 5; $x < $max; $x++)
+{
+    // This if evaluation checks to see if number is odd or even
+    $test = TRUE;
+    for($i = 3; $i < $x; $i++) {
+        if(($x % $i) === 0) {
+            $test = FALSE;
+            break;
+        }
+    }
+    if ($test) echo $x . ', ';
+}
+```
+Lab: While Loop
+```
+An application has an invoicing system and must calculate a total for items in a list.
+
+Construct an associative array of invoice items.
+Instead of a foreach loop, which is used with arrays, construct a while loop and use it to iterate the associative array of list items, and add a tax value to each.
+Output each updated values.
+```
+Lab: Do...While Loop
+```
+A new feature request has risen to top priority that requires showing a list of past purchases.
+
+Create an associative array with past purchase dates and amounts.
+Iterate the list using a do...while loop displaying the past purchases.
+```
 
 ## VM Notes
 Info
@@ -351,6 +456,16 @@ if (empty($name)) $name = 'Default';
 // Using ternary
 $name = (empty($_GET['name'])) ? 'Default' : $_GET['name'];
 
+```
+Match expression with a default
+```
+<?php
+$result = match (1) {
+    0 => 'Foo',
+    1 => 'Bar',
+    default => 'Default'
+};
+echo $result;
 ```
 
 
@@ -1137,6 +1252,22 @@ $mission = [
         ]
 ];
 
+echo 'Here are the Crew Members of STS395:' . '<br>';
+foreach ($mission as $x => $x_val) {
+    foreach ($x_val as $y => $y_val) {
+        echo '"' . implode('","', $y_val) . '"' . PHP_EOL;
+    }
+
+}
+
+echo 'Here are the Crew Members of STS395:' . '<br>';
+foreach ($mission as $x => $x_val) {
+    foreach ($x_val as ['firstName' => $f, 'lastName' => $l, 'specialty' => $s]) {
+        echo "\"$f\",\"$l\",\"$s\"\n";
+    }
+
+}
+
 foreach ($mission['STS395'] as list('firstName' => $first, 'lastName' => $last, 'specialty' => $spec)) {
         echo "$first $last is a $spec\n";
 }
@@ -1173,9 +1304,19 @@ echo ($foo > 10) ? 10 : 'Null';
 ```
 <?php
 $name = $argv[1] ?? $_GET['name'] ?? $_POST['name'] ?? $_COOKIE['name'] ?? $_SESSION['name'] ?? 'No Name';
-echo htmlspecialchars($name);   // safeguards when you echo from an untrustes source
+echo htmlspecialchars($name);   // safeguards when you echo from an untrusted source
 echo "\n";
 ```
+* Example using Ternary to produce HTML or JSON (using an anonymous functions
+```
+<?php
+$flag = FALSE;
+$arr  = [1,2,3,4,5];
+$html = function ($arr) { return '<ul><li>' . implode('</li><li>', $arr) . '</li></ul>'; };
+$json = function ($arr) { return json_encode($arr); };
+echo ($flag) ? $html($arr) : $json($arr);
+```
+
 * Examples using the `list()` (or `[]`) in a `foreach()` loop
 ```
 <?php
@@ -1266,6 +1407,29 @@ setcookie('test', 12345, 0, '', '', FALSE, TRUE);
 // in PHP 8 you can use named params
 setcookie('test', 12345, httponly:TRUE);
 ```
+* Unlimited arguments example:
+```
+<?php
+// older approach
+function add()
+{
+	$vals = func_get_args();
+	return array_sum($vals);
+}
+
+echo add(1,2,3,4,5,6,7,8,9,10,11,12,13,14);
+echo PHP_EOL;
+
+// newer approach (recommended) uses the variadics operator
+function add2(...$vals)
+{
+	return array_sum($vals);
+}
+
+echo add2(1,2,3,4,5,6,7,8,9,10,11,12,13,14);
+
+```
+
 * FYI: you can use the `__destruct()` method as a way to clean up old files
   * See: https://github.com/dbierer/filecms-core/blob/main/src/Common/Image/Captcha.php
 * `php.ini` settings:
