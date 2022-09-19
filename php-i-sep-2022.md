@@ -1,14 +1,42 @@
 # PHP-I Jun 2022
 
-Last Slide: http://localhost:8881/#/4/13
+Last Slide: http://localhost:8881/#/6/25
 
 ## TODO
 * Lookup Doctrine article on attributes
   * https://www.doctrine-project.org/projects/doctrine-orm/en/2.13/reference/attributes-reference.html
 * Lookup RFC about deprecating back tics
-* Get latest slides.pdf to Stefan
+* Get latest slides.pdf to Stefan (before Oct 4)
+* Documentation on date format codes
+  * https://www.php.net/manual/en/datetime.format.php
 
 ## Homework
+For Wed 21 Sep 2022
+* Lab: F-Type Code Exercise
+* Lab: Write Array Lab
+  * Suggestion: try working with CSV files
+* Lab: file_get_contents()
+* Lab: file_put_contents()
+* Lab: Defining and Calling a Function
+* Lab: Recursive Function Exercise
+* OrderApp Introduction
+  * Lab: Two Functions
+* Custom Assignment:
+Given this starting array:
+```
+$colors = [
+	'red' => [111,222,333,444],
+	'green' => ['AAA','BBB','CCC','DDD'],
+	'blue' => [555, 'EEE', 666, 'FFF']
+];
+```
+* Randomly pick 'red','green' or 'blue'
+* Out of the sub-array, pull a value, display it, and remove from the sub-array
+* Possible functions it use:
+  * `array_rand()`
+  * `shuffle()`
+  * `array_pop()`
+
 For Fri 16 Sep 2022
 * https://collabedit.com/hcv2c
 For Mon 19 Sep 2022
@@ -1429,6 +1457,58 @@ function add2(...$vals)
 echo add2(1,2,3,4,5,6,7,8,9,10,11,12,13,14);
 
 ```
+Different looping examples
+```
+<?php
+$invoices = [
+    'January' => 2601,
+    'February' => 698,
+    'March' => 5601,
+    'April' => 999,
+    'May' => 8741,
+    'June' => 12,
+    'July' => 132,
+];
+
+// this works ok
+$numberOfInvoices = array_keys($invoices);
+while (!empty($numberOfInvoices)) {
+    $key = array_pop($numberOfInvoices);
+    echo $key . ': Net = ' . $invoices[$key] . ' | Gross = ' . ($invoices[$key]*1.19) . '<br />';
+}
+echo PHP_EOL;
+
+// using array "navigation" functions;
+
+reset($invoices);	// pointer to the top
+while ($key = key($invoices)) {
+    $val = current($invoices);
+    echo $key . ': Net = ' . $val . ' | Gross = ' . ($val * 1.19) . '<br />';
+	next($invoices);
+}
+echo PHP_EOL;
+
+// using ArrayIterator
+$iter = new ArrayIterator($invoices);
+while ($iter->valid()) {
+	$key = $iter->key();
+    $val = $iter->current();
+    echo $key . ': Net = ' . $val . ' | Gross = ' . ($val * 1.19) . '<br />';
+	$iter->next();
+}
+echo PHP_EOL;
+```
+Example using `array_rand()`
+```
+<?php
+$carousel = [
+	'Don\'t Miss Our Year End Sale',
+	'Special on Coffee Makers',
+	'Something Else, Hey!!!',
+];
+$key = array_rand($carousel);
+echo $carousel[$key];
+```
 
 * FYI: you can use the `__destruct()` method as a way to clean up old files
   * See: https://github.com/dbierer/filecms-core/blob/main/src/Common/Image/Captcha.php
@@ -1556,6 +1636,19 @@ $callbacks = [
   * CSV: https://github.com/dbierer/filecms-core/blob/main/src/Common/Data/Strategy/Csv.php
   * Driver: https://github.com/dbierer/filecms-core/blob/main/src/Common/Data/Storage.php
   * Clicks: https://github.com/dbierer/filecms-core/blob/main/src/Common/Stats/Clicks.php
+* Reads from a CSV file and returns an array:
+```
+<?php
+$fn = __DIR__ .'/demo.csv';
+$fh = fopen($fn, 'r');
+$data = [];
+while($row = fgetcsv($fh)) {
+	$data[] = $row;
+}
+fclose($fh);
+var_dump($data);
+```
+
 * `parse_url()` example:
 ```
 <?php
