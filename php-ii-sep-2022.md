@@ -3,61 +3,43 @@
 Last Slide: http://localhost:8882/#/3/28
 
 ## TODO
+Fork class repos and create working examples
+https://github.com/MPSimon/php2
+From Aaron Hoffman to Everyone 09:09 PM
+https://github.com/HoffmanProgress/tvasset
+From michelle nesbitt to Everyone 09:13 PM
+https://github.com/nerdommicro/zend-php2/tree/master/zendapp/src/ZendApp/Model
 
 
 ## Homework
+For Thu 22 Sep 2022
+* Lab: Type Hinting
+* Lab: Build Custom Exception Class
+* Lab: Traits
+* Lab: Review the OrderApp in the VM
+
+For Tues 20 Sep
+* Lab: Create an Extensible Super Class
+* Lab: Magic Methods
+* Lab: Abstract Classes
+* Lab: Interfaces
 For Thu 15 Sep 2022
 * Update the VM
 * Create a repository on github
 * Lab: Namespaces
 * Lab: Create a Class
 * Collabedit: https://collabedit.com/cknea
-For Tues 20 Sep
-Lab: Create an Extensible Super Class
-```
-Complete the following:
-
-Using the code created in the previous exercise, create an extensible superclass definition. Set the properties and methods that subclasses will need.
-Create one or more subclasses that extend the superclass with constants, properties and methods specific to the subclass.
-Instantiate a couple of objects from the subclasses and execute the methods producing some output.
-Lab complete.
-```
-Lab: Magic Methods
-```
-Complete the following:
-
-Using the code from the previous exercises, add four magic methods, one of which is the magic constructor.
-The magic constructor should accepts parameters and set those parameters into the object on instantiation.
-Create an index.php file.
-Load, or autoload, the created classes.
-Instantiate object instances, and exercise the magic methods implemented.
-Lab complete.
-```
-Lab: Abstract Classes
-```
-Complete the following:
-
-Turn a superclass into an abstract class.
-In the abstract superclass, define an inheritable abstract method declaration that will instantiate an object of another class, and returns it.
-Extend the abstract superclass with a concrete subclass implementing the inherited abstract method.
-Instantiate a subclass instance.
-Call the method and retrieve the object it builds.
-Lab is complete.
-```
-Lab: Interfaces
-```
-Complete the following:
-
-Create an object interface with two methods.
-Implement the interface in your superclass.
-Add some code to the index.php file that calls one of the superclass methods implemented.
-Lab is completed.
-```
 
 ## VM Notes
 Info
 * Username: `vagrant`
 * Password: `vagrant`
+
+Install `git`
+* Open a terminal window and run this command:
+```
+sudo apt install -y git
+```
 
 Update everything!
 * Open a terminal window and run this command:
@@ -459,6 +441,43 @@ Example of Abstract class with abstract method:
 
 Examples of what is `callable`
 * https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_examples.php
+```
+<?php
+function cmp($a, $b)
+{
+    if ($a == $b) {
+        return 0;
+    }
+    return ($a < $b) ? -1 : 1;
+}
+
+$anon = function ($a,$b) {
+    if ($a == $b) {
+        return 0;
+    }
+    return ($a < $b) ? -1 : 1;
+};
+
+$class = new class() {
+	public function __invoke($a,$b)
+	{
+		if ($a == $b) {
+			return 0;
+		}
+		return ($a < $b) ? -1 : 1;
+	}
+};
+
+$a = array(3, 2, 5, 6, 1);
+
+usort($a, $class);
+
+foreach ($a as $key => $value) {
+    echo "$key: $value\n";
+}
+
+```
+
 Example of going from a specific data type to a more general data type
 ```
 <?php
