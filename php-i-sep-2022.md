@@ -2,6 +2,10 @@
 
 Last Slide: http://localhost:8881/#/6/25
 
+## IMPORTANT!
+PHP 7.4 EOL date is 28 Nov 2022
+* https://www.zend.com/blog/planning-php-7-4-eol
+
 ## TODO
 * Lookup Doctrine article on attributes
   * https://www.doctrine-project.org/projects/doctrine-orm/en/2.13/reference/attributes-reference.html
@@ -11,6 +15,19 @@ Last Slide: http://localhost:8881/#/6/25
   * https://www.php.net/manual/en/datetime.format.php
 
 ## Homework
+For Tue 04 Oct 2022
+* Lab: Read Directories
+  * Also, try using this: `RecursiveDirectoryIterator`
+  * https://www.php.net/recursivedirectoryiterator
+* Lab: Embedded PHP
+  * Mainly HTML with some PHP embedded
+  * Develop a simple login form:
+    * Email, username, password
+* Lab: Embedded PHP
+  * Pure PHP script that completely generates the HTML
+* Lab: Secure Input Handling
+  * Combine this with the previous 2 labs
+* Lab: Escaping Exercise
 For Wed 21 Sep 2022
 * Lab: F-Type Code Exercise
 * Lab: Write Array Lab
@@ -197,6 +214,9 @@ sudo rm /var/crash/*
 ```
 
 ## Class Notes
+Most PHP Packages reside here:
+* https://packagist.org/
+
 If you need to run an OS command, use `shell_exec()`
 * https://www.php.net/shell_exec
 String concatenation example:
@@ -1648,7 +1668,111 @@ while($row = fgetcsv($fh)) {
 fclose($fh);
 var_dump($data);
 ```
+* Another CSV file example based on the lab
+```
+<?php
+define('SRC_FN', __DIR__ . '/names.csv');
+if (file_exists(SRC_FN)) unlink(SRC_FN);
 
+$customers = [
+    ['1', 'Stefan' ,'', 'Passerschröer'],
+    ['2', 'Doug', '', 'Bierer'],
+    ['3', 'Max', 'Martin', 'Mayer'],
+    ['4', 'Tao', 'Tao', 'Tao Tao']
+];
+
+if (!$customerdb = fopen(SRC_FN, 'a+')) exit('Unable to open file');
+
+foreach ($customers as $line) {
+    echo fputcsv($customerdb,$line) . PHP_EOL;
+}
+
+fclose($customerdb);
+
+$data = [];
+if (!$customerdb = fopen(SRC_FN, 'r')) exit('Unable to open file');
+while($line = fgetcsv($customerdb)) {
+	if (!empty($line) && count($line) > 0) $data[] = $line;
+    echo $line[0] ?? 'Unknown';
+    echo PHP_EOL;
+}
+var_dump($customers,$data);
+
+```
+* Modified Fibonacci program
+```
+<?php
+function fibonacci($n, &$seed = [])
+{
+	$value = NULL;
+	$seed = [0, 1, 1];
+	if ($n < 4 && $n > 0) return $seed[$n - 1];
+	for ($x = 3; $x < $n; $x++) {
+		$value = $seed[$x - 1] + $seed[$x - 2];
+		$seed[$x] = $value;
+	}
+	return $value;
+}
+
+$n = readline('Enter desired Fibonacci position: ');
+$seed = [];
+echo fibonacci($n, $seed);
+echo PHP_EOL;
+//var_dump($seed);
+```
+* HTML Select Function + other stuff
+```
+<?php
+if (!empty($_POST)) {
+	phpinfo(INFO_VARIABLES);
+}
+function htmlSelectHtml( $config ) {
+	$html = '';
+    $html .= '<select name="gender">';
+    foreach ($config['select'] as $key => $value) {
+        $html .=  '<option value="' . $key . '">' . $value . '</option>';
+    }
+    $html .=  '</select>';
+    return $html;
+}
+function htmlCheckbox( $config )
+{
+	$html = '';
+    foreach ($config['checkbox'] as $key => $value) {
+        $html .=  '<input name="checkbox[]" type="checkbox" value="' . $key . '" />' . $value . '&nbsp;';
+    }
+	return $html;
+}
+$config = [
+	'select' => ['M' => 'Male', 'F' => 'Female', 'X' => 'Other'],
+	'checkbox' => ['A' => 'AAA', 'B' => 'BBB', 'C' => 'CCC'],
+];
+$dropdown = htmlSelectHtml($config);
+$checkbox = htmlCheckbox($config);
+$title    = 'Hello World';
+$name     = 'Fred Flintstone';
+include __DIR__ . '/../template.phtml';
+```
+* Here's the template file:
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>untitled</title>
+<meta name="generator" content="Geany 1.34.1" />
+</head>
+<body>
+<h1><?= $title ?></h1>
+Welcome <?= $name ?>
+<form method="post" action="/index.php">
+<?= $dropdown ?>
+<br /> <?= $checkbox ?>
+<br /><input type="submit" />
+</form>
+</body>
+</html>
+```
 * `parse_url()` example:
 ```
 <?php
@@ -1682,6 +1806,37 @@ array(6) {
 ```
 $active = (bool) (session_status() === PHP_SESSION_ACTIVE_);
 ```
+Make an AJAX request from front-end using jQuery to the PHP back-end
+```
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+function show(id)
+{
+    console.log(id);
+    $.ajax({
+        url: "<?= $ajax_url; ?>" + "?grid=" + id,
+        type: "GET",
+        dataType: "html",
+        success: function (data) {
+            $('#grid').html(data);
+        }
+    });
+}
+</script>
+```
+Session Example:
+```
+<?php
+session_start();
+$name = $_POST['name'] ?? $_SESSION['name'] ?? '';
+$_SESSION['name'] = strip_tags($name);
+?>
+<form method="post">
+	<input type="text" name="name" value="<?= htmlspecialchars($name) ?>" />
+	<input type="submit" />
+</form>
+<?php phpinfo(INFO_VARIABLES); ?>
+```
 
 ## Update Notes
 Things to watch out for when migrating from PHP 7 to 8
@@ -1702,3 +1857,7 @@ Things to watch out for when migrating from PHP 7 to 8
 ```
 // equivalent to: $ln = isset($user['lastname']) ? $user['lastname'] : 'not applicable';
 ```
+* Lab: Two Functions
+  * Need to make instructions more clear
+
+
