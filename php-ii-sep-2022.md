@@ -3,15 +3,35 @@
 Last Slide: http://localhost:8882/#/3/28
 
 ## TODO
-Fork class repos and create working examples
+* Get info on PhpStorm PostgreSQL connectors/plugins
+
+Class repos:
 https://github.com/MPSimon/php2
 From Aaron Hoffman to Everyone 09:09 PM
 https://github.com/HoffmanProgress/tvasset
 From michelle nesbitt to Everyone 09:13 PM
-https://github.com/nerdommicro/zend-php2/tree/master/zendapp/src/ZendApp/Model
+https://github.com/nerdommicro/zend-php2
+Forks:
+https://github.com/dbierer/php2_[max|michelle|aaron]
 
 
 ## Homework
+For Tue 27 Sep 2022
+* Lab: Prepared Statements
+* Lab: Stored Procedure
+* Lab: Transaction
+* If you want to use the database in the VM, use these connection params:
+```
+'db' => [
+	'dsn' => 'mysql:unix_socket=/var/run/mysqld/mysqld.sock;dbname=phpcourse',
+	'username' => 'vagrant',
+	'password' => 'vagrant',
+	'options'  => [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION],
+],
+```
+* Look at `Zend\workspaces\DefaultWorkspace\orderapp\src\OrderApp\Core\Db\Db.php`
+* Also: `Zend\workspaces\DefaultWorkspace\orderapp\src\OrderApp\Model\OrdersModel.php`
+
 For Thu 22 Sep 2022
 * Lab: Type Hinting
 * Lab: Build Custom Exception Class
@@ -695,6 +715,9 @@ echo '<table>';
 echo $contents;
 echo '</table>';
 ```
+Simplified ETag Example:
+* See: https://github.com/dbierer/classic_php_examples/blob/master/web/etag.php
+
 ## Regex
 Misc examples
 ```
@@ -723,6 +746,18 @@ PHP 5 to PHP 7 code converter using `preg_replace_callback_array()`
 ## Change Request
 * http://localhost:8882/#/3/22
   * "Some Mark Watney"???
+* http://localhost:8882/#/3/112 (PDF pg. 133)
+  * Last example s/be:
+```
+Class Vehicle {
+    use GroundVehicleTrait, AirVehicleTrait {
+        GroundVehicleTrait::getType insteadof AirVehicleTrait;
+        AirVehicleTrait::getType as getAirType;
+    }
+}
+```
+* http://localhost:8882/#/5/21
+  * s/be One-to-Many:: How a single table row maps to multiple rows in another table.
 
 ## Q & A
 * Q: Can you use the keyword "new" in property or const definition in 8.1?
