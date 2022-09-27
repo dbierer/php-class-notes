@@ -26,13 +26,13 @@ Constants
 ```
 <?php
 namespace abc {
-	define('WHATEVER', 'Whatever', TRUE);
-	const ANYTHING = 'Anything';
+        define('WHATEVER', 'Whatever', TRUE);
+        const ANYTHING = 'Anything';
 }
 
 namespace xyz {
-	echo WHATEVER;
-	echo ANYTHING;
+        echo WHATEVER;
+        echo ANYTHING;
 }
 ```
 
@@ -221,27 +221,27 @@ etc.
 <?php
 class Test
 {
-	public $a = 0;
-	public $b = 0;
+        public $a = 0;
+        public $b = 0;
     public $c = 'Test';
     public $d = [];
     public $e = '';
-	public function __construct(int $a, float $b, string $c, array $d)
-	{
-		$this->a = $a;
-		$this->b = $b;
-		$this->c = $c;
-		$this->d = $d;
-		$this->e = md5(rand(1111,9999));
-	}
-	public function __sleep()
-	{
-		return ['a','b','c','d'];
-	}
-	public function __wakeup()
-	{
-		$this->e = md5(rand(1111,9999));
-	}
+        public function __construct(int $a, float $b, string $c, array $d)
+        {
+                $this->a = $a;
+                $this->b = $b;
+                $this->c = $c;
+                $this->d = $d;
+                $this->e = md5(rand(1111,9999));
+        }
+        public function __sleep()
+        {
+                return ['a','b','c','d'];
+        }
+        public function __wakeup()
+        {
+                $this->e = md5(rand(1111,9999));
+        }
 }
 $test = new Test(222, 3.456, 'TEST', [1,2,3]);
 var_dump($test);
@@ -306,7 +306,7 @@ try {
 * http://localhost:9999/#/10/26
   * `random_int()` takes 2 arguments!
 * http://localhost:9999/#/10/57
-  * Looks like the "C" answer is also correct
+  * he "C" answer is not correct because there is no option `PASSWORD_BLOWFISH`
 * http://localhost:9999/#/12/8
   * The code doesn't show aggregate Catch blocks (see example above)
 * http://localhost:8884/#/1/11
