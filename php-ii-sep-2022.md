@@ -4,6 +4,11 @@ Last Slide: http://localhost:8882/#/3/28
 
 ## TODO
 * Get info on PhpStorm PostgreSQL connectors/plugins
+* Get name of PHP function that parses a filename
+  * SplFileInfo::getExtension()
+  * Gives you info in a file: https://www.php.net/SplFileInfo
+  * Give you access to a file: https://www.php.net/manual/en/class.splfileobject.php
+* Find example of `preg_replace_callback_array()`
 
 Class repos:
 https://github.com/MPSimon/php2
@@ -16,6 +21,9 @@ https://github.com/dbierer/php2_[max|michelle|aaron]
 
 
 ## Homework
+For Thu 29 Sep 2022
+* Lab: Validate an Email Address: Use preg_match() to validate an email address
+* Lab: Composer with OrderApp
 For Tue 27 Sep 2022
 * Lab: Prepared Statements
 * Lab: Stored Procedure
@@ -674,6 +682,7 @@ Example of advanced usage including scripts
 * https://github.com/laminas/laminas-mvc-skeleton/blob/master/composer.json
 You can add alternates to `packagist.org` using the `repositories` key in the composer.json file
 * Example: https://wpackagist.org/
+If you dependency issues, consider adding the `--ignore-platform-reqs` to the `composer install` or `composer update` directive
 
 ## Web Services
 Example of SOAP Client
@@ -773,4 +782,7 @@ Class Vehicle {
 * Q: Find example of multi-use PDO prepare/execute for Geonames data insert
 * A: Will be published here by next week (not published yet):
   * https://github.com/dbierer/classic_php_examples/blob/master/db/db_pdo_multi_prepare_execute_create_geonames_table.php
+
+* Q: Where can I find more PDO examples?
+* A: See: https://github.com/dbierer/classic_php_examples/tree/master/db
 
