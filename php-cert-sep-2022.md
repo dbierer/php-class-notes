@@ -1,13 +1,25 @@
 # PHP Certification - Sep 2022
 
+Last Slide: http://localhost:8884/#/8/27
+
 ## TODO
 * Get link to ZCE Yellow Pages
 * Link to topics:
   * https://www.zend.com/training/php-certification-exam
 * Unicode escape syntax example with emojis
+* `is_soap_fault()` usage:
+  * Wouldn't it still throw an Exception?
 
 ## Homework
-For Wed 29 Sep 2022
+For Mon 03 Oct 2022
+* Mock Exam 1
+* Quizzes for Topic 5 (I/O)
+* Quizzes for Topic 6 (Functions)
+For Fri 30 Sep 2022
+* Quizzes for Topic 2 (Formats and Types)
+* Quizzes for Topic 3 (Strings and Patterns)
+* Quizzes for Topic 4 (Arrays)
+For Wed 28 Sep 2022
 * Quizzes for Topic 1 (Basics)
 
 
@@ -133,13 +145,13 @@ var_dump($date);
 * Don't forget that to run a SOAP request, you can also use:
   * `SoapClient::__soapCall()`
   * `SoapClient::__doRequest()`
+* Example of a soap client:
+  * https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
 * Study on `DateTimeInterval` and `DateTimeZone` and also "relative" time formats
 * In addition, be aware of the basic time format codes
   * https://www.php.net/manual/en/datetime.format.php
 * Pay close attention to `strftime()`
   * https://www.php.net/manual/en/function.strftime.php
-* Example of a soap client:
-  * https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
 * PayPal has a SOAP API that is publically accessible
 * REST vs. SOAP:
   * See: https://www.ateam-oracle.com/post/performance-study-rest-vs-soap-for-mobile-applications
@@ -172,6 +184,16 @@ echo preg_replace($pattern, $replacement, $string);
 
 preg_match($pattern, $string, $matches);
 var_dump($matches);
+```
+Greediness Example:
+```
+<?php
+$str = '<p>Para 1</p><p>Para 2</p><p>Para 3</p>';
+// $pat = '!<p>.*</p>!';	// returns the entire string
+$pat = '!<p>.*?</p>!';	// returns "<p>Para 1</p>"
+preg_match($pat, $str, $matches);
+var_dump($matches);
+echo PHP_EOL;
 ```
 ## Arrays
 For iterating through an array beginning-to-end don't forget about these functions:
@@ -214,6 +236,16 @@ etc.
     * `unset()`
     * Called in a function and function call ends
     * Overwritten
+* Iteration
+  * Lookup these interfaces and understand what they do
+     * `Traversable`
+	  * Both of the interfaces mentioned `extend` this interface
+     * `Iterator`
+       * Introduced earlier
+       * Requires hard-coded iteration methods
+     * `IteratorAggregate`
+       * Passes the buck
+       * Don't have to hard code iteration methods
 * Late static binding
   * https://www.php.net/manual/en/language.oop5.late-static-bindings.php
 * Serialization example:
@@ -313,8 +345,14 @@ try {
   * Refresh link to ZCE Yellow Pages
 * http://localhost:8884/#/1/14
   * s/be https://www.zend.com/training/php-certification-exam
-
-
+* http://localhost:8884/#/4/26
+  * s/be "upper case variant"
+* http://localhost:8884/#/5/27
+  * need to add `key()`
+* http://localhost:8884/#/6/10
+  * Should also add `file_exists()` and `file*time()`
+* http://localhost:8884/#/8/25
+  * Interfaces *cannot* have properties!!!
 
 ## Mock Exam 2
 Question 3 is wrong.
