@@ -3,12 +3,17 @@
 Last Slide: http://localhost:8884/#/8/27
 
 ## TODO
-* Get link to ZCE Yellow Pages
-* Link to topics:
-  * https://www.zend.com/training/php-certification-exam
-* Unicode escape syntax example with emojis
-* `is_soap_fault()` usage:
-  * Wouldn't it still throw an Exception?
+* Q: Get link to ZCE Yellow Pages
+* A: https://www.zend-zce.com/en/services/certification/zend-certified-engineer-directory
+
+* Q: Link to topics:
+* A: https://www.zend.com/training/php-certification-exam
+
+* Q: Do you have any examples of unicode escape syntax example with emojis?
+* A: https://github.com/dbierer/classic_php_examples/blob/master/basics/unicode_escape_characters.php
+
+* Q: Re: `is_soap_fault()` usage: wouldn't it still throw an Exception?
+* A: TBD
 
 ## Homework
 For Mon 03 Oct 2022
@@ -343,6 +348,7 @@ try {
   * The code doesn't show aggregate Catch blocks (see example above)
 * http://localhost:8884/#/1/11
   * Refresh link to ZCE Yellow Pages
+  * https://www.zend-zce.com/en/services/certification/zend-certified-engineer-directory
 * http://localhost:8884/#/1/14
   * s/be https://www.zend.com/training/php-certification-exam
 * http://localhost:8884/#/4/26
