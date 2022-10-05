@@ -10,6 +10,7 @@ PHP 7.4 EOL date is 28 Nov 2022
 * Lookup Doctrine article on attributes
   * https://www.doctrine-project.org/projects/doctrine-orm/en/2.13/reference/attributes-reference.html
 * Lookup RFC about deprecating back tics
+  *
 * Get latest slides.pdf to Stefan (before Oct 4)
 * Documentation on date format codes
   * https://www.php.net/manual/en/datetime.format.php
@@ -1699,6 +1700,19 @@ while($line = fgetcsv($customerdb)) {
 var_dump($customers,$data);
 
 ```
+* Another way to count lines w/out concern for large file sizes
+```
+$filepath = "funny.txt";
+$fh = fopen($filepath, 'r');
+$lines = 0;
+while (!feof($fh)) {
+	$line = fgets($fh);
+	$lines++;
+}
+fclose($fh);
+echo $lines;
+```
+
 * Modified Fibonacci program
 ```
 <?php
@@ -1837,6 +1851,82 @@ $_SESSION['name'] = strip_tags($name);
 </form>
 <?php phpinfo(INFO_VARIABLES); ?>
 ```
+Serialization example:
+```
+<?php
+class Test
+{
+	public $name = 'Doug';
+	public $age  = 65;
+	public $country = 'TH';
+	public function getInfo()
+	{
+		return get_object_vars($this);
+	}
+}
+
+// native PHP: used to store objects etc.
+$test = new Test();
+$str = serialize($test);
+echo $str . PHP_EOL;
+
+// JSON mainly for lightweight data exchange
+$json = json_encode($test, JSON_PRETTY_PRINT);
+echo $json . PHP_EOL;
+
+$obj = unserialize($str);
+var_dump($obj->getInfo());
+
+$obj = json_decode($json);
+var_dump($obj->getInfo());
+
+```
+## MySQLi
+The Object class methods mirror the procedural functions:
+* https://www.php.net/manual/en/mysqli.summary.php
+
+To safeguard against SQL injection, use `mysqli_prepare($sql)` and then `mysqli_execute()`
+* Prepare takes an SQL statement with placeholders
+  * https://www.php.net/manual/en/mysqli.prepare.php
+* Next you need to bind parameters
+  * https://www.php.net/manual/en/mysqli-stmt.bind-param.php
+* Finally, you execute the bound statement
+  * https://www.php.net/manual/en/mysqli-stmt.execute.php
+
+## Misc
+Xdebug: https://xdebug.org/
+* Enhances `var_dump()` and any error messages displayed
+Use `error_log()` inside your code to track the status of variables
+* Example
+```
+// some code
+error_log(__FILE__ . ':' . __LINE__ . ':' . var_export($variable, TRUE));
+```
+File Upload Process
+```
+// process file upload
+$error = [];
+$path = realpath(__DIR__ . '/../data');
+if (!empty($_FILES)) {
+	$tmp = $_FILES['upload']['tmp_name'] ?? '';
+	if (empty($tmp)) {
+		$error['file'] = 'No temporary file';
+	} elseif (!is_uploaded_file($tmp))  {
+		$error['file'] = 'Not a valid uploaded file';
+	} else {
+		$error_code = $_FILES['upload']['error'] ?? 999;
+		if ($error_code !== 0) {
+			$error['file'] = 'File upload error';
+		} else {
+			$name  = $_FILES['upload']['name'] ?? 'temp.jpg';
+			// optionally apply additional filter criteria to avoid uploaded PHP code!
+			$final = $path . '/' . strip_tags(basename($name));
+			move_uploaded_file($tmp, $final);
+			$error['file'] = 'File uploaded successfully!';
+		}
+	}
+}
+```
 
 ## Update Notes
 Things to watch out for when migrating from PHP 7 to 8
@@ -1857,6 +1947,8 @@ Things to watch out for when migrating from PHP 7 to 8
 ```
 // equivalent to: $ln = isset($user['lastname']) ? $user['lastname'] : 'not applicable';
 ```
+* http://localhost:8881/#/8/24
+  * s/be `$config['db']['host']` not `$config['db']['dsn']`
 * Lab: Two Functions
   * Need to make instructions more clear
 

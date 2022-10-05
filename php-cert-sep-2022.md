@@ -3,6 +3,8 @@
 Last Slide: http://localhost:8884/#/8/27
 
 ## TODO
+* Q: Does `__set_state()` also affect Xdebug and Reflection?
+
 * Q: Get link to ZCE Yellow Pages
 * A: https://www.zend-zce.com/en/services/certification/zend-certified-engineer-directory
 
@@ -16,6 +18,10 @@ Last Slide: http://localhost:8884/#/8/27
 * A: TBD
 
 ## Homework
+For Fri 07 Oct 2022
+* Mock Exam 2
+* Quizzes for Topic 7 (OOP)
+
 For Mon 03 Oct 2022
 * Mock Exam 1
 * Quizzes for Topic 5 (I/O)
@@ -359,6 +365,33 @@ try {
   * Should also add `file_exists()` and `file*time()`
 * http://localhost:8884/#/8/25
   * Interfaces *cannot* have properties!!!
+* http://localhost:8884/#/8/27
+  * Code will not work as shown
+  * Class `ControllerServiceContainer` needs to implement `set()`!
+* http://localhost:8884/#/8/42
+  * Revise and produce a better example that shows excluding a property
+* http://localhost:8884/#/8/43
+  * `__wakeup()` example doesn't really do anything!
+* http://localhost:8884/#/8/45
+  * Def of `__set_state()` needs to be `static`
+* http://localhost:8884/#/8/51
+  * Mention that it's allowed to state `return` with no values on `void`
+
+Example of making object callable:
+```
+<?php
+$sum = new class () {
+    public $num = 0;
+    public function __invoke($val) {
+        $this->num += $val;
+    }
+};
+
+$a = [1, 2, 3, 4, 5, 6, 7, 8];
+array_walk($a, $sum);
+echo 'Sum of Digits: ' . $sum->num;
+// output: 36
+```
 
 ## Mock Exam 2
 Question 3 is wrong.
