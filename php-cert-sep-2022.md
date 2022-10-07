@@ -18,6 +18,11 @@ Last Slide: http://localhost:8884/#/8/27
 * A: TBD
 
 ## Homework
+For Mon 10 Oct 2022
+* Mock Exam 2
+* Quizzes for Topics 8 to 11 (everything that's left)
+* Final Mock Exam
+
 For Fri 07 Oct 2022
 * Mock Exam 2
 * Quizzes for Topic 7 (OOP)
@@ -322,6 +327,30 @@ Do a quick read on the `crypt()` function
 * Might be on the test
 File upload documentation
 * https://www.php.net/manual/en/features.file-upload.php
+Security related `php.ini` settings
+* `open_basedir`
+* `doc_root`
+* `user_dir`
+* `cgi.force_redirect`
+Security validation functions
+* is_*()
+  * Checks the actual data type of the variable
+* ctype_*()
+  * This family checks the actual *contents* of the variable
+* filter*()
+
+## Web Features
+Make sure you're up on the `php.ini` settings pertaining to web features
+URL: https://www.php.net/manual/en/ini.list.php
+
+* `variables_order`
+* `request_order`
+* `memory_limit`
+* `post_max_size`
+* `upload_max_filesize`
+* `file_uploads`
+* `max_file_uploads`
+
 
 ## Error Handling
 Example of aggregated Catch block:
@@ -376,6 +405,8 @@ try {
   * Def of `__set_state()` needs to be `static`
 * http://localhost:8884/#/8/51
   * Mention that it's allowed to state `return` with no values on `void`
+* http://localhost:8884/#/8/79
+  * "B" answer doesn't make sense
 
 Example of making object callable:
 ```
@@ -392,6 +423,9 @@ array_walk($a, $sum);
 echo 'Sum of Digits: ' . $sum->num;
 // output: 36
 ```
+
+## Resources
+* https://xkcd.com/327/
 
 ## Mock Exam 2
 Question 3 is wrong.
