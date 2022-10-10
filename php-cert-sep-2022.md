@@ -3,6 +3,8 @@
 Last Slide: http://localhost:8884/#/8/27
 
 ## TODO
+* Q: Notes on I
+
 * Q: Does `__set_state()` also affect Xdebug and Reflection?
 
 * Q: Get link to ZCE Yellow Pages
@@ -201,6 +203,16 @@ echo preg_replace($pattern, $replacement, $string);
 preg_match($pattern, $string, $matches);
 var_dump($matches);
 ```
+* Same thing, but going from European date format to American
+```
+<?php
+$str = '5 April 2022';
+$pat = '/^(\d+?) (\w+?) (\d{4})$/';
+$rep = '$2 $1, $3';
+echo preg_replace($pat, $rep, $str);
+echo PHP_EOL;
+```
+
 Greediness Example:
 ```
 <?php
@@ -423,13 +435,18 @@ array_walk($a, $sum);
 echo 'Sum of Digits: ' . $sum->num;
 // output: 36
 ```
-
+## Error
+* Don't forget to study the `error_log()` as well
+  * https://www.php.net/manual/en/function.error-log.php
+* Also: there are a few others to look for as well
+  * https://www.php.net/manual/en/ref.errorfunc.php
 ## Resources
 * https://xkcd.com/327/
 
 ## Mock Exam 2
 Question 3 is wrong.
 Number s/be "999.000.000,00"
+Question 12 s/be "Which OF these files related ..."
 
 ## Change Request for Code Repo
 * http://localhost:8888/show.php?f=02-58-84.php s/be a space!
