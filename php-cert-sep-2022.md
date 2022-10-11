@@ -1,28 +1,44 @@
-# PHP Certification - Jul 2022
+# PHP Certification - Sep 2022
+
+Last Slide: http://localhost:8884/#/8/27
 
 ## TODO
-* Add reference to PCRE POSIX functionality
-* Get updated mock exams to students
+* Q: Notes on I
+
+* Q: Does `__set_state()` also affect Xdebug and Reflection?
+
+* Q: Get link to ZCE Yellow Pages
+* A: https://www.zend-zce.com/en/services/certification/zend-certified-engineer-directory
+
+* Q: Link to topics:
+* A: https://www.zend.com/training/php-certification-exam
+
+* Q: Do you have any examples of unicode escape syntax example with emojis?
+* A: https://github.com/dbierer/classic_php_examples/blob/master/basics/unicode_escape_characters.php
+
+* Q: Re: `is_soap_fault()` usage: wouldn't it still throw an Exception?
+* A: TBD
 
 ## Homework
-For Thu 04 Aug 2022
-* Review quiz questions for Topic 8 (course module 9) (Database)
-* Review quiz questions for Topic 9 (course module 10) (Security)
-* Review quiz questions for Topic 10 (course module 11) (Web Features)
-* Review quiz questions for Topic 11 (course module 12) (Error Handling)
-Final Mock Exam
-For Thu 28 Jul 2022
-* Second Mock Exam
-* Review quiz questions for Topic 6 (course module 7) (Functions)
-* Review quiz questions for Topic 7 (course module 8) (OOP)
-For Thu 21 Jul 2022
-* Review quiz questions for Topic 4 (course module 5) (Arrays)
-* Review quiz questions for Topic 5 (course module 6) (I/O)
-* First Mock Exam
-For Tues 19 Jul 2022
-* Review quiz questions for Topic 1 (course module 2) (Basics)
-* Review quiz questions for Topic 2 (course module 3) (Data Formats and Types)
-* Review quiz questions for Topic 3 (course module 4) (Strings and Patterns)
+For Mon 10 Oct 2022
+* Mock Exam 2
+* Quizzes for Topics 8 to 11 (everything that's left)
+* Final Mock Exam
+
+For Fri 07 Oct 2022
+* Mock Exam 2
+* Quizzes for Topic 7 (OOP)
+
+For Mon 03 Oct 2022
+* Mock Exam 1
+* Quizzes for Topic 5 (I/O)
+* Quizzes for Topic 6 (Functions)
+For Fri 30 Sep 2022
+* Quizzes for Topic 2 (Formats and Types)
+* Quizzes for Topic 3 (Strings and Patterns)
+* Quizzes for Topic 4 (Arrays)
+For Wed 28 Sep 2022
+* Quizzes for Topic 1 (Basics)
 
 
 ## Docker Container Setup
@@ -147,13 +163,13 @@ var_dump($date);
 * Don't forget that to run a SOAP request, you can also use:
   * `SoapClient::__soapCall()`
   * `SoapClient::__doRequest()`
+* Example of a soap client:
+  * https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
 * Study on `DateTimeInterval` and `DateTimeZone` and also "relative" time formats
 * In addition, be aware of the basic time format codes
   * https://www.php.net/manual/en/datetime.format.php
 * Pay close attention to `strftime()`
   * https://www.php.net/manual/en/function.strftime.php
-* Example of a soap client:
-  * https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
 * PayPal has a SOAP API that is publically accessible
 * REST vs. SOAP:
   * See: https://www.ateam-oracle.com/post/performance-study-rest-vs-soap-for-mobile-applications
@@ -186,6 +202,26 @@ echo preg_replace($pattern, $replacement, $string);
 
 preg_match($pattern, $string, $matches);
 var_dump($matches);
+```
+* Same thing, but going from European date format to American
+```
+<?php
+$str = '5 April 2022';
+$pat = '/^(\d+?) (\w+?) (\d{4})$/';
+$rep = '$2 $1, $3';
+echo preg_replace($pat, $rep, $str);
+echo PHP_EOL;
+```
+
+Greediness Example:
+```
+<?php
+$str = '<p>Para 1</p><p>Para 2</p><p>Para 3</p>';
+// $pat = '!<p>.*</p>!';	// returns the entire string
+$pat = '!<p>.*?</p>!';	// returns "<p>Para 1</p>"
+preg_match($pat, $str, $matches);
+var_dump($matches);
+echo PHP_EOL;
 ```
 ## Arrays
 For iterating through an array beginning-to-end don't forget about these functions:
@@ -228,6 +264,16 @@ etc.
     * `unset()`
     * Called in a function and function call ends
     * Overwritten
+* Iteration
+  * Lookup these interfaces and understand what they do
+     * `Traversable`
+	  * Both of the interfaces mentioned `extend` this interface
+     * `Iterator`
+       * Introduced earlier
+       * Requires hard-coded iteration methods
+     * `IteratorAggregate`
+       * Passes the buck
+       * Don't have to hard code iteration methods
 * Late static binding
   * https://www.php.net/manual/en/language.oop5.late-static-bindings.php
 * Serialization example:
@@ -293,6 +339,30 @@ Do a quick read on the `crypt()` function
 * Might be on the test
 File upload documentation
 * https://www.php.net/manual/en/features.file-upload.php
+Security related `php.ini` settings
+* `open_basedir`
+* `doc_root`
+* `user_dir`
+* `cgi.force_redirect`
+Security validation functions
+* is_*()
+  * Checks the actual data type of the variable
+* ctype_*()
+  * This family checks the actual *contents* of the variable
+* filter*()
+
+## Web Features
+Make sure you're up on the `php.ini` settings pertaining to web features
+URL: https://www.php.net/manual/en/ini.list.php
+
+* `variables_order`
+* `request_order`
+* `memory_limit`
+* `post_max_size`
+* `upload_max_filesize`
+* `file_uploads`
+* `max_file_uploads`
+
 
 ## Error Handling
 Example of aggregated Catch block:
@@ -323,10 +393,60 @@ try {
   * he "C" answer is not correct because there is no option `PASSWORD_BLOWFISH`
 * http://localhost:9999/#/12/8
   * The code doesn't show aggregate Catch blocks (see example above)
+* http://localhost:8884/#/1/11
+  * Refresh link to ZCE Yellow Pages
+  * https://www.zend-zce.com/en/services/certification/zend-certified-engineer-directory
+* http://localhost:8884/#/1/14
+  * s/be https://www.zend.com/training/php-certification-exam
+* http://localhost:8884/#/4/26
+  * s/be "upper case variant"
+* http://localhost:8884/#/5/27
+  * need to add `key()`
+* http://localhost:8884/#/6/10
+  * Should also add `file_exists()` and `file*time()`
+* http://localhost:8884/#/8/25
+  * Interfaces *cannot* have properties!!!
+* http://localhost:8884/#/8/27
+  * Code will not work as shown
+  * Class `ControllerServiceContainer` needs to implement `set()`!
+* http://localhost:8884/#/8/42
+  * Revise and produce a better example that shows excluding a property
+* http://localhost:8884/#/8/43
+  * `__wakeup()` example doesn't really do anything!
+* http://localhost:8884/#/8/45
+  * Def of `__set_state()` needs to be `static`
+* http://localhost:8884/#/8/51
+  * Mention that it's allowed to state `return` with no values on `void`
+* http://localhost:8884/#/8/79
+  * "B" answer doesn't make sense
+
+Example of making object callable:
+```
+<?php
+$sum = new class () {
+    public $num = 0;
+    public function __invoke($val) {
+        $this->num += $val;
+    }
+};
+
+$a = [1, 2, 3, 4, 5, 6, 7, 8];
+array_walk($a, $sum);
+echo 'Sum of Digits: ' . $sum->num;
+// output: 36
+```
+## Error
+* Don't forget to study the `error_log()` as well
+  * https://www.php.net/manual/en/function.error-log.php
+* Also: there are a few others to look for as well
+  * https://www.php.net/manual/en/ref.errorfunc.php
+## Resources
+* https://xkcd.com/327/
 
 ## Mock Exam 2
 Question 3 is wrong.
 Number s/be "999.000.000,00"
+Question 12 s/be "Which OF these files related ..."
 
 ## Change Request for Code Repo
 * http://localhost:8888/show.php?f=02-58-84.php s/be a space!
