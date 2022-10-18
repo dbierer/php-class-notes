@@ -1,6 +1,6 @@
 # PHP III - Oct 2022
 
-Last Slide: http://localhost:8883/#/4/13
+Last Slide: http://localhost:8883/#/4/76
 
 ## TODO
 * Q: Example of where Interfaces are used as type hints instead of classes?
@@ -10,11 +10,67 @@ Last Slide: http://localhost:8883/#/4/13
 * A: In the Laravel framework, interfaces are generally under the `Illuminate\Contracts` namespace
   * Most interfaces *do not* have "Interface" in their name
   * See: https://github.com/laravel/framework/tree/9.x/src/Illuminate/Contracts/Auth
-
 * Q: Example of `SplObjectStorage` used as a service container
-  
+* A: Still looking! 
+
+* Q: Why is `STDOUT` still producing output even with `ob_start()`?
+
+* Q: Suggested `configure` options for Custom PHP Lab
 
 ## Homework
+For Thu 20 Oct 2022
+* Lab: OpCache and JIT
+* Lab: Existing Extension
+* Lab: FFI
+* Lab: New Extension
+* Lab: Custom PHP 
+  * Clone from github
+  * Switch to branch php-8.2.ORC4
+```
+git checkout php-8.2.ORC4
+```
+  * Follow the instructions
+  * Suggested `./configure` options:
+```
+./configure  \
+    --enable-cli \
+    --enable-filter \
+    --with-openssl=shared \
+    --enable-zlib \
+    --with-curl=shared \
+    --enable-pdo \ 
+    --with-libxml \ 
+    --with-iconv \ 
+    --enable-cgi \ 
+    --enable-session \ 
+    --with-dom \ 
+    --enable-json \ 
+    --with-pdo-mysql=shared 
+    --enable-phar=shared \ 
+    --with-simplexml \ 
+    --with-xml \ 
+    --with-pdo-sqlite=shared \ 
+    --with-pcre-jit \ 
+    --enable-zip \ 
+    --enable-ctype \ 
+    --with-mp=5 \ 
+    --with-gd=shared \ 
+    --enable-bcmath \ 
+    --enable-shmop=shared \ 
+    --enable-sockets=shared \ 
+    --enable-tokenizer=shared \ 
+    --with-bz2=shared \ 
+    --enable-exif=shared \ 
+    --enable-intl=shared \ 
+    --with-gettext=shared \ 
+    --with-gmp=shared \ 
+    --enable-opcache \ 
+    --enable-fileinfo=shared \ 
+    --with-readline \ 
+    --with-ffi=shared \ 
+    --with-sodium=shared
+```
+ 
 For Tue 18 Oct 2022
 * Lab: Built-in Web Server
 
@@ -197,9 +253,116 @@ Found 15 packages matching phpunit
 ```
 
 * If you're using OOP, consider using `Symfony\Console`
+## Stream Wrapper Example
+`runStreamDb.php`:
+```
+<?php
+/**
+ * StreamDb Runner
+ */
+
+require __DIR__ . '/../../../vendor/autoload.php';
+use src\ModAdvancedTechniques\IO\StreamDb;
+
+stream_wrapper_register('myDb', StreamDb::class);
+
+// Stream write to a row
+$user = 'vagrant';
+$pwd  = 'vagrant';
+$host = '127.0.0.1';
+$uri  = 'myDb://' . $user . ':' . $pwd . '@' . $host . '/php3/1';
+$resource = fopen($uri, 'w');
+if($bytesAdded = fwrite($resource, 'TEST: ' . date('Y-m-d H:i:s'))) echo $bytesAdded . ' bytes Written';
+fclose($resource);
+
+// Stream read from a table row.
+$resource = fopen($uri, 'r');
+var_dump(fread($resource, 4096));
+```
+`StreamDb.php`
+```
+<?php
+/**
+ * Custom Stream Wrapper and Runner
+ */
+namespace src\ModAdvancedTechniques\IO;
+class StreamDb {
+    const TABLE = 'data';
+    const SQL_SELECT = 'SELECT * FROM `%s` WHERE id=%d';
+    const SQL_UPDATE = 'UPDATE `%s` SET data=:data WHERE id=:id';
+    const SQL_INSERT = 'INSERT INTO `%s` (id, data) VALUES (:id, :data)';
+
+    protected $stmt, $position, $data, $url, $id, $mode;
+
+    public function stream_open($url, $mode)
+    {
+        $result = FALSE;
+        $this->position = 0;
+        $url = parse_url($url);
+        $path = explode('/', $url['path']);
+        $this->id = (int) $path[2];
+        if (empty($this->id)) $this->id = 1;
+        $this->mod = $mode ?? 'r';
+        try{
+            $pdo = new \PDO("mysql:host={$url['host']};dbname={$path[1]}",
+                $url['user'], $url['pass'], [\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION]);
+        } catch(\PDOException $e){return $result;}
+
+		switch ($mode) {
+			case 'w' :
+				$pdo->exec('DELETE FROM ' . static::TABLE . ' WHERE id=' . $this->id);
+				$this->stmt = $pdo->prepare(sprintf(static::SQL_INSERT, static::TABLE));
+				break;
+			case 'a' :
+				$this->stmt = $pdo->prepare(sprintf(static::SQL_UPDATE, static::TABLE, $this->id));
+			case 'r' :
+			default :
+				$this->stmt = $pdo->prepare(sprintf(static::SQL_SELECT, static::TABLE, $this->id));
+		}
+        return TRUE;
+    }
+
+    public function stream_write($data)
+    {
+        $strlen = strlen($data);
+        $this->position += $strlen;
+        $binding = ['id' => $this->id, 'data' => $data];
+        //echo __METHOD__ . ':' . var_export($binding, TRUE) . ':' . var_export($this->stmt, TRUE); exit;
+        return $this->stmt->execute($binding) ? $strlen : null;
+    }
+
+    public function stream_read()
+    {
+        $this->stmt->execute();
+        if($this->stmt->rowCount() == 0) return false;
+        return implode(',', $this->stmt->fetch());
+    }
+
+    public function stream_tell()
+    {
+        return $this->id;
+    }
+
+    function stream_eof()
+    {
+        return (bool) $this->stmt->rowCount();
+    }
+}
+```
+SQL to create table in the `php3` database in the VM:
+```
+CREATE TABLE `data` (
+  `id` int unsigned NOT NULL,
+  `data` varchar(255) NOT NULL,
+  `mod_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+```
 
 
 ## ERRATA
 * http://localhost:8883/#/4/7
   * mising ";" + should add a space between vars on output
+* http://localhost:8883/#/4/37
+  * s/be "LuaJIT" not "LuiJIT"
   
