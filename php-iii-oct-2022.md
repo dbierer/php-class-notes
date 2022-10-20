@@ -3,23 +3,40 @@
 Last Slide: http://localhost:8883/#/4/76
 
 ## TODO
+* Q: What's the syntax to switch between PHP versions?
+* A: The utility for Debian/Ubuntu is `update-alternatives`
+* A: Syntax: still looking!
+
 * Q: Example of where Interfaces are used as type hints instead of classes?
 * A: Have a look at the Laminas framework:
   * Most interfaces have the word "Interface" in their name
   * See: https://github.com/laminas/laminas-mvc/blob/master/src/Application.php
+
 * A: In the Laravel framework, interfaces are generally under the `Illuminate\Contracts` namespace
   * Most interfaces *do not* have "Interface" in their name
   * See: https://github.com/laravel/framework/tree/9.x/src/Illuminate/Contracts/Auth
+
 * Q: Example of `SplObjectStorage` used as a service container
 * A: Still looking!
 
 * Q: Why is `STDOUT` still producing output even with `ob_start()`?
-* A:
+* A: Still researching. Unable to duplicate the problem on my main computer.
 
 * Q: Suggested `configure` options for Custom PHP Lab
 * A: See below
 
 ## Homework
+For Tue 25 Oct 2022
+* Lab: Docker Image Build
+* Lab: Commit the Image
+* Lab: Docker-Compose
+	* Lab: Configuration Review and Pre-Built Service Execution
+	* Lab: Create Files to Support the nginx Service
+	* Lab: Create Files to Support the PHP-FPM Service
+	* Lab: Create the docker-compose.yml File
+	* Lab: Set up the sample app
+
+
 For Thu 20 Oct 2022
 * Lab: OpCache and JIT
 * Lab: Existing Extension
@@ -95,8 +112,12 @@ No package 'zlib' found
   * As of PHP 7.4.0, `--with-png-dir` and `--with-zlib-dir` have been removed. `libpng` and `zlib` are required.
 * See: https://askubuntu.com/questions/508934/how-to-install-libpng-and-zlib
 * `sudo apt install -y libpng-dev zlib1g-dev`
-
-
+```
+configure: error: Package requirements (libzip >= 0.11 libzip != 1.3.1 libzip != 1.7.0) were not met:
+No package 'libzip' found
+```
+* https://stackoverflow.com/questions/45775877/configure-error-please-reinstall-the-libzip-distribution
+* `sudo apt install -y libzip-dev`
 For Tue 18 Oct 2022
 * Lab: Built-in Web Server
 
@@ -384,11 +405,45 @@ CREATE TABLE `data` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
+## JIT
+You can also use a `php.ini` setting of `on` to enable JIT:
+* `opcache.jit=on` this is an alias for `tracing`
+* Also, don't forget to enable opcache itself
+* In addition: set a memory size for JIT (otherwise it won't work)
+```
+; example:
+opcache.jit_buffer_size=32M
+```
 
+## Resources
+* https://github.com/dbierer/php-iii-demos.git
+* https://github.com/dbierer/php-iii-jul-2022.git
+* https://github.com/dbierer/php-iii-mar-2021.git
+* https://github.com/dbierer/php-class-notes/blob/master/php-iii-may-2021.md
+
+## Docker
+Orchestration:
+* https://www.zend.com/webinars/orchestrating-your-php-applications
+* https://www.zend.com/blog/what-is-cloud-orchestration
+* https://www.zend.com/blog/what-is-cloud-orchestration
+Example Dockerfile:
+* https://github.com/dbierer/Learn-MongoDB-4.x/blob/master/docker/Dockerfile
+Example `docker-compose.yml`
+* A 3 container orchestrated system that represents a 3 node MongoDB replica set
+* https://github.com/dbierer/Learn-MongoDB-4.x/blob/master/chapters/13/docker-compose.yml
 
 ## ERRATA
 * http://localhost:8883/#/4/7
   * mising ";" + should add a space between vars on output
 * http://localhost:8883/#/4/37
   * s/be "LuaJIT" not "LuiJIT"
-
+* http://localhost:8883/#/4/61
+  * You will have permissions issues, so do the following:
+```
+sudo -i
+echo "extension=NAME_OF_EXT.so" >> /path/to/php.ini
+exit
+```
+* http://localhost:8883/#/4/56
+  * Either the "C" code needs to change to accommodate full char strings
+  * Or the lab needs to be rewritten using single characters instead of string
