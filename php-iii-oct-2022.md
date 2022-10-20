@@ -11,11 +11,13 @@ Last Slide: http://localhost:8883/#/4/76
   * Most interfaces *do not* have "Interface" in their name
   * See: https://github.com/laravel/framework/tree/9.x/src/Illuminate/Contracts/Auth
 * Q: Example of `SplObjectStorage` used as a service container
-* A: Still looking! 
+* A: Still looking!
 
 * Q: Why is `STDOUT` still producing output even with `ob_start()`?
+* A:
 
 * Q: Suggested `configure` options for Custom PHP Lab
+* A: See below
 
 ## Homework
 For Thu 20 Oct 2022
@@ -23,54 +25,78 @@ For Thu 20 Oct 2022
 * Lab: Existing Extension
 * Lab: FFI
 * Lab: New Extension
-* Lab: Custom PHP 
+* Lab: Custom PHP
   * Clone from github
-  * Switch to branch php-8.2.ORC4
+  * Switch to branch php-8.2.0RC4
 ```
-git checkout php-8.2.ORC4
+git checkout php-8.2.0RC4
 ```
   * Follow the instructions
-  * Suggested `./configure` options:
+  * Be sure to install the pre-requisites!
+  * Suggested `./configure` options (place this all on one line):
 ```
 ./configure  \
     --enable-cli \
     --enable-filter \
     --with-openssl=shared \
-    --enable-zlib \
+    --with-zlib \
     --with-curl=shared \
-    --enable-pdo \ 
-    --with-libxml \ 
-    --with-iconv \ 
-    --enable-cgi \ 
-    --enable-session \ 
-    --with-dom \ 
-    --enable-json \ 
-    --with-pdo-mysql=shared 
-    --enable-phar=shared \ 
-    --with-simplexml \ 
-    --with-xml \ 
-    --with-pdo-sqlite=shared \ 
-    --with-pcre-jit \ 
-    --enable-zip \ 
-    --enable-ctype \ 
-    --with-mp=5 \ 
-    --with-gd=shared \ 
-    --enable-bcmath \ 
-    --enable-shmop=shared \ 
-    --enable-sockets=shared \ 
-    --enable-tokenizer=shared \ 
-    --with-bz2=shared \ 
-    --enable-exif=shared \ 
-    --enable-intl=shared \ 
-    --with-gettext=shared \ 
-    --with-gmp=shared \ 
-    --enable-opcache \ 
-    --enable-fileinfo=shared \ 
-    --with-readline \ 
-    --with-ffi=shared \ 
+    --enable-pdo \
+    --with-libxml \
+    --with-iconv \
+    --enable-cgi \
+    --enable-session \
+    --with-pdo-mysql=shared
+    --enable-phar=shared \
+    --with-pdo-sqlite=shared \
+    --with-pcre-jit \
+    --with-zip \
+    --enable-ctype \
+    --enable-gd \
+    --enable-bcmath \
+    --enable-sockets=shared \
+	--with-bz2=shared \
+    --enable-exif=shared \
+    --enable-intl=shared \
+    --with-gettext=shared \
+    --enable-opcache \
+    --enable-fileinfo=shared \
+    --with-readline \
     --with-sodium=shared
 ```
- 
+Dependency errors:
+```
+checking for BZip2 in default path... not found
+configure: error: Please reinstall the BZip2 distribution
+```
+* https://unix.stackexchange.com/questions/658758/php-build-error-please-reinstall-bzip2-distribution
+* `sudo apt install -y libbz2-dev`
+```
+configure: error: Package requirements (libcurl >= 7.29.0) were not met:
+No package 'libcurl' found
+```
+* `sudo apt install -y libcurl4-openssl-dev`
+```
+configure: error: Please reinstall readline - I cannot find readline.h
+```
+* https://stackoverflow.com/questions/35879203/linux-php-7-configure-error-please-reinstall-readline-i-cannot-find-readline
+* `sudo apt install -y libreadline-dev`
+```
+configure: error: Package requirements (libsodium >= 1.0.8) were not met:
+No package 'libsodium' found
+```
+* `sudo apt install -y libsodium-dev`
+```
+configure: error: Package requirements (zlib) were not met:
+No package 'zlib' found
+```
+* NOTE: this error actually comes from installing the `GD` extension
+* See: https://www.php.net/manual/en/image.installation.php
+  * As of PHP 7.4.0, `--with-png-dir` and `--with-zlib-dir` have been removed. `libpng` and `zlib` are required.
+* See: https://askubuntu.com/questions/508934/how-to-install-libpng-and-zlib
+* `sudo apt install -y libpng-dev zlib1g-dev`
+
+
 For Tue 18 Oct 2022
 * Lab: Built-in Web Server
 
@@ -116,7 +142,7 @@ sudo chown -R www-data /usr/share/phpmyadmin
 ```
 
 ## Interfaces
-### Traversable 
+### Traversable
 `Traversable` connects the old approach (`Iterator`) with a newer approach (`IteratorAggregate`)
 ```
 <?php
@@ -162,7 +188,7 @@ echo PHP_EOL;
   @@ C:\Users\azure\Desktop\test.php 2-11
 
   - Constants [0] {
-  } 
+  }
   ...
 */
 ```
@@ -235,21 +261,21 @@ $ php composer.phar require
 Search for a package: phpunit
 Found 15 packages matching phpunit
 
-   [0] phpunit/phpunit 
-   [1] phpunit/php-timer 
-   [2] phpunit/php-text-template 
-   [3] phpunit/php-file-iterator 
-   [4] phpunit/php-code-coverage 
+   [0] phpunit/phpunit
+   [1] phpunit/php-timer
+   [2] phpunit/php-text-template
+   [3] phpunit/php-file-iterator
+   [4] phpunit/php-code-coverage
    [5] phpunit/phpunit-mock-objects Abandoned. No replacement was suggested.
-   [6] symfony/phpunit-bridge 
-   [7] jean85/pretty-package-versions 
-   [8] phpunit/php-invoker 
+   [6] symfony/phpunit-bridge
+   [7] jean85/pretty-package-versions
+   [8] phpunit/php-invoker
    [9] phpunit/php-token-stream Abandoned. No replacement was suggested.
-  [10] johnkary/phpunit-speedtrap 
-  [11] phpstan/phpstan-phpunit 
-  [12] brianium/paratest 
-  [13] yoast/phpunit-polyfills 
-  [14] spatie/phpunit-snapshot-assertions 
+  [10] johnkary/phpunit-speedtrap
+  [11] phpstan/phpstan-phpunit
+  [12] brianium/paratest
+  [13] yoast/phpunit-polyfills
+  [14] spatie/phpunit-snapshot-assertions
 ```
 
 * If you're using OOP, consider using `Symfony\Console`
@@ -365,4 +391,4 @@ CREATE TABLE `data` (
   * mising ";" + should add a space between vars on output
 * http://localhost:8883/#/4/37
   * s/be "LuaJIT" not "LuiJIT"
-  
+
