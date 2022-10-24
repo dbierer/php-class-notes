@@ -17,7 +17,8 @@ Last Slide: http://localhost:8883/#/4/76
   * See: https://github.com/laravel/framework/tree/9.x/src/Illuminate/Contracts/Auth
 
 * Q: Example of `SplObjectStorage` used as a service container
-* A: Still looking!
+* A: See: https://github.com/dbierer/classic_php_examples/blob/master/oop/spl_obj_storage_as_service_manager.php
+* A: See: https://github.com/dbierer/classic_php_examples/blob/master/oop/App/Service/Manager.php
 
 * Q: Why is `STDOUT` still producing output even with `ob_start()`?
 * A: Still researching. Unable to duplicate the problem on my main computer.
@@ -30,11 +31,11 @@ For Tue 25 Oct 2022
 * Lab: Docker Image Build
 * Lab: Commit the Image
 * Lab: Docker-Compose
-	* Lab: Configuration Review and Pre-Built Service Execution
-	* Lab: Create Files to Support the nginx Service
-	* Lab: Create Files to Support the PHP-FPM Service
-	* Lab: Create the docker-compose.yml File
-	* Lab: Set up the sample app
+        * Lab: Configuration Review and Pre-Built Service Execution
+        * Lab: Create Files to Support the nginx Service
+        * Lab: Create Files to Support the PHP-FPM Service
+        * Lab: Create the docker-compose.yml File
+        * Lab: Set up the sample app
 
 
 For Thu 20 Oct 2022
@@ -72,7 +73,7 @@ git checkout php-8.2.0RC4
     --enable-gd \
     --enable-bcmath \
     --enable-sockets=shared \
-	--with-bz2=shared \
+        --with-bz2=shared \
     --enable-exif=shared \
     --enable-intl=shared \
     --with-gettext=shared \
@@ -169,13 +170,13 @@ sudo chown -R www-data /usr/share/phpmyadmin
 <?php
 class Test implements IteratorAggregate
 {
-	protected $name = 'Doug';
-	protected $country = 'Thailand';
-	protected $language = 'EN';
-	public function getIterator()
-	{
-		return new ArrayIterator(get_object_vars($this));
-	}
+        protected $name = 'Doug';
+        protected $country = 'Thailand';
+        protected $language = 'EN';
+        public function getIterator()
+        {
+                return new ArrayIterator(get_object_vars($this));
+        }
 }
 
 $test = new Test();
@@ -187,13 +188,13 @@ Anytime you implement `__toString()`
 <?php
 class Test
 {
-	protected $name = 'Doug';
-	protected $country = 'Thailand';
-	protected $language = 'EN';
-	public function __toString()
-	{
-		return var_export(get_object_vars($this), TRUE);
-	}
+        protected $name = 'Doug';
+        protected $country = 'Thailand';
+        protected $language = 'EN';
+        public function __toString()
+        {
+                return var_export(get_object_vars($this), TRUE);
+        }
 }
 
 $test = new Test();
@@ -218,11 +219,11 @@ It's treated just like an array
 ```
 <?php
 $user = [
-	'user' => 'joe',
-	'email'  => 'joe@company.com',
-	'address' => '123 Main Street',
-	'city' => 'Utrecht',
-	'country' => 'NL',
+        'user' => 'joe',
+        'email'  => 'joe@company.com',
+        'address' => '123 Main Street',
+        'city' => 'Utrecht',
+        'country' => 'NL',
 ];
 
 $user = new ArrayObject($user);
@@ -238,12 +239,12 @@ echo 'Status:' . $user['status'] . PHP_EOL;
 ```
 <?php
 $data = [
-	'F' => 666,
-	'A' => 111,
-	'E' => 555,
-	'C' => 333,
-	'B' => 222,
-	'D' => 444,
+        'F' => 666,
+        'A' => 111,
+        'E' => 555,
+        'C' => 333,
+        'B' => 222,
+        'D' => 444,
 ];
 
 // here's the traditional way to use a while() with an array:
@@ -251,16 +252,16 @@ asort($data);
 $pos   = 0;
 $count = count($data);
 while ($pos++ < $count) {
-	echo key($data) . ':' . current($data) . PHP_EOL;
-	next($data);
+        echo key($data) . ':' . current($data) . PHP_EOL;
+        next($data);
 }
 
 // same thing but using ArrayIterator:
 $it = new ArrayIterator($data);
 $it->asort();
 while ($it->valid()) {
-	echo $it->key() . ':' . $it->current() . PHP_EOL;
-	$it->next();
+        echo $it->key() . ':' . $it->current() . PHP_EOL;
+        $it->next();
 }
 ```
 `SplSubject` and `SplObserver` used to form a pipeline:
@@ -355,17 +356,17 @@ class StreamDb {
                 $url['user'], $url['pass'], [\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION]);
         } catch(\PDOException $e){return $result;}
 
-		switch ($mode) {
-			case 'w' :
-				$pdo->exec('DELETE FROM ' . static::TABLE . ' WHERE id=' . $this->id);
-				$this->stmt = $pdo->prepare(sprintf(static::SQL_INSERT, static::TABLE));
-				break;
-			case 'a' :
-				$this->stmt = $pdo->prepare(sprintf(static::SQL_UPDATE, static::TABLE, $this->id));
-			case 'r' :
-			default :
-				$this->stmt = $pdo->prepare(sprintf(static::SQL_SELECT, static::TABLE, $this->id));
-		}
+                switch ($mode) {
+                        case 'w' :
+                                $pdo->exec('DELETE FROM ' . static::TABLE . ' WHERE id=' . $this->id);
+                                $this->stmt = $pdo->prepare(sprintf(static::SQL_INSERT, static::TABLE));
+                                break;
+                        case 'a' :
+                                $this->stmt = $pdo->prepare(sprintf(static::SQL_UPDATE, static::TABLE, $this->id));
+                        case 'r' :
+                        default :
+                                $this->stmt = $pdo->prepare(sprintf(static::SQL_SELECT, static::TABLE, $this->id));
+                }
         return TRUE;
     }
 
