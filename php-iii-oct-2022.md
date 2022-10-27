@@ -1,6 +1,14 @@
 # PHP III - Oct 2022
 
 ## TODO
+* Q: Please add Swoole Server example to php-iii-demos repo (public/server.php) (see http://localhost:8883/#/8/31)
+
+* Q: Solid benefits of PHP async programming
+* A:
+
+* Q: Double check on the API tools lab re: Container/ContainerInterface
+* A:
+
 * Q: RE: Docker Compose: what's the difference/advantage of "ipam" vs. "overlay" for building networks?
 * A: `IPAM` is an old acronym that stands for "IP Address Management". It's not a protocol. You use `ipam` as a sub-key under your network service mainly to define static IP address information.
   * See: https://docs.docker.com/compose/compose-file/#ipam
@@ -454,10 +462,14 @@ Example Dockerfile:
 Example `docker-compose.yml`
 * A 3 container orchestrated system that represents a 3 node MongoDB replica set
 * https://github.com/dbierer/Learn-MongoDB-4.x/blob/master/chapters/13/docker-compose.yml
+Terraform templates
+* https://developer.hashicorp.com/terraform/language/functions/templatefile
 
 ## Middleware
 * Low level example: https://github.com/dbierer/strat_post
 
+## Async
+* Good article on async programming: https://www.zend.com/blog/using-swoole-and-mezzio
 
 ## Resources
 * https://github.com/dbierer/php-iii-demos.git
@@ -484,3 +496,6 @@ exit
   * "howeverm"???
 * http://localhost:8883/#/7/7
   * "Middlware"???
+* http://localhost:8883/#/8/2
+  * Add slide about Why!!!
+
