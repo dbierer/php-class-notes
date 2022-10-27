@@ -3,6 +3,12 @@
 Last Slide: http://localhost:8883/#/4/76
 
 ## TODO
+* Q: RE: Docker Compose: what's the difference/advantage of "ipam" vs. "overlay" for building networks?
+* A:
+
+* Q: Link ZendPHP Terraform templates?
+* A:
+
 * Q: What's the syntax to switch between PHP versions?
 * A: The utility for Debian/Ubuntu is `update-alternatives`
 * A: Syntax: still looking!
@@ -27,6 +33,10 @@ Last Slide: http://localhost:8883/#/4/76
 * A: See below
 
 ## Homework
+For Thu 27 Oct 2022
+* Lab: Laminas API Tools
+* Lab: Adding Middleware
+
 For Tue 25 Oct 2022
 * Lab: Docker Image Build
 * Lab: Commit the Image
@@ -416,12 +426,6 @@ You can also use a `php.ini` setting of `on` to enable JIT:
 opcache.jit_buffer_size=32M
 ```
 
-## Resources
-* https://github.com/dbierer/php-iii-demos.git
-* https://github.com/dbierer/php-iii-jul-2022.git
-* https://github.com/dbierer/php-iii-mar-2021.git
-* https://github.com/dbierer/php-class-notes/blob/master/php-iii-may-2021.md
-
 ## Docker
 Orchestration:
 * https://www.zend.com/webinars/orchestrating-your-php-applications
@@ -432,6 +436,16 @@ Example Dockerfile:
 Example `docker-compose.yml`
 * A 3 container orchestrated system that represents a 3 node MongoDB replica set
 * https://github.com/dbierer/Learn-MongoDB-4.x/blob/master/chapters/13/docker-compose.yml
+
+## Middleware
+* Low level example: https://github.com/dbierer/strat_post
+
+
+## Resources
+* https://github.com/dbierer/php-iii-demos.git
+* https://github.com/dbierer/php-iii-jul-2022.git
+* https://github.com/dbierer/php-iii-mar-2021.git
+* https://github.com/dbierer/php-class-notes/blob/master/php-iii-may-2021.md
 
 ## ERRATA
 * http://localhost:8883/#/4/7
@@ -448,3 +462,7 @@ exit
 * http://localhost:8883/#/4/56
   * Either the "C" code needs to change to accommodate full char strings
   * Or the lab needs to be rewritten using single characters instead of string
+* http://localhost:8883/#/6/47
+  * "howeverm"???
+* http://localhost:8883/#/7/7
+  * "Middlware"???
