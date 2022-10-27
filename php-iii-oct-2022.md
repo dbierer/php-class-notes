@@ -1,23 +1,41 @@
 # PHP III - Oct 2022
 
-Last Slide: http://localhost:8883/#/4/76
-
 ## TODO
 * Q: RE: Docker Compose: what's the difference/advantage of "ipam" vs. "overlay" for building networks?
-* A:
+* A: `IPAM` is an old acronym that stands for "IP Address Management". It's not a protocol. You use `ipam` as a sub-key under your network service mainly to define static IP address information.
+  * See: https://docs.docker.com/compose/compose-file/#ipam
+  * Also check out the "ipv4_address, ipv6_address" sub-heading under https://docs.docker.com/compose/compose-file/compose-file-v3/#networks
+* A: `overlay` is a Docker network driver that allows communication between containers.
+  * See: https://docs.docker.com/network/overlay/
+* A: Also see this article about fixed IP addresses in Docker containers:
+  * https://stackoverflow.com/questions/39493490/provide-static-ip-to-docker-containers-via-docker-compose
 
 * Q: Link ZendPHP Terraform templates?
-* A:
+* A: See: https://www.zend.com/blog/what-is-cloud-orchestration
+* A: See: https://www.zend.com/downloads/zendphp-terraform-templates
 
-* Q: What's the syntax to switch between PHP versions?
+* Q: What's the syntax to switch between PHP versions in Ubuntu/Debian?
 * A: The utility for Debian/Ubuntu is `update-alternatives`
-* A: Syntax: still looking!
+* A: Example using Ubuntu 20.04:
+```
+$ sudo update-alternatives --config php
+There are 2 choices for the alternative php (providing /usr/bin/php).
+
+  Selection    Path                  Priority   Status
+------------------------------------------------------------
+  0            /usr/bin/php8.1-zend   81        auto mode
+  1            /usr/bin/php7.4-zend   74        manual mode
+* 2            /usr/bin/php8.1-zend   81        manual mode
+
+Press <enter> to keep the current choice[*], or type selection number:
+```
+* A: If you're using ZendPHP, you can use `zendphpctl` to switch versions
+  * See: https://help.zend.com/zendphp/current/content/installation/zendphpctl.htm
 
 * Q: Example of where Interfaces are used as type hints instead of classes?
 * A: Have a look at the Laminas framework:
   * Most interfaces have the word "Interface" in their name
   * See: https://github.com/laminas/laminas-mvc/blob/master/src/Application.php
-
 * A: In the Laravel framework, interfaces are generally under the `Illuminate\Contracts` namespace
   * Most interfaces *do not* have "Interface" in their name
   * See: https://github.com/laravel/framework/tree/9.x/src/Illuminate/Contracts/Auth
