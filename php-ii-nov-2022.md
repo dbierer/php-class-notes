@@ -4,6 +4,10 @@
 
 
 ## Homework
+* Update the VM
+* Lab: Namespace
+* Lab: Create a Class
+* Lab: Create an Extensible Super Class
 
 ## VM Notes
 Info
@@ -124,6 +128,27 @@ class Test
 $test = new Test();
 echo $test->getName();
 ```
+Example where you want controlled access to a property:
+```
+<?php
+class UserEntity {
+    protected string $phone = '';
+	// Method
+	public function setPhoneNumber(int $num) : void {
+		$str = (string) $num;
+		$this->phone = substr($str, 0, 3) . '-' . substr($str, 3, 3) . '-' . substr($str, 6);
+	}
+	public function getPhoneNumber() : string {
+		return $this->phone;
+	}
+}
+
+$user = new UserEntity();
+$user->setPhoneNumber(1112223333);
+echo $user->getPhoneNumber();
+echo PHP_EOL;
+```
+
 Example using `__construct()`
 ```
 <?php
