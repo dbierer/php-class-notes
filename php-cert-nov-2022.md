@@ -1,8 +1,14 @@
 # PHP Certification - Nov 2022
 
 ## TODO
+* Get the link to the Zend Yellow Pages
+* Get the link to the topic areas
+  * https://www.zend.com/training/php-certification-exam
 
 ## Homework
+For Thu 3 Nov 2022
+* Quiz questions for Topic #1 (Basics)
+
 
 ## Docker Container Setup
 * Download the ZIP file via Zoom
@@ -10,6 +16,53 @@
 * Follow the setup instructions in `/path/to/zip/README.md`
 
 ## Class Notes
+* Q: How do I know if an extension is part of the "core"
+* A: See: https://github.com/php/php-src/tree/php-7.1.33/ext
+  * These are all core
+  * Not all are enabled by default
+  * Only the ones enabled will be on the test
+What's the difference between `define()` and `const` for constants:
+```
+<?php
+namespace x {
+	define('TEST1', 'xyz');
+	const TEST2 = 'abc';
+}
+
+namespace y {
+
+	function test()
+	{
+		return TEST1 . TEST2;
+	}
+
+	echo test();
+	// output: xyzTEST2
+}
+``
+Namespaces:
+* Cannot have keywords in the namespace in PHP 7.1
+```
+namespace Test\List\Whatever;
+
+use ArrayObject;
+
+$obj = new ArrayObject([1,2,3,4,5]);
+var_dump($obj);
+// PHP Parse error:  syntax error, unexpected 'List' (T_LIST), expecting identifier (T_STRING) in /srv/code/test.php on line 2
+```
+IMPORTANT: when assigning objects, it's automatically by reference (even without the `&`)
+```
+<?php
+$obj = new stdClass();
+$obj->name = 'TEST';
+$abc = $obj;
+$abc->name = 'Whatever';
+echo $obj->name;
+echo PHP_EOL;
+// Output: "Whatever"
+```
+
 What is considered "empty"?
 * https://www.php.net/manual/en/language.types.boolean.php#language.types.boolean.casting
 Overview of topics: https://www.zend.com/training/php-certification-exam
@@ -36,22 +89,22 @@ Truth table:
 ```
 <?php
 echo "Logical AND\n";
-printf("%04b\n", 0b00 & 0b00);
-printf("%04b\n", 0b00 & 0b01);
-printf("%04b\n", 0b01 & 0b00);
-printf("%04b\n", 0b01 & 0b01);
+printf("%04b\n", 0b00 & 0b00);	// 0
+printf("%04b\n", 0b00 & 0b01);	// 0
+printf("%04b\n", 0b01 & 0b00);	// 0
+printf("%04b\n", 0b01 & 0b01);	// 1
 
 echo "Logical OR\n";
-printf("%04b\n", 0b00 | 0b00);
-printf("%04b\n", 0b00 | 0b01);
-printf("%04b\n", 0b01 | 0b00);
-printf("%04b\n", 0b01 | 0b01);
+printf("%04b\n", 0b00 | 0b00);	// 0
+printf("%04b\n", 0b00 | 0b01);	// 1
+printf("%04b\n", 0b01 | 0b00);	// 1
+printf("%04b\n", 0b01 | 0b01);	// 1
 
 echo "Logical XOR\n";
-printf("%04b\n", 0b00 ^ 0b00);
-printf("%04b\n", 0b00 ^ 0b01);
-printf("%04b\n", 0b01 ^ 0b00);
-printf("%04b\n", 0b01 ^ 0b01);
+printf("%04b\n", 0b00 ^ 0b00);	// 0
+printf("%04b\n", 0b00 ^ 0b01);	// 1
+printf("%04b\n", 0b01 ^ 0b00);	// 1
+printf("%04b\n", 0b01 ^ 0b01);	// 0
 ```
 Examples of the three ops:
 ```
