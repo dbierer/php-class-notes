@@ -1,9 +1,19 @@
 # PHP II - Nov 2022
 
-## TODO
+Last: http://localhost:8882/#/3/70
 
+## TODO
+* Q: Do you have a practical example of `__call()`
+* A: Yes: using the "plugin" architecture
+* A: TBD
 
 ## Homework
+For Fri 4 Nov 2022
+* Lab: Magic Methods
+* Lab: Abstract Classes
+* Lab: Interfaces
+]
+For Wed 2 Nov 2022
 * Update the VM
 * Lab: Namespace
 * Lab: Create a Class
@@ -61,6 +71,8 @@ Where it all started:
 * Seminal work: "Design Patterns: Elements of Reusable Object-Oriented Software"
 PHP Road Map:
 * https://wiki.php.net/rfc
+Additional examples from PHP III class:
+* https://github.com/dbierer/php-iii-demos
 
 ## Class Notes
 
@@ -204,26 +216,97 @@ var_dump($test1, $test2);
 ```
 Practical anonymous class example:
 * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_spl_filteriterator_anon_class.php
+Example showing return info + added functionality:
+```
+<?php
+class Test
+{
+	public function getCityInfo(string $city, string $country='', string $state='')
+	{
+		$json = file_get_contents("http://api.unlikelysource.com/api?city=$city&state_prov_code=$state&country=$country");
+		// return an anonymous class with the desired info + added functionality
+		return new class($json) {
+			public string $json = '';
+			public function __construct(string $json)
+			{
+				$this->json = $json;
+			}
+			public function getString()
+			{
+				return $this->json;
+			}
+			public function getArray()
+			{
+				return json_decode($this->json);
+			}
+		};
+	}
+}
+
+$test = new Test();
+$obj  = $test->getCityInfo('Bangor','US','ME');
+var_dump($obj->getArray());
+```
 
 ## Magic Methods
 Example of `__destruct()`
 * https://github.com/dbierer/filecms-core/blob/main/src/Common/Image/Captcha.php
+Another Example:
+```
+<?php
+class Test
+{
+	public $instance = NULL;
+	public string $name = 'Fred Flintstone';
+	public function __destruct()
+	{
+		echo __METHOD__ . ':' . $this->name . PHP_EOL;
+	}
+	public function whatever()
+	{
+		$this->instance = new self();
+		$this->instance->name = __FUNCTION__;
+	}
+}
+
+
+$test1 = new Test();
+$test1->name = 'TEST1';
+var_dump($test1);
+
+$test2 = new Test();
+$test2->name = 'TEST2';
+$test2->whatever();
+
+// actual output:
+/*
+object(Test)#1 (2) {
+  ["instance"]=>
+  NULL
+  ["name"]=>
+  string(5) "TEST1"
+}
+Test::__destruct:TEST2
+Test::__destruct:whatever
+Test::__destruct:TEST1
+ */
+```
 Serialization example:
 ```
 <?php
 class UserEntity
 {
-        public $status = ['A','B','C'];
-    public function __construct(
-        protected string $firstName,
-        protected string $lastName,
-        protected float $balance,
-        protected int $id
+	public $status = ['A','B','C'];
+	public function __construct(
+	protected string $firstName,
+	protected string $lastName,
+	protected float $balance,
+	protected int $id
     ) {}
-        public function getFullName()
-        {
-                return $this->firstName . ' ' . $this->lastName;
-        }
+	public function getFullName()
+	{
+		return $this->firstName . ' ' . $this->lastName;
+	}
 }
 $user = new UserEntity('Fred', 'Flintstone', 999.99, 101);
 $text = serialize($user);
@@ -239,25 +322,25 @@ Example of `__sleep()` and `__wakeup()`
 ```
 <?php
 class UserEntity {
-        public $hash = '';
-    public function __construct(
-        protected string $firstName,
-        protected string $lastName)
+	public $hash = '';
+	public function __construct(
+	protected string $firstName,
+	protected string $lastName)
     {
-                $this->hash = bin2hex(random_bytes(8));
+		$this->hash = bin2hex(random_bytes(8));
     }
     public function __sleep()
     {
-                return ['firstName','lastName'];
-        }
-        public function __wakeup()
-        {
-                $this->hash = bin2hex(random_bytes(8));
-        }
-        public function getFullName()
-        {
-                return $this->firstName . ' ' . $this->lastName;
-        }
+		return ['firstName','lastName'];
+	}
+	public function __wakeup()
+	{
+		$this->hash = bin2hex(random_bytes(8));
+	}
+	public function getFullName()
+	{
+		return $this->firstName . ' ' . $this->lastName;
+	}
     public function getNativeString(): string {
         return serialize($this);
     }
@@ -276,31 +359,32 @@ Example of `__serialize()` and `__unserialize()`
 ```
 <?php
 class UserEntity {
-        public $hash = '';
-    public function __construct(
-        protected string $firstName,
-        protected string $lastName)
+	public $hash = '';
+	public function __construct(
+		protected string $firstName,
+		protected string $lastName)
     {
-                $this->hash = bin2hex(random_bytes(8));
+		$this->hash = bin2hex(random_bytes(8));
     }
     public function __serialize()
     {
-                return [
-                        'firstName' => $this->firstName,
-                        'lastName' => $this->lastName,
-                        'sleep_date' => date('Y-m-d H:i:s')];
-        }
-        public function __unserialize($array)
-        {
-                // $array contains values restored from the serialization
-                $this->hash = bin2hex(random_bytes(8));
-                $this->firstName = $array['firstName'];
-                $this->lastName = $array['lastName'];
-        }
-        public function getFullName()
-        {
-                return $this->firstName . ' ' . $this->lastName;
-        }
+		return [
+			'firstName' => $this->firstName,
+			'lastName' => $this->lastName,
+			'sleep_date' => date('Y-m-d H:i:s')
+		];
+	}
+	public function __unserialize($array)
+	{
+		// $array contains values restored from the serialization
+		$this->hash = bin2hex(random_bytes(8));
+		$this->firstName = $array['firstName'];
+		$this->lastName = $array['lastName'];
+	}
+	public function getFullName()
+	{
+		return $this->firstName . ' ' . $this->lastName;
+	}
     public function getNativeString(): string {
         return serialize($this);
     }
@@ -337,13 +421,13 @@ Example of controlled unlimited properties
 <?php
 class Test
 {
-        public const FIELDS = ['fname','lname','balance'];
-        public $vars = [];
+	public const FIELDS = ['fname','lname','balance'];
+	public $vars = [];
     // Returns an inaccessible property
     public function __set($key, $value) {
         if (in_array($key, self::FIELDS)) {
-                        $this->vars[$key] = $value;
-                }
+			$this->vars[$key] = $value;
+		}
     }
     public function __get($key) {
         return $this->vars[$key] ?? '';
