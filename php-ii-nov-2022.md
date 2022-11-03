@@ -12,7 +12,7 @@ For Fri 4 Nov 2022
 * Lab: Magic Methods
 * Lab: Abstract Classes
 * Lab: Interfaces
-]
+
 For Wed 2 Nov 2022
 * Update the VM
 * Lab: Namespace

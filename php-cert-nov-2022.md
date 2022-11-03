@@ -6,6 +6,10 @@
   * https://www.zend.com/training/php-certification-exam
 
 ## Homework
+For Tue 8 Nov 2022
+* Quiz questions for Topic #2 (Data Formats and Types)
+* Quiz questions for Topic #3 (Strings and Patterns)
+
 For Thu 3 Nov 2022
 * Quiz questions for Topic #1 (Basics)
 
@@ -191,6 +195,29 @@ var_dump($date);
   * See: https://www.ateam-oracle.com/post/performance-study-rest-vs-soap-for-mobile-applications
 
 ## Strings
+* Be very careful with `strpos()` and `stripos()`
+```
+<?php
+$str = 'The quick brown fox jumped over the fence';
+echo '"The" was ';
+echo (stripos($str, 'The')) ? 'found' : 'not found';
+echo ' in the string ' . $str;
+echo PHP_EOL;
+
+// actual output:
+// "The" was not found in the string The quick brown fox jumped over the fence
+```
+* Study `substr()` with negative args
+```
+<?php
+$a = 'test.php';
+//   test.               php
+$b = substr($a, 0, -3) . substr($a, -3);
+echo ($a === $b) ? 'T' : 'F';
+
+// ouput: "T"
+```
+
 * Study the docs on `sprintf()` to get format codes for that family of functions
 * Example using negative offsets:
 ```
@@ -423,6 +450,8 @@ try {
   * Mention that it's allowed to state `return` with no values on `void`
 * http://localhost:8884/#/8/79
   * "B" answer doesn't make sense
+* http://localhost:8884/#/2/75
+  * Add '0' as one of the choices
 
 Example of making object callable:
 ```
