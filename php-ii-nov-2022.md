@@ -5,7 +5,9 @@ Last: http://localhost:8882/#/3/70
 ## TODO
 * Q: Do you have a practical example of `__call()`
 * A: Yes: using the "plugin" architecture
-* A: TBD
+* A: https://github.com/laminas/laminas-mvc/blob/3.6.x/src/Controller/AbstractController.php
+  * Look for `public function __call($method, $params)`
+  * Also, look for any references to `PluginManager`
 
 ## Homework
 For Fri 4 Nov 2022
@@ -145,14 +147,14 @@ Example where you want controlled access to a property:
 <?php
 class UserEntity {
     protected string $phone = '';
-	// Method
-	public function setPhoneNumber(int $num) : void {
-		$str = (string) $num;
-		$this->phone = substr($str, 0, 3) . '-' . substr($str, 3, 3) . '-' . substr($str, 6);
-	}
-	public function getPhoneNumber() : string {
-		return $this->phone;
-	}
+        // Method
+        public function setPhoneNumber(int $num) : void {
+                $str = (string) $num;
+                $this->phone = substr($str, 0, 3) . '-' . substr($str, 3, 3) . '-' . substr($str, 6);
+        }
+        public function getPhoneNumber() : string {
+                return $this->phone;
+        }
 }
 
 $user = new UserEntity();
@@ -221,26 +223,26 @@ Example showing return info + added functionality:
 <?php
 class Test
 {
-	public function getCityInfo(string $city, string $country='', string $state='')
-	{
-		$json = file_get_contents("http://api.unlikelysource.com/api?city=$city&state_prov_code=$state&country=$country");
-		// return an anonymous class with the desired info + added functionality
-		return new class($json) {
-			public string $json = '';
-			public function __construct(string $json)
-			{
-				$this->json = $json;
-			}
-			public function getString()
-			{
-				return $this->json;
-			}
-			public function getArray()
-			{
-				return json_decode($this->json);
-			}
-		};
-	}
+        public function getCityInfo(string $city, string $country='', string $state='')
+        {
+                $json = file_get_contents("http://api.unlikelysource.com/api?city=$city&state_prov_code=$state&country=$country");
+                // return an anonymous class with the desired info + added functionality
+                return new class($json) {
+                        public string $json = '';
+                        public function __construct(string $json)
+                        {
+                                $this->json = $json;
+                        }
+                        public function getString()
+                        {
+                                return $this->json;
+                        }
+                        public function getArray()
+                        {
+                                return json_decode($this->json);
+                        }
+                };
+        }
 }
 
 $test = new Test();
@@ -256,17 +258,17 @@ Another Example:
 <?php
 class Test
 {
-	public $instance = NULL;
-	public string $name = 'Fred Flintstone';
-	public function __destruct()
-	{
-		echo __METHOD__ . ':' . $this->name . PHP_EOL;
-	}
-	public function whatever()
-	{
-		$this->instance = new self();
-		$this->instance->name = __FUNCTION__;
-	}
+        public $instance = NULL;
+        public string $name = 'Fred Flintstone';
+        public function __destruct()
+        {
+                echo __METHOD__ . ':' . $this->name . PHP_EOL;
+        }
+        public function whatever()
+        {
+                $this->instance = new self();
+                $this->instance->name = __FUNCTION__;
+        }
 }
 
 
@@ -296,17 +298,17 @@ Serialization example:
 <?php
 class UserEntity
 {
-	public $status = ['A','B','C'];
-	public function __construct(
-	protected string $firstName,
-	protected string $lastName,
-	protected float $balance,
-	protected int $id
+        public $status = ['A','B','C'];
+        public function __construct(
+        protected string $firstName,
+        protected string $lastName,
+        protected float $balance,
+        protected int $id
     ) {}
-	public function getFullName()
-	{
-		return $this->firstName . ' ' . $this->lastName;
-	}
+        public function getFullName()
+        {
+                return $this->firstName . ' ' . $this->lastName;
+        }
 }
 $user = new UserEntity('Fred', 'Flintstone', 999.99, 101);
 $text = serialize($user);
@@ -322,25 +324,25 @@ Example of `__sleep()` and `__wakeup()`
 ```
 <?php
 class UserEntity {
-	public $hash = '';
-	public function __construct(
-	protected string $firstName,
-	protected string $lastName)
+        public $hash = '';
+        public function __construct(
+        protected string $firstName,
+        protected string $lastName)
     {
-		$this->hash = bin2hex(random_bytes(8));
+                $this->hash = bin2hex(random_bytes(8));
     }
     public function __sleep()
     {
-		return ['firstName','lastName'];
-	}
-	public function __wakeup()
-	{
-		$this->hash = bin2hex(random_bytes(8));
-	}
-	public function getFullName()
-	{
-		return $this->firstName . ' ' . $this->lastName;
-	}
+                return ['firstName','lastName'];
+        }
+        public function __wakeup()
+        {
+                $this->hash = bin2hex(random_bytes(8));
+        }
+        public function getFullName()
+        {
+                return $this->firstName . ' ' . $this->lastName;
+        }
     public function getNativeString(): string {
         return serialize($this);
     }
@@ -359,32 +361,32 @@ Example of `__serialize()` and `__unserialize()`
 ```
 <?php
 class UserEntity {
-	public $hash = '';
-	public function __construct(
-		protected string $firstName,
-		protected string $lastName)
+        public $hash = '';
+        public function __construct(
+                protected string $firstName,
+                protected string $lastName)
     {
-		$this->hash = bin2hex(random_bytes(8));
+                $this->hash = bin2hex(random_bytes(8));
     }
     public function __serialize()
     {
-		return [
-			'firstName' => $this->firstName,
-			'lastName' => $this->lastName,
-			'sleep_date' => date('Y-m-d H:i:s')
-		];
-	}
-	public function __unserialize($array)
-	{
-		// $array contains values restored from the serialization
-		$this->hash = bin2hex(random_bytes(8));
-		$this->firstName = $array['firstName'];
-		$this->lastName = $array['lastName'];
-	}
-	public function getFullName()
-	{
-		return $this->firstName . ' ' . $this->lastName;
-	}
+                return [
+                        'firstName' => $this->firstName,
+                        'lastName' => $this->lastName,
+                        'sleep_date' => date('Y-m-d H:i:s')
+                ];
+        }
+        public function __unserialize($array)
+        {
+                // $array contains values restored from the serialization
+                $this->hash = bin2hex(random_bytes(8));
+                $this->firstName = $array['firstName'];
+                $this->lastName = $array['lastName'];
+        }
+        public function getFullName()
+        {
+                return $this->firstName . ' ' . $this->lastName;
+        }
     public function getNativeString(): string {
         return serialize($this);
     }
@@ -421,13 +423,13 @@ Example of controlled unlimited properties
 <?php
 class Test
 {
-	public const FIELDS = ['fname','lname','balance'];
-	public $vars = [];
+        public const FIELDS = ['fname','lname','balance'];
+        public $vars = [];
     // Returns an inaccessible property
     public function __set($key, $value) {
         if (in_array($key, self::FIELDS)) {
-			$this->vars[$key] = $value;
-		}
+                        $this->vars[$key] = $value;
+                }
     }
     public function __get($key) {
         return $this->vars[$key] ?? '';
