@@ -5,11 +5,55 @@ Last: http://localhost:8882/#/3/70
 ## TODO
 * Q: Do you have a practical example of `__call()`
 * A: Yes: using the "plugin" architecture
-* A: https://github.com/laminas/laminas-mvc/blob/3.6.x/src/Controller/AbstractController.php
+* A: https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractController.php
   * Look for `public function __call($method, $params)`
   * Also, look for any references to `PluginManager`
 
+* Q: What major features are in PHP 8.2?
+
+* Q: Why is this not working?
+```
+<?php
+interface TestInterface
+{
+	public function test();
+}
+
+class Base implements TestInterface
+{
+	protected static $instance;
+	private function __construct() {}
+	public function test()
+	{
+		return 'TEST';
+	}
+	public static function getInstance() : static
+	{
+		if (empty(static::$instance))
+			static::$instance = new static();
+		return static::$instance;
+	}
+}
+
+class A extends Base {}
+
+class B extends Base {}
+
+
+$base = Base::getInstance();
+$a    = A::getInstance();
+$b    = B::getInstance();
+var_dump($base, $a, $b);
+```
+
+
 ## Homework
+For Mon 7 Nov 2022
+* Lab: Type Hinting
+* Lab: Build Custom Exception Class
+* Lab: Traits
+* Review the OrderApp (use course Module 3 as a guideline)
+
 For Fri 4 Nov 2022
 * Lab: Magic Methods
 * Lab: Abstract Classes
@@ -515,6 +559,46 @@ $bar = new Bar();
 var_dump($foo->getInstance());  // Foo
 var_dump($bar->getInstance());  // Bar
 ```
+Scalar type hinting
+```
+<?php
+//declare(strict_types=1);
+class Test
+{
+	public function add(int $a, int $b) : int
+	{
+		return $a + $b;
+	}
+}
+
+$test = new Test();
+echo $test->add(2, 2);
+echo PHP_EOL;
+echo $test->add(2.555, 2.6666);
+echo PHP_EOL;
+echo $test->add('2', '2');
+echo PHP_EOL;
+echo $test->add((int) '2A', (int) 'B');
+echo PHP_EOL;
+echo $test->add('2A', '2B');
+echo PHP_EOL;
+
+// actual output:
+/*
+4
+4
+4
+2
+PHP Fatal error:  Uncaught TypeError: Test::add(): Argument #1 ($a) must be of type int, string
+given, called in C:\Users\ACER\Repos\classic_php_examples\oop\test.php on line 20 and defined in
+ C:\Users\ACER\Repos\classic_php_examples\oop\test.php:5
+Stack trace:
+#0 C:\Users\ACER\Repos\classic_php_examples\oop\test.php(20): Test->add()
+#1 {main}
+  thrown in C:\Users\ACER\Repos\classic_php_examples\oop\test.php on line 5
+
+ */
+```
 Exception / Error example:
 ```
 <?php
@@ -557,6 +641,36 @@ Using `static` functionality to get a singleton instance
 Other examples of `static` and `traits`
 * https://github.com/dbierer/classic_php_examples/tree/master/oop/*static*.php
 * https://github.com/dbierer/classic_php_examples/tree/master/oop/*trait*.php
+
+Traits and visibility
+```
+<?php
+class Base {
+    public function sayHello() {
+        echo 'Hello ';
+    }
+}
+
+trait SayWorld {
+    private function sayHello() {
+        parent::sayHello();
+        echo 'World!';
+    }
+}
+
+class MyHelloWorld extends Base {
+    use SayWorld;
+}
+
+$o = new MyHelloWorld();
+$o->sayHello();
+
+// actual output:
+/*
+PHP Fatal error:  Access level to SayWorld::sayHello() must be public (as in class Base) in C:\U
+sers\ACER\Repos\classic_php_examples\oop\test.php on line 9
+*/
+```
 
 ## PDO
 Adding options as 4th argument:
@@ -729,3 +843,6 @@ PHP 5 to PHP 7 code converter using `preg_replace_callback_array()`
 * A: Will be published here by next week (not published yet):
   * https://github.com/dbierer/classic_php_examples/blob/master/db/db_pdo_multi_prepare_execute_create_geonames_table.php
 
+## Errata
+* http://localhost:8882/#/3/125
+  * Not "enumeraction"
