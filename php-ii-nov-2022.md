@@ -2,52 +2,12 @@
 
 Last: http://localhost:8882/#/3/70
 
-## TODO
-* Q: Do you have a practical example of `__call()`
-* A: Yes: using the "plugin" architecture
-* A: https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractController.php
-  * Look for `public function __call($method, $params)`
-  * Also, look for any references to `PluginManager`
-
-* Q: What major features are in PHP 8.2?
-
-* Q: Why is this not working?
-```
-<?php
-interface TestInterface
-{
-	public function test();
-}
-
-class Base implements TestInterface
-{
-	protected static $instance;
-	private function __construct() {}
-	public function test()
-	{
-		return 'TEST';
-	}
-	public static function getInstance() : static
-	{
-		if (empty(static::$instance))
-			static::$instance = new static();
-		return static::$instance;
-	}
-}
-
-class A extends Base {}
-
-class B extends Base {}
-
-
-$base = Base::getInstance();
-$a    = A::getInstance();
-$b    = B::getInstance();
-var_dump($base, $a, $b);
-```
-
-
 ## Homework
+For Wed 9 Nov 2022
+* Lab: Prepared Statements
+* Lab: Stored Procedure
+* Lab: Transactions
+
 For Mon 7 Nov 2022
 * Lab: Type Hinting
 * Lab: Build Custom Exception Class
@@ -64,6 +24,59 @@ For Wed 2 Nov 2022
 * Lab: Namespace
 * Lab: Create a Class
 * Lab: Create an Extensible Super Class
+
+## TODO
+* Q: Do you have a practical example of `__call()`
+* A: Yes: using the "plugin" architecture
+* A: https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractController.php
+  * Look for `public function __call($method, $params)`
+  * Also, look for any references to `PluginManager`
+
+* Q: What major features are in PHP 8.2?
+* A: See: https://wiki.php.net/rfc#php_82
+* A: PHP Roadmap: https://wiki.php.net/rfc
+
+* Q: Why is this not working?
+* A: (1) Base::__construct() is marked private and doesn't get inherited
+* A: (2) Once the first call to `Base::getInstance()` is called, an instance is created of type `Base`
+```
+<?php
+interface TestInterface
+{
+	public function test();
+}
+
+class Base implements TestInterface
+{
+	protected static $instance;
+	// this doesn't get inherited
+	private function __construct() {}
+	public function test()
+	{
+		return 'TEST';
+	}
+	public static function getInstance() : static
+	{
+		if (empty(static::$instance))
+			static::$instance = new static();
+		return static::$instance;
+	}
+}
+
+// problem #1: __construct() doesn't get inherited
+class A extends Base {}
+
+class B extends Base {}
+
+
+$base = Base::getInstance();
+// this doesn't work because Base::__construct() is marked private
+$a    = (new A)::getInstance();
+// this doesn't work because $instance is already created from line 30
+$b    = B::getInstance();
+var_dump($base, $a, $b);
+```
+
 
 ## VM Notes
 Info
@@ -671,6 +684,58 @@ PHP Fatal error:  Access level to SayWorld::sayHello() must be public (as in cla
 sers\ACER\Repos\classic_php_examples\oop\test.php on line 9
 */
 ```
+Traits conflict resolution example:
+```
+<?php
+namespace Traits;
+
+class Hybrid {
+
+    use GasPower, ElectricPower {
+        GasPower::providePower insteadOf ElectricPower;
+        GasPower::providePower as protected provideGasPower;
+        ElectricPower::providePower as protected provideElectricPower;
+    }
+
+    public function __construct() {
+        echo 'New Hybrid on the line.';
+        echo PHP_EOL;
+    }
+
+	// This is done to override the Trait `providePower()`
+	// so that it's no longer visible
+	private function providePower() {
+		return NULL;
+	}
+
+    public function useWhatever() {
+        $this->providePower();
+    }
+
+    public function useGas() {
+        $this->provideGasPower();
+    }
+
+    public function useElectric() {
+        $this->provideElectricPower();
+    }
+
+}
+```
+## Domain Model
+`Factory` design pattern:
+* https://github.com/laminas/laminas-diactoros/blob/master/src/ServerRequestFactory.php
+`Builder` pattern:
+* https://www.doctrine-project.org/projects/doctrine-orm/en/2.13/reference/query-builder.html
+`Adapter` pattern:
+* https://php.net/PDO
+`Pub/Sub` pattern:
+* https://www.php.net/manual/en/class.splobserver.php
+* https://www.php.net/manual/en/class.splsubject.php
+* https://www.doctrine-project.org/projects/doctrine-orm/en/2.13/reference/events.html
+Examples of Hydrators
+* https://github.com/laminas/laminas-hydrator/blob/4.9.x/src/ClassMethodsHydrator.php
+* https://github.com/laminas/laminas-hydrator/blob/4.9.x/src/ArraySerializable.php
 
 ## PDO
 Adding options as 4th argument:
@@ -717,6 +782,61 @@ $stmt->execute($data);
 ```
 Example of `PDO::FETCH_CLASS` mode:
 * See: https://github.com/dbierer/classic_php_examples/blob/master/db/db_pdo_fetch_class.php
+
+Example of `PDO::FETCH_ASSOC` using a factory to produce `OrderEntity` instances:
+```
+<?php
+class OrderEntity
+{
+	public function __construct(
+		public int $id,
+		public float $timestamp,
+		public string $status,
+		public float $amount,
+		public string $description,
+		public int $customer)
+	{
+		// do nothing
+	}
+}
+class OrderFactory
+{
+	public static function buildOrder(array $data)
+	{
+		return new OrderEntity(
+			$data['id'],
+			$data['date'],
+			$data['status'],
+			$data['amount'],
+			$data['description'],
+			$data['customer']
+		);
+	}
+}
+
+/**
+ * Application Entry
+ */
+
+define('BASE', realpath(__DIR__ . '/../'));
+$config = include __DIR__ . '/../config/config.php';
+$dsn = $config['db']['dsn'];
+$usr = $config['db']['username'];
+$pwd = $config['db']['password'];
+$opts = $config['db']['options'];
+
+try {
+	$data = [];
+	$pdo = new PDO($dsn, $usr, $pwd, $opts);
+	$stmt = $pdo->query('SELECT * FROM orders');
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+		$data[] = OrderFactory::buildOrder($row);
+	}
+} catch (Throwable $t) {
+	echo $t;
+}
+var_dump($data);
+```
 
 ## Output Buffering
 To start output buffering automatically, in the `php.ini` file:
