@@ -1,11 +1,18 @@
 # PHP Certification - Nov 2022
 
 ## TODO
+* Start classes 1 hour early
 * Get the link to the Zend Yellow Pages
 * Get the link to the topic areas
   * https://www.zend.com/training/php-certification-exam
 
 ## Homework
+For Thu 10 Nov 2022
+* Quiz questions for Topic #4 (Arrays)
+* Quiz questions for Topic #5 (I/O)
+* Quiz questions for Topic #6 (Functions)
+* Mock Exam #1
+
 For Tue 8 Nov 2022
 * Quiz questions for Topic #2 (Data Formats and Types)
 * Quiz questions for Topic #3 (Strings and Patterns)
