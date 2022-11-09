@@ -2,7 +2,22 @@
 
 Last: http://localhost:8882/#/3/70
 
+## TODO
+* Q: Example using `preg_replace_callback_array()` doing document conversions?
+
+* Q: What happened to POSIX character classes in PHP 8?
+
+* Q: Where are the built-in PCRE character classes documented?
+
+* Q: When would you set `age` to a value other than zero?
+```
+header('Cache-Control: must-revalidate, max-age=0');
+```
+
 ## Homework
+For Fri 11 Nov 2022
+* Lab: Validate an Email Address
+
 For Wed 9 Nov 2022
 * Lab: Prepared Statements
 * Lab: Stored Procedure
@@ -24,59 +39,6 @@ For Wed 2 Nov 2022
 * Lab: Namespace
 * Lab: Create a Class
 * Lab: Create an Extensible Super Class
-
-## TODO
-* Q: Do you have a practical example of `__call()`
-* A: Yes: using the "plugin" architecture
-* A: https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractController.php
-  * Look for `public function __call($method, $params)`
-  * Also, look for any references to `PluginManager`
-
-* Q: What major features are in PHP 8.2?
-* A: See: https://wiki.php.net/rfc#php_82
-* A: PHP Roadmap: https://wiki.php.net/rfc
-
-* Q: Why is this not working?
-* A: (1) Base::__construct() is marked private and doesn't get inherited
-* A: (2) Once the first call to `Base::getInstance()` is called, an instance is created of type `Base`
-```
-<?php
-interface TestInterface
-{
-	public function test();
-}
-
-class Base implements TestInterface
-{
-	protected static $instance;
-	// this doesn't get inherited
-	private function __construct() {}
-	public function test()
-	{
-		return 'TEST';
-	}
-	public static function getInstance() : static
-	{
-		if (empty(static::$instance))
-			static::$instance = new static();
-		return static::$instance;
-	}
-}
-
-// problem #1: __construct() doesn't get inherited
-class A extends Base {}
-
-class B extends Base {}
-
-
-$base = Base::getInstance();
-// this doesn't work because Base::__construct() is marked private
-$a    = (new A)::getInstance();
-// this doesn't work because $instance is already created from line 30
-$b    = B::getInstance();
-var_dump($base, $a, $b);
-```
-
 
 ## VM Notes
 Info
@@ -837,7 +799,65 @@ try {
 }
 var_dump($data);
 ```
+OrderApp rewrites
+* `OrderApp\Model\CustomersModel`
+```
+// rewrote this method:
+public function getCustomer(int $id): array
+{
+	//Initialize a statement
+	$stmt = null;
 
+	// Build a query using a positional placeholder
+	$query = "SELECT * FROM " . static::TABLE . " WHERE id = ?";
+
+	try{
+		// changed to prepare/execute methodology
+		$stmt = $this->db->pdo->prepare($query);
+		if ($stmt->execute([$id])) {
+			return $stmt->fetch(PDO::FETCH_ASSOC);
+		} else {
+			throw new ModelException('Query error: No customer returned');
+		}
+	} catch (ModelException $e) {
+		//Append the error to the defined log
+		error_log($e->getMessage(), 3, static::ERROR_LOG);
+	}
+
+	//On failure ...
+	return false;
+}
+```
+* `OrderApp\Model\OrdersModel`
+```
+// rewrote this method:
+public function save(array $data)
+{
+	$customer = $data['customer'];
+	$data = $data['data'];
+
+	// Build a query using named placeholders
+	$query = 'INSERT INTO ' . static::TABLE
+		   . "({$this->date}, {$this->status}, {$this->amount}, {$this->desc}, {$this->customerId}) "
+		   . 'VALUES (:order_date, :status_filter, :amount, :description, :cust_id);';
+
+	//Save the data
+	try {
+		// changed to prepare/execute methodology
+		$stmt = $this->db->pdo->prepare($query);
+		if (!$stmt->execute($data)) {
+			throw new ModelException('Query error');
+		}
+	} catch (ModelException | PDOException $e) {
+		//Append the error to the defined log
+		error_log($e->getMessage(), 3, static::ERROR_LOG);
+		return false;
+	}
+	//On success ...
+	return true;
+}
+
+```
 ## Output Buffering
 To start output buffering automatically, in the `php.ini` file:
 ```
@@ -963,6 +983,62 @@ PHP 5 to PHP 7 code converter using `preg_replace_callback_array()`
 * A: Will be published here by next week (not published yet):
   * https://github.com/dbierer/classic_php_examples/blob/master/db/db_pdo_multi_prepare_execute_create_geonames_table.php
 
+* Q: Do you have a practical example of `__call()`
+* A: Yes: using the "plugin" architecture
+* A: https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractController.php
+  * Look for `public function __call($method, $params)`
+  * Also, look for any references to `PluginManager`
+
+* Q: What major features are in PHP 8.2?
+* A: See: https://wiki.php.net/rfc#php_82
+* A: PHP Roadmap: https://wiki.php.net/rfc
+
+* Q: Why is this not working?
+* A: (1) Base::__construct() is marked private and doesn't get inherited
+* A: (2) Once the first call to `Base::getInstance()` is called, an instance is created of type `Base`
+```
+<?php
+interface TestInterface
+{
+	public function test();
+}
+
+class Base implements TestInterface
+{
+	protected static $instance;
+	// this doesn't get inherited
+	private function __construct() {}
+	public function test()
+	{
+		return 'TEST';
+	}
+	public static function getInstance() : static
+	{
+		if (empty(static::$instance))
+			static::$instance = new static();
+		return static::$instance;
+	}
+}
+
+// problem #1: __construct() doesn't get inherited
+class A extends Base {}
+
+class B extends Base {}
+
+
+$base = Base::getInstance();
+// this doesn't work because Base::__construct() is marked private
+$a    = (new A)::getInstance();
+// this doesn't work because $instance is already created from line 30
+$b    = B::getInstance();
+var_dump($base, $a, $b);
+```
+
 ## Errata
 * http://localhost:8882/#/3/125
   * Not "enumeraction"
+* http://localhost:8882/#/6/4
+  * This line should be removed:
+```
+$content = ob_get_contents();
+```
