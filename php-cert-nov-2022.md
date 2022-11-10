@@ -3,10 +3,15 @@
 ## TODO
 * Start classes 1 hour early
 * Get the link to the Zend Yellow Pages
+  * https://www.zend-zce.com/en/services/certification/zend-certified-engineer-directory
 * Get the link to the topic areas
   * https://www.zend.com/training/php-certification-exam
 
 ## Homework
+For Tue 15 Nov 2022
+* Quiz questions for Topic #6 (OOP)
+* Mock Exam #2
+
 For Thu 10 Nov 2022
 * Quiz questions for Topic #4 (Arrays)
 * Quiz questions for Topic #5 (I/O)
@@ -308,6 +313,7 @@ etc.
 ## OOP
 * Read up on magic methods!
   * https://www.php.net/manual/en/language.oop5.magic.php
+  * Examples: https://github.com/dbierer/classic_php_examples/tree/master/oop/*magic*.php
   * Don't worry about any methods added after PHP 7.1
   * `__destruct()` called when object goes out-of-scope
     * End of program
@@ -430,36 +436,6 @@ try {
 }
 ```
 
-## Change Request
-* http://localhost:8884/#/1/11
-  * Refresh link to ZCE Yellow Pages
-  * https://www.zend-zce.com/en/services/certification/zend-certified-engineer-directory
-* http://localhost:8884/#/1/14
-  * s/be https://www.zend.com/training/php-certification-exam
-* http://localhost:8884/#/4/26
-  * s/be "upper case variant"
-* http://localhost:8884/#/5/27
-  * need to add `key()`
-* http://localhost:8884/#/6/10
-  * Should also add `file_exists()` and `file*time()`
-* http://localhost:8884/#/8/25
-  * Interfaces *cannot* have properties!!!
-* http://localhost:8884/#/8/27
-  * Code will not work as shown
-  * Class `ControllerServiceContainer` needs to implement `set()`!
-* http://localhost:8884/#/8/42
-  * Revise and produce a better example that shows excluding a property
-* http://localhost:8884/#/8/43
-  * `__wakeup()` example doesn't really do anything!
-* http://localhost:8884/#/8/45
-  * Def of `__set_state()` needs to be `static`
-* http://localhost:8884/#/8/51
-  * Mention that it's allowed to state `return` with no values on `void`
-* http://localhost:8884/#/8/79
-  * "B" answer doesn't make sense
-* http://localhost:8884/#/2/75
-  * Add '0' as one of the choices
-
 Example of making object callable:
 ```
 <?php
@@ -475,7 +451,7 @@ array_walk($a, $sum);
 echo 'Sum of Digits: ' . $sum->num;
 // output: 36
 ```
-## Error
+## Error Handling
 * Don't forget to study the `error_log()` as well
   * https://www.php.net/manual/en/function.error-log.php
 * Also: there are a few others to look for as well
@@ -483,15 +459,59 @@ echo 'Sum of Digits: ' . $sum->num;
 ## Resources
 * https://xkcd.com/327/
 
-## Mock Exam 2
-Question 3 is wrong.
-Number s/be "999.000.000,00"
-Question 12 s/be "Which OF these files related ..."
+## Change Request
+* http://localhost:8884/#/8/41
+  * No property level data-typing in PHP 7.1!!!
+  * s/be
+```
+<?php
+class UserEntity {
+    public $hash = '';
+    protected $first = '';
+    protected $last  = '';
+    public function __construct(string $first, string $last) {
+        $this->first = $first;
+        $this->last  = $last;
+        $this->hash  = bin2hex(random_bytes(8));
+    }
+    /*
+    public function __sleep() {
+        return ['first','last'];
+    }
+    */
+    public function getFullName() {
+        return $this->first . ' ' . $this->last;
+    }
+}
+$userEntity = new UserEntity('Mark', 'Watney');
+$str = serialize($userEntity);
+echo $str;  // NOTE: "hash" does not appear in serialized string
+```
+* http://localhost:8884/#/8/37
+  * Please provide a simpler and clearer example!
+* http://localhost:8884/#/8/26
+  * Please rework this example: not 100% clear on how Interfaces are used
+* http://localhost:8884/#/8/10
+  * Doesn't work as written
+  * Try this:
+```
+<?php
+class ServiceContainer {
+    protected $services = ['discount' => 10];
+    public function __construct($name, $value){
+        $this->services[$name] = $value;
+    }
 
-## Change Request for Code Repo
-* http://localhost:8888/show.php?f=02-58-84.php s/be a space!
+    public function set($name, $value) {
+        $this->services[$name] = $value;
+    }
 
-## php_cert Repo for Class Demo
-* http://localhost:8888/show.php?f=02-58-84.php
-  * Need to add ' ' to output
+    public function get($name){
+        return $this->services[$name];
+    }
+}
+
+$container = new ServiceContainer('discount', 20);
+var_dump($container->__construct('test', 123));
+```
 
