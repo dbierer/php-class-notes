@@ -1,5 +1,7 @@
 # PHP Certification - Nov 2022
 
+Last: http://localhost:8884/#/8/50
+
 ## TODO
 * Start classes 1 hour early
 * Get the link to the Zend Yellow Pages
@@ -497,21 +499,19 @@ echo $str;  // NOTE: "hash" does not appear in serialized string
 ```
 <?php
 class ServiceContainer {
-    protected $services = ['discount' => 10];
-    public function __construct($name, $value){
+    protected $services = [];
+    public function __construct(string $name, callable $value){
+        $this->set($name, $value);
+    }
+    public function set(string $name, callable $value) {
         $this->services[$name] = $value;
     }
-
-    public function set($name, $value) {
-        $this->services[$name] = $value;
-    }
-
-    public function get($name){
-        return $this->services[$name];
+    public function get(string $name) {
+        return $this->services[$name]();
     }
 }
-
-$container = new ServiceContainer('discount', 20);
-var_dump($container->__construct('test', 123));
+$callback = function () { return (new DateTime())->format('l, d M Y'); };
+$container = new ServiceContainer('date', $callback);
+echo $container->get('date');
 ```
 
