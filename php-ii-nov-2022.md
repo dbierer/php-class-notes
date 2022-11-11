@@ -4,15 +4,23 @@ Last: http://localhost:8882/#/3/70
 
 ## TODO
 * Q: Example using `preg_replace_callback_array()` doing document conversions?
+* A: https://github.com/dbierer/php7cookbook/blob/master/source/chapter01/chap_01_php5_to_php7_code_converter.php#L3
+* A: https://github.com/dbierer/php7cookbook/blob/master/source/Application/Parse/Convert.php
 
 * Q: What happened to POSIX character classes in PHP 8?
+* A: TBD
 
 * Q: Where are the built-in PCRE character classes documented?
+* A: https://www.php.net/manual/en/regexp.reference.escape.php
 
 * Q: When would you set `age` to a value other than zero?
+* A: If you want to set a specific # seconds the cache is considered valid.
 ```
 header('Cache-Control: must-revalidate, max-age=0');
 ```
+* A: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+* A: https://stackoverflow.com/questions/6486805/html-cache-control-max-age
+* A: https://stackoverflow.com/questions/10314174/difference-between-pragma-and-cache-control-headers
 
 ## Homework
 For Fri 11 Nov 2022
@@ -902,6 +910,8 @@ Example of advanced usage including scripts
 * https://github.com/laminas/laminas-mvc-skeleton/blob/master/composer.json
 You can add alternates to `packagist.org` using the `repositories` key in the composer.json file
 * Example: https://wpackagist.org/
+Automated WordPress installation using Composer:
+* https://github.com/dbierer/automated_wp_installation
 
 ## Web Services
 Example of SOAP Client

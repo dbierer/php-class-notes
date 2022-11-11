@@ -476,11 +476,9 @@ class UserEntity {
         $this->last  = $last;
         $this->hash  = bin2hex(random_bytes(8));
     }
-    /*
     public function __sleep() {
         return ['first','last'];
     }
-    */
     public function getFullName() {
         return $this->first . ' ' . $this->last;
     }
