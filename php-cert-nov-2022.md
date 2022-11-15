@@ -10,6 +10,10 @@ Last: http://localhost:8884/#/8/50
   * https://www.zend.com/training/php-certification-exam
 
 ## Homework
+For Thu 17 Nov 2022
+* All remaining quiz questions
+* Final Mock Exam
+
 For Tue 15 Nov 2022
 * Quiz questions for Topic #6 (OOP)
 * Mock Exam #2
@@ -384,6 +388,7 @@ var_dump($obj);
 ## Database Topic
 Fetch Modes:
 * Focus on array and object fetch modes
+Study the difference between `bindValue()` and `bindParam()`
 
 ## Security Topic
 Questions are drawn from here:
@@ -453,6 +458,8 @@ array_walk($a, $sum);
 echo 'Sum of Digits: ' . $sum->num;
 // output: 36
 ```
+See: https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_examples.php
+
 ## Error Handling
 * Don't forget to study the `error_log()` as well
   * https://www.php.net/manual/en/function.error-log.php

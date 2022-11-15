@@ -1,8 +1,58 @@
 # PHP-I Nov 2022
 
+## TODO
+* Q: Example of using `<=>`?
+
 ## Homework
 
+## VM Notes
+Info
+* Username: `vagrant`
+* Password: `vagrant`
+
+Update everything!
+* Open a terminal window and run this command:
+```
+sudo apt update
+sudo apt -y upgrade
+```
+* NOTE: this task might take some time
+
+Install phpMyAdmin
+* Download the latest version from `https://www.phpmyadmin.net`
+* Make note of the version number (e.g. `5.2.0`)
+```
+cd
+VER=5.2.0
+unzip Downloads/phpMyAdmin-$VER-all-languages.zip
+sudo cp -r phpMyAdmin-$VER-all-languages/* /usr/share/phpmyadmin
+sudo cp /usr/share/phpmyadmin/config.sample.inc.php /usr/share/phpmyadmin/config.inc.php
+```
+* Create the "blowfish secret"
+```
+sudo -i
+export SECRET=`php -r "echo md5(date('Y-m-d-H-i-s') . rand(1000,9999));"`
+echo "\$cfg['blowfish_secret']='$SECRET';" >> /usr/share/phpmyadmin/config.inc.php
+exit
+```
+Set permissions
+```
+sudo chown -R www-data /usr/share/phpmyadmin
+```
+
+Snapshot
+* Be sure to take a snapshot of the VM before you start any of the labs!
+
+System Problem
+* If you see this message: `System program problem detected`
+* Do this:
+```
+sudo rm -r /var/crash*
+```
+
 ## Class Notes
+PHP Roadmap:
+* https://wiki.php.net/rfc
 Micro Frameworks
 * https://docs.mezzio.dev/
 * https://www.slimframework.com/
@@ -14,9 +64,11 @@ Statistics
 * Programming language rankings:
   * https://w3techs.com/technologies/overview/programming_language
 * Web server ranking:
-  * https://news.netcraft.com/archives/2021/06/29/june-2021-web-server-survey.html
+  * https://news.netcraft.com/archives/category/web-server-survey/
 * OS market share:
   * https://gs.statcounter.com/os-market-share
+* PHP Landscape Report:
+  * https://www.zend.com/resources/2022-php-landscape-report
 General examples of many concepts covered in class
 * https://github.com/dbierer/classic_php_examples
 Great explanation on how PHP works
@@ -41,7 +93,44 @@ Default location for test programs:
 ```
 http://sandbox/NAME_OF_PROGRAM.php
 ```
+Array example:
+```
+$user = [
+	'first_name' => 'Fred',
+	'last_name'  => 'Flintstone',
+	'email'      => 'fred@flintstone.com',
+	'address'    => [
+		'steet_num'   => 123,
+		'street_name' => 'Main St',
+		'city'        => 'Dallas',
+		'state'       => 'TX',
+	],
+];
+```
+Example mixing HTML and PHP:
+```
+<?php
+$a = ['A','B','C'];
+?>
+<ul>
+<?php foreach ($a as $item) { ?>
+<li><?= $item ?></li>
+<?php } ?>
+</ul>
+```
+You can use type coercion as a form of security
+```
+<?php
+// reads a URL parameter "id"
+$id = $_GET['id'] ?? 0;
+$id = (int) $id;	// any scripting is removed
+echo 'ID: ' . $id;
+```
+Formal "docblock" specification:
+* https://docs.phpdoc.org/3.0/guide/getting-started/what-is-a-docblock.html
+
 `Attributes` can be used in PHP 8 in place of docblocks
+* https://www.php.net/attributes
 ```
 <?php
 /**
@@ -92,6 +181,19 @@ echo `ls -lha`;
 // recommended
 echo shell_exec('ls -lha');
 ```
+You can use `and`, `or` and `xor` instead of symbols:
+```
+<?php
+$foo = 10;
+$bar = 5;
+echo ($foo == 10 and $bar == 5); // 1
+
+$foo = 5;
+$bar = 10;
+echo ($foo != $bar or $foo > $bar); // 1
+echo ($foo != $bar xor $foo > $bar); // 1
+```
+
 Flattening or "unpacking" arrays:
 ```
 <?php
