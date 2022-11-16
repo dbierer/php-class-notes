@@ -2,8 +2,64 @@
 
 ## TODO
 * Q: Example of using `<=>`?
+* A: https://github.com/dbierer/classic_php_examples/blob/master/basics/spaceship_operator.php
+* A: https://github.com/dbierer/classic_php_examples/blob/master/basics/spaceship_operator_usort_example.php
 
 ## Homework
+For Fri 19 Nov 2022
+Lab: Array Key Value Access
+* What is the key required to obtain the last name value?
+```
+// An astronaut array assignment
+$astronaut = ['firstName' => 'Mark', 'Watney', 5 => 'Botanist'];
+
+// Access the last name value
+echo $astronaut[?] . '<br>';
+```
+Lab: Array Last Value Access
+What is the key required to obtain the last element value?
+```
+// An astronaut array assignment
+$astronaut = ['firstName' => 'Mark', 6 => 'Watney', 5 => 'Botanist', 'STS395'];
+
+// Access the last element value
+echo $astronaut[?] . '<br>';
+```
+Lab: The Multi-Dimensional Array
+What is necessary to output the Computer Specialist's first name?
+```
+// Build the crew
+$mission = [
+    'STS395' => [
+        ['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
+        ['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
+        ['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist']
+    ]
+];
+// Access the Computer Specialist's first name
+echo ?;
+```
+Lab: The Multi-Configuration Array
+What is the echo code to access the action?
+```
+$config = [
+    'router' => [
+        'routes' => [
+            'market' => [
+                'type' => 'literal',
+                'options' => [
+                    'route' => '/market',
+                    'defaults' => [
+                        'controller' => 'IndexController',
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
+        ],
+    ],
+];
+echo ?;
+```
 
 ## VM Notes
 Info
@@ -17,6 +73,7 @@ sudo apt update
 sudo apt -y upgrade
 ```
 * NOTE: this task might take some time
+* Do not update the version of Ubuntu: leave it at 20.04
 
 Install phpMyAdmin
 * Download the latest version from `https://www.phpmyadmin.net`
@@ -274,6 +331,27 @@ $mission = [
 // Output all elements
 print_r($mission);
 ```
+Adding a new element to a crew member:
+```
+<?php
+$mission = [
+    'STS395' => [
+        ['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
+        ['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
+        ['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist']
+    ]
+];
+
+// add new crew member
+$mission['STS395'][] = ['firstName' => 'Lada', 'lastName' => '--', 'specialty' => 'My Favorite Dog'];
+// change specialty
+$mission['STS395'][1]['specialty'] = 'Senior Commander';
+// adds an "id" element to the 1st sub-array
+$mission['STS395'][1]['id'] = 101;
+
+var_dump($mission);
+```
+
 When rendering numeric values, PHP defaults to decimal (i.e. base 10)
 If you want other formats, use one of these options:
 * `NumberFormatter` class
