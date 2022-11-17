@@ -5,8 +5,19 @@
 * A: https://github.com/dbierer/classic_php_examples/blob/master/basics/spaceship_operator.php
 * A: https://github.com/dbierer/classic_php_examples/blob/master/basics/spaceship_operator_usort_example.php
 
+* Q: Why does this not work?
+```
+<?php
+$a = 0139;
+$b = 139;
+echo ($a == $b) ? 'T' : 'F';
+echo PHP_EOL;
+var_dump($a, $b);
+```
+
+
 ## Homework
-For Fri 19 Nov 2022
+### For Fri 19 Nov 2022
 Lab: Array Key Value Access
 * What is the key required to obtain the last name value?
 ```
@@ -17,7 +28,7 @@ $astronaut = ['firstName' => 'Mark', 'Watney', 5 => 'Botanist'];
 echo $astronaut[?] . '<br>';
 ```
 Lab: Array Last Value Access
-What is the key required to obtain the last element value?
+* What is the key required to obtain the last element value?
 ```
 // An astronaut array assignment
 $astronaut = ['firstName' => 'Mark', 6 => 'Watney', 5 => 'Botanist', 'STS395'];
@@ -26,7 +37,7 @@ $astronaut = ['firstName' => 'Mark', 6 => 'Watney', 5 => 'Botanist', 'STS395'];
 echo $astronaut[?] . '<br>';
 ```
 Lab: The Multi-Dimensional Array
-What is necessary to output the Computer Specialist's first name?
+* What is necessary to output the Computer Specialist's first name?
 ```
 // Build the crew
 $mission = [
@@ -40,7 +51,7 @@ $mission = [
 echo ?;
 ```
 Lab: The Multi-Configuration Array
-What is the echo code to access the action?
+* What is the echo code to access the action?
 ```
 $config = [
     'router' => [
@@ -60,7 +71,121 @@ $config = [
 ];
 echo ?;
 ```
+Lab: First Program
+* Build a simple hello world program using one or two of the operators previously defined, and output something.
+* Put your PHP program in the VM under this directory:
+```
+/home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public/first.php
+```
+* Access your program from the VM browser as follows:
+```
+http://sandbox/first.php
+```
+Lab: Additional Crew Members
+* Add additional crew members to an STS395 mission array and output a double-quoted string with embedded array values. Here's a start:
+```
+// Build the crew
+$astronaut1 = ['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'];
+$astronaut2 = ['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'];
+$astronaut3 = ['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist'];
+```
+Lab: Conditional If
+* Will the following code work?
+```
+$foo = 10;
+$bar = 5;
+if ( $foo > $bar )
+    echo "Foo is greater than bar";
+    $foo = $bar;
+    echo "The value for Foo has changed";
+```
+* Which statement runs as part of the conditional?
+Lab: Conditional If-Else Equality
+* What is the output from each if-else construct?
+```
+$valueA = "50";
+$valueB = 50;
 
+if ($valueA == $valueB) {
+    echo "Equal <br>";
+} else {
+    echo "Not equal <br>";
+}
+
+if ($valueA === $valueB) {
+    echo "Identical <br>";
+} else {
+    echo "Not identical <br>";
+}
+```
+Lab: Conditional If-Else Exclusive OR
+* What is the output from each if/else construct?
+```
+$valueA = 10;
+$valueB = 20;
+
+if ($valueA >= 50 xor $valueB === '20') {
+    echo "Apples <br>";
+} else {
+    echo "Oranges <br>";
+}
+
+if ($valueA >= '5' xor $valueB === 20) {
+    echo "White <br>";
+} else {
+    echo "Black <br>";
+}
+```
+Lab: Conditional If-ElseIf
+* Assume that people work in an office from Monday through Friday, and are off work on Saturday and Sunday.
+* Modify the code below to handle the response if the day is either Saturday or Sunday?
+```
+$dayOfWeek = "Monday";
+
+if ($dayOfWeek === "Friday") {
+    echo "See you on Monday";
+} else {
+    echo "See you tomorrow";
+}
+```
+Lab: Switch Construct
+* An application needs to determine the country of origin for an astronaut applicant. Write a switch construct that evaluates multiple country use cases against a true boolean, and sets a variable based on the condition evaluated.
+
+
+## Control Structures
+An alternate "if" syntax is available:
+```
+<?php
+$foo = 10;
+$bar = 10;
+if ( $foo > $bar ) :
+    echo "Foo is greater than bar";
+elseif ($foo < $bar) :
+    echo "Foo is less than bar";
+else :
+    echo "Foo is equal to bar";
+endif;
+```
+Example of the ternary operator extracting URL params
+```
+<?php
+// URL: http://sandbox/first.php?name=Aurelio&location=Dallas
+$name = (isset($_GET['name'])) ? strip_tags($_GET['name']) : 'Default';
+$location = (isset($_GET['location'])) ? strip_tags($_GET['location']) : 'Some City';
+echo htmlspecialchars($name . ' lives in ' . $location);
+```
+`match` also supports a default value:
+```
+<?php
+// match does a *strict* comparison
+// the example below returns "None of the above"
+$result = match ('1') {
+    0 => 'Foo',
+    1 => 'Bar',
+    default => 'None of the above'
+};
+echo $result . PHP_EOL;
+```
 ## VM Notes
 Info
 * Username: `vagrant`
@@ -1097,6 +1222,27 @@ var_dump($lastNames);
 // locate the key of the last name specified:
 $key = array_search('Flintstone', $lastNames);
 if (!empty($key)) echo implode(',',$mission['STS395'][$key]);
+```
+* Nested `foreach()` loops
+```
+<?php
+$missions = [
+    'STS395' => [
+        ['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
+        ['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
+        ['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist']
+    ]
+];
+
+foreach($missions as $mission => $astronauts) {
+	echo 'Processing mission: ' . $mission . PHP_EOL;
+	foreach($astronauts as $y => $row) {
+		echo 'Crew Member: ' . ($y + 1) . PHP_EOL;
+		foreach ($row as $x => $item) {
+			echo $x . "\t" . $item . "\n";
+		}
+	}
+}
 ```
 * Using `list()` to unpack an array into variables in a `foreach()` loop:
 ```
