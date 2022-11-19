@@ -17,139 +17,16 @@ var_dump($a, $b);
 
 
 ## Homework
-### For Fri 19 Nov 2022
-Lab: Array Key Value Access
-* What is the key required to obtain the last name value?
-```
-// An astronaut array assignment
-$astronaut = ['firstName' => 'Mark', 'Watney', 5 => 'Botanist'];
+For Mon 21 Nov 2022
+* Lab: Switch Construct
+  * An application needs to determine the country of origin for an astronaut applicant. Write a switch construct that evaluates multiple country use cases against a true boolean, and sets a variable based on the condition evaluated.
+* Lab: Foreach Loop
+* Lab: For Loop
+* Lab: While Loop
+* Lab: Do...While Loop
 
-// Access the last name value
-echo $astronaut[?] . '<br>';
-```
-Lab: Array Last Value Access
-* What is the key required to obtain the last element value?
-```
-// An astronaut array assignment
-$astronaut = ['firstName' => 'Mark', 6 => 'Watney', 5 => 'Botanist', 'STS395'];
-
-// Access the last element value
-echo $astronaut[?] . '<br>';
-```
-Lab: The Multi-Dimensional Array
-* What is necessary to output the Computer Specialist's first name?
-```
-// Build the crew
-$mission = [
-    'STS395' => [
-        ['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
-        ['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
-        ['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist']
-    ]
-];
-// Access the Computer Specialist's first name
-echo ?;
-```
-Lab: The Multi-Configuration Array
-* What is the echo code to access the action?
-```
-$config = [
-    'router' => [
-        'routes' => [
-            'market' => [
-                'type' => 'literal',
-                'options' => [
-                    'route' => '/market',
-                    'defaults' => [
-                        'controller' => 'IndexController',
-                        'action'     => 'index',
-                    ],
-                ],
-            ],
-        ],
-    ],
-];
-echo ?;
-```
-Lab: First Program
-* Build a simple hello world program using one or two of the operators previously defined, and output something.
-* Put your PHP program in the VM under this directory:
-```
-/home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public/first.php
-```
-* Access your program from the VM browser as follows:
-```
-http://sandbox/first.php
-```
-Lab: Additional Crew Members
-* Add additional crew members to an STS395 mission array and output a double-quoted string with embedded array values. Here's a start:
-```
-// Build the crew
-$astronaut1 = ['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'];
-$astronaut2 = ['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'];
-$astronaut3 = ['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist'];
-```
-Lab: Conditional If
-* Will the following code work?
-```
-$foo = 10;
-$bar = 5;
-if ( $foo > $bar )
-    echo "Foo is greater than bar";
-    $foo = $bar;
-    echo "The value for Foo has changed";
-```
-* Which statement runs as part of the conditional?
-Lab: Conditional If-Else Equality
-* What is the output from each if-else construct?
-```
-$valueA = "50";
-$valueB = 50;
-
-if ($valueA == $valueB) {
-    echo "Equal <br>";
-} else {
-    echo "Not equal <br>";
-}
-
-if ($valueA === $valueB) {
-    echo "Identical <br>";
-} else {
-    echo "Not identical <br>";
-}
-```
-Lab: Conditional If-Else Exclusive OR
-* What is the output from each if/else construct?
-```
-$valueA = 10;
-$valueB = 20;
-
-if ($valueA >= 50 xor $valueB === '20') {
-    echo "Apples <br>";
-} else {
-    echo "Oranges <br>";
-}
-
-if ($valueA >= '5' xor $valueB === 20) {
-    echo "White <br>";
-} else {
-    echo "Black <br>";
-}
-```
-Lab: Conditional If-ElseIf
-* Assume that people work in an office from Monday through Friday, and are off work on Saturday and Sunday.
-* Modify the code below to handle the response if the day is either Saturday or Sunday?
-```
-$dayOfWeek = "Monday";
-
-if ($dayOfWeek === "Friday") {
-    echo "See you on Monday";
-} else {
-    echo "See you tomorrow";
-}
-```
-Lab: Switch Construct
-* An application needs to determine the country of origin for an astronaut applicant. Write a switch construct that evaluates multiple country use cases against a true boolean, and sets a variable based on the condition evaluated.
+For Fri 19 Nov 2022
+* https://collabedit.com/79p8r
 
 
 ## Control Structures
@@ -1244,6 +1121,39 @@ foreach($missions as $mission => $astronauts) {
 	}
 }
 ```
+* Example from homework accepting URL parameter "day"
+```
+$allowed   = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+$dayOfWeek = $_GET['day'] ?? '';
+$key = array_search($dayOfWeek, $allowed);
+if ($key !== FALSE) {
+	$dayOfWeek = $allowed[$key];
+} else {
+	$dayOfWeek = date('D');
+}
+
+if ($dayOfWeek === 'Fri') {
+    echo 'See you on Monday';
+} elseif ($dayOfWeek === 'Sat') {
+    echo 'See you on Monday';
+} else {
+    echo 'See you tomorrow';
+}
+```
+Example of `for` loop using return value of a function as a condition
+```
+function misc()
+{
+	return rand(0,99);
+}
+
+for ( $i = 1; $i < misc(); $i *= 2) {
+    echo $i . ' ';
+}
+```
+Example using `continue`: reads from a CSV file
+* https://github.com/dbierer/filecms-core/blob/main/src/Common/Data/Csv.php
+
 * Using `list()` to unpack an array into variables in a `foreach()` loop:
 ```
 <?php
@@ -1354,7 +1264,69 @@ if (session_status() === PHP_SESSION_ACTIVE) {
   // good to go!
 }
 ```
+## Functions
+Example using unlimited number of args
+```
+<?php
+function sum(...$args)
+{
+	return array_sum($args);
+}
 
+echo sum(1,2,3,4,5,6,7,8,9);
+echo PHP_EOL;
+echo sum(111,222);
+echo PHP_EOL;
+```
+Calling functions example:
+```
+<?php
+function random() : int
+{
+	return rand(0,999);
+}
+
+function sum(int $a) : int
+{
+	// calling one function from inside another
+	return $a + random();
+}
+
+echo sum(123);
+echo PHP_EOL;
+// the return from random() becomes the arg passed to sum()
+echo sum(random());
+echo PHP_EOL;
+
+```
+Example of return by reference
+* Form data validation
+```
+<?php
+function validate(array $inputs, array &$messages) : bool
+{
+	$ok = TRUE;
+	if (!isset($inputs['name'])) {
+		$messages[] = 'Missing name';
+		$ok = FALSE;
+	} else {
+		if (!ctype_alpha($inputs['name'])) {
+			$messages[] = 'Name must have only alpha characters';
+			$ok = FALSE;
+		}
+	}
+	return $ok;
+}
+
+$inputs = $_GET;
+$messages = [];
+if (validate($inputs, $messages)) {
+	// OK to process
+	echo 'OK';
+} else {
+	echo implode('<br />', $messages);
+}
+```
 ## ERRATA
 * http://localhost:8881/#/3/12
   * Values s/be 10, 11, 12, 11, 10
@@ -1371,3 +1343,5 @@ if (session_status() === PHP_SESSION_ACTIVE) {
 // delete the cookie by setting time in the past
 setcookie('myCookie', 'some value', time() - 60*60*24);
 ```
+* http://localhost:8881/#/4/55
+  * change "in mose cases" to "in most cases"
