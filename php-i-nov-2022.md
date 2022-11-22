@@ -5,21 +5,35 @@
 * A: https://github.com/dbierer/classic_php_examples/blob/master/basics/spaceship_operator.php
 * A: https://github.com/dbierer/classic_php_examples/blob/master/basics/spaceship_operator_usort_example.php
 
-* Q: Why does this not work?
-```
-<?php
-$a = 0139;
-$b = 139;
-echo ($a == $b) ? 'T' : 'F';
-echo PHP_EOL;
-var_dump($a, $b);
-```
+* Q: How do I represent an octal number?
+* A: https://www.php.net/manual/en/language.types.integer.php
 
+* Q: How do you detect mobile devices?
+* A: Check the contents of `$_SERVER['HTTP_USER_AGENT']`
+
+* Q: Good examples of `printf`
+* A: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch06/php8_printf_vs_vprintf.php
+* A: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch08/php8_each_replacements.php
+
+* Q: Examples of arrow functions?
+* A: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch02/php8_arrow_func_1.php
+* A: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch02/php8_arrow_func_3.php
 
 ## Homework
+For Wed 23 Nov 2022
+* Lab: Defining and Calling a Function
+* Lab: Recursive Function Exercise
+* Lab: HTML Select and Checkbox Functions
+  * Based on the functions we saw in the "Order App"
+* Lab: F-Type Code Exercise
+* Lab: Write Array Lab
+* Lab: file_get_contents()
+* Lab: file_put_contents()
+* Lab: Read Directories
+
 For Mon 21 Nov 2022
+* https://collabedit.com/fms6x
 * Lab: Switch Construct
-  * An application needs to determine the country of origin for an astronaut applicant. Write a switch construct that evaluates multiple country use cases against a true boolean, and sets a variable based on the condition evaluated.
 * Lab: Foreach Loop
 * Lab: For Loop
 * Lab: While Loop
@@ -63,6 +77,55 @@ $result = match ('1') {
 };
 echo $result . PHP_EOL;
 ```
+Expanded example from homework:
+```
+<?php
+$launch = array('Booster'    =>'Checked',
+			    'Telemetry'  =>'Checked',
+			    'Control'    =>'Bad',
+				'Electrical' =>'Checked',
+				'Network'    =>'Checked',
+				'Fuel'       =>'Low');
+$expected = count($launch);
+$actual   = 0;
+$problem  = '';
+foreach($launch as $checklist => $status) {
+    if ($status === 'Checked') {
+		echo "$checklist is a go <br>\n";
+		$actual++;
+	} else {
+		$problem .= $checklist . ':' . $status . PHP_EOL;
+	}
+}
+if ($actual === $expected) {
+	echo "Launch is a GO!<br />\n";
+} else {
+	echo "Launch aborted<br />\n";
+	echo $problem;
+}
+
+```
+`do/while` example
+```
+<?php
+$items = array('CPU'  => 600,
+			   'case' => 100,
+			   'fan'  => 25,
+			   'brush' => 0,
+			   'GPU'  => 500 );
+if (empty($items)) {
+	echo "Sorry, no items!";
+	exit;
+}
+reset($items);	// moves pointer to start
+do {
+	$item = key($items);
+	$value = current($items);
+	echo  "$item = $" . $value *1.85 .  "<br>\n";
+} while (next($items) !== FALSE);
+```
+IMPORTANT: `each()` was removed in PHP 8.1!!!
+
 ## VM Notes
 Info
 * Username: `vagrant`
@@ -1327,6 +1390,97 @@ if (validate($inputs, $messages)) {
 	echo implode('<br />', $messages);
 }
 ```
+
+## Web Stuff
+To output a PDF `/path/to/file.pdf`
+```
+header('Content-Type: application/pdf');
+header('Content-Disposition: attachment; filename="file.pdf");
+readfile('/path/to/file.pdf');
+exit;
+```
+Using `stripos()` to detect OS and browser
+```
+<?php
+$agent = $_SERVER['HTTP_USER_AGENT'];
+switch (TRUE) {
+	case stripos($agent, 'linux') :
+		$os = 'Linux system detected';
+		break;
+	case stripos($agent, 'windows') :
+		$os = 'Windows system detected';
+		break;
+	default :
+		$os = 'Unknown';
+}
+switch (TRUE) {
+	case stripos($agent, 'chrome') :
+		$browser = 'Chrome browser detected';
+		break;
+	case stripos($agent, 'firefox') :
+		$browser = 'Firefox browser detected';
+		break;
+	case stripos($agent, 'safari') :
+		$browser = 'Firefox browser detected';
+		break;
+	default :
+		$browser = 'Unknown';
+}
+echo "We have detected the following:<br />\n";
+echo $browser . "<br />\n";
+echo $os . "<br />\n";
+
+```
+Anonymous functions examples:
+* https://github.com/dbierer/classic_php_examples/blob/master/basics/type_hint_anon_function_example.php
+* This example "stores" an SQL query for later use:
+```
+<?php
+function get_select(string $table, string $where, PDO $pdo)
+{
+	$sql = 'SELECT * FROM ' . $table . ' WHERE ' . $where;
+	return function () use ($sql) {
+		$stmt = $pdo->query($sql);
+		$result = [];
+		while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			$result[] = $row;
+		}
+		return $result;
+	};
+}
+$select = get_select('orders', 'id = 1', $pdo);
+
+// do something
+// ...
+// do something
+
+foreach ($select() as $row) {
+	// display the row
+	// maybe using printf()
+}
+```
+## I/O
+Package that goes directly to Excel:
+* https://github.com/PHPOffice/PhpSpreadsheet
+Reading pre-formatted blocks from an I/O source:
+* https://www.php.net/fscanf
+Example that scans all files in a directory and returns lines containing `$search`
+```
+<?php
+$path = __DIR__ . '/*.txt';
+$search = 'printf';
+$list = glob(__DIR__ . '/*.php');
+foreach ($list as $fn) {
+	$contents = file($fn);
+	foreach ($contents as $num => $line) {
+		if (strpos($line, $search) !== FALSE) {
+			echo $fn . PHP_EOL;
+			printf("%4d : %s\n", $num, $line);
+		}
+	}
+}
+```
+
 ## ERRATA
 * http://localhost:8881/#/3/12
   * Values s/be 10, 11, 12, 11, 10
@@ -1345,3 +1499,5 @@ setcookie('myCookie', 'some value', time() - 60*60*24);
 ```
 * http://localhost:8881/#/4/55
   * change "in mose cases" to "in most cases"
+* http://localhost:8881/#/5/48
+  * negative string offsets are now normalized and available in PHP 8 and above
