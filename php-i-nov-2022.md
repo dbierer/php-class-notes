@@ -20,9 +20,7 @@
 * A: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch02/php8_arrow_func_3.php
 
 ## Homework
-For Wed 23 Nov 2022
-* Lab: Defining and Calling a Function
-* Lab: Recursive Function Exercise
+For Fri 25 Nov 2022
 * Lab: HTML Select and Checkbox Functions
   * Based on the functions we saw in the "Order App"
 * Lab: F-Type Code Exercise
@@ -30,6 +28,18 @@ For Wed 23 Nov 2022
 * Lab: file_get_contents()
 * Lab: file_put_contents()
 * Lab: Read Directories
+* Lab: Embedded PHP
+  * Create a login form (username, email address, password) using mainly HTML with some PHP
+* Lab: PHP Form String
+  * Same thing (login form) but *only* using PHP
+* Lab: Secure Input Handling
+  * Apply security to the forms created above
+* Lab: Escaping Exercise
+  * Apply output escaping when re-displaying form data
+
+For Wed 23 Nov 2022
+* Lab: Defining and Calling a Function
+* Lab: Recursive Function Exercise
 
 For Mon 21 Nov 2022
 * https://collabedit.com/fms6x
@@ -1480,6 +1490,88 @@ foreach ($list as $fn) {
 	}
 }
 ```
+## Web Stuff
+Example of receiving data via "GET"
+```
+<?php
+// data is received from the browser via the URL
+$first = $_GET['first'] ?? '';
+$last  = $_GET['last'] ?? '';
+?>
+<form method="get">
+First Name: <input type="text" name="first" value="<?= $first ?>"/>
+<br />
+Last Name: <input type="text" name="last"  value="<?= $last ?>"/>
+<br />
+<input type="submit" />
+</form>
+<?php phpinfo(INFO_VARIABLES); ?>
+```
+Example of receiving data via "POST"
+```
+<?php
+// data is received from the browser in the *body* of the request
+$first = $_POST['first'] ?? '';
+$last  = $_POST['last'] ?? '';
+?>
+<form method="post">
+First Name: <input type="text" name="first" value="<?= $first ?>"/>
+<br />
+Last Name: <input type="text" name="last"  value="<?= $last ?>"/>
+<br />
+<input type="submit" />
+</form>
+<?php phpinfo(INFO_VARIABLES); ?>
+```
+Same thing with added security
+```
+<?php
+// received from the browser in the *body* of the request
+// IMPORTANT: all inputs should also be filtered, validated and sanitized
+$first = trim(strip_tags($_POST['first'] ?? ''));
+$last  = trim(strip_tags($_POST['last'] ?? ''));
+?>
+<form method="post">
+<!-- "escape" the output using htmlspecialchars() for security reasons -->
+First Name: <input type="text" name="first" value="<?= htmlspecialchars($first); ?>"/>
+<!-- example of actual output: &lt;script&gt;alert(&#039;hahaha&#039;);&lt;/script&gt; -->
+<br />
+Last Name: <input type="text" name="last"  value="<?= htmlspecialchars($last); ?>"/>
+<br />
+<input type="submit" />
+</form>
+<?php phpinfo(INFO_VARIABLES); ?>
+```
+CSS tutorial
+* See: https://www.w3schools.com/Css/
+JavaScript
+* Look into jQuery (https://jquery.com)
+File upload example:
+* See: https://github.com/dbierer/classic_php_examples/blob/master/web/f%E2%80%8Eile_upload.php
+```
+<?php
+// received from the browser in the *body* of the request
+// IMPORTANT: all inputs should also be filtered, validated and sanitized
+$first = trim(strip_tags($_POST['first'] ?? ''));
+$last  = trim(strip_tags($_POST['last'] ?? ''));
+?>
+<form method="post" enctype="multipart/form-data">
+<!-- "escape" the output using htmlspecialchars() for security reasons -->
+First Name: <input type="text" name="first" value="<?= htmlspecialchars($first); ?>"/>
+<!-- example of actual output: &lt;script&gt;alert(&#039;hahaha&#039;);&lt;/script&gt; -->
+<br />
+Last Name: <input type="text" name="last"  value="<?= htmlspecialchars($last); ?>"/>
+<br />
+File Upload: <input type="file" name="upload" />
+<br />
+<input type="submit" />
+</form>
+<?php phpinfo(INFO_VARIABLES); ?>
+```
+Cookies:
+* See: https://github.com/dbierer/classic_php_examples/blob/master/web/cookie_counter.php
+Sessions:
+* See:
 
 ## ERRATA
 * http://localhost:8881/#/3/12
