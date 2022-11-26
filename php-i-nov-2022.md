@@ -1490,6 +1490,65 @@ foreach ($list as $fn) {
 	}
 }
 ```
+Example from the "f" labs:
+```
+<?php
+$path = __DIR__;
+$filename = $path . '/Text3.txt';
+// open in "append" mode
+// add "+" if you need to later read the file as well
+$handler = fopen($filename, 'a+');
+if (!$handler) {
+	echo 'Cannot open file.';
+} else {
+//  don't need to do this:
+//	fseek($handler,SEEK_END);
+	$data = 'Another day in paradise!';
+	$text = $data .PHP_EOL ;
+	$bytes = fwrite($handler,$text);
+	echo $bytes . ' bytes written.';
+	echo "File contents:\n";
+	// moves file pointer to start
+	rewind($handler);
+	// echoes entire file
+	fpassthru($handler);
+	echo PHP_EOL;
+	fclose($handler);
+}
+```
+IMPORTANT: the entire file will be in memory at one point when using `file_get_contents()`
+
+Another example:
+```
+<?php
+$path = __DIR__;
+$filename = $path . '/Text3.txt';
+//$data = file_get_contents($filename);
+$data = 'New line3 added.' . PHP_EOL;
+file_put_contents( $filename, $data, FILE_APPEND);
+//echo file_get_contents($filename);
+readfile($filename);
+```
+If you need to increase the runtime memory allocation:
+```
+// IMPORTANT: use with extreme caution!
+// default RAM allocation for a single PHP run == 128M
+ini_set('memory_limit', '256M');	// increases run limit to 256 MB of RAM
+ini_set('memory_limit', '1G');	// increases run limit to 1 GB of RAM
+```
+All directives: https://www.php.net/manual/en/ini.list.php
+* See: https://www.php.net/manual/en/ini.core.php#ini.memory-limit
+
+Example of file info using `printf()`:
+```
+<?php
+printf('%50s : %5s : %3s' . PHP_EOL, 'Filename', 'Size', 'Num');
+$pattern = '%50s : %5d : %3d' . PHP_EOL;
+foreach (glob("*.php") as $filename) {
+	printf($pattern, $filename, filesize($filename), count(file($filename)));
+}
+```
+
 ## Web Stuff
 Example of receiving data via "GET"
 ```
@@ -1571,7 +1630,23 @@ File Upload: <input type="file" name="upload" />
 Cookies:
 * See: https://github.com/dbierer/classic_php_examples/blob/master/web/cookie_counter.php
 Sessions:
-* See:
+* See: https://github.com/dbierer/classic_php_examples/blob/master/web/session_counter.php
+* Re: `session_regenerate_id()`
+  * If you use the `TRUE` flag, it also recreates the data, however this is resource intensive and takes time
+  * Best to use this as is: `session_regenerate_id()` (i.e. don't supply the `TRUE` argument)
+
+For HTML forms:
+* Use `method="GET"` if you want the user to bookmark the form posting (i.e. site search)
+* Use `method="POST"` if you have a large amount of data to be posted in the form
+  * Mandatory if you do a file upload!
+## Database
+Rankings: https://db-engines.com/en/ranking
+
+PostGreSQL: https://www.postgresql.org/download/
+
+## Miscellaneous
+Use `var_export($data, TRUE)` to return a string that can be placed into the error log
+* https://www.php.net/var_export
 
 ## ERRATA
 * http://localhost:8881/#/3/12
