@@ -1,44 +1,59 @@
-# PHP III - Oct 2022
+# PHP III - Dec 2022
 
 ## TODO
-* Q: Please add Swoole Server example to php-iii-demos repo (public/server.php) (see http://localhost:8883/#/8/31)
-
-* Q: Solid benefits of PHP async programming
-* A:
-
-* Q: Double check on the API tools lab re: Container/ContainerInterface
-* A:
 
 ## Homework
-For Thu 27 Oct 2022
-* Lab: Laminas API Tools
-* Lab: Adding Middleware
 
-For Tue 25 Oct 2022
-* Lab: Docker Image Build
-* Lab: Commit the Image
-* Lab: Docker-Compose
-        * Lab: Configuration Review and Pre-Built Service Execution
-        * Lab: Create Files to Support the nginx Service
-        * Lab: Create Files to Support the PHP-FPM Service
-        * Lab: Create the docker-compose.yml File
-        * Lab: Set up the sample app
+* VM Setup (update/upgrade + phpMyAdmin)
+  * phpMyAdmin: use the directions below
+* JMeter Setup
+* Jenkins Setup
 
+## VM Update
+* After the VM first comes up, if you're not prompted to update, reboot the VM
+* After reboot: Select yes to "Update System Software" if you're prompted
+* Open a terminal window
+* Upgrade everything:
+```
+sudo apt -y upgrade
+```
+  * If asked to retain the database configuration select "OK"
+NOTE: this could take some time!
+### Install phpMyAdmin
 
-For Thu 20 Oct 2022
-* Lab: OpCache and JIT
-* Lab: Existing Extension
-* Lab: FFI
-* Lab: New Extension
-* Lab: Custom PHP
-  * Clone from github
-  * Switch to branch php-8.2.0RC4
+Download the latest version from https://www.phpmyadmin.net
+Make note of the version number (e.g. 5.2.0)
+* From a terminal window:
+```
+cd /tmp
+set VER=5.2.0
+mv Downloads/phpMyAdmin-$VER-all-languages.zip .
+unzip Downloads/phpMyAdmin-$VER-all-languages.zip
+sudo cp -r phpMyAdmin-$VER-all-languages/* /usr/share/phpmyadmin
+sudo cp /usr/share/phpmyadmin/config.sample.inc.php /usr/share/phpmyadmin/config.inc.php
+```
+Create the "blowfish secret"
+```
+sudo -i
+export SECRET=`php -r "echo md5(date('Y-m-d-H-i-s') . rand(1000,9999));"`
+echo "\$cfg['blowfish_secret']='$SECRET';" >> /usr/share/phpmyadmin/config.inc.php
+exit
+```
+Set permissions
+```
+sudo chown -R www-data /usr/share/phpmyadmin
+```
+
+## Custom PHP Lab Notes
+
+* Clone from github
+* Switch to branch php-8.2.0RC4
 ```
 git checkout php-8.2.0RC4
 ```
-  * Follow the instructions
-  * Be sure to install the pre-requisites!
-  * Suggested `./configure` options (place this all on one line):
+* Follow the instructions
+* Be sure to install the pre-requisites!
+* Suggested `./configure` options (place this all on one line):
 ```
 ./configure  \
     --enable-cli \
@@ -106,49 +121,7 @@ No package 'libzip' found
 ```
 * https://stackoverflow.com/questions/45775877/configure-error-please-reinstall-the-libzip-distribution
 * `sudo apt install -y libzip-dev`
-For Tue 18 Oct 2022
-* Lab: Built-in Web Server
 
-For Thu 12 Oct 2022
-* VM Setup (update/upgrade + phpMyAdmin)
-  * phpMyAdmin: use the directions below
-* JMeter Setup
-* Jenkins Setup
-
-## VM Update
-* After the VM first comes up, if you're not prompted to update, reboot the VM
-* After reboot: Select yes to "Update System Software" if you're prompted
-* Open a terminal window
-* Upgrade everything:
-```
-sudo apt -y upgrade
-```
-  * If asked to retain the database configuration select "OK"
-NOTE: this could take some time!
-### Install phpMyAdmin
-
-Download the latest version from https://www.phpmyadmin.net
-Make note of the version number (e.g. 5.2.0)
-* From a terminal window:
-```
-cd /tmp
-set VER=5.2.0
-mv Downloads/phpMyAdmin-$VER-all-languages.zip .
-unzip Downloads/phpMyAdmin-$VER-all-languages.zip
-sudo cp -r phpMyAdmin-$VER-all-languages/* /usr/share/phpmyadmin
-sudo cp /usr/share/phpmyadmin/config.sample.inc.php /usr/share/phpmyadmin/config.inc.php
-```
-Create the "blowfish secret"
-```
-sudo -i
-export SECRET=`php -r "echo md5(date('Y-m-d-H-i-s') . rand(1000,9999));"`
-echo "\$cfg['blowfish_secret']='$SECRET';" >> /usr/share/phpmyadmin/config.inc.php
-exit
-```
-Set permissions
-```
-sudo chown -R www-data /usr/share/phpmyadmin
-```
 
 ## Interfaces
 ### Traversable
@@ -482,24 +455,3 @@ Press <enter> to keep the current choice[*], or type selection number:
 
 
 ## ERRATA
-* http://localhost:8883/#/4/7
-  * mising ";" + should add a space between vars on output
-* http://localhost:8883/#/4/37
-  * s/be "LuaJIT" not "LuiJIT"
-* http://localhost:8883/#/4/61
-  * You will have permissions issues, so do the following:
-```
-sudo -i
-echo "extension=NAME_OF_EXT.so" >> /path/to/php.ini
-exit
-```
-* http://localhost:8883/#/4/56
-  * Either the "C" code needs to change to accommodate full char strings
-  * Or the lab needs to be rewritten using single characters instead of string
-* http://localhost:8883/#/6/47
-  * "howeverm"???
-* http://localhost:8883/#/7/7
-  * "Middlware"???
-* http://localhost:8883/#/8/2
-  * Add slide about Why!!!
-
