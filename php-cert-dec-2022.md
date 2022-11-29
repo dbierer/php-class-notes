@@ -1,5 +1,6 @@
 # PHP Certification - Dec 2022
 
+Last: http://localhost:8884/#/2/40
 
 ## Homework
 For Weds 30 Nov
@@ -7,7 +8,8 @@ For Weds 30 Nov
 
 ## TODO
 * Q: When were the PSR standards developed?
-* A:
+* A: The first commit for PSR-7, one of the first to be developed, was 10 Jun 2014
+* A: PSR-0, the first autoloading standard, was _deprecated_ in  2014-10-21
 
 * Q: Will the PSRs be on the test?
 * A: No

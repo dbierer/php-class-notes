@@ -1,5 +1,7 @@
 # PHP III - Dec 2022
 
+Last: http://localhost:8883/#/2/30
+
 ## TODO
 
 ## Homework
@@ -14,7 +16,9 @@
 * After reboot: Select yes to "Update System Software" if you're prompted
 * Open a terminal window
 * Upgrade everything:
+  * DO NOT update to Ubuntu 22.04!
 ```
+sudo apt -y update
 sudo apt -y upgrade
 ```
   * If asked to retain the database configuration select "OK"
@@ -122,6 +126,85 @@ No package 'libzip' found
 * https://stackoverflow.com/questions/45775877/configure-error-please-reinstall-the-libzip-distribution
 * `sudo apt install -y libzip-dev`
 
+
+## Advanced PHP
+Full `DateTime::format()` codes:
+* https://www.php.net/manual/en/datetime.format.php
+Getting differences between dates, use `diff()`
+```
+<?php
+$date1 = new DateTime('2022-11-11');
+$date2 = new DateTime('2022-11-29');
+$diff  = $date1->diff($date2);
+var_dump($diff);
+echo $diff->days . ':' . $diff->invert;
+echo PHP_EOL;
+
+
+$diff  = $date2->diff($date1);
+var_dump($diff);
+echo $diff->days . ':' . $diff->invert;
+echo PHP_EOL;
+// $invert property tell you if it's in the past or future
+// see: https://www.php.net/manual/en/class.dateinterval.php
+
+```
+Adding a date, create a `DateInterval` instance
+```
+<?php
+$date = new DateTime('now');
+$date->add(new DateInterval('P92D'));
+echo $date->format('l, j M Y');
+// example output: Wednesday, 3 Mar 2023
+```
+Relative time formats
+```
+<?php
+$date = new DateTime('third thursday of next month');
+echo $date->format('l, j M Y');
+echo PHP_EOL;
+
+$date = new DateTime('last day of last month');
+echo $date->format('l, j M Y');
+echo PHP_EOL;
+
+```
+## Anonymous Class
+Example where the return value is an anon class with different methods to render its data
+```
+<?php
+class Test
+{
+    public function getObject(array $arr)
+    {
+		return new class ($arr) {
+			public $arr = [];
+			public function __construct(array $arr)
+			{
+				$this->arr = $arr;
+			}
+			public function asHtml()
+			{
+				$html = '<ul>' . PHP_EOL;
+				foreach ($this->arr as $item) $html .= '<li>' . $item . '</li>' . PHP_EOL;
+				$html .= '</ul>' . PHP_EOL;
+				return $html;
+			}
+			public function asJson()
+			{
+				return json_encode($this->arr, JSON_PRETTY_PRINT);
+			}
+		};
+	}
+}
+
+$arr = ['AAA','BBB','CCC','DDD'];
+$obj = (new Test())->getObject($arr);
+echo $obj->asHtml();
+echo $obj->asJson();
+var_dump($obj->arr);
+var_dump($obj);
+```
 
 ## Interfaces
 ### Traversable
@@ -455,3 +538,5 @@ Press <enter> to keep the current choice[*], or type selection number:
 
 
 ## ERRATA
+* http://localhost:8883/#/2/29
+  * Add "and Classes" to the title "Predefined Interfaces"
