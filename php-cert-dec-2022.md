@@ -3,10 +3,19 @@
 Last: http://localhost:8884/#/2/40
 
 ## Homework
-For Weds 30 Nov
+For Fri 02 Dec
 * Quiz questions for "Basics" topic
+* Quiz questions for "Data Formats and Types" topic
+* Quiz questions for "Strings and Patterns" topic
 
 ## TODO
+* Q: What is the purpose of the `json_encode/decode()` "$depth" option?
+* A: The `$depth` is a limit. If the source data exceeds the nesting limit, you end up with `NULL`
+* A: Need to confirm above
+
+* Q: What other protocols does SOAP support? SMTP?
+* A: TBD
+
 * Q: When were the PSR standards developed?
 * A: The first commit for PSR-7, one of the first to be developed, was 10 Jun 2014
 * A: PSR-0, the first autoloading standard, was _deprecated_ in  2014-10-21
@@ -201,22 +210,122 @@ $token = $_GET['token'] ?? $_POST['token'] ?? $_COOKIE['token'] ?? 'DEFAULT';
 
 `php.ini` file settings:
 * https://www.php.net/manual/en/ini.list.php
+* Pay strict attention to the "changeable" modes
+  * https://www.php.net/manual/en/configuration.changes.modes.php
 Extensions
 * These are in the core:
   * https://github.com/php/php-src/tree/PHP-7.1.30/ext
   * *but* not all are enabled by default
   * You're only tested on the extensions enabled by default
+Switch example
+```
+<?php
+$a = '123';
+
+switch ($a) {
+	case 123 :
+		echo __LINE__;
+	case 456 :
+		echo __LINE__;
+	case '123' :
+		echo __LINE__;
+	default :
+		echo __LINE__;
+}
+echo PHP_EOL;
+
+// expected: 6
+// actual:   681012
+```
+`continue` and `break`
+* Both accept an integer argument
+* Default is `1`
+* If you specify a number > 1, it continues or breaks out of that many nesting levels
+* See: https://www.php.net/manual/en/control-structures.break.php
+* See: https://www.php.net/manual/en/control-structures.continue.php
 
 
 ## Garbage Collection
 * Study up on `gc_collect_cycles()`
-Have a look at this article:
-https://www.php.net/manual/en/features.gc.performance-considerations.php
+* Have a look at this article:
+  * https://www.php.net/manual/en/features.gc.performance-considerations.php
 
 ## Data Formats
 Read up on `SimpleXMLElement`
 * https://www.php.net/manual/en/simplexml.examples-basic.php
 * XPath Tutorial: https://www.w3schools.com/xml/xpath_intro.asp
+Simple example:
+```
+<?php
+$str = <<<EOT
+<Outer>
+	<A>
+		<B>
+			<C>Value 1</C>
+			<C>Value 2</C>
+			<C>Value 3</C>
+			<C id="123" />
+		</B>
+		<B>
+			<C>Value 4</C>
+			<C>Value 5</C>
+			<C>Value 6</C>
+		</B>
+	</A>
+	<A>
+		<C>Value 2-1</C>
+		<C>Value 2-2</C>
+		<C>Value 2-3</C>
+		<C id="123" />
+	</A>
+</Outer>
+EOT;
+$xml = new SimpleXMLElement($str);
+echo $xml->A->B->C[3]['id']; // output: "123"
+echo PHP_EOL;
+echo $xml->A[1]->B->C; // output: "Value 2-1"
+echo PHP_EOL;
+var_dump($xml->xpath('//A/C')); // returns array of 4 SimpleXMLElement instances for the "C" nodes directly under "A"
+echo PHP_EOL;
+```
+Don't forget that to run a SOAP request, you can also use:
+  * `SoapClient::__soapCall()`
+  * `SoapClient::__doRequest()`
+Example of a soap client:
+  * https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
+  * PayPal has a SOAP API that is publically accessible
+REST vs. SOAP:
+  * See: https://www.ateam-oracle.com/post/performance-study-rest-vs-soap-for-mobile-applications
+JSON examples:
+```
+<?php
+$arr = [
+	'A' => [
+		'B' => [
+			'C' => [
+				'C1',
+				'C2',
+				'C3',
+				'D' => [
+					'E' => [
+						'E1',
+						'E2',
+						'E3',
+					],
+				],
+			],
+		],
+	],
+];
+
+$json = json_encode($arr, JSON_PRETTY_PRINT, 512);
+$decoded[] = json_decode($json, FALSE); // stdClass instance
+$decoded[] = json_decode($json, TRUE);	// associative array
+var_dump($decoded);
+echo PHP_EOL;
+
+```
+
 * `DateTime` examples
 ```
 <?php
@@ -228,19 +337,27 @@ $date[] = new DateTime('@' . time());
 $date[] = (new DateTime())->add(new DateInterval('P3D'));
 var_dump($date);
 ```
-* Don't forget that to run a SOAP request, you can also use:
-  * `SoapClient::__soapCall()`
-  * `SoapClient::__doRequest()`
-* Example of a soap client:
-  * https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
-* Study on `DateTimeInterval` and `DateTimeZone` and also "relative" time formats
+Example from slides:
+```
+<?php
+
+$date = new DateTime();
+// DateTime::COOKIE = "1, d-M-y H:i:s T"
+echo $date->format(DateTime::COOKIE);
+echo PHP_EOL;
+
+// DateTime::RSS = "D, d M Y H:i:s O"
+echo $date->format(DateTime::RSS);
+echo PHP_EOL;
+```
+DateTime examples:
+* See: https://github.com/dbierer/classic_php_examples/tree/master/date_time
+
+Study on `DateTimeInterval` and `DateTimeZone` and also "relative" time formats
 * In addition, be aware of the basic time format codes
   * https://www.php.net/manual/en/datetime.format.php
 * Pay close attention to `strftime()`
   * https://www.php.net/manual/en/function.strftime.php
-* PayPal has a SOAP API that is publically accessible
-* REST vs. SOAP:
-  * See: https://www.ateam-oracle.com/post/performance-study-rest-vs-soap-for-mobile-applications
 
 ## Strings
 * Be very careful with `strpos()` and `stripos()`
@@ -275,6 +392,18 @@ if (substr($dir, 0, 1) === '/') echo 'Leading slash' . PHP_EOL;
 if (substr($dir, -1) === '/') echo 'Trailing slash' . PHP_EOL;
 if ($dir[-1] === '/') echo 'Trailing slash' . PHP_EOL;
 ```
+Phonetic functions example:
+```
+<?php
+$a = 'akshual';
+$b = 'actual';
+echo metaphone($a);	// AKXL
+echo PHP_EOL;
+echo metaphone($b); // AKTL
+echo PHP_EOL;
+
+```
+
 * Tutorial on PHP regex: https://www.w3schools.com/php/php_regex.asp
 * Using regex to swap sub-patterns
 ```
@@ -314,6 +443,9 @@ preg_match($pat, $str, $matches);
 var_dump($matches);
 echo PHP_EOL;
 ```
+Regex examples:
+* See: https://github.com/dbierer/classic_php_examples/tree/master/regex
+
 ## Arrays
 For iterating through an array beginning-to-end don't forget about these functions:
 * `array_walk()`
@@ -549,4 +681,7 @@ $callback = function () { return (new DateTime())->format('l, d M Y'); };
 $container = new ServiceContainer('date', $callback);
 echo $container->get('date');
 ```
-
+* http://localhost:8884/#/3/21
+  * Need to confirm definition of `$depth` parameter
+* http://localhost:8884/#/3/24
+  * RSS format string is this: `D, d M Y H:i:s O`
