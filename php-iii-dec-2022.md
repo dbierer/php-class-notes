@@ -1,6 +1,6 @@
 # PHP III - Dec 2022
 
-Last: http://localhost:8883/#/2/30
+Last: http://localhost:8883/#/3/8
 
 ## TODO
 
@@ -225,6 +225,62 @@ class Test implements IteratorAggregate
 $test = new Test();
 foreach($test as $key => $value) echo $key . ':' . $value . PHP_EOL;
 ```
+Yet another example:
+```
+<?php
+class User implements IteratorAggregate
+{
+	public $first = 'Fred';
+	public $last  = 'Flintstone';
+	public $role  = 'Caveman';
+	public $date  = NULL;
+	public function __construct()
+	{
+		$this->date = new DateTime();
+	}
+	public function getIterator()
+	{
+		$list = get_object_vars($this);
+		$list['date'] = $this->date->format('l, j M Y');
+        return new ArrayIterator($list);
+    }
+}
+
+$user = new User();
+
+function looper(Traversable $trav)
+{
+	foreach ($trav as $key => $val) echo "$key\t$val\n";
+}
+
+looper($user);
+```
+In this example, note that if we uncomment line 8, the legacy code still works
+* The reason is because `ArrayObject` implements `ArrayAccess`
+```
+<?php
+$arr = [
+	'first' => 'Fred',
+	'last'  => 'Flintstone',
+	'amount' => 99.99,
+];
+// if you uncomment the next line, $arr becomes an object, but the remaining code works OK
+// $arr = new ArrayObject($arr);
+
+// some other code
+
+$purch = $_GET['purch'] ?? 1.11;
+$arr['amount'] += $purch;
+
+// some other code
+
+// final output:
+echo '<table>';
+foreach ($arr as $key => $val)
+	echo '<tr><th>' . $key . '</th><td>' . $val . '</td></tr>' . PHP_EOL;
+echo '</table>';
+```
+
 ### Stringable (new in PHP 8)
 Anytime you implement `__toString()`
 ```
@@ -307,6 +363,71 @@ while ($it->valid()) {
         $it->next();
 }
 ```
+## SPL
+Example of linked list:
+```
+<?php
+$base = [
+	'A' => 111,
+	'B' => 222,
+	'C' => 333,
+	'D' => 444,
+	'E' => 555,
+	'F' => 666,
+];
+
+$link = ['F','E','D','C','B','A'];
+
+foreach ($link as $key)
+	echo $base[$key] . PHP_EOL;
+```
+Example of doubly linked list (using just arrays)
+```
+<?php
+$base = [
+	'A' => 111,
+	'B' => 222,
+	'C' => 333,
+	'D' => 444,
+	'E' => 555,
+	'F' => 666,
+];
+
+$reverse = ['F','E','D','C','B','A'];
+$forward = ['A','B','C','D','E','F'];
+
+function showBase(array $link, array $base)
+{
+	foreach ($link as $key)
+		echo $base[$key] . PHP_EOL;
+}
+
+echo showBase($forward, $base);
+echo showBase($reverse, $base);
+```
+Example of doubly linked list (using `SplDoublyLinkedList`)
+```
+<?php
+$obj = new SplDoublyLinkedList();
+$obj[] = 111;
+$obj[] = 222;
+$obj[] = 333;
+$obj[] = 444;
+$obj[] = 555;
+$obj[] = 666;
+
+function showBaseObj(object $obj)
+{
+	foreach ($obj as $value)
+		echo "$value\n";
+}
+
+echo showBaseObj($obj);
+$obj->setIteratorMode(SplDoublyLinkedList::IT_MODE_LIFO );
+echo showBaseObj($obj);
+
+```
+
 `SplSubject` and `SplObserver` used to form a pipeline:
 * See: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_subject_observer_storage_object.php
 
@@ -540,3 +661,5 @@ Press <enter> to keep the current choice[*], or type selection number:
 ## ERRATA
 * http://localhost:8883/#/2/29
   * Add "and Classes" to the title "Predefined Interfaces"
+* http://localhost:8883/#/2/45
+  * In `__unserialize()` the property s/be `$purchases`
