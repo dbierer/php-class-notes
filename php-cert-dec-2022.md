@@ -3,6 +3,12 @@
 Last: http://localhost:8884/#/2/40
 
 ## Homework
+For Mon 05 Dec
+* Quiz questions for "Arrays" topic
+* Quiz questions for "I/O" topic
+* Quiz questions for "Functions" topic
+* Mock Exam #1 (to be uploaded in class via Zoom)
+
 For Fri 02 Dec
 * Quiz questions for "Basics" topic
 * Quiz questions for "Data Formats and Types" topic
@@ -405,6 +411,7 @@ echo PHP_EOL;
 ```
 
 * Tutorial on PHP regex: https://www.w3schools.com/php/php_regex.asp
+* Regex examples: https://github.com/dbierer/classic_php_examples/tree/master/regex
 * Using regex to swap sub-patterns
 ```
 <?php
@@ -685,3 +692,9 @@ echo $container->get('date');
   * Need to confirm definition of `$depth` parameter
 * http://localhost:8884/#/3/24
   * RSS format string is this: `D, d M Y H:i:s O`
+* http://localhost:8884/#/2/82
+  * "E" ans should have `max_memory_limit`
+* http://localhost:8884/#/3/42
+  * `$json` should be assigned using heredoc notation or escape the `"`
+* http://localhost:8884/#/4/40
+  * Suggestion: add another line of code that calls the function to clarify its usage
