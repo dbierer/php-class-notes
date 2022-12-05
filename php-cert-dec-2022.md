@@ -3,6 +3,10 @@
 Last: http://localhost:8884/#/2/40
 
 ## Homework
+For Wed 07 Dec
+* Quiz questions for "OOP" topic
+* Mock Exam #2
+
 For Mon 05 Dec
 * Quiz questions for "Arrays" topic
 * Quiz questions for "I/O" topic
@@ -20,7 +24,9 @@ For Fri 02 Dec
 * A: Need to confirm above
 
 * Q: What other protocols does SOAP support? SMTP?
-* A: TBD
+* A: SOAP supports XML but can also use SMTP (Simple Mail Transport Protocol), although the latter is rarely used nowadays
+  * See: https://en.wikipedia.org/wiki/SOAP
+  * See: https://www.w3.org/TR/soap/
 
 * Q: When were the PSR standards developed?
 * A: The first commit for PSR-7, one of the first to be developed, was 10 Jun 2014
@@ -505,6 +511,122 @@ etc.
      * `IteratorAggregate`
        * Passes the buck
        * Don't have to hard code iteration methods
+* Inheritance
+  * Visibility can go from `protected` in the super class to `public` in the sub-class, but not the other way around
+  * Data types can go from specific to general, but not the other way around
+```
+<?php
+class A
+{
+	protected $test = NULL;
+	public function getTest()
+	{
+		return var_export($this->test, TRUE);
+	}
+	public function setTest(array $test)
+	{
+		$this->test = $test;
+	}
+}
+
+class B extends A
+{
+	// doesn't work:
+	// protected function setTest(ArrayIterator $test)
+
+	// works:
+	public function setTest(iterable $test)
+	{
+		$this->test = $test;
+	}
+}
+
+$b = new B();
+$b->setTest(new ArrayIterator([1,2,3]));
+echo $b->getTest();
+
+```
+* Abstract classes:
+```
+<?php
+abstract class A
+{
+	protected $test = NULL;
+	public function getTest()
+	{
+		return var_export($this->test, TRUE);
+	}
+	public abstract function setTest(array $test);
+}
+
+class B extends A
+{
+	public function setTest(iterable $test)
+	{
+		$this->test = $test;
+	}
+}
+
+$b = new B();
+$b->setTest(new ArrayIterator([1,2,3]));
+echo $b->getTest();
+```
+* Interface example
+```
+<?php
+interface TestInterface
+{
+	public function setTest(array $test);
+}
+
+abstract class A implements TestInterface
+{
+	protected $test = NULL;
+	public function getTest()
+	{
+		return var_export($this->test, TRUE);
+	}
+}
+
+class B extends A
+{
+	// NOTE: this is mandatory as "setTest()" isn't defined anywhere else
+	public function setTest(iterable $test)
+	{
+		$this->test = $test;
+	}
+}
+
+$b = new B();
+ $b->setTest(new ArrayIterator([1,2,3]));
+echo $b->getTest();
+
+```
+* Example that shows how classes implementing interfaces that extend from "Traversable" work as arguments
+```
+<?php
+class ShowSomething
+{
+    public function show(Traversable $iterator)
+    {
+        $output = '<ul>';
+        foreach ($iterator as $item)
+            $output .= '<li>' . $item . '</li>';
+        $output .= '</ul>' . PHP_EOL;;
+        return $output;
+    }
+}
+$show = new ShowSomething();
+
+// this works because "ArrayIterator" implements "Iterator"
+$obj  = new ArrayIterator(['A','B','C']);
+echo $show->show($obj);
+
+// this works because "ArrayObject" implements "IteratorAggregate"
+$obj  = new ArrayObject(['A','B','C']);
+echo $show->show($obj);
+```
+
 * Late static binding
   * https://www.php.net/manual/en/language.oop5.late-static-bindings.php
 * Serialization example:
@@ -698,3 +820,29 @@ echo $container->get('date');
   * `$json` should be assigned using heredoc notation or escape the `"`
 * http://localhost:8884/#/4/40
   * Suggestion: add another line of code that calls the function to clarify its usage
+* http://localhost:8884/#/8/41
+  * There is *NO* property level data-typing allowed in PHP 7.1
+  * Should appear as follows:
+```
+<?php
+class UserEntity {
+    public $hash = '';
+    protected $first = '';
+    protected $last  = '';
+    public function __construct(string $first, string $last) {
+        $this->first = $first;
+        $this->last  = $last;
+        $this->hash  = bin2hex(random_bytes(8));
+    }
+    public function __sleep() {
+        return ['first','last'];
+    }
+    public function getFullName() {
+        return $this->first . ' ' . $this->last;
+    }
+}
+$userEntity = new UserEntity('Mark', 'Watney');
+$str = serialize($userEntity);
+echo $str;
+echo PHP_EOL;
+```
