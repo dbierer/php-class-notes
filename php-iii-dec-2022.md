@@ -1,11 +1,17 @@
 # PHP III - Dec 2022
 
-Last: http://localhost:8883/#/3/8
+Last: http://localhost:8883/#/4/40
 
 ## TODO
+* Dig up practical examples of `SplHeap`
+* Find more examples of iterators
 
 ## Homework
+For Thu 9 Dec 2022
+* Lab: Built-in Web Server
+* Lab: OpCache and JIT
 
+For Tues 7 Dec 2022
 * VM Setup (update/upgrade + phpMyAdmin)
   * phpMyAdmin: use the directions below
 * JMeter Setup
@@ -663,3 +669,5 @@ Press <enter> to keep the current choice[*], or type selection number:
   * Add "and Classes" to the title "Predefined Interfaces"
 * http://localhost:8883/#/2/45
   * In `__unserialize()` the property s/be `$purchases`
+* http://localhost:8883/#/4/7
+  * Line 3 missing semi-colon!
