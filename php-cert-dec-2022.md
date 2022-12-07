@@ -3,6 +3,10 @@
 Last: http://localhost:8884/#/2/40
 
 ## Homework
+For Fri 09 Dec
+* All remaining quiz questions
+* Final mock exam
+
 For Wed 07 Dec
 * Quiz questions for "OOP" topic
 * Mock Exam #2
@@ -626,6 +630,57 @@ echo $show->show($obj);
 $obj  = new ArrayObject(['A','B','C']);
 echo $show->show($obj);
 ```
+* Magic method `__invoke()` example + examples of `callable` type
+```
+<?php
+// list of "callable" variations
+class Test
+{
+	public function something()
+	{
+		return 'SOMETHING';
+	}
+	public static function somethingElse()
+	{
+		return 'SOMETHING ELSE';
+	}
+}
+
+function whatever ()
+{
+	return 'WHATEVER';
+}
+
+$what = function () {
+	return 'WHAT';
+};
+
+$invoke = new class () {
+	public function __invoke()
+	{
+		return 'INVOKE';
+	}
+};
+
+function test (callable $callback)
+{
+	echo $callback();
+	echo PHP_EOL;
+}
+
+$test = new Test();
+
+// all of these are considered "callable"
+test('whatever');
+test($what);
+test([$test, 'something']);
+test('Test::somethingElse');
+test($invoke);
+```
+* Two of the magic methods must be defined as `static`
+  * `__callStatic()`
+  * `__set_state()`
+  * All the others are *not* defined as static
 
 * Late static binding
   * https://www.php.net/manual/en/language.oop5.late-static-bindings.php
@@ -669,6 +724,30 @@ var_dump($obj);
     * `*Iterator*` : just know what they are
     * `ArrayIterator` and `ArrayObject` make sure you're up to speed on these!
   * Just be aware of the "classic" data structure classes
+* `ArrayObject` usage
+```
+<?php
+
+$arrayobject = new ArrayObject(['one', 'two', 'three']);
+
+$arrayobject[] = 'four';
+$arrayobject[0] = '1';
+$arrayobject->append('five');
+$arrayobject['test'] = 'TEST';
+
+// Iterate
+foreach($arrayobject as $item) {
+    echo $item . PHP_EOL;
+}
+
+// Iterate with injected ArrayIterator
+$iterator = $arrayobject->getIterator();
+while($iterator->valid()) {
+    echo $iterator->key() . '=>' . $iterator->current();
+    $iterator->next();
+}
+```
+
 * Generators
   * https://www.php.net/manual/en/class.generator.php
 * Late Static Binding

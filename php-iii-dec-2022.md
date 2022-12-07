@@ -3,10 +3,24 @@
 Last: http://localhost:8883/#/4/40
 
 ## TODO
-* Dig up practical examples of `SplHeap`
-* Find more examples of iterators
+* Q: Other examples of SPL classic data structures:
+* A: `SplDoublyLinkedList`
+  * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch05/php8_spl_spldoublylinkedlist.php
+* A: `SplHeap`
+  * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch05/php8_spl_splheap.php
+
+* Q: Find more examples of iterators
+* A: Uses `ArrayIterator` and `LimitIterator` for pagination
+  * https://github.com/dbierer/classic_php_examples/blob/master/oop/App/View/Paginate.php
+* A: Uses `InfiniteIterator` to build large array to demonstrate PHP 8 "stable sort"
+  * https://github.com/dbierer/classic_php_examples/blob/master/basics/sort_stable.php
+
 
 ## Homework
+For Tue 14 Dec 2022
+* Clone this repo: https://github.com/dbierer/php-iii-demos.git
+  * Contains code you can use with later labs
+
 For Thu 9 Dec 2022
 * Lab: Built-in Web Server
 * Lab: OpCache and JIT
