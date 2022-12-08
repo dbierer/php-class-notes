@@ -8,6 +8,8 @@ Last: http://localhost:8883/#/4/40
   * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch05/php8_spl_spldoublylinkedlist.php
 * A: `SplHeap`
   * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch05/php8_spl_splheap.php
+* A: `SplFixedArray`
+  * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch10/php7_spl_fixed_arr_size.php
 
 * Q: Find more examples of iterators
 * A: Uses `ArrayIterator` and `LimitIterator` for pagination
@@ -15,16 +17,39 @@ Last: http://localhost:8883/#/4/40
 * A: Uses `InfiniteIterator` to build large array to demonstrate PHP 8 "stable sort"
   * https://github.com/dbierer/classic_php_examples/blob/master/basics/sort_stable.php
 
+* Q: Example of login and authentication
+* A: https://github.com/dbierer/filecms-website
+  * Login logic: https://github.com/dbierer/filecms-website/blob/main/templates/super/login.phtml
+  * Ongoing authentication: https://github.com/dbierer/filecms-website/blob/main/src/processing.php
+* A: https://github.com/dbierer/filecms-core
+  * Ongoing authentication verification:
+  * https://github.com/dbierer/filecms-core/blob/main/src/Common/Security/Profile.php
+
+* Q: Other examples of authentication?
+* A: TBD
 
 ## Homework
 For Tue 14 Dec 2022
 * Clone this repo: https://github.com/dbierer/php-iii-demos.git
   * Contains code you can use with later labs
+* Lab: FFI
+* Lab: New Extension
+* Lab: Custom PHP
+  * Read this instructions here: https://github.com/php/php-src
+* Lab: ZendPHP for AWS [optional]
+* Lab: Docker Image Build
+  * In `startup.sh` be sure to change this line:
+```
+#!/bin/bash
+export VER=81
+```
+* Lab: Commit the Image
+* Lab: Docker Compose Labs
+  * Have a look at the article on Orchestration: https://www.zend.com/blog/what-is-cloud-orchestration
+  * Make sure you change `compose.startup.php-fpm.sh` to `export VER=81` so that you're using PHP 8.1
 
-For Thu 9 Dec 2022
-* Lab: Built-in Web Server
-* Lab: OpCache and JIT
-
+* CLI utility to reset JIT:
+    * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch10/php8_jit_reset.php
 For Tues 7 Dec 2022
 * VM Setup (update/upgrade + phpMyAdmin)
   * phpMyAdmin: use the directions below
@@ -71,9 +96,9 @@ sudo chown -R www-data /usr/share/phpmyadmin
 ## Custom PHP Lab Notes
 
 * Clone from github
-* Switch to branch php-8.2.0RC4
+* Switch to branch php-8.2.0
 ```
-git checkout php-8.2.0RC4
+git checkout php-8.2.0
 ```
 * Follow the instructions
 * Be sure to install the pre-requisites!
