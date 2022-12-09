@@ -1,6 +1,6 @@
 # PHP Certification - Dec 2022
 
-Last: http://localhost:8884/#/2/40
+REMEMBER: send C.T. the updated version
 
 ## Homework
 For Fri 09 Dec
@@ -796,6 +796,11 @@ URL: https://www.php.net/manual/en/ini.list.php
 * `file_uploads`
 * `max_file_uploads`
 
+When the question refers to an "image button", here's what they mean:
+```
+<input type="image" src="image.gif" name="sub" />
+```
+* See: https://www.php.net/manual/en/language.variables.external.php#language.variables.external.form.submit
 
 ## Error Handling
 Example of aggregated Catch block:
@@ -811,6 +816,42 @@ try {
     echo 'Database connection ';
     echo ($pdo) ? 'succeeded' : 'failed';
 }
+```
+Example where an error isn't caught because the code never ran
+* The parsing process failed
+* The code never runs
+* No errors are thrown:
+```
+try {
+	echo 'This won\'t work'
+} catch (Throwable $t) {
+	echo __LINE__ . "\n";
+	echo get_class($t) . $t;
+}
+
+// actual output:
+// PHP Parse error:  syntax error, unexpected '}', expecting ',' or ';' in /srv/code/test.php on line 4
+```
+In this example, the `ParseError` is caught be we're using `eval()` to evaluate code at runtime
+* `ParseError` can also be caught when using `include()` or `require()`
+```
+<?php
+try {
+	eval("echo 'This won\'t work' echo 'Because there's no semi-colon';");
+} catch (Throwable $t) {
+	echo __LINE__ . "\n";
+	echo get_class($t) . $t;
+}
+
+// actual output:
+/*
+5
+ParseErrorParseError: syntax error, unexpected 'echo' (T_ECHO), expecting ',' or ';' in /srv/code/test.php(3) : eval()'d code:1
+Stack trace:
+#0 {main}
+#
+*/
+
 ```
 
 Example of making object callable:
