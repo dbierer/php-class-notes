@@ -107,33 +107,34 @@ git checkout php-8.2.0
 ./configure  \
     --enable-cli \
     --enable-filter \
-    --with-openssl=shared \
+    --with-openssl \
     --with-zlib \
-    --with-curl=shared \
+    --with-curl \
     --enable-pdo \
     --with-libxml \
     --with-iconv \
     --enable-cgi \
     --enable-session \
-    --with-pdo-mysql=shared
-    --enable-phar=shared \
-    --with-pdo-sqlite=shared \
+    --with-pdo-mysql \
+    --enable-phar \
+    --with-pdo-sqlite \
     --with-pcre-jit \
     --with-zip \
     --enable-ctype \
     --enable-gd \
     --enable-bcmath \
-    --enable-sockets=shared \
-        --with-bz2=shared \
-    --enable-exif=shared \
-    --enable-intl=shared \
-    --with-gettext=shared \
+    --enable-sockets \
+    --with-bz2 \
+    --enable-exif \
+    --enable-intl \
+    --with-gettext \
     --enable-opcache \
-    --enable-fileinfo=shared \
+    --enable-fileinfo \
     --with-readline \
-    --with-sodium=shared
+    --with-sodium
 ```
-Dependency errors:
+### Dependency errors:
+
 ```
 checking for BZip2 in default path... not found
 configure: error: Please reinstall the BZip2 distribution
@@ -170,6 +171,12 @@ No package 'libzip' found
 ```
 * https://stackoverflow.com/questions/45775877/configure-error-please-reinstall-the-libzip-distribution
 * `sudo apt install -y libzip-dev`
+
+Final Solution:
+```
+sudo apt install -y libbz2-dev  libpng-dev zlib1g-dev libsodium-dev \
+                    libreadline-dev libcurl4-openssl-dev libbz2-dev
+```
 
 
 ## Advanced PHP
