@@ -34,6 +34,9 @@ For Tue 14 Dec 2022
   * Contains code you can use with later labs
 * Lab: FFI
 * Lab: New Extension
+  * Lab needs additional work
+  * If you follow the instructions here exactly, "test1()" works, but "test2()" does not
+    * https://www.zend.com/resources/php-extensions/building-and-installing-php-extension
 * Lab: Custom PHP
   * Read this instructions here: https://github.com/php/php-src
 * Lab: ZendPHP for AWS [optional]
