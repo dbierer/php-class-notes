@@ -1,6 +1,7 @@
 # PHP III - Dec 2022
 
 Last: http://localhost:8883/#/4/40
+3.16.180.170
 
 ## TODO
 * Q: Other examples of SPL classic data structures:
@@ -26,9 +27,16 @@ Last: http://localhost:8883/#/4/40
   * https://github.com/dbierer/filecms-core/blob/main/src/Common/Security/Profile.php
 
 * Q: Other examples of authentication?
-* A: TBD
+* A: Good starting point:
+  * See: https://packagist.org/?query=basic%20auth
 
 ## Homework
+For Thu 16 Dec 2022
+* Lab: REST Service Development
+* Lab: Adding Middleware
+  * Take the code from the slides
+  * Add a middleware request handler that implements an update (HTTP "PATCH")
+
 For Tue 14 Dec 2022
 * Clone this repo: https://github.com/dbierer/php-iii-demos.git
   * Contains code you can use with later labs
@@ -637,6 +645,50 @@ You can also use a `php.ini` setting of `on` to enable JIT:
 opcache.jit_buffer_size=32M
 ```
 
+## ZendPHP on AWS
+Steps taken to launch an instance:
+* Login to AWS
+* Went to AWS marketplace
+  * https://us-east-1.console.aws.amazon.com/marketplace/home?region=us-east-1#/landing
+* Searched for "ZendPHP"
+  * https://us-east-1.console.aws.amazon.com/marketplace/home#/search!mpSearch/search?text=ZendPHP
+* Selected "ZendPHP with Apache on Ubuntu 20.04 (BYOL)"
+  * Clicked on "Subscribe"
+  * From next menu clicked on "Continue to Configuration"
+* Choose configuration (including region, which could affect what services are in the "Free Tier")
+  * Chose "US East (N. Virginia)"
+  * Clicked on "Continue to Launch"
+* Choose Action
+  * Chose "Launch through EC2"
+* From "Launch an Instance" menu
+  * Chose "t2.micro" (free tier eligible)
+  * Chose "Create New Key Pair"
+    * RSA
+    * PEM
+  * Copied downloaded `*.pem` file to `~/.aws`
+* Clicked "Launch Instance"
+* From the next screen, chose "View Instance Details"
+  * Wrote down IP address `a.b.c.d`
+* Read instructions on connecting to the instance
+  * https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstances.html?icmpid=docs_ec2_console
+* Shelled into instance:
+```
+ssh -i .aws/php_iii_dec_2022.pem ubuntu@ a.b.c.d
+```
+* Set up sample app in `/var/www/html`
+```
+cd /var/www
+sudo wget https://opensource.unlikelysource.com/post_code_test_app.zip
+sudo apt install unzip
+sudo unzip post_code_test_app.zip
+sudo rm html/index.html
+```
+* Tested from browser:
+```
+http://a.b.c.d/city=levittown&state=NY
+```
+
+
 ## Docker
 Orchestration:
 * https://www.zend.com/webinars/orchestrating-your-php-applications
@@ -720,3 +772,5 @@ Press <enter> to keep the current choice[*], or type selection number:
   * In `__unserialize()` the property s/be `$purchases`
 * http://localhost:8883/#/4/7
   * Line 3 missing semi-colon!
+* http://localhost:8883/#/7/11
+  * Title s/be "InsertHandler"
