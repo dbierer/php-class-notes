@@ -1,6 +1,26 @@
 # PHP SECURITY CLASS NOTES
 
+Last: http://localhost:8885/#/3/34
+
+## Assignments
+For Wed 11 Jan 2023:
+* Refresh the VM using the updated Vagrantfile
+  * Also: update the existing software (see "Expanded VM Installation Instructions" below)
+* Application Setup: Zed Attack Proxy
+* Try your hand at cracking passwords using `hashcat`
+
+For Fri 13 Jan 2023:
+* SQL Injection: Portal Exercise
+* Brute Force Detector Class Exercise
+* Brute Force Zed Attack Proxy Project Exercise
+
 ## TODO
+* Get updated course slides to Jan
+* Find article that documents the 2-stage SQL injection attack
+* Find article on password complexity
+
+## Q & A
+
 * How to get rid of `system problem detected` message on Ubuntu
   * Have to remove the crash report
 ```
@@ -24,10 +44,6 @@ Update the VM
   * Choose "Update"
   * This could take some time! (1 to 2 hours depending on your connection speed)
   * Alternatively, you can decline and run `sudo apt-get upgrade` from the command prompt
-
-## Assignments
-
-## TODO
 
 ## General Notes
 ### LAB NOTES
@@ -1877,6 +1893,8 @@ if(isset($_GET['img'])) {
 }
 ```
 ## ERRATA
+* http://localhost:8885/#/3/27
+  * line 3: logic should sleep if the username and/or password is invalid!
 
 ## Actual Attacks from Customer Access Log (sanitized)
 ```
