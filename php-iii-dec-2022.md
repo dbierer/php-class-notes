@@ -673,7 +673,7 @@ Steps taken to launch an instance:
   * https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstances.html?icmpid=docs_ec2_console
 * Shelled into instance:
 ```
-ssh -i .aws/php_iii_dec_2022.pem ubuntu@ a.b.c.d
+ssh -i .aws/php_iii_dec_2022.pem ubuntu@a.b.c.d
 ```
 * Set up sample app in `/var/www/html`
 ```
@@ -707,6 +707,11 @@ Terraform templates
 
 ## Async
 * Good article on async programming: https://www.zend.com/blog/using-swoole-and-mezzio
+
+## CI/CD
+Configuration Management tools
+* Ansible
+* Puppet
 
 ## Resources
 * https://github.com/dbierer/php-iii-demos.git
@@ -774,3 +779,7 @@ Press <enter> to keep the current choice[*], or type selection number:
   * Line 3 missing semi-colon!
 * http://localhost:8883/#/7/11
   * Title s/be "InsertHandler"
+* http://localhost:8883/#/8/7
+  * s/be "... the operation has failed" (not "filed")
+* http://localhost:8883/#/8/18
+  * s/be "You can HAVE as many channels ... "
