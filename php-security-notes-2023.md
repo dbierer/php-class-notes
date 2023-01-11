@@ -3,29 +3,47 @@
 Last: http://localhost:8885/#/3/34
 
 ## Assignments
+For Fri 13 Jan 2023:
+* Install Docker and Docker Compose
+  * https://www.docker.com/get-started/
+  * or, from the command line:
+```
+sudo apt install docker
+sudo apt install docker-composer
+```
+* To test the Docker installation:
+```
+docker run hello-world
+```
+
+
+* SQL Injection: Portal Exercise
+* Brute Force Detector Class Exercise
+* Brute Force Zed Attack Proxy Project Exercise
+* Cross-Site Scripting (XSS): Tidy Class Exercise #1
+* Cross-Site Scripting (XSS): Portal Exercise
+* Cross Site Request Forgery (CSRF) Portal Exercise
+* Security Misconfiguration Portal Exercise
+
 For Wed 11 Jan 2023:
 * Refresh the VM using the updated Vagrantfile
   * Also: update the existing software (see "Expanded VM Installation Instructions" below)
 * Application Setup: Zed Attack Proxy
 * Try your hand at cracking passwords using `hashcat`
 
-For Fri 13 Jan 2023:
-* SQL Injection: Portal Exercise
-* Brute Force Detector Class Exercise
-* Brute Force Zed Attack Proxy Project Exercise
-
 ## TODO
 * Get updated course slides to Jan
-* Find article that documents the 2-stage SQL injection attack
-* Find article on password complexity
 
-## Q & A
+* Q: Example using DOM to clean allowed HTML
+* A: TBD
 
-* How to get rid of `system problem detected` message on Ubuntu
-  * Have to remove the crash report
-```
-sudo rm /var/crash/*
-```
+* Q: Find article on password complexity
+* A: TBD
+
+* Q: Find article that documents the 2-stage SQL injection attack
+* A: https://bertwagner.com/posts/how-to-steal-data-using-a-second-order-sql-injection-attack/
+
+
 * Get a `Faraday Bag` for your keyless entry vehicle!
   * https://www.bbc.com/news/business-47023003
   * https://www.locksmiths.co.uk/faq/keyless-car-theft/
@@ -43,8 +61,14 @@ Update the VM
 * When prompted to "Updated software is available for this computer. Do you want to install it now?"
   * Choose "Update"
   * This could take some time! (1 to 2 hours depending on your connection speed)
-  * Alternatively, you can decline and run `sudo apt-get upgrade` from the command prompt
-
+  * Alternatively, you can decline and run `sudo apt-get -y upgrade` from the command prompt
+    * Runs slightly faster than GUI version
+* Install PHP 8.1 and restart Apache (to enable new PHP 8.1 module)
+```
+sudo apt install -y php8.1
+sudo /etc/init.d/apache2 restart
+```
+su
 ## General Notes
 ### LAB NOTES
 * Good Overview of the Stats and Costs:
@@ -63,6 +87,29 @@ Update the VM
   * https://www.zimuel.it/
 * Good presentation on cryptography:
   * http://www.cs.columbia.edu/~suman/security_arch/crypto_summary.pdf
+* Example of protecting against XSS:
+```
+<?php
+$output = '';
+// validate input
+$name = $_GET['name'] ?? '';
+if ($name !== strip_tags($name)) {
+	error_log('Potential XSS found');
+	exit ('Please try again');
+}
+if (!empty($name)) {
+	$name = htmlspecialchars($name);
+    $output .= "Hello $name and welcome to our same day service";
+} else {
+    $output .= "Hello ";
+}
+$output .= 'and welcome to our same day service';
+echo $output;
+```
+Configuration Management
+* https://www.chef.io/products/chef-infrastructure-management
+* https://www.ansible.com/
+* https://www.puppet.com/
 
 ## LATEST
 * SQL Injection
@@ -734,6 +781,11 @@ Owasp.org tools page
   * A: Simple answer: we don't know and Google is not telling
   * A: See: https://security.googleblog.com/2014/12/are-you-robot-introducing-no-captcha.html
 
+* How to get rid of `system problem detected` message on Ubuntu
+  * Have to remove the crash report
+```
+sudo rm /var/crash/*
+```
 
 
 
@@ -1009,846 +1061,6 @@ phpinfo(INFO_VARIABLES);
 </html>
 ```
 
-## SECURITYTRAINING SOURCE
-* Rewrote `/securitytraining/src/FrontController.php`
-* Rewrote `/securitytraining/config/config.inc.php`
-* Replaced `Zend\ServiceManager\ServiceManager` with `src\Container`
-
-```
-<?php
-/**
- * Front Controller Class
- */
-
-namespace src;
-
-use src\view\View;
-use src\services\Container;
-use Zend\Db\Adapter\Adapter;
-use Zend\ServiceManager\ServiceManager;
-
-class FrontController
-{
-
-    const DEFAULT_ACTION = 'home';
-    protected $session;
-    protected $sm;
-
-    /**
-     * FrontController constructor.
-     *
-     * @param $config
-     * @param $phpids
-     */
-    public function __construct($config, $phpids) {
-        $this->sm = new Container();
-        $this->sm->setService('adapter', $this->getAdapter($config));
-        $this->sm->setService('config', $config);
-        $this->sm->setService('phpids', $phpids);
-        $this->sm->setService('page', $config['application']);
-        $this->sm->setService('view', new View($config));
-        $this->sm->setService('menuMap', $config['menuMap']);
-        $this->sm->setService('vulnerabilityTitle', $config['vulnerabilityTitle']);
-        session_start();
-        $this->setSession();
-        $this->checkInput();
-    }
-
-    /**
-     *
-     */
-    protected function checkInput(){
-        // NOTE: using $_REQUEST because "action" could be coming from either $_GET or $_POST
-        //       as of PHP 7, $_REQUEST, by default, *only* includes $_GET and $_POST
-        if ($_REQUEST && isset($_POST['Login']) && !isset($_REQUEST['action'])) {
-            $this->loginAction();
-        } elseif (isset($_REQUEST['action'])){
-            $action = null;
-            if (isset($_REQUEST['action'])) {
-                $action = ctype_alpha($_REQUEST['action']) ? $_REQUEST['action'] : self::DEFAULT_ACTION;
-            }
-            $menuMap = $this->sm->get('menuMap');
-            if (isset($menuMap[$action])) {
-                $method = $menuMap[$action]['method'];
-                $this->$method($menuMap[$action]['params']);
-            } else {
-                $this->vulnerabilityAction($action);
-            }
-        } else {
-            $this->loginAction();
-        }
-    }
-
-    /**
-     * @param $config
-     *
-     * @return Adapter
-     */
-    private function getAdapter($config) {
-        return new Adapter(array(
-            'driver'   => $config['adapter']['driver'],
-            'database' => $config['db']['db_database'],
-            'username' => $config['db']['db_user'],
-            'password' => $config['db']['db_password']
-        ));
-    }
-
-    /**
-     * Todo: Needs refactoring to use setViewAndRender()
-     */
-    public function homeAction() {
-        $view            = $this->sm->get('view');
-        $page            = $this->sm->get('page');
-        $page['title']   .= $page['title_separator'] . 'Welcome';
-        $page['page_id'] = 'home';
-        $page['body']    = 'main_body';
-        $view->setVariable('page', $page);
-        $items = $this->getLeftBlock($page);
-        foreach($items as $key => $value) {
-            $view->setVariable($key, $value);
-        }
-        $view->setTemplate('main');
-        $messagesHtml = $this->popMessagesToHtml();
-        $view->setVariables(['messagesHtml' => $messagesHtml]);
-        $view->render();
-    }
-
-    /**
-     *
-     */
-    public function loginAction() {
-        $view = $this->sm->get('view');
-        if(isset($_POST['Login'])) {
-            $user      = $_POST['username'] ?? '';
-            $user      = ctype_alnum($user) ? $user : '';
-            $pass      = $_POST['password'] ?? '';
-            if (!$user || !$pass) {
-                $this->failedLogin($view);
-            }
-            $pass      = strip_tags($pass);
-            $hash      = md5($pass);
-            $adapter   = $this->sm->get('adapter');
-            $resultset = $adapter->query("SELECT * FROM users WHERE user='$user' AND password='$hash'", Adapter::QUERY_MODE_EXECUTE);
-
-            // Check if we have login
-            if($resultset && $resultset->count()) {
-                $data = $resultset->current()->getArrayCopy();
-                $this->setSession();
-                $this->session['username'] = $user;
-                $this->login($data);
-                $this->pushMessage("You have logged in as '" . $data['user'] . "'");
-                $page          = $this->sm->get('page');
-                $page['title'] .= $page['title_separator'] . 'Welcome';
-                $view->setTemplate('main');
-            }else {
-                // Login failed
-                $this->failedLogin($view);
-            }
-        }else {
-            $view->setTemplate('login');
-        }
-        $this->setViewAndRender(null, ['page_id' => 'home', 'name' => 'home', 'body' => 'main_body']);
-    }
-
-    protected function failedLogin($view)
-    {
-        $this->pushMessage("Login failed");
-        $view->setTemplate('login');
-    }
-
-    /**
-     *
-     */
-    public function logoutAction() {
-
-        //$this->zendPageStartup(array('phpids'));
-
-        if( ! $this->getIsUserLoggedIn()) {    // The user shouldn't even be on this page
-            //zendMessagePush( "You were not logged in" );
-            $this->loginAction();
-        }
-
-        unset($this->session);
-        $this->pushMessage("You have logged out");
-        $this->loginAction();
-    }
-
-    /**
-     *
-     */
-    public function setSession() {
-        if( ! isset($_SESSION['zend'])) $_SESSION['zend'] = [];
-        $this->session    = &$_SESSION['zend'];
-    }
-
-    /**
-     *
-     */
-    public function securityAction() {
-        $view   = $this->sm->get('view');
-        $config = $this->sm->get('config');
-        $page            = $this->sm->get('page');
-        $page['title']   .= $page['title_separator'] . 'ZEND Security';
-        $html            = '';
-
-        if(isset($_POST['seclev_submit'])) {
-            $securityLevel = 'with';
-
-            switch($_POST['security']) {
-                case 'without':
-                    $securityLevel = 'without';
-                    break;
-                case 'zf':
-                    $securityLevel = 'zf';
-                    break;
-            }
-            $this->session['security'] = $securityLevel;
-            //$this->setSecurityLevel($securityLevel);
-            $this->pushMessage("Security level set to $securityLevel");
-        }
-
-        //todo: Implement
-        if(isset($_GET['phpids'])) {
-            switch($_GET['phpids']) {
-                case 'on':
-                    $this->enablePhpIds(true);
-                    $this->pushMessage("PHPIDS is now enabled");
-                    break;
-                case 'off':
-                    $this->enablePhpIds(false);
-                    $this->pushMessage("PHPIDS is now disabled");
-                    break;
-            }
-        }
-
-        // Set the security level
-        $securityOptionsHtml = $securityLevelHtml = '';
-        foreach($config['security_levels'] as $level) {
-            $selected = '';
-            if(isset($this->session['security']) && $level === $this->session['security']) {
-                $selected          = ' selected="selected"';
-                $securityLevelHtml = "<p>Security Level is currently \"<em>$level</em>\"<p>";
-            }
-            if($level === 'with' && $securityLevelHtml === ''){
-                $selected          = ' selected="selected"';
-                $securityLevelHtml = "<p>Security Level is currently \"<em>$level</em>\"<p>";
-            }
-            $securityOptionsHtml .= "<option value=\"{$level}\"{$selected}>{$level}</option>";
-        }
-
-        $phpIdsHtml = 'PHPIDS is currently ';
-        if($this->getIsPhpIdsEnabled()) {
-            $phpIdsHtml .= '<em>enabled</em>. [<a href="?phpids=off">disable PHPIDS</a>]';
-        }else {
-            $phpIdsHtml .= '<em>disabled</em>. [<a href="?phpids=on">enable PHPIDS</a>]';
-        }
-        $view->setVariables([
-            'securityLevelHtml'   => $securityLevelHtml,
-            'securityOptionsHtml' => $securityOptionsHtml,
-            'phpIdsHtml'          => $phpIdsHtml
-        ]);
-        $this->setViewAndRender($html, ['page_id' => 'security', 'name' => 'security', 'body' => 'security']);
-    }
-
-    /**
-     * @param string $name
-     */
-    public function vulnerabilityAction(?string $name) {
-        $vulnerabilityTitle = $this->sm->get('vulnerabilityTitle');
-        $page = $this->sm->get('page');
-        $file = isset($this->session['security']) ? $this->session['security'] . '.php' : 'with.php';
-        $html = '';
-        if (isset($vulnerabilityTitle[$name])) {
-            require __DIR__ . "/../vulnerabilities/$name/source/$file";
-            $page['title'] .= $page['title_separator'] . $vulnerabilityTitle[$name];
-        } else {
-            $page['title'] .= $page['title_separator'] . 'Unknown';
-            $name = 'main_body';
-        }
-        $this->setViewAndRender($html, ['page_id' => $name, 'name' => $name, 'body' => $name]);
-    }
-
-    /**
-     * @param string $html
-     * @param string $name
-     */
-    protected function setViewAndRender(string $html = null, array $pageData) {
-        $view                  = $this->sm->get('view');
-        $page                  = $this->sm->get('page');
-        $page['page_id']       = $pageData['page_id'];
-        $page['help_button']   = $pageData['name'];
-        $page['source_button'] = $pageData['name'];
-        $page['body']          = $pageData['body'];
-        $view->setVariable('page', $page);
-        $items = $this->getLeftBlock($page);
-        foreach($items as $key => $value) {
-            $view->setVariable($key, $value);
-        }
-        $messagesHtml = $this->popMessagesToHtml();
-        $view->setVariables(['messagesHtml' => $messagesHtml, 'html' => $html]);
-        $view->render();
-    }
-
-    /**
-     *
-     */
-    public function phpInfoAction() {
-        phpinfo();
-        exit;
-    }
-
-    /**
-     * @param $pEnabled
-     */
-    protected function enablePhpIds($pEnabled) {
-        if($pEnabled) {
-            $this->session['php_ids'] = 'enabled';
-        }else {
-            unset($this->session['php_ids']);
-        }
-    }
-
-    /**
-     * @return bool
-     */
-    protected function getIsPhpIdsEnabled() {
-        return isset($this->session['php_ids']);
-    }
-
-    /**
-     * @param $data
-     */
-    protected function login($data) {
-        $this->session['username'] = $data['user'];
-        $this->session['role']     = $data['role'];
-    }
-
-    /**
-     * @return bool
-     */
-    protected function getIsUserLoggedIn() {
-        return isset($this->session['username']);
-    }
-
-    /**
-     *
-     */
-    protected function pageReload() {
-        $this->redirect($_SERVER['PHP_SELF']);
-    }
-
-    /**
-     * @return string
-     */
-    protected function getCurrentUser() {
-        return (isset($this->session['username']) ? $this->session['username'] : '');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getSecurityLevel() {
-        return isset($this->session['security']) ? $this->session['security'] : 'with';
-    }
-
-    /**
-     * @param $pSecurityLevel
-     */
-    protected function setSecurityLevel($pSecurityLevel) {
-        $this->session['security'] = $pSecurityLevel;
-    }
-
-    /**
-     * @param $pMessage
-     */
-    protected function pushMessage($pMessage) {
-        if( ! isset($this->session['messages'])) {
-            $this->session['messages'] = array();
-        }
-        $this->session['messages'][] = $pMessage;
-    }
-
-    /**
-     * @return bool|mixed
-     */
-    protected function popMessage() {
-        if( ! isset($this->session['messages']) || count($this->session['messages']) == 0) {
-            return false;
-        }
-
-        return array_shift($this->session['messages']);
-    }
-
-    /**
-     * @return string
-     */
-    protected function popMessagesToHtml() {
-        $messagesHtml = '';
-        while($message = $this->popMessage()) {    // TODO- sharpen!
-            $messagesHtml .= "<div class=\"message\">{$message}</div>";
-        }
-
-        return $messagesHtml;
-    }
-
-    /**
-     * @param $pPage
-     *
-     * @return array
-     */
-    protected function getLeftBlock($pPage) {
-        $config     = $this->sm->get('config');
-        $menuBlocks = $config['menublocks'];
-        $menuHtml   = '';
-        $count      = 0;
-        foreach($menuBlocks as $menuBlock) {
-            $menuBlockHtml = '';
-            if($count == 1) {
-                $menuHtml .= "<br><h5>VULNERABILITIES</h5>";
-            }
-
-            foreach($menuBlock as $menuItem) {
-                $selectedClass = ($menuItem['id'] == $pPage['page_id']) ? 'selected' : '';
-                $fixedUrl      = $menuItem['url'];
-                $img           = "";
-                $where         = "";
-                if(isset($menuItem['img'])) {
-                    $img = '/zend/images/' . $menuItem['img'];
-                    $img = "<img width=\"20\" height=\"20\" src='{$img}'>";
-                }
-                if(isset($menuItem['where'])) {
-                    $where = " target= \"{$menuItem['where']}\"";
-                }
-
-                $menuBlockHtml .= "<li onclick=\"window.location='$fixedUrl'\" class=\"{$selectedClass}\">
-                        <a href=\"{$fixedUrl}\" $where><nobr>" . $img . " {$menuItem['name']}</nobr></a>
-                    </li>";
-            }
-
-            $menuHtml .= "<ul>{$menuBlockHtml}</ul>";
-            $count ++;
-        }
-
-        // Get security cookie --
-        $securityLevelHtml = isset($this->session['security']) ? $this->session['security'] : 'with';
-
-        $phpIdsHtml = '<b>PHPIDS:</b> ';
-        $phpIdsHtml .= $this->getIsPhpIdsEnabled() ? 'enabled' : 'disabled';
-        $userInfoHtml = $this->getCurrentUser() ? '<b>Username:</b> ' . $this->getCurrentUser() : '';
-        $messagesHtml = $this->popMessagesToHtml();
-
-        if($messagesHtml) {
-            $messagesHtml = "<div class=\"body_padded\">{$messagesHtml}</div>";
-        }
-
-        $systemInfoHtml = "<div align=\"left\">{$userInfoHtml}<br /><b>Security Level:</b> {$securityLevelHtml}<br />{$phpIdsHtml}</div>";
-
-        //Todo: implement
-        /*      if($pPage['source_button']) {
-                    $systemInfoHtml = $this->zendButtonSourceHtmlGet($pPage['source_button']) . " $systemInfoHtml";
-                }
-                if($pPage['help_button']) {
-                    $systemInfoHtml = $this->zendButtonHelpHtmlGet($pPage['help_button']) . " $systemInfoHtml";
-                }*/
-
-        return [
-            'menuHtml'       => $menuHtml,
-            'phpIdsHtml'     => $phpIdsHtml,
-            'userInfoHtml'   => $userInfoHtml,
-            'messageHtml'    => $messagesHtml,
-            'systemInfoHtml' => $systemInfoHtml
-        ];
-    }
-
-    /**
-     * Temporarily disabled
-     *
-     * @param $pPage
-     */
-    public function zendHelpHtmlEcho($pPage) {
-        // Send Headers
-        Header('Cache-Control: no-cache, must-revalidate');        // HTTP/1.1
-        Header('Content-Type: text/html;charset=utf-8');        // TODO- proper XHTML headers...
-        Header("Expires: Tue, 23 Jun 2009 12:00:00 GMT");        // Date in the past
-        echo <<< EOT
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />
-        <title>{$pPage['title']}</title>
-        <link rel=\"stylesheet\" type=\"text/css\" href=\"" . ZEND_ROOT . "zend/css/help.css\" />
-        <link rel=\"icon\" type=\"\image/ico\" href=\"" . ZEND_ROOT . "favicon.ico\" />
-    </head>
-    <body>
-        <div id=\"container\">
-            {$pPage['body']}
-        </div>
-    </body>
-</html>
-EOT;
-    }
-
-    /**
-     * Temporarily disabled
-     *
-     * @param $pPage
-     */
-    public function zendSourceHtmlEcho($pPage) {
-        // Send Headers
-        Header('Cache-Control: no-cache, must-revalidate');        // HTTP/1.1
-        Header('Content-Type: text/html;charset=utf-8');        // TODO- proper XHTML headers...
-        Header("Expires: Tue, 23 Jun 2009 12:00:00 GMT");        // Date in the past
-
-        echo <<<EOT
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />
-        <title>{$pPage['title']}</title>
-        <link rel=\"stylesheet\" type=\"text/css\" href=\"" . ZEND_ROOT . "zend/css/source.css\" />
-        <link rel=\"icon\" type=\"\image/ico\" href=\"" . ZEND_ROOT . "favicon.ico\" />
-    </head>
-    <body>
-        <div id=\"container\">
-            {$pPage['body']}
-        </div>
-    </body>
-</html>
-EOT;
-    }
-
-    /**
-     * Temporarily disabled
-     *
-     * @param $pId
-     *
-     * @return string
-     */
-    public function zendButtonHelpHtmlGet($pId) {
-        $security = $this->getSecurityLevel();
-
-        return "<input type=\"button\" value=\"View Help\" class=\"popup_button\" onClick=\"javascript:popUp( '" . ZEND_ROOT . "vulnerabilities/view_help.php?id={$pId}&security={$security}' )\">";
-    }
-
-    /**
-     * Temporarily disabled
-     *
-     * @param $pId
-     *
-     * @return string
-     */
-    public function zendButtonSourceHtmlGet($pId) {
-        $security = $this->getSecurityLevel();
-
-        return "<input type=\"button\" value=\"View Source\" class=\"popup_button\" onClick=\"javascript:popUp( '" . ZEND_ROOT . "vulnerabilities/view_source.php?id={$pId}&security={$security}' )\">";
-    }
-
-    /**
-     * @return string
-     * @deprecated
-     */
-    public function dbConnectError() {
-        $DBMS_errorFunc = 'mysql_error()';
-
-        return '<div align="center">
-        <img src="' . ZEND_ROOT . 'zend/images/logo.png">
-        <pre>Unable to connect to the database.<br>' . $DBMS_errorFunc . '<br /><br /></pre>
-        Click <a href="' . ZEND_ROOT . 'setup.php">here</a> to setup the database.
-        </div>';
-    }
-
-    /**
-     * @return \PDO
-     * @deprecated
-     */
-    public function zendDatabaseConnect() {
-        $config = $this->sm->get('config');
-        try {
-            $pdo = new \PDO($config['db']['db_server'], $config['db']['db_user'], $config['db']['db_password']);
-        }catch(\PDOException $e) {
-            die($this->dbConnectError());
-        }
-
-        return $pdo;
-    }
-
-    /**
-     * @param $pLocation
-     */
-    protected function redirect($pLocation) {
-        session_commit();
-        header("location: $pLocation");
-    }
-}
-
-```
-```
-<?php
-namespace src\services;
-
-class Container
-{
-    protected $services = [];
-    public function setService($key, $value)
-    {
-        $this->services[$key] = $value;
-    }
-    public function get($key)
-    {
-        return $this->services[$key] ?? NULL;
-    }
-}
-```
-```
-<?php
-// config.inc.php
-return [
-    //Database to use
-    'db' => [
-        'name'        => 'MySQL',
-        'db_server'   => 'mysql:unix_socket=/var/run/mysqld/mysqld.sock;dbname=security',
-        'db_database' => 'security',
-        'db_user'     => 'vagrant',
-        'db_password' => 'vagrant',
-    ],
-
-    'company' => [
-        'name' => 'Zend'
-    ],
-
-    'application' => [
-        'title'           => 'Security Training',
-        'version'         => '3.0.4',
-        'title_separator' => ' :: ',
-        'body'            => '',
-        'page_id'         => '',
-        'help_button'     => '',
-        'source_button'   => '',
-    ],
-
-    'adapter' => [
-        'driver' => 'PDO_MYSQL',
-    ],
-
-    //Recaptcha config and security level
-    'zend'    => [
-        'site_key'               => '',
-        'secret_key'             => '',
-        'lang'                   => 'en',
-        'default_security_level' => 'white',
-    ],
-
-    'security_levels' => [
-        'without',
-        'with',
-        'zf'
-    ],
-
-    //File upload config
-    'fileUploads'     => [
-        'maxsize'  => 20480000,
-        'mimetype' => 'image/png,image/x-png',
-    ],
-
-    // Menu elements
-    'menublocks'      => $menuBlocks = [
-        'home'              => [
-            [
-                'id'   => 'home',
-                'name' => 'Home',
-                'url'  => 'index.php?action=home',
-                'img'  => "home.png"
-            ],
-            [
-                'id'   => 'security',
-                'name' => 'Security Levels',
-                'url'  => 'index.php?action=security',
-                'img'  => 'sec.png'
-            ],
-            [
-                'id'   => 'phpinfo',
-                'name' => 'PHP Info',
-                'url'  => 'index.php?action=phpinfo',
-                'img'  => 'info.png'
-            ]
-        ],
-        'vulnerabilities1'  => [
-            [
-                'id'   => 'sqli',
-                'name' => 'SQL Injection',
-                'url'  => 'index.php?action=sqli'
-            ]
-        ],
-        'vulnerabilities2'  => [
-            [
-                'id'   => 'brute',
-                'name' => 'Brute Force',
-                'url'  => 'index.php?action=brute'
-            ]
-        ],
-        'vulnerabilities3'  => [
-            [
-                'id'   => 'xss_r',
-                'name' => 'XSS Reflected',
-                'url'  => 'index.php?action=xssr'
-            ]
-        ],
-        'vulnerabilities4'  => [
-            [
-                'id'   => 'xss_s',
-                'name' => 'XSS Stored',
-                'url'  => 'index.php?action=xsss'
-            ]
-        ],
-        'vulnerabilities5'  => [
-            [
-                'id'   => 'idor',
-                'name' => 'Insecure Direct Obj Ref.',
-                'url'  => 'index.php?action=idor'
-            ]
-        ],
-        'vulnerabilities6'  => [
-            [
-                'id'   => 'smc',
-                'name' => 'Security Misconfig.',
-                'url'  => 'index.php?action=smc'
-            ]
-        ],
-        'vulnerabilities7'  => [
-            [
-                'id'   => 'sde',
-                'name' => 'Sensitive Data Exposure',
-                'url'  => 'index.php?action=sde'
-            ]
-        ],
-        'vulnerabilities8'  => [
-            [
-                'id'   => 'mflac',
-                'name' => 'Missing Function ACL',
-                'url'  => 'index.php?action=mflac'
-            ]
-        ],
-        'vulnerabilities9'  => [
-            [
-                'id'   => 'csrf',
-                'name' => 'CSRF',
-                'url'  => 'index.php?action=csrf'
-            ]
-        ],
-        'vulnerabilities10' => [
-            [
-                'id'   => 'ucwkv',
-                'name' => 'Using Comp Knwn Vuln',
-                'url'  => 'index.php?action=ucwkv'
-            ]
-        ],
-        'vulnerabilities11' => [
-            [
-                'id'   => 'urf',
-                'name' => 'Unvalidated Red/Forw',
-                'url'  => 'index.php?action=urf'
-            ]
-        ],
-        'vulnerabilities12' => [
-            [
-                'id'   => 'ci',
-                'name' => 'Command Execution',
-                'url'  => 'index.php?action=ci'
-            ]
-        ],
-        'vulnerabilities13' => [
-            [
-                'id'   => 'ufi',
-                'name' => 'Unrestricted File Inclusion',
-                'url'  => 'index.php?action=ufi'
-            ]
-        ],
-        'vulnerabilities14' => [
-            [
-                'id'   => 'ifu',
-                'name' => 'Insecure File Uploads',
-                'url'  => 'index.php?action=ifu'
-            ]
-        ],
-        'vulnerabilities15' => [
-            [
-                'id'   => 'captcha',
-                'name' => 'Insecure CAPTCHA',
-                'url'  => 'index.php?action=captcha'
-            ]
-        ],
-        'layout'            => [
-            [
-                'id'   => 'logout',
-                'name' => 'Logout',
-                'url'  => 'index.php?action=logout'
-            ]
-        ]
-    ],
-
-    'menuMap' => [
-        'home'     => ['method' => 'homeAction',          'params' => NULL ],
-        'security' => ['method' => 'securityAction',      'params' => NULL ],
-        'phpinfo'  => ['method' => 'phpInfoAction',       'params' => NULL ],
-        'logout'   => ['method' => 'logoutAction',        'params' => NULL ],
-        'Register' => ['method' => 'vulnerabilityAction', 'params' => 'sde' ],
-    ],
-
-    'vulnerabilityTitle' => [
-        'brute'   => 'Brute Force',
-        'captcha' => 'Insecure CAPTCHA',
-        'ci'      => 'Command Injection',
-        'csrf'    => 'Cross Site Request Forgery (CSRF)',
-        'idor'    => 'Insecure Direct Object References',
-        'mflac'   => 'Missing Function Level Access Control',
-        'sde'     => 'Sensitive Data Exposure',
-        'ufi'     => 'File Inclusion',
-        'urf'     => 'Unvalidated Redirects / Forwards',
-        'ifu'     => 'Insecure File Inclusion',
-        'smc'     => 'Security Misconfiguration',
-        'ucwkv'   => 'Insecure File Upload',
-        'urf'     => 'Unvalidated Redirects and Forwards',
-        'xssr'    => 'Reflected Cross Site Scripting (XSS)',
-        'xsss'    => 'Stored Cross Site Scripting (XSS)',
-        'sqli'    => 'SQL Injection',
-    ],
-
-    //Brute Force Detector
-    'bfdetect'        => [
-        // Disable PHP-BruteForce-Attack Detector
-        // 1 to disable, 0 to enable
-        'isDisable' => 0,
-
-        'table'       => 'bfdetect',
-
-        // If 404 requests reach over max_request, notify you
-        'maxRequest'  => 4, // per 5 minutes
-
-        // your/your server admin's email address
-        'to'          => 'security@securitytraining.com',
-        'headers'     => [
-            'from'     => 'guarddog@securitytraining.com',
-            'X-Mailer' => 'BruceForce Attack Detector',
-        ],
-
-        // if attack occurs, mail you / your server admin
-        // 0 to no emailing
-        'emailNotify' => 1,
-
-        // Log attacks in file, 1 to yes, 0 to no
-        'logDir'      => 'log',
-        'logAttack'   => 1,
-
-        // Log attacks in system log mechanism or server, 1 to yes, 0 to no
-        'logSys'      => 0,
-
-        // if set to 1, sleep the application for several minutes, causing attackers' tools timing out
-        // be careful, it may cause DOS to your web server
-        'antiAttack'  => 0,
-        'sleepTime'   => 5, // minute
-    ],
-];
-```
 * Example for the Insecure Direct Object Refs lab using Zend\Permissions\Acl\*
 ```
 <?php
@@ -1895,6 +1107,10 @@ if(isset($_GET['img'])) {
 ## ERRATA
 * http://localhost:8885/#/3/27
   * line 3: logic should sleep if the username and/or password is invalid!
+* http://localhost:8885/#/3/67
+  * Need to update that screenshot!
+* http://localhost:8885/#/3/68
+  * NOTE: `track_errors` removed in PHP 8
 
 ## Actual Attacks from Customer Access Log (sanitized)
 ```
