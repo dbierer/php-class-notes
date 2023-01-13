@@ -2,8 +2,7 @@
 
 Last: http://localhost:8885/#/3/34
 
-## Assignments
-For Fri 13 Jan 2023:
+## Docker Container Instructions
 * Install Docker and Docker Compose
   * https://www.docker.com/get-started/
   * or, from the command line:
@@ -15,7 +14,24 @@ sudo apt install docker-composer
 ```
 docker run hello-world
 ```
+* Create a blank dir
+* Download and upzip source into the blank dir (TBD)
+* Run:
+```
+./admin.sh build
+./admin.sh up -d
+./admin.sh shell
+# update the database:
+/tmp/restore_db.sh
+```
+* Update the `/etc/hosts` file on your *host* computer (e.g. not the Docker image computer)
+```
+10.20.20.10    security sandbox orderapp phpmyadmin
+```
 
+
+## Assignments
+For Mon 16 Jan 2023:
 
 * SQL Injection: Portal Exercise
 * Brute Force Detector Class Exercise
@@ -24,6 +40,7 @@ docker run hello-world
 * Cross-Site Scripting (XSS): Portal Exercise
 * Cross Site Request Forgery (CSRF) Portal Exercise
 * Security Misconfiguration Portal Exercise
+* External XML Entities Portal Exercise
 
 For Wed 11 Jan 2023:
 * Refresh the VM using the updated Vagrantfile
