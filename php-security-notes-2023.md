@@ -1,8 +1,14 @@
 # PHP SECURITY CLASS NOTES
 
 Last: http://localhost:8885/#/5/18
+IMPORTANT: get Orderapp running (insecurely)
 
 ## Assignments
+For Fri 20 Jan 2023:
+* Secure File Uploads
+* Secure CAPTCHA Lab
+  * OPTIONAL: you do need a Google account and need to apply for a reCAPTCHA key
+
 For Wed 18 Jan 2023:
 * SQL Injection: Portal Exercise
 * Brute Force Detector Class Exercise
@@ -12,7 +18,6 @@ For Wed 18 Jan 2023:
 * Cross Site Request Forgery (CSRF) Portal Exercise
 * Security Misconfiguration Portal Exercise
 * External XML Entities Portal Exercise
-
 * Command Injection lab
 * Unrestricted File Inclusion Lab
 
@@ -28,33 +33,14 @@ Choose "Login"
 * Password: password
 
 ## TODO
-* Find reference in https://wiki.php.net/rfc for deprecated back tics
+* Q: Is Sodium cross-platform?
+* A: ???
+
+* Q: Find reference in https://wiki.php.net/rfc for deprecated back tics
+* A: Suggestion was declined for PHP 8
+  * See: https://wiki.php.net/rfc/deprecate-backtick-operator-v2
 
 * Check for auth/ACL examples:
-
-* Brute Force Detector Class Exercise
-  * Image doesn't show up
-  * Rewrite to make worse: distinguish between user/pwd
-```
-$stmt   = $pdo->query("SELECT * FROM users WHERE user='$username' AND password='$pass'");
-```
-* Cross Site Request Forgery (CSRF) Portal Exercise
-  * Move the form into "with.php" so that you can add extra security
-* OrderApp: make sure it's working (insecurely)
-* Sandbox/public/hack_me.php:
-  * Make sure entries are logged
-```
-<?php
-// sandbox/public/hack_me.php
-$logFile = __DIR__ . '/' date('Y-m-d') . '.log';
-$flower  = __DIR__ . '/images/hacked.png';
-if ($_POST['data']) {
-    file_put_contents($logFile, base64_decode($_POST['data']));
-}
-readfile($flower);
-```
-
-* Get updated course slides to Jan
 
 * Q: Example using DOM to clean allowed HTML
 * A: TBD
@@ -108,6 +94,18 @@ sudo usermod -aG docker $USER
 Also try this:
 ```
 sudo snap install docker
+```
+If you need to restart PHP-FPM, do this:
+```
+ps
+```
+* Make a note of the `php-fpm: master process` number, then:
+```
+# kill <NUMBER>
+```
+* Restart PHP-FPM:
+```
+# /usr/sbin/php-fpm81
 ```
 
 ## Expanded VM Installation Instructions
@@ -1196,6 +1194,38 @@ if(isset($_GET['img'])) {
   * Index "0" is undefined!
 * http://localhost:8885/#/5/7
   * "lab" s/be "Lab"
+* http://localhost:8885/#/5/20
+  * Missing underscore: `move_uploaded file().`
+
+* Fix the nginx.conf so that you can run the apps
+
+* Brute Force Detector Class Exercise
+  * Image doesn't show up
+  * Rewrite to make worse: distinguish between user/pwd
+```
+$stmt   = $pdo->query("SELECT * FROM users WHERE user='$username' AND password='$pass'");
+```
+* Cross Site Request Forgery (CSRF) Portal Exercise
+  * Move the form into "with.php" so that you can add extra security
+* OrderApp: make sure it's working (insecurely)
+* Sandbox/public/hack_me.php:
+  * Make sure entries are logged
+```
+<?php
+// sandbox/public/hack_me.php
+$logFile = __DIR__ . '/' date('Y-m-d') . '.log';
+$flower  = __DIR__ . '/images/hacked.png';
+if ($_POST['data']) {
+    file_put_contents($logFile, base64_decode($_POST['data']));
+}
+readfile($flower);
+```
+* External XML Entities not on the list!
+  * Even added to `App::HACK_TITLES` still doesn't work
+
+* UFI lab
+  * `ost this URL` ???
+  * Looks like the `*.phtml` file has an unclosed `<a>` tag
 
 ## Actual Attacks from Customer Access Log (sanitized)
 ```
@@ -1291,5 +1321,31 @@ if ($ok) {
 	App::$html .= '<img src="' . $folder . $name . '" width="50%"/>';
 } else {
 	App::$html .= 'Unknown image';
+}
+```
+CLI Lab
+```
+<?php
+/* This is the code file you need to modify */
+
+global $config;
+use SecurityApp\App;
+if( isset( $_POST[ 'submit' ] ) ) {
+
+    $target = $_POST[ 'ip' ];
+	if (filter_var($target, FILTER_VALIDATE_IP)) {
+		// we now have a valid IP address, now sanitize
+		$target = escapeshellarg($target);
+		// Determine OS and execute the ping command.
+		if (stristr(php_uname('s'), 'Windows NT')) {
+			$cmd = shell_exec( 'ping  ' . $target );
+			App::$html .= '<pre>'.$cmd.'</pre>';
+		} else {
+			$cmd = shell_exec('ping  -c 3 ' . $target);
+			App::$html .= '<pre>' . $cmd . '</pre>';
+		}
+    } else {
+		App::$html .= 'Invalid IP address';
+	}
 }
 ```
