@@ -1,7 +1,7 @@
 # PHP SECURITY CLASS NOTES
 
 Last: http://localhost:8885/#/5/18
-IMPORTANT: get Orderapp running (insecurely)
+IMPORTANT: find out why "xxe" vulnerability isn't working
 
 ## Assignments
 For Fri 20 Jan 2023:
@@ -33,6 +33,8 @@ Choose "Login"
 * Password: password
 
 ## TODO
+* Install openssl in Dockerfile
+
 * Q: Is Sodium cross-platform?
 * A: ???
 
@@ -1196,6 +1198,10 @@ if(isset($_GET['img'])) {
   * "lab" s/be "Lab"
 * http://localhost:8885/#/5/20
   * Missing underscore: `move_uploaded file().`
+* http://localhost:8885/#/6/22
+  * Remove the 5th paragraph: no longer true!
+* http://localhost:8885/#/6/43
+  * Duplicate slide: remove
 
 * Fix the nginx.conf so that you can run the apps
 
@@ -1347,5 +1353,68 @@ if( isset( $_POST[ 'submit' ] ) ) {
     } else {
 		App::$html .= 'Invalid IP address';
 	}
+}
+```
+SDE Lab
+```
+<?php
+/* This is the code file you need to modify */
+
+global $config;
+use SecurityApp\App;
+$msg = '';
+$username = '';
+$password = '';
+if (!empty($_REQUEST['username']) && !empty($_REQUEST['password'])) {
+
+    $username = $_REQUEST['username'] ?? '';
+    $password = $_REQUEST['password'] ?? '';
+
+    $regex = [
+		'![A-Z]!',
+		'![a-z]!',
+		'![0-9]!',
+		'![^\w]!',
+		'!^.{8,}$!',
+	];
+	$valid = 0;
+	foreach ($regex as $pattern)
+		$valid += preg_match($pattern, $password);
+
+	$valid += ctype_alnum($username);
+
+	if ($valid === 6) {
+		// Code to check the database for existing username, we'll assume none here
+
+		include __DIR__ . '/User.php';
+		$user = new User($username, $password);
+
+		//Call model and store the entity...
+	} else {
+		$msg = 'Invalid password, please try again. Refer to our guidelines to the right.';
+	}
+
+}
+$txt = str_repeat('*', strlen($password));
+App::$html .= <<<EOT
+<hr>
+<form method="get">
+<label>Username: <input type="text" name="username"> </label><br>
+<label>Password: <input type="text" name="password"></label><br>
+<input type="submit" value="Register" name="action">
+</form>
+<hr>
+EOT;
+if (!empty($username) && !empty($password)) {
+    App::$html .= <<<EOT
+    <br>
+    <h1>Thank You for signing up for our cool service!</h1>
+    <table>
+    <tr><th>Username</th><td>$username</td></tr>
+    <tr><th>Password</th><td>$txt</td></tr>
+    </table>
+    $msg
+    <p>We are here to help if needed.</p>
+EOT;
 }
 ```
