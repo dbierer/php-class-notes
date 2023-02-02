@@ -33,22 +33,21 @@ Choose "Login"
 * Password: password
 
 ## TODO
-* Install openssl in Dockerfile
-
 * Q: Is Sodium cross-platform?
 * A: ???
 
-* Q: Find reference in https://wiki.php.net/rfc for deprecated back tics
-* A: Suggestion was declined for PHP 8
-  * See: https://wiki.php.net/rfc/deprecate-backtick-operator-v2
-
-* Check for auth/ACL examples:
+* Q: Auth/ACL examples?
+* A: ???
 
 * Q: Example using DOM to clean allowed HTML
 * A: TBD
 
 * Q: Find article on password complexity
 * A: TBD
+
+* Q: Find reference in https://wiki.php.net/rfc for deprecated back tics
+* A: Suggestion was declined for PHP 8
+  * See: https://wiki.php.net/rfc/deprecate-backtick-operator-v2
 
 * Q: Find article that documents the 2-stage SQL injection attack
 * A: https://bertwagner.com/posts/how-to-steal-data-using-a-second-order-sql-injection-attack/
@@ -159,11 +158,11 @@ $output = '';
 // validate input
 $name = $_GET['name'] ?? '';
 if ($name !== strip_tags($name)) {
-	error_log('Potential XSS found');
-	exit ('Please try again');
+    error_log('Potential XSS found');
+    exit ('Please try again');
 }
 if (!empty($name)) {
-	$name = htmlspecialchars($name);
+    $name = htmlspecialchars($name);
     $output .= "Hello $name and welcome to our same day service";
 } else {
     $output .= "Hello ";
@@ -1203,7 +1202,8 @@ if(isset($_GET['img'])) {
 * http://localhost:8885/#/6/43
   * Duplicate slide: remove
 
-* Fix the nginx.conf so that you can run the apps
+* Fix the nginx.conf so that you can run the apps off /var/www/html
+* Why can't you run apps using Docker on Windows?
 
 * Brute Force Detector Class Exercise
   * Image doesn't show up
@@ -1213,25 +1213,15 @@ $stmt   = $pdo->query("SELECT * FROM users WHERE user='$username' AND password='
 ```
 * Cross Site Request Forgery (CSRF) Portal Exercise
   * Move the form into "with.php" so that you can add extra security
-* OrderApp: make sure it's working (insecurely)
-* Sandbox/public/hack_me.php:
-  * Make sure entries are logged
-```
-<?php
-// sandbox/public/hack_me.php
-$logFile = __DIR__ . '/' date('Y-m-d') . '.log';
-$flower  = __DIR__ . '/images/hacked.png';
-if ($_POST['data']) {
-    file_put_contents($logFile, base64_decode($_POST['data']));
-}
-readfile($flower);
-```
-* External XML Entities not on the list!
+x* OrderApp: make sure it's working (insecurely)
+x* Sandbox/public/hack_me.php:
+x  * Make sure entries are logged
+x* External XML Entities not on the list!
   * Even added to `App::HACK_TITLES` still doesn't work
 
-* UFI lab
-  * `ost this URL` ???
-  * Looks like the `*.phtml` file has an unclosed `<a>` tag
+x* UFI lab
+x  * `ost this URL` ???
+x  * Looks like the `*.phtml` file has an unclosed `<a>` tag
 
 ## Actual Attacks from Customer Access Log (sanitized)
 ```
@@ -1266,32 +1256,32 @@ global $config;
 /* App::getMysqli() returns a valid mysqli instance */
 
 if( isset( $_REQUEST['Login'] ) ) {
-	$time_current = time();
-	$time_stored  = $_SESSION['time'] ?? $time_current;
-	// add a safety check to see if login requests are too frequent
-	if (($time_current - $time_stored) < 1000) {
-		error_log($_SERVER['REQUEST_URL'] . ':' . $_SERVER['REMOTE_ADDR'] . ': Sequential request less than 1 second detected');
-	} else {
-		$username = strip_tags($_REQUEST['username'] ?? '');
-		$pass = password_hash($_REQUEST['password'], PASSWORD_DEFAULT);
-		try{
-			$pdo    = App::getPdo($config);
-			$stmt   = $pdo->prepare("SELECT * FROM users WHERE user=? AND password=?");
-			$stmt->execute([$username, $pass]);
-			$result = $stmt->fetch(PDO::FETCH_ASSOC);
-		}catch(Exception $e){
-			exit('<pre>' . $e->getMessage() . '</pre>');
-		}
-		if( $result && count($result) ) {
-			// Login Successful
-			App::$html .= "<p>Welcome to the password protected area " . $result['user'] . "</p>";
-			App::$html .= '<img src="hackable/users/' . $result['avatar'] . '" />';
-		} else {
-			//Login failed
-			App::$html .= "<pre><br>Username and/or password incorrect.</pre>";
-		}
-	}
-	$_SESSION['time'] = $time_current;
+    $time_current = time();
+    $time_stored  = $_SESSION['time'] ?? $time_current;
+    // add a safety check to see if login requests are too frequent
+    if (($time_current - $time_stored) < 1000) {
+        error_log($_SERVER['REQUEST_URL'] . ':' . $_SERVER['REMOTE_ADDR'] . ': Sequential request less than 1 second detected');
+    } else {
+        $username = strip_tags($_REQUEST['username'] ?? '');
+        $pass = password_hash($_REQUEST['password'], PASSWORD_DEFAULT);
+        try{
+            $pdo    = App::getPdo($config);
+            $stmt   = $pdo->prepare("SELECT * FROM users WHERE user=? AND password=?");
+            $stmt->execute([$username, $pass]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        }catch(Exception $e){
+            exit('<pre>' . $e->getMessage() . '</pre>');
+        }
+        if( $result && count($result) ) {
+            // Login Successful
+            App::$html .= "<p>Welcome to the password protected area " . $result['user'] . "</p>";
+            App::$html .= '<img src="hackable/users/' . $result['avatar'] . '" />';
+        } else {
+            //Login failed
+            App::$html .= "<pre><br>Username and/or password incorrect.</pre>";
+        }
+    }
+    $_SESSION['time'] = $time_current;
 }
 ```
 Stored XSSS Lab
@@ -1318,15 +1308,15 @@ $ok = 0;
 $allowed = glob(SRC_DIR . '/public/images/*.png');
 $name = $name . '.png';
 foreach ($allowed as $fn) {
-	if (basename($fn) === $name) {
-		$ok++;
-		break;
-	}
+    if (basename($fn) === $name) {
+        $ok++;
+        break;
+    }
 }
 if ($ok) {
-	App::$html .= '<img src="' . $folder . $name . '" width="50%"/>';
+    App::$html .= '<img src="' . $folder . $name . '" width="50%"/>';
 } else {
-	App::$html .= 'Unknown image';
+    App::$html .= 'Unknown image';
 }
 ```
 CLI Lab
@@ -1339,20 +1329,20 @@ use SecurityApp\App;
 if( isset( $_POST[ 'submit' ] ) ) {
 
     $target = $_POST[ 'ip' ];
-	if (filter_var($target, FILTER_VALIDATE_IP)) {
-		// we now have a valid IP address, now sanitize
-		$target = escapeshellarg($target);
-		// Determine OS and execute the ping command.
-		if (stristr(php_uname('s'), 'Windows NT')) {
-			$cmd = shell_exec( 'ping  ' . $target );
-			App::$html .= '<pre>'.$cmd.'</pre>';
-		} else {
-			$cmd = shell_exec('ping  -c 3 ' . $target);
-			App::$html .= '<pre>' . $cmd . '</pre>';
-		}
+    if (filter_var($target, FILTER_VALIDATE_IP)) {
+        // we now have a valid IP address, now sanitize
+        $target = escapeshellarg($target);
+        // Determine OS and execute the ping command.
+        if (stristr(php_uname('s'), 'Windows NT')) {
+            $cmd = shell_exec( 'ping  ' . $target );
+            App::$html .= '<pre>'.$cmd.'</pre>';
+        } else {
+            $cmd = shell_exec('ping  -c 3 ' . $target);
+            App::$html .= '<pre>' . $cmd . '</pre>';
+        }
     } else {
-		App::$html .= 'Invalid IP address';
-	}
+        App::$html .= 'Invalid IP address';
+    }
 }
 ```
 SDE Lab
@@ -1371,28 +1361,28 @@ if (!empty($_REQUEST['username']) && !empty($_REQUEST['password'])) {
     $password = $_REQUEST['password'] ?? '';
 
     $regex = [
-		'![A-Z]!',
-		'![a-z]!',
-		'![0-9]!',
-		'![^\w]!',
-		'!^.{8,}$!',
-	];
-	$valid = 0;
-	foreach ($regex as $pattern)
-		$valid += preg_match($pattern, $password);
+        '![A-Z]!',
+        '![a-z]!',
+        '![0-9]!',
+        '![^\w]!',
+        '!^.{8,}$!',
+    ];
+    $valid = 0;
+    foreach ($regex as $pattern)
+        $valid += preg_match($pattern, $password);
 
-	$valid += ctype_alnum($username);
+    $valid += ctype_alnum($username);
 
-	if ($valid === 6) {
-		// Code to check the database for existing username, we'll assume none here
+    if ($valid === 6) {
+        // Code to check the database for existing username, we'll assume none here
 
-		include __DIR__ . '/User.php';
-		$user = new User($username, $password);
+        include __DIR__ . '/User.php';
+        $user = new User($username, $password);
 
-		//Call model and store the entity...
-	} else {
-		$msg = 'Invalid password, please try again. Refer to our guidelines to the right.';
-	}
+        //Call model and store the entity...
+    } else {
+        $msg = 'Invalid password, please try again. Refer to our guidelines to the right.';
+    }
 
 }
 $txt = str_repeat('*', strlen($password));

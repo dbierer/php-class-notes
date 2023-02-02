@@ -64,26 +64,26 @@ Classnames are not case sensitive, even when using namespaces:
 ```
 <?php
 namespace X {
-	class Test
-	{
-		public $name = 'X_TEST';
-	}
+        class Test
+        {
+                public $name = 'X_TEST';
+        }
 }
 
 namespace Y {
-	class TEST
-	{
-		public $name = 'Y_TEST';
-	}
+        class TEST
+        {
+                public $name = 'Y_TEST';
+        }
 }
 
 namespace {
-	use X\Test;
-	use Y\TEST;;
-	// solution: use an alias:
-	// use Y\TEST as YTest;
-	$test = new Test();
-	echo $test->name;
+        use X\Test;
+        use Y\TEST;;
+        // solution: use an alias:
+        // use Y\TEST as YTest;
+        $test = new Test();
+        echo $test->name;
 }
 // output:
 // PHP Fatal error:  Cannot use Y\TEST as TEST because the name is already in use in /srv/code/test.php on line 18
@@ -93,21 +93,21 @@ What's the difference between `define()` and `const` for constants:
 ```
 <?php
 namespace x {
-	define('TEST1', 'xyz');
-	const TEST2 = 'abc';
+        define('TEST1', 'xyz');
+        const TEST2 = 'abc';
 }
 
 namespace y {
 
-	function test()
-	{
-		return TEST1 . TEST2;
-	}
+        function test()
+        {
+                return TEST1 . TEST2;
+        }
 
-	echo test();
-	// output: xyzTEST2
+        echo test();
+        // output: xyzTEST2
 }
-``
+```
 Namespaces:
 * Cannot have keywords in the namespace in PHP 7.1
 ```
@@ -157,22 +157,22 @@ Truth table:
 ```
 <?php
 echo "Logical AND\n";
-printf("%04b\n", 0b00 & 0b00);	// 0
-printf("%04b\n", 0b00 & 0b01);	// 0
-printf("%04b\n", 0b01 & 0b00);	// 0
-printf("%04b\n", 0b01 & 0b01);	// 1
+printf("%04b\n", 0b00 & 0b00);  // 0
+printf("%04b\n", 0b00 & 0b01);  // 0
+printf("%04b\n", 0b01 & 0b00);  // 0
+printf("%04b\n", 0b01 & 0b01);  // 1
 
 echo "Logical OR\n";
-printf("%04b\n", 0b00 | 0b00);	// 0
-printf("%04b\n", 0b00 | 0b01);	// 1
-printf("%04b\n", 0b01 | 0b00);	// 1
-printf("%04b\n", 0b01 | 0b01);	// 1
+printf("%04b\n", 0b00 | 0b00);  // 0
+printf("%04b\n", 0b00 | 0b01);  // 1
+printf("%04b\n", 0b01 | 0b00);  // 1
+printf("%04b\n", 0b01 | 0b01);  // 1
 
 echo "Logical XOR\n";
-printf("%04b\n", 0b00 ^ 0b00);	// 0
-printf("%04b\n", 0b00 ^ 0b01);	// 1
-printf("%04b\n", 0b01 ^ 0b00);	// 1
-printf("%04b\n", 0b01 ^ 0b01);	// 0
+printf("%04b\n", 0b00 ^ 0b00);  // 0
+printf("%04b\n", 0b00 ^ 0b01);  // 1
+printf("%04b\n", 0b01 ^ 0b00);  // 1
+printf("%04b\n", 0b01 ^ 0b01);  // 0
 ```
 Examples of the three ops:
 ```
@@ -208,9 +208,9 @@ Comparing ASCII values
 <?php
 $a = 'A';
 $b = 'b';
-var_dump($a < $b);	// TRUE
-var_dump($a == $b);	// FALSE
-var_dump($a > $b);	// FALSE
+var_dump($a < $b);      // TRUE
+var_dump($a == $b);     // FALSE
+var_dump($a > $b);      // FALSE
 ```
 Nested Ternary Construct
 ```
@@ -239,14 +239,14 @@ Switch example
 $a = '123';
 
 switch ($a) {
-	case 123 :
-		echo __LINE__;
-	case 456 :
-		echo __LINE__;
-	case '123' :
-		echo __LINE__;
-	default :
-		echo __LINE__;
+        case 123 :
+                echo __LINE__;
+        case 456 :
+                echo __LINE__;
+        case '123' :
+                echo __LINE__;
+        default :
+                echo __LINE__;
 }
 echo PHP_EOL;
 
@@ -275,25 +275,25 @@ Simple example:
 <?php
 $str = <<<EOT
 <Outer>
-	<A>
-		<B>
-			<C>Value 1</C>
-			<C>Value 2</C>
-			<C>Value 3</C>
-			<C id="123" />
-		</B>
-		<B>
-			<C>Value 4</C>
-			<C>Value 5</C>
-			<C>Value 6</C>
-		</B>
-	</A>
-	<A>
-		<C>Value 2-1</C>
-		<C>Value 2-2</C>
-		<C>Value 2-3</C>
-		<C id="123" />
-	</A>
+        <A>
+                <B>
+                        <C>Value 1</C>
+                        <C>Value 2</C>
+                        <C>Value 3</C>
+                        <C id="123" />
+                </B>
+                <B>
+                        <C>Value 4</C>
+                        <C>Value 5</C>
+                        <C>Value 6</C>
+                </B>
+        </A>
+        <A>
+                <C>Value 2-1</C>
+                <C>Value 2-2</C>
+                <C>Value 2-3</C>
+                <C id="123" />
+        </A>
 </Outer>
 EOT;
 $xml = new SimpleXMLElement($str);
@@ -316,27 +316,27 @@ JSON examples:
 ```
 <?php
 $arr = [
-	'A' => [
-		'B' => [
-			'C' => [
-				'C1',
-				'C2',
-				'C3',
-				'D' => [
-					'E' => [
-						'E1',
-						'E2',
-						'E3',
-					],
-				],
-			],
-		],
-	],
+        'A' => [
+                'B' => [
+                        'C' => [
+                                'C1',
+                                'C2',
+                                'C3',
+                                'D' => [
+                                        'E' => [
+                                                'E1',
+                                                'E2',
+                                                'E3',
+                                        ],
+                                ],
+                        ],
+                ],
+        ],
 ];
 
 $json = json_encode($arr, JSON_PRETTY_PRINT, 512);
 $decoded[] = json_decode($json, FALSE); // stdClass instance
-$decoded[] = json_decode($json, TRUE);	// associative array
+$decoded[] = json_decode($json, TRUE);  // associative array
 var_dump($decoded);
 echo PHP_EOL;
 
@@ -413,7 +413,7 @@ Phonetic functions example:
 <?php
 $a = 'akshual';
 $b = 'actual';
-echo metaphone($a);	// AKXL
+echo metaphone($a);     // AKXL
 echo PHP_EOL;
 echo metaphone($b); // AKTL
 echo PHP_EOL;
@@ -454,8 +454,8 @@ Greediness Example:
 ```
 <?php
 $str = '<p>Para 1</p><p>Para 2</p><p>Para 3</p>';
-// $pat = '!<p>.*</p>!';	// returns the entire string
-$pat = '!<p>.*?</p>!';	// returns "<p>Para 1</p>"
+// $pat = '!<p>.*</p>!';        // returns the entire string
+$pat = '!<p>.*?</p>!';  // returns "<p>Para 1</p>"
 preg_match($pat, $str, $matches);
 var_dump($matches);
 echo PHP_EOL;
@@ -508,7 +508,7 @@ etc.
 * Iteration
   * Lookup these interfaces and understand what they do
      * `Traversable`
-	  * Both of the interfaces mentioned `extend` this interface
+          * Both of the interfaces mentioned `extend` this interface
      * `Iterator`
        * Introduced earlier
        * Requires hard-coded iteration methods
@@ -522,27 +522,27 @@ etc.
 <?php
 class A
 {
-	protected $test = NULL;
-	public function getTest()
-	{
-		return var_export($this->test, TRUE);
-	}
-	public function setTest(array $test)
-	{
-		$this->test = $test;
-	}
+        protected $test = NULL;
+        public function getTest()
+        {
+                return var_export($this->test, TRUE);
+        }
+        public function setTest(array $test)
+        {
+                $this->test = $test;
+        }
 }
 
 class B extends A
 {
-	// doesn't work:
-	// protected function setTest(ArrayIterator $test)
+        // doesn't work:
+        // protected function setTest(ArrayIterator $test)
 
-	// works:
-	public function setTest(iterable $test)
-	{
-		$this->test = $test;
-	}
+        // works:
+        public function setTest(iterable $test)
+        {
+                $this->test = $test;
+        }
 }
 
 $b = new B();
@@ -555,20 +555,20 @@ echo $b->getTest();
 <?php
 abstract class A
 {
-	protected $test = NULL;
-	public function getTest()
-	{
-		return var_export($this->test, TRUE);
-	}
-	public abstract function setTest(array $test);
+        protected $test = NULL;
+        public function getTest()
+        {
+                return var_export($this->test, TRUE);
+        }
+        public abstract function setTest(array $test);
 }
 
 class B extends A
 {
-	public function setTest(iterable $test)
-	{
-		$this->test = $test;
-	}
+        public function setTest(iterable $test)
+        {
+                $this->test = $test;
+        }
 }
 
 $b = new B();
@@ -580,25 +580,25 @@ echo $b->getTest();
 <?php
 interface TestInterface
 {
-	public function setTest(array $test);
+        public function setTest(array $test);
 }
 
 abstract class A implements TestInterface
 {
-	protected $test = NULL;
-	public function getTest()
-	{
-		return var_export($this->test, TRUE);
-	}
+        protected $test = NULL;
+        public function getTest()
+        {
+                return var_export($this->test, TRUE);
+        }
 }
 
 class B extends A
 {
-	// NOTE: this is mandatory as "setTest()" isn't defined anywhere else
-	public function setTest(iterable $test)
-	{
-		$this->test = $test;
-	}
+        // NOTE: this is mandatory as "setTest()" isn't defined anywhere else
+        public function setTest(iterable $test)
+        {
+                $this->test = $test;
+        }
 }
 
 $b = new B();
@@ -636,36 +636,36 @@ echo $show->show($obj);
 // list of "callable" variations
 class Test
 {
-	public function something()
-	{
-		return 'SOMETHING';
-	}
-	public static function somethingElse()
-	{
-		return 'SOMETHING ELSE';
-	}
+        public function something()
+        {
+                return 'SOMETHING';
+        }
+        public static function somethingElse()
+        {
+                return 'SOMETHING ELSE';
+        }
 }
 
 function whatever ()
 {
-	return 'WHATEVER';
+        return 'WHATEVER';
 }
 
 $what = function () {
-	return 'WHAT';
+        return 'WHAT';
 };
 
 $invoke = new class () {
-	public function __invoke()
-	{
-		return 'INVOKE';
-	}
+        public function __invoke()
+        {
+                return 'INVOKE';
+        }
 };
 
 function test (callable $callback)
 {
-	echo $callback();
-	echo PHP_EOL;
+        echo $callback();
+        echo PHP_EOL;
 }
 
 $test = new Test();
@@ -823,10 +823,10 @@ Example where an error isn't caught because the code never ran
 * No errors are thrown:
 ```
 try {
-	echo 'This won\'t work'
+        echo 'This won\'t work'
 } catch (Throwable $t) {
-	echo __LINE__ . "\n";
-	echo get_class($t) . $t;
+        echo __LINE__ . "\n";
+        echo get_class($t) . $t;
 }
 
 // actual output:
@@ -837,10 +837,10 @@ In this example, the `ParseError` is caught be we're using `eval()` to evaluate 
 ```
 <?php
 try {
-	eval("echo 'This won\'t work' echo 'Because there's no semi-colon';");
+        eval("echo 'This won\'t work' echo 'Because there's no semi-colon';");
 } catch (Throwable $t) {
-	echo __LINE__ . "\n";
-	echo get_class($t) . $t;
+        echo __LINE__ . "\n";
+        echo get_class($t) . $t;
 }
 
 // actual output:
