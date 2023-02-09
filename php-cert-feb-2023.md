@@ -117,9 +117,9 @@ echo PHP_EOL;
 
 What is considered "empty"?
 * https://www.php.net/manual/en/language.types.boolean.php#language.types.boolean.casting
-Overview of topics: https://www.zend.com/training/php-certification-exam
-Good overview of typical PHP program operation:
-* https://www.zend.com/blog/exploring-new-php-jit-compiler
+  * Overview of topics: https://www.zend.com/training/php-certification-exam
+* Good overview of typical PHP program operation:
+  * https://www.zend.com/blog/exploring-new-php-jit-compiler
 Constants
 ```
 <?php
@@ -137,7 +137,7 @@ namespace xyz {
 ### Bitwise Operators
 Tutorial oriented towards the exam:
 * https://www.w3resource.com/php/operators/bitwise-operators.php
-Truth table:
+* Truth table:
 ```
 <?php
 echo "Logical AND\n";
