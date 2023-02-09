@@ -91,7 +91,7 @@ namespace y {
 	echo test();
 	// output: xyzTEST2
 }
-``
+```
 Namespaces:
 * Cannot have keywords in the namespace in PHP 7.1
 ```
