@@ -1,6 +1,12 @@
 # PHP Certification -- Feb 2023
 
-Last: http://localhost:8884/#/2/33
+Last: http://localhost:8884/#/4/15
+Get updated slides!
+
+## Homework
+For Tue 14 Feb 2023
+* Quiz questions for Topic #2 (Data Formats and Types)
+* Quiz questions for Topic #3 (Strings and Patterns)
 
 ## Class Notes
 * PHP Source Code: https://github.com/php/php-src
@@ -198,6 +204,14 @@ Null coalesce operator example
 ```
 $token = $_GET['token'] ?? $_POST['token'] ?? $_COOKIE['token'] ?? 'DEFAULT';
  ```
+Yet another example
+```
+<?php
+// example of null coalesce operator
+// first expression is the 1st CLI arg
+// if that's not present, looks to the URL or post
+$action = $argv[1] ?? $_GET['action'] ?? $_POST['action'] ?? 'nothing';
+```
 
 `php.ini` file settings:
 * https://www.php.net/manual/en/ini.list.php
@@ -216,6 +230,28 @@ https://www.php.net/manual/en/features.gc.performance-considerations.php
 ## Data Formats
 Read up on `SimpleXMLElement`
 * https://www.php.net/manual/en/simplexml.examples-basic.php
+* Simple example
+```
+<?php
+$xml = <<<EOT
+<topics>
+    <topic id="1">XML</topic>
+    <topic id="2">Web Services</topic>
+    <topic id="3">Whatever</topic>
+    <info>
+		<name>Doug</name>
+		<name>Hudo</name>
+    </info>
+</topics>
+EOT;
+
+$simple = new SimpleXMLElement($xml);
+echo $simple->info->name;		// Doug
+echo $simple->info->name[1];	// Hudo
+echo $simple->topic[2];			// Whatever
+echo $simple->topic[2]['id'];	// 3
+```
+
 * XPath Tutorial: https://www.w3schools.com/xml/xpath_intro.asp
 * `DateTime` examples
 ```
