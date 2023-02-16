@@ -1,9 +1,14 @@
 # PHP Certification -- Feb 2023
 
-Last: http://localhost:8884/#/4/15
+Last: http://localhost:8884/#/7/14
 Get updated slides!
 
 ## Homework
+For Thu 16 Feb 2023
+* Quiz questions for Topic #4 (Arrays)
+* Quiz questions for Topic #5 (I/O)
+* Quiz questions for Topic #6 (Functions)
+
 For Tue 14 Feb 2023
 * Quiz questions for Topic #2 (Data Formats and Types)
 * Quiz questions for Topic #3 (Strings and Patterns)
@@ -350,6 +355,9 @@ preg_match($pat, $str, $matches);
 var_dump($matches);
 echo PHP_EOL;
 ```
+General regex coding examples:
+* https://github.com/dbierer/classic_php_examples/tree/master/regex
+
 ## Arrays
 For iterating through an array beginning-to-end don't forget about these functions:
 * `array_walk()`
