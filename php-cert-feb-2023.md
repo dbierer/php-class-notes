@@ -14,6 +14,7 @@ For Thu 23 Feb 2023
 * Quiz questions for Topic #9 (Security)
 * Quiz questions for Topic #10 (Web)
 * Quiz questions for Topic #11 (Error)
+* Final Mock Exam
 
 For Tue 21 Feb 2023
 * Quiz questions for Topic #6 (Functions)
