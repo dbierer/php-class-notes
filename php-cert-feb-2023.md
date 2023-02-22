@@ -3,11 +3,27 @@
 Last: http://localhost:8884/#/7/14
 Get updated slides!
 
+## TODO
+* Q: Info on `__set_state()`?
+* A: Designed to set state prior to using `var_export()`
+* A: See: https://www.php.net/manual/en/language.oop5.magic.php#object.set-state
+
 ## Homework
+For Thu 23 Feb 2023
+* Quiz questions for Topic #8 (Database)
+* Quiz questions for Topic #9 (Security)
+* Quiz questions for Topic #10 (Web)
+* Quiz questions for Topic #11 (Error)
+
+For Tue 21 Feb 2023
+* Quiz questions for Topic #6 (Functions)
+* Quiz questions for Topic #7 (OOP)
+* Mock Exam #1
+* Mock Exam #2
+
 For Thu 16 Feb 2023
 * Quiz questions for Topic #4 (Arrays)
 * Quiz questions for Topic #5 (I/O)
-* Quiz questions for Topic #6 (Functions)
 
 For Tue 14 Feb 2023
 * Quiz questions for Topic #2 (Data Formats and Types)
@@ -389,6 +405,49 @@ etc.
 ## Functions
 * Read up on `Closure::bindTo()`
   * https://www.php.net/manual/en/closure.bindto.php
+* Anonymous function example:
+```
+<?php
+$label = 'Result: ';
+$add = function ($a, $b) use ($label) {
+    return $label . ($a + $b);
+};
+
+$sub = function ($a, $b) use ($label) {
+    return $label . ($a - $b);
+};
+
+echo $add(6, 3) . PHP_EOL . $sub(6, 3);
+// Result: 9
+// Result: 3
+
+```
+* Alternative example of `bindTo()`
+```
+<?php
+class Airplane {
+    public $type;
+    function __construct(string $type) {
+        $this->type = $type;
+    }
+    function getClosure() {
+        return function() {
+            return $this->type;
+        };
+    }
+}
+class X {
+	public $type = 'X';
+}
+
+$airplane1 = new Airplane('Airliner');
+$closure1 = $airplane1->getClosure();
+echo $closure1(). PHP_EOL;
+$closure2 = $closure1->bindTo(new X());
+echo $closure2();
+
+```
+
 
 ## OOP
 * Read up on magic methods!
@@ -400,6 +459,39 @@ etc.
     * `unset()`
     * Called in a function and function call ends
     * Overwritten
+* Interfaces can be used as "free agents" to define functionality
+  * This example ties an interface into an inheritance hierarchy
+```
+<?php
+interface SetGet {
+    public function set(string $name, callable $service);
+    public function get(string $name) : callable;
+}
+abstract class Container implements SetGet {
+    protected $services = [];
+}
+class ServiceContainer extends Container {
+	/*
+    public function set(string $name, callable $value) {
+        $this->services[$name] = $value;
+    }
+    */
+    public function get(string $name) : callable {
+        return $this->services[$name];
+    }
+}
+$service = function () { return (new DateTime('now'))->format('l, d M Y'); };
+$container = new ServiceContainer();
+$container->set('today', $service);
+echo $container->get('today')();
+```
+* Autoloading Examples:
+  * https://github.com/dbierer/classic_php_examples/tree/master/oop
+  * Look for `oop_autoload*.php`
+* Callable
+  * Examples of what is considered "callable"
+  * https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_examples.php
+
 * Iteration
   * Lookup these interfaces and understand what they do
      * `Traversable`
@@ -447,6 +539,33 @@ echo $str . PHP_EOL;
 $obj = unserialize($str);
 var_dump($obj);
 ```
+* Type hints
+  * If `declare(strict_types=1)` is not set, the type hint does a "soft" type cast
+```
+<?php
+function test (int $a, int $b)
+{
+	return $a + $b;
+}
+
+echo test(2, 2);
+echo PHP_EOL;
+echo test('2', '2');
+echo PHP_EOL;
+echo test(2.666, 2.777);
+echo PHP_EOL;
+echo test('A', 'B');
+echo PHP_EOL;
+// actual output:
+/*
+4
+4
+4
+PHP Fatal error:  Uncaught TypeError: Argument 1 passed to test() must be of the type integer, string given, called in /srv/code/test.php on line 13 and defined in /srv/code/test.php:2
+*/
+
+```
+
 * SPL
   * Make sure you study:
     * `*Iterator*` : just know what they are
@@ -462,7 +581,8 @@ var_dump($obj);
 ## Database Topic
 Fetch Modes:
 * Focus on array and object fetch modes
-Study the difference between `bindValue()` and `bindParam()`
+* Study the difference between `bindValue()` and `bindParam()`
+  * See: https://www.php.net/manual/en/pdostatement.bindvalue.php#80285
 
 ## Security Topic
 Questions are drawn from here:
@@ -487,6 +607,8 @@ Security validation functions
 * ctype_*()
   * This family checks the actual *contents* of the variable
 * filter*()
+Read up especially on `filter_var()`
+* https://www.php.net/filter_var
 
 ## Web Features
 Make sure you're up on the `php.ini` settings pertaining to web features
@@ -539,7 +661,8 @@ See: https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_ex
   * https://www.php.net/manual/en/function.error-log.php
 * Also: there are a few others to look for as well
   * https://www.php.net/manual/en/ref.errorfunc.php
+
 ## Resources
-* https://xkcd.com/327/
+* https://github.com/dbierer/classic_php_examples/tree/master/oop
 
 ## Change Request
