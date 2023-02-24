@@ -4,9 +4,19 @@ Last: http://localhost:8884/#/11
 Get updated slides!
 
 ## TODO
-* Q: Info on `__set_state()`?
-* A: Designed to set state prior to using `var_export()`
-* A: See: https://www.php.net/manual/en/language.oop5.magic.php#object.set-state
+* Why doesn't this work?
+```
+<?php
+class CParent
+{
+    function visit(CParent $p) { /*...*/ }
+}
+class Child extends CParent
+{
+	function visit($p) { echo 'TEST'; }
+}
+
+```
 
 ## Homework
 For Thu 23 Feb 2023
@@ -662,8 +672,34 @@ See: https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_ex
   * https://www.php.net/manual/en/function.error-log.php
 * Also: there are a few others to look for as well
   * https://www.php.net/manual/en/ref.errorfunc.php
+* To see value of some of the ERROR* bit constants:
+```
+<?php
+$err = [
+	E_NOTICE,
+	E_PARSE,
+	E_WARNING,
+	E_ERROR,
+	E_STRICT,
+	E_DEPRECATED,
+	E_ALL
+];
+foreach ($err as $x)
+	printf("%016b\n", $x);
+```
 
 ## Resources
-* https://github.com/dbierer/classic_php_examples/tree/master/oop
+* https://github.com/dbierer/classic_php_examples/
+
+
+## Q & A
+* Q: Info on `__set_state()`?
+* A: Designed to set state prior to using `var_export()`
+* A: See: https://www.php.net/manual/en/language.oop5.magic.php#object.set-state
+
 
 ## Change Request
+* http://localhost:8884/#/12/8
+  * `PDOException | Exception` doesn't make sense!
+* Mock Final Question 21
+  * When running code, *none* of the answers work!
