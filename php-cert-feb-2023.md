@@ -1,23 +1,5 @@
 # PHP Certification -- Feb 2023
 
-Last: http://localhost:8884/#/11
-Get updated slides!
-
-## TODO
-* Why doesn't this work?
-```
-<?php
-class CParent
-{
-    function visit(CParent $p) { /*...*/ }
-}
-class Child extends CParent
-{
-	function visit($p) { echo 'TEST'; }
-}
-
-```
-
 ## Homework
 For Thu 23 Feb 2023
 * Quiz questions for Topic #8 (Database)
@@ -49,18 +31,18 @@ For Tue 14 Feb 2023
 ```
 <?php
 namespace X {
-	class Test {}
+    class Test {}
 }
 
 namespace Y {
-	class Test {}
+    class Test {}
 }
 
 namespace Z {
-	// must use alias, otherwise PHP doesn't know which "Test" you're referring to
-	use X\Test as XT;
-	use Y\Test as YT;
-	$test = new XT();
+    // must use alias, otherwise PHP doesn't know which "Test" you're referring to
+    use X\Test as XT;
+    use Y\Test as YT;
+    $test = new XT();
 }
 
 ```
@@ -73,7 +55,7 @@ $b = 456;
 $c = '789';
 // in the case combined operations, the last one wins
 $e = $a + $b . $c;
-var_dump($e);	// string(579789)
+var_dump($e);   // string(579789)
 $e = $a . $b + $c;
 var_dump($e);   // int(124245)
 // the data type of $b is changed because of the string operators "."
@@ -115,19 +97,19 @@ What's the difference between `define()` and `const` for constants:
 ```
 <?php
 namespace x {
-	define('TEST1', 'xyz');
-	const TEST2 = 'abc';
+    define('TEST1', 'xyz');
+    const TEST2 = 'abc';
 }
 
 namespace y {
 
-	function test()
-	{
-		return TEST1 . TEST2;
-	}
+    function test()
+    {
+        return TEST1 . TEST2;
+    }
 
-	echo test();
-	// output: xyzTEST2
+    echo test();
+    // output: xyzTEST2
 }
 ```
 Namespaces:
@@ -179,22 +161,22 @@ Tutorial oriented towards the exam:
 ```
 <?php
 echo "Logical AND\n";
-printf("%04b\n", 0b00 & 0b00);	// 0
-printf("%04b\n", 0b00 & 0b01);	// 0
-printf("%04b\n", 0b01 & 0b00);	// 0
-printf("%04b\n", 0b01 & 0b01);	// 1
+printf("%04b\n", 0b00 & 0b00);  // 0
+printf("%04b\n", 0b00 & 0b01);  // 0
+printf("%04b\n", 0b01 & 0b00);  // 0
+printf("%04b\n", 0b01 & 0b01);  // 1
 
 echo "Logical OR\n";
-printf("%04b\n", 0b00 | 0b00);	// 0
-printf("%04b\n", 0b00 | 0b01);	// 1
-printf("%04b\n", 0b01 | 0b00);	// 1
-printf("%04b\n", 0b01 | 0b01);	// 1
+printf("%04b\n", 0b00 | 0b00);  // 0
+printf("%04b\n", 0b00 | 0b01);  // 1
+printf("%04b\n", 0b01 | 0b00);  // 1
+printf("%04b\n", 0b01 | 0b01);  // 1
 
 echo "Logical XOR\n";
-printf("%04b\n", 0b00 ^ 0b00);	// 0
-printf("%04b\n", 0b00 ^ 0b01);	// 1
-printf("%04b\n", 0b01 ^ 0b00);	// 1
-printf("%04b\n", 0b01 ^ 0b01);	// 0
+printf("%04b\n", 0b00 ^ 0b00);  // 0
+printf("%04b\n", 0b00 ^ 0b01);  // 1
+printf("%04b\n", 0b01 ^ 0b00);  // 1
+printf("%04b\n", 0b01 ^ 0b01);  // 0
 ```
 Examples of the three ops:
 ```
@@ -271,17 +253,17 @@ $xml = <<<EOT
     <topic id="2">Web Services</topic>
     <topic id="3">Whatever</topic>
     <info>
-		<name>Doug</name>
-		<name>Hudo</name>
+        <name>Doug</name>
+        <name>Hudo</name>
     </info>
 </topics>
 EOT;
 
 $simple = new SimpleXMLElement($xml);
-echo $simple->info->name;		// Doug
-echo $simple->info->name[1];	// Hudo
-echo $simple->topic[2];			// Whatever
-echo $simple->topic[2]['id'];	// 3
+echo $simple->info->name;       // Doug
+echo $simple->info->name[1];    // Hudo
+echo $simple->topic[2];         // Whatever
+echo $simple->topic[2]['id'];   // 3
 ```
 
 * XPath Tutorial: https://www.w3schools.com/xml/xpath_intro.asp
@@ -376,8 +358,8 @@ Greediness Example:
 ```
 <?php
 $str = '<p>Para 1</p><p>Para 2</p><p>Para 3</p>';
-// $pat = '!<p>.*</p>!';	// returns the entire string
-$pat = '!<p>.*?</p>!';	// returns "<p>Para 1</p>"
+// $pat = '!<p>.*</p>!';    // returns the entire string
+$pat = '!<p>.*?</p>!';  // returns "<p>Para 1</p>"
 preg_match($pat, $str, $matches);
 var_dump($matches);
 echo PHP_EOL;
@@ -448,7 +430,7 @@ class Airplane {
     }
 }
 class X {
-	public $type = 'X';
+    public $type = 'X';
 }
 
 $airplane1 = new Airplane('Airliner');
@@ -482,7 +464,7 @@ abstract class Container implements SetGet {
     protected $services = [];
 }
 class ServiceContainer extends Container {
-	/*
+    /*
     public function set(string $name, callable $value) {
         $this->services[$name] = $value;
     }
@@ -506,7 +488,7 @@ echo $container->get('today')();
 * Iteration
   * Lookup these interfaces and understand what they do
      * `Traversable`
-	  * Both of the interfaces mentioned `extend` this interface
+      * Both of the interfaces mentioned `extend` this interface
      * `Iterator`
        * Introduced earlier
        * Requires hard-coded iteration methods
@@ -556,7 +538,7 @@ var_dump($obj);
 <?php
 function test (int $a, int $b)
 {
-	return $a + $b;
+    return $a + $b;
 }
 
 echo test(2, 2);
@@ -676,16 +658,16 @@ See: https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_ex
 ```
 <?php
 $err = [
-	E_NOTICE,
-	E_PARSE,
-	E_WARNING,
-	E_ERROR,
-	E_STRICT,
-	E_DEPRECATED,
-	E_ALL
+    E_NOTICE,
+    E_PARSE,
+    E_WARNING,
+    E_ERROR,
+    E_STRICT,
+    E_DEPRECATED,
+    E_ALL
 ];
 foreach ($err as $x)
-	printf("%016b\n", $x);
+    printf("%016b\n", $x);
 ```
 
 ## Resources
@@ -697,6 +679,95 @@ foreach ($err as $x)
 * A: Designed to set state prior to using `var_export()`
 * A: See: https://www.php.net/manual/en/language.oop5.magic.php#object.set-state
 
+## Q & A
+* Q: Why doesn't this work?
+```
+<?php
+class CParent
+{
+    function visit(CParent $p) { /*...*/ }
+}
+class Child extends CParent
+{
+    function visit($p) { echo 'TEST'; }
+}
+
+```
+* A: It actually does work, but in PHP 7 a `Warning` is issued.
+* A: Here's a rewritten example that more effectively proves the point:
+```
+<?php
+ini_set('display_errors', 0);
+echo PHP_VERSION . PHP_EOL;
+
+class CParent {
+    function visit(CParent $p) { /*...*/ }
+}
+
+echo 'A: ';
+try {
+    $a = new class extends CParent {
+        function visit(CParent $p, $x) { echo 'TEST'; }
+    };
+    echo 'Works OK';
+} catch (Throwable $t) {
+    echo get_class($t);
+}
+echo "\n";
+
+echo 'B: ';
+try {
+    $a = new class extends CParent {
+        function visit($p) { echo 'TEST'; }
+    };
+    echo 'Works OK';
+} catch (Throwable $t) {
+    echo get_class($t);
+}
+echo "\n";
+
+echo 'C: ';
+try {
+    $a = new class extends CParent {
+        function visit(ChildC $p) { echo 'TEST'; }
+    };
+    echo 'Works OK';
+} catch (Throwable $t) {
+    echo get_class($t);
+}
+echo "\n";
+
+echo 'D: ';
+try {
+    $a = new class extends CParent {
+        protected function visit($p) { echo 'TEST'; }
+    };
+    echo 'Works OK';
+} catch (Throwable $t) {
+    echo get_class($t);
+}
+echo "\n";
+
+// Actual output:
+/*
+7.1.33
+A: PHP Warning:  Declaration of class@anonymous::visit(CParent $p, $x) should be compatible with CParent::visit(CParent $p) in /srv/code/exam-3-21.php on line 11
+PHP Stack trace:
+PHP   1. {main}() /srv/code/exam-3-21.php:0
+Works OK
+B: PHP Warning:  Declaration of class@anonymous::visit($p) should be compatible with CParent::visit(CParent $p) in /srv/code/exam-3-21.php on line 22
+PHP Stack trace:
+PHP   1. {main}() /srv/code/exam-3-21.php:0
+Works OK
+C: PHP Warning:  Declaration of class@anonymous::visit(ChildC $p) should be compatible with CParent::visit(CParent $p) in /srv/code/exam-3-21.php on line 33
+PHP Stack trace:
+PHP   1. {main}() /srv/code/exam-3-21.php:0
+Works OK
+D: PHP Fatal error:  Access level to class@anonymous::visit() must be public (as in class CParent) in /srv/code/exam-3-21.php on line 44
+PHP Stack trace:
+PHP   1. {main}() /srv/code/exam-3-21.php:0
+*/
+```
 
 ## Change Request
 * http://localhost:8884/#/12/8
