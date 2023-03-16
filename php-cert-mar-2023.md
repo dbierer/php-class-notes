@@ -1,6 +1,11 @@
 # PHP Certification -- Mar 2023
 
 ## Homework
+For Tue 21 Mar 2023
+* Quiz questions for Topic #2 (Data Formats and Types)
+* Quiz questions for Topic #3 (Strings and Patterns)
+Mock Exam #1
+
 For Thu 16 Mar 2023
 * Quiz questions for Topic #1 (Basics)
 
@@ -300,6 +305,7 @@ echo $simple->topic[2]['id'];   // 3
 <?php
 // for relative formats see:
 // https://www.php.net/manual/en/datetime.formats.relative.php
+$date[] = new DateTime('2023-03-16');
 $date[] = new DateTime('third thursday of next month');
 $date[] = new DateTime('now', new DateTimeZone('CET'));
 $date[] = new DateTime('@' . time());
@@ -354,6 +360,20 @@ if (substr($dir, -1) === '/') echo 'Trailing slash' . PHP_EOL;
 if ($dir[-1] === '/') echo 'Trailing slash' . PHP_EOL;
 ```
 * Tutorial on PHP regex: https://www.w3schools.com/php/php_regex.asp
+* Using regex to find distinct words (using `\b`)
+```
+<?php
+$str[] = 'This is an example of error_reporting';	// NO MATCH
+$str[] = 'ERROR: this is problem';					// MATCH
+$patt  = '/\bERROR\b/i';
+$srch  = 'ERROR';
+foreach ($str as $item) {
+	echo $item . "\n";
+	echo (preg_match($patt, $item)) ? 'MATCH' : 'NO MATCH';
+	echo "\n";
+}
+```
+
 * Using regex to swap sub-patterns
 ```
 <?php
@@ -375,11 +395,13 @@ var_dump($matches);
 * Same thing, but going from European date format to American
 ```
 <?php
-$str = '5 April 2022';
+$str = date('d M Y');
+// subpatt: 1      2      3
 $pat = '/^(\d+?) (\w+?) (\d{4})$/';
 $rep = '$2 $1, $3';
 echo preg_replace($pat, $rep, $str);
 echo PHP_EOL;
+// example output: "Mar 16, 2023"
 ```
 
 Greediness Example:
@@ -709,3 +731,6 @@ foreach ($err as $x)
 
 
 ## Change Request
+* http://localhost:8884/#/4/27
+  * "nin digit"
+* "an underscore"
