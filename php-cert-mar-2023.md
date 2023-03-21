@@ -1,6 +1,11 @@
 # PHP Certification -- Mar 2023
 
 ## Homework
+For Thu 23 Mar 2023
+* Quiz questions for Topic #4 (Arrays)
+* Quiz questions for Topic #5 (I/O)
+* Quiz questions for Topic #6 (Functions)
+
 For Tue 21 Mar 2023
 * Quiz questions for Topic #2 (Data Formats and Types)
 * Quiz questions for Topic #3 (Strings and Patterns)
