@@ -1,6 +1,10 @@
 # PHP Certification -- Mar 2023
 
 ## Homework
+For Tue 28 Mar 2023
+* Quiz questions for Topic #7 (OOP)
+Mock Exam #2
+
 For Thu 23 Mar 2023
 * Quiz questions for Topic #4 (Arrays)
 * Quiz questions for Topic #5 (I/O)
