@@ -1,9 +1,16 @@
 # PHP Certification -- Mar 2023
 
+## TODO
+* Documentation reference on "caller information"
+
 ## Homework
+For Thu 30 Mar 2023
+* All remaining quiz questions
+* Mock Final
+
 For Tue 28 Mar 2023
 * Quiz questions for Topic #7 (OOP)
-Mock Exam #2
+* Mock Exam #2
 
 For Thu 23 Mar 2023
 * Quiz questions for Topic #4 (Arrays)
@@ -13,7 +20,7 @@ For Thu 23 Mar 2023
 For Tue 21 Mar 2023
 * Quiz questions for Topic #2 (Data Formats and Types)
 * Quiz questions for Topic #3 (Strings and Patterns)
-Mock Exam #1
+* Mock Exam #1
 
 For Thu 16 Mar 2023
 * Quiz questions for Topic #1 (Basics)
@@ -674,6 +681,9 @@ URL: https://www.php.net/manual/en/ini.list.php
 * `file_uploads`
 * `max_file_uploads`
 
+Form postings
+* HTML input get `enctype` attribute
+  * See: https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/enctype
 
 ## Error Handling
 Example of aggregated Catch block:
@@ -743,3 +753,6 @@ foreach ($err as $x)
 * http://localhost:8884/#/4/27
   * "nin digit"
 * "an underscore"
+* http://localhost:8884/#/9/38
+  * The wording on the question isn't clear. There *is* no result!!!
+  * Please clarify the wording
