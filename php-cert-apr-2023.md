@@ -3,6 +3,10 @@
 ## TODO
 
 ## Homework
+For Thu 6 Apr 2023
+* Quiz questions for Topic #2 (Data Formats and Types)
+* Quiz questions for Topic #3 (Strings and Patterns)
+
 For Wed 5 Apr 2023
 * Quiz questions for Topic #1 (Basics)
 
@@ -256,6 +260,25 @@ Yet another example
 // if that's not present, looks to the URL or post
 $action = $argv[1] ?? $_GET['action'] ?? $_POST['action'] ?? 'nothing';
 ```
+Switch statement example
+```
+<?php
+$a = '1';
+
+switch ($a) {
+	case 1 :
+		echo 'A';
+	    break;
+	case '2' :
+		echo 'B';
+	    break;
+	default :
+		echo 'C';
+}
+// output: "A" because switch does a non-strict comparison
+// NOTE: if the "break;" is missing, it would keep running code
+```
+
 
 `php.ini` file settings:
 * https://www.php.net/manual/en/ini.list.php
@@ -309,6 +332,8 @@ $date[] = new DateTime('@' . time());
 $date[] = (new DateTime())->add(new DateInterval('P3D'));
 var_dump($date);
 ```
+* `DateInterval` format codes
+  * See: https://www.php.net/manual/en/dateinterval.construct.php
 * Don't forget that to run a SOAP request, you can also use:
   * `SoapClient::__soapCall()`
   * `SoapClient::__doRequest()`
