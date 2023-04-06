@@ -3,6 +3,12 @@
 ## TODO
 
 ## Homework
+For Tue 11 Apr 2023
+* Quiz questions for Topic #4 (Arrays)
+* Quiz questions for Topic #5 (I/O)
+* Quiz questions for Topic #6 (Functions)
+Mock Exam #1
+
 For Thu 6 Apr 2023
 * Quiz questions for Topic #2 (Data Formats and Types)
 * Quiz questions for Topic #3 (Strings and Patterns)
@@ -381,6 +387,16 @@ if (substr($dir, 0, 1) === '/') echo 'Leading slash' . PHP_EOL;
 if (substr($dir, -1) === '/') echo 'Trailing slash' . PHP_EOL;
 if ($dir[-1] === '/') echo 'Trailing slash' . PHP_EOL;
 ```
+* Modifying the values using "de-referencing"
+```
+<?php
+$str = 'abcdef';
+echo $str . "\n"; // abcdef
+$str[0] ='z';
+echo $str . "\n"; // zbcdef
+unset($str[2]);
+echo $str . "\n"; // Fatal Error
+```
 * Tutorial on PHP regex: https://www.w3schools.com/php/php_regex.asp
 * Using regex to find distinct words (using `\b`)
 ```
@@ -394,6 +410,11 @@ foreach ($str as $item) {
 	echo (preg_match($patt, $item)) ? 'MATCH' : 'NO MATCH';
 	echo "\n";
 }
+```
+* What is the output?
+```
+<?php
+echo '1' . (print '2') + 3;
 ```
 
 * Using regex to swap sub-patterns
@@ -430,12 +451,35 @@ Greediness Example:
 ```
 <?php
 $str = '<p>Para 1</p><p>Para 2</p><p>Para 3</p>';
-// $pat = '!<p>.*</p>!';    // returns the entire string
-$pat = '!<p>.*?</p>!';  // returns "<p>Para 1</p>"
+//$pat = '!<p>.*</p>!';    // returns the entire string
+//$pat = '!<p>.*?</p>!';  // returns "<p>Para 1</p>"
+$pat = '!<p>.*</p>!U';  // returns "<p>Para 1</p>"
 preg_match($pat, $str, $matches);
 var_dump($matches);
 echo PHP_EOL;
 ```
+Example using "word boundary" (\b)
+```
+<?php
+$str = [
+	'This program has an ERROR in it',
+	'ERROR: Big Big Problem!',
+	'This is just ERROR_REPORTING',
+];
+$patt = '/\bERROR\b/i';
+foreach ($str as $line) {
+	echo $line . ': ';
+	echo (preg_match($patt, $line)) ? 'MATCH' : 'NO MATCH';
+	echo PHP_EOL;
+}
+// actual output:
+/*
+ MATCH
+ MATCH
+ NO MATCH
+ */
+```
+
 General regex coding examples:
 * https://github.com/dbierer/classic_php_examples/tree/master/regex
 
@@ -451,6 +495,108 @@ Also: please don't forget the array *navigation* functions:
 * `next()` : un-advances array pointer
 * `key()`  : returns index value at array pointer
 * `current()` : returns value of element at array pointer
+Assignment example:
+```
+<?php
+$a = ['A', 'B', 4 => 'C'];
+$a[2] = 'E';
+$a[] = 'D';
+var_dump($a);
+/*
+array(5) {
+  [0] =>
+  string(1) "A"
+  [1] =>
+  string(1) "B"
+  [4] =>
+  string(1) "C"
+  [2] =>
+  string(1) "E"
+  [5] =>
+  string(1) "D"
+}
+*/
+```
+In PHP 7, if a numeric array has no index > 0, it will always start with 0
+```
+<?php
+$a = [-6 => 'A', -5 => 'B'];
+$a[] = 'C';
+var_dump($a);
+/*
+array(3) {
+  [-6] =>
+  string(1) "A"
+  [-5] =>
+  string(1) "B"
+  [0] =>
+  string(1) "C"
+}
+*/
+```
+With associative arrays, the keys are retained automatically regardless of the 4 param of `array_slice()`
+```
+<?php
+$a = ['A' => 1, 'B' => 2, 'C' => 3, 'D' => 4, 'E' => 5];
+$a1 = array_slice($a, 2);  // == [3, 4, 5];
+$a2 = array_slice($a, 1, 3);  // == [2, 3, 4];
+$a3 = array_slice($a, 1, 3, true); //  == [1 => 2, 2 => 3, 3 => 4]
+var_dump($a1, $a2, $a3);
+/*
+array(3) {
+  'C' =>
+  int(3)
+  'D' =>
+  int(4)
+  'E' =>
+  int(5)
+}
+/srv/code/test.php:6:
+array(3) {
+  'B' =>
+  int(2)
+  'C' =>
+  int(3)
+  'D' =>
+  int(4)
+}
+/srv/code/test.php:6:
+array(3) {
+  'B' =>
+  int(2)
+  'C' =>
+  int(3)
+  'D' =>
+  int(4)
+}
+*/
+```
+BE CAREFUL: there is also a function `array_splice()`
+* Operates much like `str_replace()`
+Example of `array_combine()`
+```
+<?php
+$keys = range('A','F');
+$vals = range(1, 6);
+$fin  = array_combine($keys, $vals);
+var_dump($fin);
+/*
+array(6) {
+  'A' =>
+  int(1)
+  'B' =>
+  int(2)
+  'C' =>
+  int(3)
+  'D' =>
+  int(4)
+  'E' =>
+  int(5)
+  'F' =>
+  int(6)
+}
+*/
+```
 
 ## I/O
 Streams
