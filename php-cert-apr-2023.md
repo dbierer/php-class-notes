@@ -3,6 +3,10 @@
 ## TODO
 
 ## Homework
+For Wed 12 Apr 2023
+* Quiz questions for Topic #7 (OOP)
+Mock Exam #2
+
 For Tue 11 Apr 2023
 * Quiz questions for Topic #4 (Arrays)
 * Quiz questions for Topic #5 (I/O)
@@ -658,7 +662,31 @@ $closure2 = $closure1->bindTo(new X());
 echo $closure2();
 
 ```
+* `bindTo()` doesn't require the same object type
+```
+<?php
+class Airplane {
+    public $type;
+    function __construct(string $type) {
+        $this->type = $type;
+    }
+    function getClosure() {
+        return function() {
+            return $this->type;
+        };
+    }
+}
 
+$airplane1 = new Airplane('Airliner');
+$airplane2 = new stdClass();
+$airplane2->type = 'TEST';
+
+$closure1 = $airplane1->getClosure();
+echo $closure1(). PHP_EOL;
+$closure2 = $closure1->bindTo($airplane2);
+echo $closure2();
+// same results as above
+```
 
 ## OOP
 * Read up on magic methods!
@@ -702,7 +730,25 @@ echo $container->get('today')();
 * Callable
   * Examples of what is considered "callable"
   * https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_examples.php
-
+* `__isset()` rewritten example:
+```
+<?php
+namespace Container;
+class ServiceContainer {
+    protected $path = '/path';
+    protected $services = [];
+    public function __get($name) {
+        return $this->$name ?? false;
+    }
+    public function __isset($name) {
+        return !empty($this->$name);
+    }
+}
+$container = new ServiceContainer();
+var_dump($container->adapter);
+echo isset($container->adapter) ?? false;
+echo $container->path . PHP_EOL;
+```
 * Iteration
   * Lookup these interfaces and understand what they do
      * `Traversable`
