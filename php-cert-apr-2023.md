@@ -1,8 +1,18 @@
 # PHP Certification -- Apr 2023
 
+Last: http://localhost:8884/#/9/21
+
 ## TODO
+* Do you have examples of `ArrayObject` using `STD_PROP_LIST` or `ARRAY_AS_PROPS`?
 
 ## Homework
+For Fri 14 Apr 2023
+* Quiz questions for Topic #8 (Databases)
+* Quiz questions for Topic #9 (Security)
+* Quiz questions for Topic #10 (Web)
+* Quiz questions for Topic #11 (Errors)
+* Final Mock Exam (self study)
+
 For Wed 12 Apr 2023
 * Quiz questions for Topic #7 (OOP)
 Mock Exam #2
@@ -830,6 +840,29 @@ PHP Fatal error:  Uncaught TypeError: Argument 1 passed to test() must be of the
   * Just be aware of the "classic" data structure classes
 * Generators
   * https://www.php.net/manual/en/class.generator.php
+  * Example:
+```
+<?php
+$arr = range(1, 1000000);
+$div = 17;
+
+function whatDiv(array $arr, int $div)
+{
+	foreach ($arr as $val) {
+		if ($val % $div === 0) yield $val;
+	}
+}
+$res = whatDiv($arr, $div);
+
+// do something
+
+// this would go in a view script
+foreach ($res as $item) echo $item . ' ';
+
+echo PHP_EOL;
+echo "\nPeak: " . memory_get_peak_usage();
+```
+
 * Late Static Binding
   * https://www.php.net/manual/en/language.oop5.late-static-bindings.php
 * Traits
