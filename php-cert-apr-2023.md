@@ -2,8 +2,9 @@
 
 Last: http://localhost:8884/#/9/21
 
-## TODO
-* Do you have examples of `ArrayObject` using `STD_PROP_LIST` or `ARRAY_AS_PROPS`?
+## Q & A
+* Good discussion of `ArrayObject` using `STD_PROP_LIST` or `ARRAY_AS_PROPS`:
+* See: https://stackoverflow.com/questions/14610307/spl-arrayobject-arrayobjectstd-prop-list
 
 ## Homework
 For Fri 14 Apr 2023
@@ -881,6 +882,22 @@ Read up on the `crypt()` function
 * https://www.php.net/manual/en/function.crypt.php
 Make sure you read up on `htmlspecialchars()`
 * https://www.php.net/htmlspecialchars
+```
+<?php
+$test = "<br>\"double\" & 'single'";
+echo htmlspecialchars($test);
+echo PHP_EOL;
+echo htmlspecialchars($test, ENT_NOQUOTES);
+echo PHP_EOL;
+echo htmlspecialchars($test, ENT_QUOTES);
+
+// output:
+/*
+&lt;br&gt;&quot;double&quot; &amp; 'single'
+&lt;br&gt;"double" &amp; 'single'
+&lt;br&gt;&quot;double&quot; &amp; &#039;single&#039;
+*/
+```
 Do a quick read on the `crypt()` function
 * `password_hash()` leverages this
 * Might be on the test
