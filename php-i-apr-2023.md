@@ -1,6 +1,13 @@
 # PHP-I Apr 2023
 
+## NOTE TO SELF:
+* Find example of HTML SELECT using ternary operator to pre-select a value
+* Find example of `continue` (Common\Data\BigCsv???)
+
 ## Homework
+For Fri 21 Apr 2023
+* https://collabedit.com/kkacn
+
 For Wed 19 Apr 2023
 * Update/Upgrade the VM as per Elliot:
 ```
@@ -75,6 +82,83 @@ Array
 ID101
 */
 
+```
+Using the "spread" (variadics) operator to "flatten" two arrays into one
+* NOTE: you could also just do this: `$days = array_combine($a, $b);`
+```
+<?php
+$a = ['Mon','Tue','Wed','Thu'];
+$b = ['Fri','Sat','Sun'];
+
+// do something
+
+$days = [$a, $b];
+var_dump($days);
+
+// output
+/*
+ * array(2) {
+  [0]=>
+  array(4) {
+    [0]=>
+    string(3) "Mon"
+    [1]=>
+    string(3) "Tue"
+    [2]=>
+    string(3) "Wed"
+    [3]=>
+    string(3) "Thu"
+  }
+  [1]=>
+  array(3) {
+    [0]=>
+    string(3) "Fri"
+    [1]=>
+    string(3) "Sat"
+    [2]=>
+    string(3) "Sun"
+  }
+}
+*/
+
+
+$days = [...$a, ...$b];
+var_dump($days);
+ /*
+  * array(7) {
+  [0]=>
+  string(3) "Mon"
+  [1]=>
+  string(3) "Tue"
+  [2]=>
+  string(3) "Wed"
+  [3]=>
+  string(3) "Thu"
+  [4]=>
+  string(3) "Fri"
+  [5]=>
+  string(3) "Sat"
+  [6]=>
+  string(3) "Sun"
+}
+*/
+```
+Example of assigning constants:
+* See: https://github.com/dbierer/filecms-website/blob/main/bootstrap.php
+A better way of assigning sub-arrays:
+```
+<?php
+// Build the crew
+$mission = [
+	'STS395' => [
+		['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
+		['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
+		['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist'],
+	]
+];
+
+// Output all elements
+print_r($mission);
 ```
 
 ## Control Structures
@@ -473,6 +557,13 @@ echo htmlspecialchars($name);
 ```
 
 ## Control Structures
+Example of ternary operator
+```
+<?php
+$name = (isset($_GET['name'])) ? strip_tags($_GET['name']) : 'Unknown';
+echo $name;
+```
+
 Use of null coalesce operator vs. ternary
 ```
 <?php
@@ -490,6 +581,18 @@ $id = ((!empty($_GET['id']))
 			? $_SESSION['id']
 			: 0)));
 ```
+Match expression with a default:
+```
+<?php
+$result = match ('1') {
+    0 => 'Foo',
+    1 => 'Bar',
+    default => 'Unknown'
+};
+
+echo $result; // Unknown
+```
+
 Example of nested `foreach()` loops
 ```
 <?php
