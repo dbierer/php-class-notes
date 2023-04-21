@@ -1,10 +1,17 @@
 # PHP-I Apr 2023
 
+Last: http://localhost:8881/#/5/26
+
 ## NOTE TO SELF:
 * Find example of HTML SELECT using ternary operator to pre-select a value
 * Find example of `continue` (Common\Data\BigCsv???)
+* Find a more practical example of unpacking a complex array into variables using `list()`
 
 ## Homework
+For Mon 24 Apr 2023
+* Go through the functions labs in advance for next week
+  * Put them in a separate file and send to me via email next week
+
 For Fri 21 Apr 2023
 * https://collabedit.com/kkacn
 
@@ -20,6 +27,12 @@ $ sudo apt update && sudo apt -f install && sudo apt full-upgrade
 $ sudo dpkg-reconfigure -plow unattended-upgrades
 ```
 * For now, avoid upgrading Ubuntu. Leave it at version 20.*
+
+## Class Notes
+Error log for the VM:
+```
+cat /var/log/apache2/error.log
+```
 
 ## Foundation
 Docblocks
@@ -313,12 +326,17 @@ General examples of many concepts covered in class
 * https://github.com/dbierer/classic_php_examples
 Great explanation on how PHP works
 * https://www.zend.com/blog/exploring-new-php-jit-compiler
+
 An alternative way to run PHP is in "async" mode
 * https://www.zend.com/blog/swoole
 * ReactPHP framework
   * https://reactphp.org/
 * Also: many frameworks are async enabled
   * Just set a config setting
+* Also look at the `PCNTL` extension
+  * https://www.php.net/pcntl
+* True parallel processing: https://www.php.net/manual/en/book.parallel.php
+
 Request/Response
 * https://www.php-fig.org/psr/psr-7/
 PHP via Fast CGI
@@ -858,6 +876,34 @@ if (validate($data, $message)) {
 	echo $message;
 }
 ```
+Example using `list()`
+```
+<?php
+$purchases = [
+	['product' => 'Candy Bar', 'date' => '4-12-23', 'price' => 1.50],
+	['product' => 'Chips', 'date' => '4-16-23', 'price' => .75],
+	['product' => 'Pop', 'date' => '4-12-23', 'price' => 1.00],
+	['product' => 'Frozen Food - Pizza', 'date' => '4-21-23', 'price' => 2.75],
+	['product' => 'Hot Food - Sandwhich', 'date' => '4-21-23', 'price' => 4.75],
+	['product' => 'Ice Cream', 'date' => '4-18-23', 'price' => 2.50],
+	['product' => 'Sneakers', 'date' => '5-18-23', 'price' => 2.50]
+];
+
+
+$i = 0;
+$month = '4';
+
+do
+{
+	if (strpos($purchases[$i]['date'], $month) === 0)  {
+		list($prod, $date, $price) = array_values($purchases[$i]);
+		echo "<b>Product sold:</b> $prod\t$price\t$date\n";
+	}
+    $i++;
+}
+while($i < count($purchases));
+```
+
 Calling program for the Forms demo in VM:
 ```
 <?php
@@ -1425,6 +1471,28 @@ function parse2(iterable $arr)
 // string given, called in test.php on line 32 ...
 echo parse2('ABC');
 ```
+* Example retrieving the first and last values of an array
+  * NOTE: could also use `array_key_first()` and `array_key_last()` if running PHP 8+
+```
+<?php
+$arr = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+echo $arr[0] . ' to ' . $arr[count($arr) - 1];
+echo PHP_EOL;
+
+reset($arr);
+echo current($arr);
+echo ' to ';
+end($arr);
+echo current($arr);
+echo PHP_EOL;
+
+// actual output:
+/*
+Mon to Sun
+Mon to Sun
+*/
+```
+
 * Example using a lookup array for static list of state codes
 ```
 <?php
@@ -1499,6 +1567,29 @@ echo sum(random());
 echo PHP_EOL;
 
 ```
+Indirection in function calling using `$$`
+```
+<?php
+
+function processUser(...$args){
+    $output = null;
+    //$args = func_get_args();
+	var_dump($args);
+    if(count($args)){
+        foreach($args as $arg){
+            $output .= $arg . PHP_EOL;
+        }
+    }
+    return $output;
+}
+
+$process = 'processUser';
+$x = 'process';
+// NOTE: has the same effect as this:
+// echo processUser('Mark', 'Watney', 'Botanist', 'Whatever', 12345);
+echo $$x('Mark', 'Watney', 'Botanist', 'Whatever', 12345);
+```
+
 Example of return by reference
 * Form data validation
 ```
