@@ -1,16 +1,23 @@
 # PHP-I Apr 2023
 
-Last: http://localhost:8881/#/5/26
+Last: http://localhost:8881/#/7/5
 
 ## NOTE TO SELF:
-* Find example of HTML SELECT using ternary operator to pre-select a value
+* Q: Do you have an example of HTML SELECT using ternary operator to pre-select a value?
+
 * Find example of `continue` (Common\Data\BigCsv???)
+
 * Find a more practical example of unpacking a complex array into variables using `list()`
+* A: See line 639 in this file
 
 ## Homework
+For Wed 26 Apr 2023
+* https://collabedit.com/6uua4
+
 For Mon 24 Apr 2023
 * Go through the functions labs in advance for next week
   * Put them in a separate file and send to me via email next week
+* https://collabedit.com/fd2vd
 
 For Fri 21 Apr 2023
 * https://collabedit.com/kkacn
@@ -29,9 +36,71 @@ $ sudo dpkg-reconfigure -plow unattended-upgrades
 * For now, avoid upgrading Ubuntu. Leave it at version 20.*
 
 ## Class Notes
+NOTE: `money_format()` has been replaced by `NumberFormatter::formatCurrency`
+* See: https://www.php.net/manual/en/numberformatter.formatcurrency.php
+String functions assume 8 bit ASCII values
+* If dealing with multi-byte strings (i.e. UTF-8, UTF-16, etc.) use the MB String extension
+* See: https://www.php.net/mbstring
+
 Error log for the VM:
 ```
 cat /var/log/apache2/error.log
+```
+`sort()` vs `asort()`
+```
+<?php
+// NOTE: sort() wipes out the original keys!
+$astronaut = ['firstName' => 'Mark', 'lastName' => 'Watney',
+        'Specialty' => 'Botanist'];
+sort($astronaut);
+print_r($astronaut);
+
+// output:
+/*
+Array
+(
+    [0] => Botanist
+    [1] => Mark
+    [2] => Watney
+)
+*/
+
+// Use "asort()" to retain key/value relationships
+$astronaut = ['firstName' => 'Mark', 'lastName' => 'Watney',
+        'Specialty' => 'Botanist'];
+asort($astronaut);
+print_r($astronaut);
+
+// output:
+/*
+Array
+(
+    [Specialty] => Botanist
+    [firstName] => Mark
+    [lastName] => Watney
+)
+*/
+```
+Example of getting 1st and last characters using `substr()`
+```
+<?php
+// NOTE: substr($str, -1) gives you the *last* character
+//       substr($str, 0, 1) gives you the *first* character
+$dir = __DIR__ . '/';
+$fn  = 'test.php';
+if (substr($dir, -1) === DIRECTORY_SEPARATOR) {
+	$path = $dir . $fn;
+} else {
+	$path = $dir . DIRECTORY_SEPARATOR . $fn;
+}
+echo $path;
+```
+Example reading a web page using `file_get_contents()`
+```
+<?php
+$contents = file_get_contents('https://google.com/');
+$contents = str_ireplace('Google', 'Boogle', $contents);
+echo $contents;
 ```
 
 ## Foundation
@@ -1065,117 +1134,6 @@ PHP Packages
   * https://packagist.org/
   * https://wpackagist.org/
 
-## Web Concepts
-* Use `parse_url()` to breakdown a URL into its parts
-```
-<?php
-$url = 'https://mars-express.com/path/to/whatever?id=124&mission=STS395';
-$parsed = parse_url($url);
-var_dump($parsed);
-// output
-/*
- * array(4) {
-  ["scheme"]=>
-  string(5) "https"
-  ["host"]=>
-  string(16) "mars-express.com"
-  ["path"]=>
-  string(17) "/path/to/whatever"
-  ["query"]=>
-  string(21) "id=124&mission=STS395"
-}
-*/
-```
-* Also use `urlencode()` for any data added to the base URL
-```
-<?php
-$url = 'https://mars-express.com/path/to/whatever?';
-echo $url . urlencode('status=Is this going to work?');
-```
-To see what's coming into your PHP program from HTTP:
-```
-<?php
-phpinfo(INFO_VARIABLES);
-```
-Various form styles
-* Mainly HTML with PHP mixed in
-* Includes example of validating the `name` field
-```
-<?php
-$days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-$allowed = ['Mon','Tue','Wed','Thu','Fri'];
-$error = 0;
-$name = '';
-$email = '';
-$message = '';
-$daySelect = '';
-$dayCheck  = [];
-if (!empty($_POST)) {
-	// validate name
-	$name = $_POST['name'] ?? '';
-	if ($name) {
-		if (strlen($name) > 16) {
-			$message .= "Name must be 16 chars or less\n";
-			$error++;
-		}
-		if (!ctype_alpha($name)) {
-			$message .= "Name must have only letters\n";
-			$error++;
-		}
-		// example of filtering
-		$name = strip_tags($name);
-	}
-	// validate day_select
-	$daySelect = $_POST['day_select'] ?? '';
-	if (!in_array($daySelect, $allowed)) {
-		$message .= "Day was not included in the set of allowed days\n";
-		$error++;
-	}
-}
-$message .= ($error === 0) ? "Form data is valid\n" : "Form data has errors\n";
-?>
-<form method="post">
-Name: <input type="text" name="name" value="<?= htmlspecialchars($name) ?>" />
-<br />Email: <input type="email" name="email" />
-<br />Date: <input type="date" name="date" />
-<br /><select name="day_select">
-<?php foreach ($days as $day) echo '<option>' . $day . '</option>'; ?>
-</select>
-<br />
-<?php
-foreach ($days as $day) {
-	echo '<input type="checkbox" name="day_check[]" value="' . $day . '" />' . $day . '&nbsp;';
-}
-?>
-</select>
-<br /><input type="submit" />
-</form>
-<?= nl2br($message); ?>
-<?php phpinfo(INFO_VARIABLES); ?>
-```
-Example from file labs
-```
-<?php
-// single directory
-$path = __DIR__;
-$list = glob($path . '/*');
-echo '<table>';
-echo '<tr><th>Name</th><th>Size in Bytes</th><th>Lines</th></tr>';
-foreach ($list as $fn) {
-	echo '<tr>';
-	echo "<td>" . basename($fn) . "</td>";
-	echo '<td>' . filesize($fn) . '</td>';
-	$lines = count(file($fn)) - 1;
-	echo "<td>$lines</td>";
-	echo '</tr>';
-}
-echo "</table>\n";
-```
-Example of cookie usage:
-* https://github.com/dbierer/classic_php_examples/blob/master/web/cookie_counter.php
-Example of session usage:
-* https://github.com/dbierer/classic_php_examples/blob/master/web/session_counter.php
-
 ## Database Operations
 Basic query example
 ```
@@ -1619,46 +1577,6 @@ if (validate($inputs, $messages)) {
 }
 ```
 
-## Web Stuff
-To output a PDF `/path/to/file.pdf`
-```
-header('Content-Type: application/pdf');
-header('Content-Disposition: attachment; filename="file.pdf");
-readfile('/path/to/file.pdf');
-exit;
-```
-Using `stripos()` to detect OS and browser
-```
-<?php
-$agent = $_SERVER['HTTP_USER_AGENT'];
-switch (TRUE) {
-	case stripos($agent, 'linux') :
-		$os = 'Linux system detected';
-		break;
-	case stripos($agent, 'windows') :
-		$os = 'Windows system detected';
-		break;
-	default :
-		$os = 'Unknown';
-}
-switch (TRUE) {
-	case stripos($agent, 'chrome') :
-		$browser = 'Chrome browser detected';
-		break;
-	case stripos($agent, 'firefox') :
-		$browser = 'Firefox browser detected';
-		break;
-	case stripos($agent, 'safari') :
-		$browser = 'Firefox browser detected';
-		break;
-	default :
-		$browser = 'Unknown';
-}
-echo "We have detected the following:<br />\n";
-echo $browser . "<br />\n";
-echo $os . "<br />\n";
-
-```
 Anonymous functions examples:
 * https://github.com/dbierer/classic_php_examples/blob/master/basics/type_hint_anon_function_example.php
 * This example "stores" an SQL query for later use:
@@ -1768,6 +1686,45 @@ foreach (glob("*.php") as $filename) {
 ```
 
 ## Web Stuff
+To output a PDF `/path/to/file.pdf`
+```
+header('Content-Type: application/pdf');
+header('Content-Disposition: attachment; filename="file.pdf");
+readfile('/path/to/file.pdf');
+exit;
+```
+Using `stripos()` to detect OS and browser
+```
+<?php
+$agent = $_SERVER['HTTP_USER_AGENT'];
+switch (TRUE) {
+	case stripos($agent, 'linux') :
+		$os = 'Linux system detected';
+		break;
+	case stripos($agent, 'windows') :
+		$os = 'Windows system detected';
+		break;
+	default :
+		$os = 'Unknown';
+}
+switch (TRUE) {
+	case stripos($agent, 'chrome') :
+		$browser = 'Chrome browser detected';
+		break;
+	case stripos($agent, 'firefox') :
+		$browser = 'Firefox browser detected';
+		break;
+	case stripos($agent, 'safari') :
+		$browser = 'Firefox browser detected';
+		break;
+	default :
+		$browser = 'Unknown';
+}
+echo "We have detected the following:<br />\n";
+echo $browser . "<br />\n";
+echo $os . "<br />\n";
+
+```
 Example of receiving data via "GET"
 ```
 <?php
@@ -1819,6 +1776,117 @@ Last Name: <input type="text" name="last"  value="<?= htmlspecialchars($last); ?
 </form>
 <?php phpinfo(INFO_VARIABLES); ?>
 ```
+
+* Use `parse_url()` to breakdown a URL into its parts
+```
+<?php
+$url = 'https://mars-express.com/path/to/whatever?id=124&mission=STS395';
+$parsed = parse_url($url);
+var_dump($parsed);
+// output
+/*
+ * array(4) {
+  ["scheme"]=>
+  string(5) "https"
+  ["host"]=>
+  string(16) "mars-express.com"
+  ["path"]=>
+  string(17) "/path/to/whatever"
+  ["query"]=>
+  string(21) "id=124&mission=STS395"
+}
+*/
+```
+* Also use `urlencode()` for any data added to the base URL
+```
+<?php
+$url = 'https://mars-express.com/path/to/whatever?';
+echo $url . urlencode('status=Is this going to work?');
+```
+To see what's coming into your PHP program from HTTP:
+```
+<?php
+phpinfo(INFO_VARIABLES);
+```
+Various form styles
+* Mainly HTML with PHP mixed in
+* Includes example of validating the `name` field
+```
+<?php
+$days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+$allowed = ['Mon','Tue','Wed','Thu','Fri'];
+$error = 0;
+$name = '';
+$email = '';
+$message = '';
+$daySelect = '';
+$dayCheck  = [];
+if (!empty($_POST)) {
+	// validate name
+	$name = $_POST['name'] ?? '';
+	if ($name) {
+		if (strlen($name) > 16) {
+			$message .= "Name must be 16 chars or less\n";
+			$error++;
+		}
+		if (!ctype_alpha($name)) {
+			$message .= "Name must have only letters\n";
+			$error++;
+		}
+		// example of filtering
+		$name = strip_tags($name);
+	}
+	// validate day_select
+	$daySelect = $_POST['day_select'] ?? '';
+	if (!in_array($daySelect, $allowed)) {
+		$message .= "Day was not included in the set of allowed days\n";
+		$error++;
+	}
+}
+$message .= ($error === 0) ? "Form data is valid\n" : "Form data has errors\n";
+?>
+<form method="post">
+Name: <input type="text" name="name" value="<?= htmlspecialchars($name) ?>" />
+<br />Email: <input type="email" name="email" />
+<br />Date: <input type="date" name="date" />
+<br /><select name="day_select">
+<?php foreach ($days as $day) echo '<option>' . $day . '</option>'; ?>
+</select>
+<br />
+<?php
+foreach ($days as $day) {
+	echo '<input type="checkbox" name="day_check[]" value="' . $day . '" />' . $day . '&nbsp;';
+}
+?>
+</select>
+<br /><input type="submit" />
+</form>
+<?= nl2br($message); ?>
+<?php phpinfo(INFO_VARIABLES); ?>
+```
+Example from file labs
+```
+<?php
+// single directory
+$path = __DIR__;
+$list = glob($path . '/*');
+echo '<table>';
+echo '<tr><th>Name</th><th>Size in Bytes</th><th>Lines</th></tr>';
+foreach ($list as $fn) {
+	echo '<tr>';
+	echo "<td>" . basename($fn) . "</td>";
+	echo '<td>' . filesize($fn) . '</td>';
+	$lines = count(file($fn)) - 1;
+	echo "<td>$lines</td>";
+	echo '</tr>';
+}
+echo "</table>\n";
+```
+Example of cookie usage:
+* https://github.com/dbierer/classic_php_examples/blob/master/web/cookie_counter.php
+Example of session usage:
+* https://github.com/dbierer/classic_php_examples/blob/master/web/session_counter.php
+
 CSS tutorial
 * See: https://www.w3schools.com/Css/
 JavaScript
@@ -1887,4 +1955,5 @@ Use `var_export($data, TRUE)` to return a string that can be placed into the err
 
 
 ## ERRATA
-\
+* http://localhost:8881/#/5/59
+  * Please change form name to "days" instead of "gender"
