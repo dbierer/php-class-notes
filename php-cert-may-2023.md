@@ -14,6 +14,64 @@ For Thu 27 Apr 2023
 * PHP Source Code: https://github.com/php/php-src
 * Magic constants: https://www.php.net/manual/en/language.constants.magic.php
 
+* Example of "variable variable"\
+```
+<?php
+$d = "abc";
+$abc  = "xyz";
+$xyz = 'WHATEVER';
+echo $$$d;
+```
+* `float`, `double` and `real` are all aliases for each other:
+```
+<?php
+try {
+	$a = (float) 1.11;
+	$b = (double) 1.11;
+	$c = (real) 1.11;
+	if ($a === $b && $b === $c) {
+		echo 'MATCH';
+	} else {
+		echo 'NO MATCH';
+	}
+} catch (Throwable $t) {
+	echo 'NONE OF THE ABOVE';
+}
+
+// output: "MATCH"
+```
+* Cannot use reserved keywords in PHP 7.1 in a namespace
+```
+<?php
+namespace This\Is\My\List {
+	class Test
+	{
+		public function whatever()
+		{
+			return 'whatever XYZ';
+		}
+	}
+}
+
+namespace {
+	use This\Is\My\List\Test;
+	$test = new Test();
+	echo $test->whatever();
+}
+
+// actual output PHP 7.1:
+/*
+root@phpcert [ /srv/code ]# php test.php
+PHP Parse error:  syntax error, unexpected 'List' (T_LIST), expecting identifier (T_STRING) in /srv/code/test.php on line 2
+*/
+
+// FYI: this works OK in PHP 8+
+```
+* You can also group classes in the same namespace in the same `use` statement with "{}"
+```
+use Laminas\Db\Adapter\Driver\{IbmDb2,MySql,PostgreSQL};
+```
+
 * When would you use an alias along with `use`
 ```
 <?php
@@ -69,6 +127,24 @@ int(22)
 // IMPORTANT: the result in PHP 8 is different!
 // string(14) "The sum is: 33"
 ```
+* Type coercion can also result in `Notice` or `Warning`
+```
+<?php
+// NOTE: all of these generate this message as well
+// Notice:  A non well formed numeric value encountered in ...
+var_dump("12x" * 1);     // int(12)
+var_dump("1.2x" * 1);    // float(1.2)
+var_dump("12E-1x" * 1);  // float(1.2)
+var_dump("08x" * 1);     // int(8)
+
+// Warning: A non-numeric value encountered
+var_dump("E1x" * 1);     // int(0)
+
+// forcing the data type influences conversion
+var_dump((int) "12E-1x" * 1);   // int(1)
+var_dump((float) "12E-1x" * 1);
+```
+
 * Assignment Operator
   * IMPORTANT: all object assignments are by reference (unless you use keyword `clone`)
 ```
@@ -978,3 +1054,5 @@ foreach ($err as $x)
 * http://localhost:8884/#/9/38
   * The wording on the question isn't clear. There *is* no result!!!
   * Please clarify the wording
+* http://localhost:8884/#/2/19
+  * Line 5 should be a `warning` not `notice`
