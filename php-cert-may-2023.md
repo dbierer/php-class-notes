@@ -14,7 +14,7 @@ For Thu 27 Apr 2023
 * PHP Source Code: https://github.com/php/php-src
 * Magic constants: https://www.php.net/manual/en/language.constants.magic.php
 
-* Example of "variable variable"\
+* Example of "variable variable"
 ```
 <?php
 $d = "abc";

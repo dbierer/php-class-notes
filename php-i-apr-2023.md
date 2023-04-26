@@ -3,6 +3,9 @@
 Last: http://localhost:8881/#/7/5
 
 ## NOTE TO SELF:
+* Post the entire block of course code to the download folder
+  * Send link via email to attendees
+
 * Q: Do you have an example of HTML SELECT using ternary operator to pre-select a value?
 
 * Find example of `continue` (Common\Data\BigCsv???)
@@ -11,6 +14,16 @@ Last: http://localhost:8881/#/7/5
 * A: See line 639 in this file
 
 ## Homework
+Course VM source directory:
+* From a terminal window in the VM:
+```
+cd /home/vagrant/Zend/workspaces/DefaultWorkspace
+wget [the link]
+unzip [the file]
+```
+For Fri 28 Apr 2023
+* https://collabedit.com/qbefc
+
 For Wed 26 Apr 2023
 * https://collabedit.com/6uua4
 
