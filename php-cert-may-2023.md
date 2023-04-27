@@ -1,6 +1,11 @@
 # PHP Certification -- May 2023
 
 ## Homework
+For Tue 02 May 2023
+* Quiz questions for Topic #2 (Data Formats and Types)
+* Quiz questions for Topic #3 (Strings and Patterns)
+* Mock Exam #1
+
 For Thu 27 Apr 2023
 * Quiz questions for Topic #1 (Basics)
 
@@ -208,6 +213,18 @@ namespace y {
     // output: xyzTEST2
 }
 ```
+Bitwise quiz question:
+```
+<?php
+$a = 2;	// 010
+$b = 5; // 101
+$c = 7; // 111
+printf('%04b' . PHP_EOL, ($a | $b));		// 111
+printf('%04b' . PHP_EOL, ($a | $b) ^ $c);	// 000
+printf('%04b' . PHP_EOL, ~(($a | $b) ^ $c)); // 11111111111111111111111111111
+echo ~(($a | $b) ^ $c) ? 'T' : 'F';	// T
+```
+
 Namespaces:
 * Cannot have keywords in the namespace in PHP 7.1
 ```
@@ -454,6 +471,7 @@ unset($str[2]);
 echo $str . "\n"; // Fatal Error
 ```
 * Tutorial on PHP regex: https://www.w3schools.com/php/php_regex.asp
+* Delimiters for `preg_match()` etc. must not be alphanumeric or backslash
 * Using regex to find distinct words (using `\b`)
 ```
 <?php
