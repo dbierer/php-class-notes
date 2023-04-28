@@ -49,6 +49,21 @@ $ sudo dpkg-reconfigure -plow unattended-upgrades
 * For now, avoid upgrading Ubuntu. Leave it at version 20.*
 
 ## Class Notes
+Handling file uploads
+* See: https://github.com/dbierer/classic_php_examples/blob/master/web/f%E2%80%8Eile_upload.php
+
+Different formats
+```
+<?php
+// all of these === 13
+$a = 0b1101; // binary (base 2) // only in PHP 8.1
+$b = 015;	 // octal (base 8)
+$c = 0x0D; 	 // hex (base 16)
+$d = 13;	 // decimal (base 10)
+var_dump($a, $b, $c, $d);
+
+```
+
 NOTE: `money_format()` has been replaced by `NumberFormatter::formatCurrency`
 * See: https://www.php.net/manual/en/numberformatter.formatcurrency.php
 String functions assume 8 bit ASCII values
@@ -1941,7 +1956,81 @@ For HTML forms:
 ## Database
 Rankings: https://db-engines.com/en/ranking
 
-PostGreSQL: https://www.postgresql.org/download/
+* PostGreSQL: https://www.postgresql.org/download/
+
+* JOIN example:
+```
+mysql> select * from customers as c join orders as o on c.id = o.customer;
++----+-----------+-----------+----+------------+----------+--------+--------------------------+----------+
+| id | firstname | lastname  | id | date       | status   | amount | description              | customer |
++----+-----------+-----------+----+------------+----------+--------+--------------------------+----------+
+|  4 | Susan     | Chu       |  1 | 1355097600 | complete |    560 |                          |        4 |
+|  3 | J         | Flores    |  2 | 1359062345 | invoiced |   9800 |                          |        3 |
+|  2 | Janet     | Levitz    |  3 | 1357948800 | held     |    300 |                          |        2 |
+|  3 | J         | Flores    |  4 | 1359500400 | open     |     34 | Paper                    |        3 |
+|  1 | George    | Stevenson |  5 | 1359586800 | open     |   4570 | PHP development          |        1 |
+|  5 | Thomas    | White     |  6 | 1359586800 | invoiced |   2000 | Laptop                   |        5 |
+|  3 | J         | Flores    |  7 | 1360796400 | open     |    300 | A big box of chocolates. |        3 |
++----+-----------+-----------+----+------------+----------+--------+--------------------------+----------+
+7 rows in set (0.00 sec)
+```
+
+* mysqli examples
+```
+# Database Examples -- 28 Apr 2023
+<?php
+function connect()
+{
+    // init database creds
+    $db = [
+        'dsn' => '127.0.0.1',
+        'username' => 'vagrant',
+        'password' => 'vagrant',
+        'database' => 'phpcourse'
+    ];
+    return mysqli_connect($db['dsn'], $db['username'], $db['password'], $db['database']);
+}
+
+function select()
+{
+    $query = "SELECT * FROM customers ORDER BY lastname";
+    $results = [];
+    // Set the query
+    $result = mysqli_query(connect(), $query);
+    while($row = mysqli_fetch_assoc($result)) {
+        var_dump($row);
+    }
+}
+
+function insert(string $firstname, string $lastname)
+{
+    $query = "INSERT INTO customers (firstname, lastname) VALUES ('$firstname','$lastname')";
+    return mysqli_query(connect(), $query);
+}
+
+function update(string $field, int|string $data, string $where)
+{
+    $query = "UPDATE customers SET $field = '$data' WHERE $where";
+    return mysqli_query(connect(), $query);
+}
+
+function delete(string $where)
+{
+    $query = "DELETE FROM customers WHERE $where";
+    return mysqli_query(connect(), $query);
+}
+
+
+try {
+    //var_dump(insert('Wilma', 'Flintstone'));
+    //var_dump(update('firstname', 'J', 'id=3'));
+    var_dump(delete('id=7'));
+    select();
+} catch (Throwable $t) {
+    echo $t->getMessage();
+}
+
+```
 
 ## Miscellaneous
 Use `var_export($data, TRUE)` to return a string that can be placed into the error log
