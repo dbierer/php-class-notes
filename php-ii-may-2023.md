@@ -17,12 +17,25 @@ Info
 Do Not Accept the Update or Upgrade Prompts
 * Once you login it's important to wait a few seconds for the system to come fully up.
 * At this point you'll see two prompts: one to update, one to upgrade. Be sure to decline both of these options!
+Confirm that no unattended upgrades are in progress:
+```
+ps -ax |grep unattended
+```
+If you see any listed (except for the last one which is the `grep` command):
+* Make a note of the "process ID" (PID)
+* Kill the process as follows:
+```
+sudo kill [PID]
+```
+
+Now you can do the full update/upgrade
+* This doesn't upgrade the OS, just the packages
 * Open a command terminal and run these commands.
 ```
 sudo dpkg --configure -a
 sudo apt -y update && sudo apt -f -y install && sudo apt -y full-upgrade
 ```
-It will take several hours to complete so it's best to let it run overnight.Wait for a few seconds after logging in and cancel these requests:
+It will take several hours to complete so it's best to let it run overnight.
 
 Accept New Configuration
 * At some point you will be asked if you wish to retain the original php.ini configuration or accept the new. Go ahead and accept the new configuration.
