@@ -863,15 +863,7 @@ foreach ($res as $item) echo $item . ' ';
 echo PHP_EOL;
 echo "\nPeak: " . memory_get_peak_usage();
 ```
-* See: https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_examples.php
 
-SPL
-* Make sure you study:
-  * `*Iterator*` : just know what they are
-  * `ArrayIterator` and `ArrayObject` make sure you're up to speed on these!
-  * Just be aware of the "classic" data structure classes
-* Generators
-  * https://www.php.net/manual/en/class.generator.php
 * Late Static Binding
   * https://www.php.net/manual/en/language.oop5.late-static-bindings.php
 * Traits

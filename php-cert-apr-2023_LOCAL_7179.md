@@ -1,33 +1,9 @@
 # PHP Certification -- Apr 2023
 
-Last: http://localhost:8884/#/9/21
-
-## Q & A
-* Good discussion of `ArrayObject` using `STD_PROP_LIST` or `ARRAY_AS_PROPS`:
-* See: https://stackoverflow.com/questions/14610307/spl-arrayobject-arrayobjectstd-prop-list
+## TODO
+* Documentation reference on "caller information"
 
 ## Homework
-For Fri 14 Apr 2023
-* Quiz questions for Topic #8 (Databases)
-* Quiz questions for Topic #9 (Security)
-* Quiz questions for Topic #10 (Web)
-* Quiz questions for Topic #11 (Errors)
-* Final Mock Exam (self study)
-
-For Wed 12 Apr 2023
-* Quiz questions for Topic #7 (OOP)
-Mock Exam #2
-
-For Tue 11 Apr 2023
-* Quiz questions for Topic #4 (Arrays)
-* Quiz questions for Topic #5 (I/O)
-* Quiz questions for Topic #6 (Functions)
-Mock Exam #1
-
-For Thu 6 Apr 2023
-* Quiz questions for Topic #2 (Data Formats and Types)
-* Quiz questions for Topic #3 (Strings and Patterns)
-
 For Wed 5 Apr 2023
 * Quiz questions for Topic #1 (Basics)
 
@@ -281,25 +257,6 @@ Yet another example
 // if that's not present, looks to the URL or post
 $action = $argv[1] ?? $_GET['action'] ?? $_POST['action'] ?? 'nothing';
 ```
-Switch statement example
-```
-<?php
-$a = '1';
-
-switch ($a) {
-	case 1 :
-		echo 'A';
-	    break;
-	case '2' :
-		echo 'B';
-	    break;
-	default :
-		echo 'C';
-}
-// output: "A" because switch does a non-strict comparison
-// NOTE: if the "break;" is missing, it would keep running code
-```
-
 
 `php.ini` file settings:
 * https://www.php.net/manual/en/ini.list.php
@@ -353,8 +310,6 @@ $date[] = new DateTime('@' . time());
 $date[] = (new DateTime())->add(new DateInterval('P3D'));
 var_dump($date);
 ```
-* `DateInterval` format codes
-  * See: https://www.php.net/manual/en/dateinterval.construct.php
 * Don't forget that to run a SOAP request, you can also use:
   * `SoapClient::__soapCall()`
   * `SoapClient::__doRequest()`
@@ -402,16 +357,6 @@ if (substr($dir, 0, 1) === '/') echo 'Leading slash' . PHP_EOL;
 if (substr($dir, -1) === '/') echo 'Trailing slash' . PHP_EOL;
 if ($dir[-1] === '/') echo 'Trailing slash' . PHP_EOL;
 ```
-* Modifying the values using "de-referencing"
-```
-<?php
-$str = 'abcdef';
-echo $str . "\n"; // abcdef
-$str[0] ='z';
-echo $str . "\n"; // zbcdef
-unset($str[2]);
-echo $str . "\n"; // Fatal Error
-```
 * Tutorial on PHP regex: https://www.w3schools.com/php/php_regex.asp
 * Using regex to find distinct words (using `\b`)
 ```
@@ -425,11 +370,6 @@ foreach ($str as $item) {
 	echo (preg_match($patt, $item)) ? 'MATCH' : 'NO MATCH';
 	echo "\n";
 }
-```
-* What is the output?
-```
-<?php
-echo '1' . (print '2') + 3;
 ```
 
 * Using regex to swap sub-patterns
@@ -466,35 +406,12 @@ Greediness Example:
 ```
 <?php
 $str = '<p>Para 1</p><p>Para 2</p><p>Para 3</p>';
-//$pat = '!<p>.*</p>!';    // returns the entire string
-//$pat = '!<p>.*?</p>!';  // returns "<p>Para 1</p>"
-$pat = '!<p>.*</p>!U';  // returns "<p>Para 1</p>"
+// $pat = '!<p>.*</p>!';    // returns the entire string
+$pat = '!<p>.*?</p>!';  // returns "<p>Para 1</p>"
 preg_match($pat, $str, $matches);
 var_dump($matches);
 echo PHP_EOL;
 ```
-Example using "word boundary" (\b)
-```
-<?php
-$str = [
-	'This program has an ERROR in it',
-	'ERROR: Big Big Problem!',
-	'This is just ERROR_REPORTING',
-];
-$patt = '/\bERROR\b/i';
-foreach ($str as $line) {
-	echo $line . ': ';
-	echo (preg_match($patt, $line)) ? 'MATCH' : 'NO MATCH';
-	echo PHP_EOL;
-}
-// actual output:
-/*
- MATCH
- MATCH
- NO MATCH
- */
-```
-
 General regex coding examples:
 * https://github.com/dbierer/classic_php_examples/tree/master/regex
 
@@ -510,108 +427,6 @@ Also: please don't forget the array *navigation* functions:
 * `next()` : un-advances array pointer
 * `key()`  : returns index value at array pointer
 * `current()` : returns value of element at array pointer
-Assignment example:
-```
-<?php
-$a = ['A', 'B', 4 => 'C'];
-$a[2] = 'E';
-$a[] = 'D';
-var_dump($a);
-/*
-array(5) {
-  [0] =>
-  string(1) "A"
-  [1] =>
-  string(1) "B"
-  [4] =>
-  string(1) "C"
-  [2] =>
-  string(1) "E"
-  [5] =>
-  string(1) "D"
-}
-*/
-```
-In PHP 7, if a numeric array has no index > 0, it will always start with 0
-```
-<?php
-$a = [-6 => 'A', -5 => 'B'];
-$a[] = 'C';
-var_dump($a);
-/*
-array(3) {
-  [-6] =>
-  string(1) "A"
-  [-5] =>
-  string(1) "B"
-  [0] =>
-  string(1) "C"
-}
-*/
-```
-With associative arrays, the keys are retained automatically regardless of the 4 param of `array_slice()`
-```
-<?php
-$a = ['A' => 1, 'B' => 2, 'C' => 3, 'D' => 4, 'E' => 5];
-$a1 = array_slice($a, 2);  // == [3, 4, 5];
-$a2 = array_slice($a, 1, 3);  // == [2, 3, 4];
-$a3 = array_slice($a, 1, 3, true); //  == [1 => 2, 2 => 3, 3 => 4]
-var_dump($a1, $a2, $a3);
-/*
-array(3) {
-  'C' =>
-  int(3)
-  'D' =>
-  int(4)
-  'E' =>
-  int(5)
-}
-/srv/code/test.php:6:
-array(3) {
-  'B' =>
-  int(2)
-  'C' =>
-  int(3)
-  'D' =>
-  int(4)
-}
-/srv/code/test.php:6:
-array(3) {
-  'B' =>
-  int(2)
-  'C' =>
-  int(3)
-  'D' =>
-  int(4)
-}
-*/
-```
-BE CAREFUL: there is also a function `array_splice()`
-* Operates much like `str_replace()`
-Example of `array_combine()`
-```
-<?php
-$keys = range('A','F');
-$vals = range(1, 6);
-$fin  = array_combine($keys, $vals);
-var_dump($fin);
-/*
-array(6) {
-  'A' =>
-  int(1)
-  'B' =>
-  int(2)
-  'C' =>
-  int(3)
-  'D' =>
-  int(4)
-  'E' =>
-  int(5)
-  'F' =>
-  int(6)
-}
-*/
-```
 
 ## I/O
 Streams
@@ -673,31 +488,7 @@ $closure2 = $closure1->bindTo(new X());
 echo $closure2();
 
 ```
-* `bindTo()` doesn't require the same object type
-```
-<?php
-class Airplane {
-    public $type;
-    function __construct(string $type) {
-        $this->type = $type;
-    }
-    function getClosure() {
-        return function() {
-            return $this->type;
-        };
-    }
-}
 
-$airplane1 = new Airplane('Airliner');
-$airplane2 = new stdClass();
-$airplane2->type = 'TEST';
-
-$closure1 = $airplane1->getClosure();
-echo $closure1(). PHP_EOL;
-$closure2 = $closure1->bindTo($airplane2);
-echo $closure2();
-// same results as above
-```
 
 ## OOP
 * Read up on magic methods!
@@ -741,25 +532,7 @@ echo $container->get('today')();
 * Callable
   * Examples of what is considered "callable"
   * https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_examples.php
-* `__isset()` rewritten example:
-```
-<?php
-namespace Container;
-class ServiceContainer {
-    protected $path = '/path';
-    protected $services = [];
-    public function __get($name) {
-        return $this->$name ?? false;
-    }
-    public function __isset($name) {
-        return !empty($this->$name);
-    }
-}
-$container = new ServiceContainer();
-var_dump($container->adapter);
-echo isset($container->adapter) ?? false;
-echo $container->path . PHP_EOL;
-```
+
 * Iteration
   * Lookup these interfaces and understand what they do
      * `Traversable`
@@ -833,35 +606,20 @@ PHP Fatal error:  Uncaught TypeError: Argument 1 passed to test() must be of the
 */
 
 ```
-
-* SPL
-  * Make sure you study:
-    * `*Iterator*` : just know what they are
-    * `ArrayIterator` and `ArrayObject` make sure you're up to speed on these!
-  * Just be aware of the "classic" data structure classes
-* Generators
-  * https://www.php.net/manual/en/class.generator.php
-  * Example:
+Example of making object callable:
 ```
 <?php
-$arr = range(1, 1000000);
-$div = 17;
+$sum = new class () {
+    public $num = 0;
+    public function __invoke($val) {
+        $this->num += $val;
+    }
+};
 
-function whatDiv(array $arr, int $div)
-{
-	foreach ($arr as $val) {
-		if ($val % $div === 0) yield $val;
-	}
-}
-$res = whatDiv($arr, $div);
-
-// do something
-
-// this would go in a view script
-foreach ($res as $item) echo $item . ' ';
-
-echo PHP_EOL;
-echo "\nPeak: " . memory_get_peak_usage();
+$a = [1, 2, 3, 4, 5, 6, 7, 8];
+array_walk($a, $sum);
+echo 'Sum of Digits: ' . $sum->num;
+// output: 36
 ```
 * See: https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_examples.php
 
@@ -890,22 +648,6 @@ Read up on the `crypt()` function
 * https://www.php.net/manual/en/function.crypt.php
 Make sure you read up on `htmlspecialchars()`
 * https://www.php.net/htmlspecialchars
-```
-<?php
-$test = "<br>\"double\" & 'single'";
-echo htmlspecialchars($test);
-echo PHP_EOL;
-echo htmlspecialchars($test, ENT_NOQUOTES);
-echo PHP_EOL;
-echo htmlspecialchars($test, ENT_QUOTES);
-
-// output:
-/*
-&lt;br&gt;&quot;double&quot; &amp; 'single'
-&lt;br&gt;"double" &amp; 'single'
-&lt;br&gt;&quot;double&quot; &amp; &#039;single&#039;
-*/
-```
 Do a quick read on the `crypt()` function
 * `password_hash()` leverages this
 * Might be on the test
@@ -941,38 +683,6 @@ Form postings
 * HTML input get `enctype` attribute
   * See: https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/enctype
 
-## Error Handling
-Example of aggregated Catch block:
-```
-try {
-    $pdo = new PDO($params);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException | Exception $e) {
-    error_log('Database error: ' . date('Y-m-d H:i:s'));
-} catch (Throwable $e) {
-    error_log('Any and all errors or exceptions: ' . date('Y-m-d H:i:s'));
-} finally {
-    echo 'Database connection ';
-    echo ($pdo) ? 'succeeded' : 'failed';
-}
-```
-
-Example of making object callable:
-```
-<?php
-$sum = new class () {
-    public $num = 0;
-    public function __invoke($val) {
-        $this->num += $val;
-    }
-};
-
-$a = [1, 2, 3, 4, 5, 6, 7, 8];
-array_walk($a, $sum);
-echo 'Sum of Digits: ' . $sum->num;
-// output: 36
-```
-See: https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_examples.php
 
 ## Error Handling
 * Don't forget to study the `error_log()` as well
@@ -1006,9 +716,3 @@ foreach ($err as $x)
 
 
 ## Change Request
-* http://localhost:8884/#/4/27
-  * "nin digit"
-* "an underscore"
-* http://localhost:8884/#/9/38
-  * The wording on the question isn't clear. There *is* no result!!!
-  * Please clarify the wording

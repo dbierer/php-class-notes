@@ -1,41 +1,81 @@
-# PHP Certification -- Apr 2023
-
-Last: http://localhost:8884/#/9/21
-
-## Q & A
-* Good discussion of `ArrayObject` using `STD_PROP_LIST` or `ARRAY_AS_PROPS`:
-* See: https://stackoverflow.com/questions/14610307/spl-arrayobject-arrayobjectstd-prop-list
+# PHP Certification -- May 2023
 
 ## Homework
-For Fri 14 Apr 2023
-* Quiz questions for Topic #8 (Databases)
-* Quiz questions for Topic #9 (Security)
-* Quiz questions for Topic #10 (Web)
-* Quiz questions for Topic #11 (Errors)
-* Final Mock Exam (self study)
-
-For Wed 12 Apr 2023
-* Quiz questions for Topic #7 (OOP)
-Mock Exam #2
-
-For Tue 11 Apr 2023
-* Quiz questions for Topic #4 (Arrays)
-* Quiz questions for Topic #5 (I/O)
-* Quiz questions for Topic #6 (Functions)
-Mock Exam #1
-
-For Thu 6 Apr 2023
+For Tue 02 May 2023
 * Quiz questions for Topic #2 (Data Formats and Types)
 * Quiz questions for Topic #3 (Strings and Patterns)
+* Mock Exam #1
 
-For Wed 5 Apr 2023
+For Thu 27 Apr 2023
 * Quiz questions for Topic #1 (Basics)
+
+## Docker Container Setup
+* Download the ZIP file via Zoom
+* Unzip into a new folder `/path/to/zip`
+* Follow the setup instructions in `/path/to/zip/README.md`
 
 ## Class Notes
 * Topic Areas: https://www.zend.com/training/php-certification-exam
 * PHP Source Code: https://github.com/php/php-src
 * Magic constants: https://www.php.net/manual/en/language.constants.magic.php
 
+* Example of "variable variable"
+```
+<?php
+$d = "abc";
+$abc  = "xyz";
+$xyz = 'WHATEVER';
+echo $$$d;
+```
+* `float`, `double` and `real` are all aliases for each other:
+```
+<?php
+try {
+	$a = (float) 1.11;
+	$b = (double) 1.11;
+	$c = (real) 1.11;
+	if ($a === $b && $b === $c) {
+		echo 'MATCH';
+	} else {
+		echo 'NO MATCH';
+	}
+} catch (Throwable $t) {
+	echo 'NONE OF THE ABOVE';
+}
+
+// output: "MATCH"
+```
+* Cannot use reserved keywords in PHP 7.1 in a namespace
+```
+<?php
+namespace This\Is\My\List {
+	class Test
+	{
+		public function whatever()
+		{
+			return 'whatever XYZ';
+		}
+	}
+}
+
+namespace {
+	use This\Is\My\List\Test;
+	$test = new Test();
+	echo $test->whatever();
+}
+
+// actual output PHP 7.1:
+/*
+root@phpcert [ /srv/code ]# php test.php
+PHP Parse error:  syntax error, unexpected 'List' (T_LIST), expecting identifier (T_STRING) in /srv/code/test.php on line 2
+*/
+
+// FYI: this works OK in PHP 8+
+```
+* You can also group classes in the same namespace in the same `use` statement with "{}"
+```
+use Laminas\Db\Adapter\Driver\{IbmDb2,MySql,PostgreSQL};
+```
 
 * When would you use an alias along with `use`
 ```
@@ -92,6 +132,24 @@ int(22)
 // IMPORTANT: the result in PHP 8 is different!
 // string(14) "The sum is: 33"
 ```
+* Type coercion can also result in `Notice` or `Warning`
+```
+<?php
+// NOTE: all of these generate this message as well
+// Notice:  A non well formed numeric value encountered in ...
+var_dump("12x" * 1);     // int(12)
+var_dump("1.2x" * 1);    // float(1.2)
+var_dump("12E-1x" * 1);  // float(1.2)
+var_dump("08x" * 1);     // int(8)
+
+// Warning: A non-numeric value encountered
+var_dump("E1x" * 1);     // int(0)
+
+// forcing the data type influences conversion
+var_dump((int) "12E-1x" * 1);   // int(1)
+var_dump((float) "12E-1x" * 1);
+```
+
 * Assignment Operator
   * IMPORTANT: all object assignments are by reference (unless you use keyword `clone`)
 ```
@@ -136,18 +194,6 @@ $final = 0b11100000; // 224
 $final = 0b00000011; // 3
 ```
 
-## Docker Container Setup
-* Download the ZIP file via Zoom
-* Unzip into a new folder `/path/to/zip`
-* Follow the setup instructions in `/path/to/zip/README.md`
-
-## Q & A
-* Q: How do I know if an extension is part of the "core"
-* A: See: https://github.com/php/php-src/tree/php-7.1.33/ext
-  * These are all core
-  * Not all are enabled by default
-  * Only the ones enabled will be on the test
-
 What's the difference between `define()` and `const` for constants:
 ```
 <?php
@@ -167,6 +213,18 @@ namespace y {
     // output: xyzTEST2
 }
 ```
+Bitwise quiz question:
+```
+<?php
+$a = 2;	// 010
+$b = 5; // 101
+$c = 7; // 111
+printf('%04b' . PHP_EOL, ($a | $b));		// 111
+printf('%04b' . PHP_EOL, ($a | $b) ^ $c);	// 000
+printf('%04b' . PHP_EOL, ~(($a | $b) ^ $c)); // 11111111111111111111111111111
+echo ~(($a | $b) ^ $c) ? 'T' : 'F';	// T
+```
+
 Namespaces:
 * Cannot have keywords in the namespace in PHP 7.1
 ```
@@ -413,6 +471,7 @@ unset($str[2]);
 echo $str . "\n"; // Fatal Error
 ```
 * Tutorial on PHP regex: https://www.w3schools.com/php/php_regex.asp
+* Delimiters for `preg_match()` etc. must not be alphanumeric or backslash
 * Using regex to find distinct words (using `\b`)
 ```
 <?php
@@ -863,15 +922,7 @@ foreach ($res as $item) echo $item . ' ';
 echo PHP_EOL;
 echo "\nPeak: " . memory_get_peak_usage();
 ```
-* See: https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_examples.php
 
-SPL
-* Make sure you study:
-  * `*Iterator*` : just know what they are
-  * `ArrayIterator` and `ArrayObject` make sure you're up to speed on these!
-  * Just be aware of the "classic" data structure classes
-* Generators
-  * https://www.php.net/manual/en/class.generator.php
 * Late Static Binding
   * https://www.php.net/manual/en/language.oop5.late-static-bindings.php
 * Traits
@@ -1004,6 +1055,15 @@ foreach ($err as $x)
 * A: Designed to set state prior to using `var_export()`
 * A: See: https://www.php.net/manual/en/language.oop5.magic.php#object.set-state
 
+* Q: Where is there a good discussion of `ArrayObject` using `STD_PROP_LIST` or `ARRAY_AS_PROPS`?
+* A: See: https://stackoverflow.com/questions/14610307/spl-arrayobject-arrayobjectstd-prop-list
+
+* Q: How do I know if an extension is part of the "core"
+* A: See: https://github.com/php/php-src/tree/php-7.1.33/ext
+  * These are all core
+  * Not all are enabled by default
+  * Only the ones enabled will be on the test
+
 
 ## Change Request
 * http://localhost:8884/#/4/27
@@ -1012,3 +1072,5 @@ foreach ($err as $x)
 * http://localhost:8884/#/9/38
   * The wording on the question isn't clear. There *is* no result!!!
   * Please clarify the wording
+* http://localhost:8884/#/2/19
+  * Line 5 should be a `warning` not `notice`

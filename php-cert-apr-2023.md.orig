@@ -1,5 +1,11 @@
 # PHP Certification -- Apr 2023
 
+<<<<<<< HEAD
+## TODO
+* Documentation reference on "caller information"
+
+## Homework
+=======
 Last: http://localhost:8884/#/9/21
 
 ## Q & A
@@ -28,6 +34,7 @@ For Thu 6 Apr 2023
 * Quiz questions for Topic #2 (Data Formats and Types)
 * Quiz questions for Topic #3 (Strings and Patterns)
 
+>>>>>>> 4755e3ec0f559e0590611a8835b328185c4ba745
 For Wed 5 Apr 2023
 * Quiz questions for Topic #1 (Basics)
 
@@ -281,6 +288,8 @@ Yet another example
 // if that's not present, looks to the URL or post
 $action = $argv[1] ?? $_GET['action'] ?? $_POST['action'] ?? 'nothing';
 ```
+<<<<<<< HEAD
+=======
 Switch statement example
 ```
 <?php
@@ -300,6 +309,7 @@ switch ($a) {
 // NOTE: if the "break;" is missing, it would keep running code
 ```
 
+>>>>>>> 4755e3ec0f559e0590611a8835b328185c4ba745
 
 `php.ini` file settings:
 * https://www.php.net/manual/en/ini.list.php
@@ -353,8 +363,11 @@ $date[] = new DateTime('@' . time());
 $date[] = (new DateTime())->add(new DateInterval('P3D'));
 var_dump($date);
 ```
+<<<<<<< HEAD
+=======
 * `DateInterval` format codes
   * See: https://www.php.net/manual/en/dateinterval.construct.php
+>>>>>>> 4755e3ec0f559e0590611a8835b328185c4ba745
 * Don't forget that to run a SOAP request, you can also use:
   * `SoapClient::__soapCall()`
   * `SoapClient::__doRequest()`
@@ -402,6 +415,8 @@ if (substr($dir, 0, 1) === '/') echo 'Leading slash' . PHP_EOL;
 if (substr($dir, -1) === '/') echo 'Trailing slash' . PHP_EOL;
 if ($dir[-1] === '/') echo 'Trailing slash' . PHP_EOL;
 ```
+<<<<<<< HEAD
+=======
 * Modifying the values using "de-referencing"
 ```
 <?php
@@ -412,6 +427,7 @@ echo $str . "\n"; // zbcdef
 unset($str[2]);
 echo $str . "\n"; // Fatal Error
 ```
+>>>>>>> 4755e3ec0f559e0590611a8835b328185c4ba745
 * Tutorial on PHP regex: https://www.w3schools.com/php/php_regex.asp
 * Using regex to find distinct words (using `\b`)
 ```
@@ -426,11 +442,14 @@ foreach ($str as $item) {
 	echo "\n";
 }
 ```
+<<<<<<< HEAD
+=======
 * What is the output?
 ```
 <?php
 echo '1' . (print '2') + 3;
 ```
+>>>>>>> 4755e3ec0f559e0590611a8835b328185c4ba745
 
 * Using regex to swap sub-patterns
 ```
@@ -466,13 +485,20 @@ Greediness Example:
 ```
 <?php
 $str = '<p>Para 1</p><p>Para 2</p><p>Para 3</p>';
+<<<<<<< HEAD
+// $pat = '!<p>.*</p>!';    // returns the entire string
+$pat = '!<p>.*?</p>!';  // returns "<p>Para 1</p>"
+=======
 //$pat = '!<p>.*</p>!';    // returns the entire string
 //$pat = '!<p>.*?</p>!';  // returns "<p>Para 1</p>"
 $pat = '!<p>.*</p>!U';  // returns "<p>Para 1</p>"
+>>>>>>> 4755e3ec0f559e0590611a8835b328185c4ba745
 preg_match($pat, $str, $matches);
 var_dump($matches);
 echo PHP_EOL;
 ```
+<<<<<<< HEAD
+=======
 Example using "word boundary" (\b)
 ```
 <?php
@@ -495,6 +521,7 @@ foreach ($str as $line) {
  */
 ```
 
+>>>>>>> 4755e3ec0f559e0590611a8835b328185c4ba745
 General regex coding examples:
 * https://github.com/dbierer/classic_php_examples/tree/master/regex
 
@@ -510,6 +537,8 @@ Also: please don't forget the array *navigation* functions:
 * `next()` : un-advances array pointer
 * `key()`  : returns index value at array pointer
 * `current()` : returns value of element at array pointer
+<<<<<<< HEAD
+=======
 Assignment example:
 ```
 <?php
@@ -612,6 +641,7 @@ array(6) {
 }
 */
 ```
+>>>>>>> 4755e3ec0f559e0590611a8835b328185c4ba745
 
 ## I/O
 Streams
@@ -673,6 +703,9 @@ $closure2 = $closure1->bindTo(new X());
 echo $closure2();
 
 ```
+<<<<<<< HEAD
+
+=======
 * `bindTo()` doesn't require the same object type
 ```
 <?php
@@ -698,6 +731,7 @@ $closure2 = $closure1->bindTo($airplane2);
 echo $closure2();
 // same results as above
 ```
+>>>>>>> 4755e3ec0f559e0590611a8835b328185c4ba745
 
 ## OOP
 * Read up on magic methods!
@@ -741,6 +775,9 @@ echo $container->get('today')();
 * Callable
   * Examples of what is considered "callable"
   * https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_examples.php
+<<<<<<< HEAD
+
+=======
 * `__isset()` rewritten example:
 ```
 <?php
@@ -760,6 +797,7 @@ var_dump($container->adapter);
 echo isset($container->adapter) ?? false;
 echo $container->path . PHP_EOL;
 ```
+>>>>>>> 4755e3ec0f559e0590611a8835b328185c4ba745
 * Iteration
   * Lookup these interfaces and understand what they do
      * `Traversable`
@@ -833,6 +871,32 @@ PHP Fatal error:  Uncaught TypeError: Argument 1 passed to test() must be of the
 */
 
 ```
+<<<<<<< HEAD
+Example of making object callable:
+```
+<?php
+$sum = new class () {
+    public $num = 0;
+    public function __invoke($val) {
+        $this->num += $val;
+    }
+};
+
+$a = [1, 2, 3, 4, 5, 6, 7, 8];
+array_walk($a, $sum);
+echo 'Sum of Digits: ' . $sum->num;
+// output: 36
+```
+* See: https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_examples.php
+
+SPL
+* Make sure you study:
+  * `*Iterator*` : just know what they are
+  * `ArrayIterator` and `ArrayObject` make sure you're up to speed on these!
+  * Just be aware of the "classic" data structure classes
+* Generators
+  * https://www.php.net/manual/en/class.generator.php
+=======
 
 * SPL
   * Make sure you study:
@@ -863,15 +927,8 @@ foreach ($res as $item) echo $item . ' ';
 echo PHP_EOL;
 echo "\nPeak: " . memory_get_peak_usage();
 ```
-* See: https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_examples.php
 
-SPL
-* Make sure you study:
-  * `*Iterator*` : just know what they are
-  * `ArrayIterator` and `ArrayObject` make sure you're up to speed on these!
-  * Just be aware of the "classic" data structure classes
-* Generators
-  * https://www.php.net/manual/en/class.generator.php
+>>>>>>> 4755e3ec0f559e0590611a8835b328185c4ba745
 * Late Static Binding
   * https://www.php.net/manual/en/language.oop5.late-static-bindings.php
 * Traits
@@ -890,6 +947,8 @@ Read up on the `crypt()` function
 * https://www.php.net/manual/en/function.crypt.php
 Make sure you read up on `htmlspecialchars()`
 * https://www.php.net/htmlspecialchars
+<<<<<<< HEAD
+=======
 ```
 <?php
 $test = "<br>\"double\" & 'single'";
@@ -906,6 +965,7 @@ echo htmlspecialchars($test, ENT_QUOTES);
 &lt;br&gt;&quot;double&quot; &amp; &#039;single&#039;
 */
 ```
+>>>>>>> 4755e3ec0f559e0590611a8835b328185c4ba745
 Do a quick read on the `crypt()` function
 * `password_hash()` leverages this
 * Might be on the test
@@ -941,6 +1001,8 @@ Form postings
 * HTML input get `enctype` attribute
   * See: https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/enctype
 
+<<<<<<< HEAD
+=======
 ## Error Handling
 Example of aggregated Catch block:
 ```
@@ -973,6 +1035,7 @@ echo 'Sum of Digits: ' . $sum->num;
 // output: 36
 ```
 See: https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_examples.php
+>>>>>>> 4755e3ec0f559e0590611a8835b328185c4ba745
 
 ## Error Handling
 * Don't forget to study the `error_log()` as well
@@ -1006,9 +1069,12 @@ foreach ($err as $x)
 
 
 ## Change Request
+<<<<<<< HEAD
+=======
 * http://localhost:8884/#/4/27
   * "nin digit"
 * "an underscore"
 * http://localhost:8884/#/9/38
   * The wording on the question isn't clear. There *is* no result!!!
   * Please clarify the wording
+>>>>>>> 4755e3ec0f559e0590611a8835b328185c4ba745
