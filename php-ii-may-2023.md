@@ -1,10 +1,15 @@
 # PHP II - May 2023
 
-Last Slide:
+Last Slide: http://localhost:8882/#/3/24
 
 ## TODO
+* Q: Can you create an object instance when first declaring a  property in PHP 8.1 or 8.2?
 
 ## Homework
+For Wed 03 May 2023
+* Follow the additional VM setup instructions to update/upgrade packages (not the OS!)
+* Lab: Namespace
+  * Start looking here: `/home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp`
 
 ## VM Notes
 ### Expanded VM Instructions
@@ -144,6 +149,43 @@ PHP Road Map:
 ## Class Notes
 
 ### Namespaces
+Namespace standard: PSR-4
+* https://www.php-fig.org/psr/psr-4/
+
+Differences between PHP 7 and 8:
+```
+// works in PHP 7 but not 8 (notice the spaces)
+namespace This \ Is \ Normal;
+// works in PHP 8 but not 7 (notice the key word "list")
+namespace This\Is\A\List;
+```
+
+Keyword `as` is used to resolve ambiguities
+```
+<?php
+namespace A\B\C {
+	class Test
+	{
+		public $name = 'ABC';
+	}
+}
+
+namespace X\Y\Z {
+	class Test
+	{
+		public $name = 'XYZ';
+	}
+}
+
+namespace {
+	// if aliases weren't used, you'd get a Fatal Error
+	use A\B\C\Test as ATest;
+	use X\Y\Z\Test as ZTest;
+	$test = new ATest();
+	echo $test->name;
+}
+```
+
 Autoloader Examples:
 * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_autoload_example.php
 * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_autoload_class_example.php
