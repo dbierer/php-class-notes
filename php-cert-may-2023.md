@@ -1,6 +1,11 @@
 # PHP Certification -- May 2023
 
 ## Homework
+For Thu 04 May 2023
+* Quiz questions for Topic #4 (Arrays)
+* Quiz questions for Topic #5 (I/O)
+* Quiz questions for Topic #6 (Functions)
+
 For Tue 02 May 2023
 * Quiz questions for Topic #2 (Data Formats and Types)
 * Quiz questions for Topic #3 (Strings and Patterns)
@@ -558,6 +563,40 @@ General regex coding examples:
 * https://github.com/dbierer/classic_php_examples/tree/master/regex
 
 ## Arrays
+If you use `float` as an index, it typecasts to `int`
+```
+<?php
+$a = [1.11 => 'A', 2.22 => 'B', 3.33 => 'C'];
+echo $a[1.11];
+var_dump($a);
+/*
+root@phpcert [ /srv/code ]# php test.php
+A/srv/code/test.php:4:
+array(3) {
+  [1] =>
+  string(1) "A"
+  [2] =>
+  string(1) "B"
+  [3] =>
+  string(1) "C"
+}
+*/
+```
+Extracting random values from an array:
+```
+<?php
+// extracting a random value out of an array:
+
+// #1
+$a = ['A' => 111, 'B' => 222, 'C' => 333, 'D' => 444];
+var_dump($a[array_rand($a)]);
+
+// #2
+shuffle($a);
+var_dump($a[0]);
+
+```
+
 For iterating through an array beginning-to-end don't forget about these functions:
 * `array_walk()`
 * `array_walk_recursive()`
@@ -673,6 +712,10 @@ array(6) {
 ```
 
 ## I/O
+Read through the docs for `fopen()`
+* Very important!
+* https://www.php.net/manual/en/function.fopen.php
+
 Streams
 * Don't have to study *all* functions, just certain of the more common ones
 * https://www.php.net/streams
@@ -688,11 +731,35 @@ In addition to the informational file functions mentioned, you also have:
 etc.
 
 ## Functions
+* Pass by reference example
+```
+<?php
+$a = 'AAA';
+
+function test(&$a = '')
+{
+	$a = 'BBB';
+	return $a;
+}
+
+// NOTE: because we never passed any variable, there's nothing to reference
+//       which means $a never changes
+test();
+var_dump($a);
+
+// output:
+/*
+ /srv/code/test.php:11:
+string(3) "AAA"
+*/
+```
+
 * Read up on `Closure::bindTo()`
   * https://www.php.net/manual/en/closure.bindto.php
 * Anonymous function example:
 ```
 <?php
+
 $label = 'Result: ';
 $add = function ($a, $b) use ($label) {
     return $label . ($a + $b);
@@ -702,9 +769,53 @@ $sub = function ($a, $b) use ($label) {
     return $label . ($a - $b);
 };
 
-echo $add(6, 3) . PHP_EOL . $sub(6, 3);
-// Result: 9
-// Result: 3
+function test(callable $func, $a, $b) {
+    return $func($a, $b);
+}
+
+echo test($add, 6, 3) . PHP_EOL . test($sub, 6, 3);
+echo PHP_EOL;
+var_dump($add, $sub);
+echo PHP_EOL;
+echo (method_exists($add, '__invoke')) ? '__invoke exists' : '__invoke does NOT exist';
+
+// actual output:
+/*
+Result: 9
+Result: 3
+/srv/code/test.php:18:
+class Closure#1 (2) {
+  public $static =>
+  array(1) {
+    'label' =>
+    string(8) "Result: "
+  }
+  public $parameter =>
+  array(2) {
+    '$a' =>
+    string(10) "<required>"
+    '$b' =>
+    string(10) "<required>"
+  }
+}
+/srv/code/test.php:18:
+class Closure#2 (2) {
+  public $static =>
+  array(1) {
+    'label' =>
+    string(8) "Result: "
+  }
+  public $parameter =>
+  array(2) {
+    '$a' =>
+    string(10) "<required>"
+    '$b' =>
+    string(10) "<required>"
+  }
+}
+
+__invoke exists
+*/
 
 ```
 * Alternative example of `bindTo()`
@@ -759,6 +870,19 @@ echo $closure2();
 ```
 
 ## OOP
+* `$this`
+  * Amazingly this (no pun intended) works!
+```
+class ThisIsATest
+{
+	public $this = 'This';
+	public $name = 'Whatever';
+}
+
+$test = new ThisIsATest();
+echo $test->this;
+```
+
 * Read up on magic methods!
   * https://www.php.net/manual/en/language.oop5.magic.php
   * Examples: https://github.com/dbierer/classic_php_examples/tree/master/oop/*magic*.php
@@ -1074,3 +1198,7 @@ foreach ($err as $x)
   * Please clarify the wording
 * http://localhost:8884/#/2/19
   * Line 5 should be a `warning` not `notice`
+* http://localhost:8884/#/4/41
+  * Look into this question
+  * Actual output: "255 255.000000"
+
