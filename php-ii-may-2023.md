@@ -5,7 +5,15 @@ Last Slide: http://localhost:8882/#/3/24
 ## TODO
 * Q: Can you create an object instance when first declaring a  property in PHP 8.1 or 8.2?
 
+* Q: Can you find an example of using `__call()?`
+
 ## Homework
+For Wed 05 May 2023
+* Lab: Create a Class
+* Lab: Create an Extensible Super Class (combine with Abstract Classes lab)
+* Lab: Magic Methods
+* Lab: Abstract Classes
+
 For Wed 03 May 2023
 * Follow the additional VM setup instructions to update/upgrade packages (not the OS!)
 * Lab: Namespace
@@ -318,6 +326,30 @@ echo $test2->getName();
 
 var_dump($test1, $test2);
 ```
+Example using `get_object_vars()` to return JSON representation of object properties
+```
+<?php
+
+class UserEntity {
+    public function __construct(
+        public string $firstName,
+        public string $lastName
+    ) {}
+    public function getJson()
+    {
+		return json_encode(get_object_vars($this), TRUE);
+	}
+}
+
+$user1 = new UserEntity('Jack' , 'Ryan');
+$user2 = new UserEntity('Monte' , 'Python');
+
+echo $user1->getJson();
+echo PHP_EOL;
+echo $user2->getJson();
+
+```
+
 Inheritance example:
 ```
 //             Transportation
@@ -330,6 +362,40 @@ Inheritance example:
 
 Practical anonymous class example:
 * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_spl_filteriterator_anon_class.php
+* Example of returning data in object form with 2 different rendering methods: JSON or array
+```
+<?php
+
+class UserEntity {
+    public function __construct(
+        public string $firstName,
+        public string $lastName
+    ) {}
+    public function getData()
+    {
+		return new class($this->firstName, $this->lastName)
+		{
+			public function __construct(public string $firstName, public string $lastName)
+			{}
+			public function getJson()
+			{
+				return json_encode(get_object_vars($this), TRUE);
+			}
+			public function getArrayCopy()
+			{
+				return get_object_vars($this);
+			}
+		};
+	}
+}
+
+$user1 = new UserEntity('Jack' , 'Ryan');
+$user2 = new UserEntity('Monte' , 'Python');
+
+echo $user1->getData()->getJson();
+echo PHP_EOL;
+var_dump($user2->getData()->getArrayCopy());
+```
 
 Restrictions when overriding a method:
 * When overriding a method, you can "expand" the data type in the signature
@@ -371,6 +437,34 @@ echo $what->add(1, 2, 3);
 ```
 
 ## Magic Methods
+Example of `__toString()`
+```
+<?php
+
+class UserEntity {
+    public function __construct(
+        protected string $firstName,
+        protected string $lastName) {
+    }
+
+    public function __toString(): string {
+		return get_class($this);
+        // return json_encode(get_object_vars($this), TRUE);
+    }
+}
+
+$userEntity = new UserEntity('Mark', 'Watney');
+//echo $userEntity;
+
+$reflect = new ReflectionObject($userEntity);
+echo $reflect;
+
+// NOTE: this is what you'll see in the 1st of Reflection:
+// Object of class [ <user> class UserEntity implements Stringable ] {
+// This interface is automatically assigned by PHP 8 and above
+// as long as you define __toString()
+```
+
 Example of `__destruct()`
 * https://github.com/dbierer/filecms-core/blob/main/src/Common/Image/Captcha.php
 Serialization example:
@@ -532,6 +626,48 @@ Example of Abstract class with abstract method:
 * https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractController.php
 * https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractActionController.php
 * https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractRestfulController.php
+
+Interface example:
+```
+<?php
+interface ServiceInterface {
+    public function getService(string $key);
+    public function setService(string $key, callable $service);
+}
+
+abstract class AbstractController implements ServiceInterface {
+	public const FORMAT = 'l, d M Y H:i:s';
+    protected array $services = [];
+}
+
+class MvcController extends AbstractController
+{
+    public function getService(string $key)
+    {
+		return $this->services[$key] ?? NULL;
+	}
+    public function setService(string $key, callable $service)
+    {
+		$this->services[$key] = $service;
+	}
+}
+
+$callback = new class () {
+	protected $date = NULL;
+	public function __construct()
+	{
+		$this->date = new DateTime('now');
+	}
+	public function __invoke()
+	{
+		return $this->date->format(AbstractController::FORMAT);
+	}
+};
+
+$controller = new MvcController();
+$controller->setService('date', $callback);
+echo $controller->getService('date')();
+```
 
 Examples of what is `callable`
 * https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_examples.php
