@@ -1,6 +1,10 @@
 # PHP Certification -- May 2023
 
 ## Homework
+For Thu 09 May 2023
+* Quiz questions for Topic #7 (OOP)
+* Mock Exam #2
+
 For Thu 04 May 2023
 * Quiz questions for Topic #4 (Arrays)
 * Quiz questions for Topic #5 (I/O)
@@ -710,6 +714,29 @@ array(6) {
 }
 */
 ```
+If you add `SORT_STRING` the `sort()` function type-juggles everything to a string
+```
+<?php
+
+$a = [5,"43",2,"10"];
+sort($a, SORT_STRING);
+var_dump($a);
+
+// actual output:
+/*
+/srv/code/test.php:5:
+array(4) {
+  [0] =>
+  string(2) "10"
+  [1] =>
+  int(2)
+  [2] =>
+  string(2) "43"
+  [3] =>
+  int(5)
+}
+*/
+```
 
 ## I/O
 Read through the docs for `fopen()`
@@ -882,7 +909,11 @@ class ThisIsATest
 $test = new ThisIsATest();
 echo $test->this;
 ```
-
+* Abstract class example with abstract method:
+  *  https://github.com/laminas/laminas-mvc/blob/3.6.x/src/Controller/AbstractController.php
+     * Defined `public astract function onDispatch()`
+  * https://github.com/laminas/laminas-mvc/blob/3.6.x/src/Controller/AbstractRestfulController.php
+    * Extends the `AbstractController` abstract class
 * Read up on magic methods!
   * https://www.php.net/manual/en/language.oop5.magic.php
   * Examples: https://github.com/dbierer/classic_php_examples/tree/master/oop/*magic*.php
@@ -890,7 +921,7 @@ echo $test->this;
   * `__destruct()` called when object goes out-of-scope
     * End of program
     * `unset()`
-    * Called in a function and function call ends
+    * Called in a function/method and function/method call ends
     * Overwritten
 * Interfaces can be used as "free agents" to define functionality
   * This example ties an interface into an inheritance hierarchy
@@ -1016,7 +1047,10 @@ PHP Fatal error:  Uncaught TypeError: Argument 1 passed to test() must be of the
 */
 
 ```
-
+* `void` return type
+  * You can't return anything
+  * You can't return `NULL`
+  * However, `return` with no args is allowed so that you break out of the method if needed
 * SPL
   * Make sure you study:
     * `*Iterator*` : just know what they are
@@ -1201,4 +1235,5 @@ foreach ($err as $x)
 * http://localhost:8884/#/4/41
   * Look into this question
   * Actual output: "255 255.000000"
-
+* http://localhost:8884/#/6/27
+  * "B" answer is marked correct, however putting byte limit might limit the `fgetss()` ability to remove markup
