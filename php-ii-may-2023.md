@@ -6,9 +6,18 @@ Last Slide: http://localhost:8882/#/3/24
 * Q: Can you create an object instance when first declaring a  property in PHP 8.1 or 8.2?
 
 * Q: Can you find an example of using `__call()?`
+* A: https://github.com/laminas/laminas-mvc/blob/3.6.x/src/Controller/AbstractController.php
+  * Look for `public function __call($method,$params)`
 
 ## Homework
-For Wed 05 May 2023
+For Mon 08 May 2023
+* Lab: Interfaces
+* Lab: Type Hinting
+* Lab: Build Custom Exception Class
+* Also, please cover this section:
+  * OrderApp OOP Implementation
+
+For Fri 05 May 2023
 * Lab: Create a Class
 * Lab: Create an Extensible Super Class (combine with Abstract Classes lab)
 * Lab: Magic Methods
@@ -18,6 +27,9 @@ For Wed 03 May 2023
 * Follow the additional VM setup instructions to update/upgrade packages (not the OS!)
 * Lab: Namespace
   * Start looking here: `/home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp`
+
+Mantas: https://github.com/aon21/lab-project
+Oishin:
 
 ## VM Notes
 ### Expanded VM Instructions
@@ -668,6 +680,32 @@ $controller = new MvcController();
 $controller->setService('date', $callback);
 echo $controller->getService('date')();
 ```
+Example of "type widening"
+* The subclass can have a data type that's "wider" than the super class
+```
+<?php
+interface TestInterface
+{
+	public function doIterate(array $arr) : string;
+}
+
+class Test implements TestInterface
+{
+	// you could also use "iterable" as a data type
+	// which is a combo of array|Traversable
+	public function doIterate(iterable $arr) : string
+	{
+		$output = '';
+		foreach ($arr as $item) $output .= $item . PHP_EOL;
+		return $output;
+	}
+}
+
+$test = new Test();
+$arr = range('A','F');
+echo $test->doIterate($arr);
+echo $test->doIterate(new ArrayIterator($arr));
+```
 
 Examples of what is `callable`
 * https://github.com/dbierer/classic_php_examples/blob/master/oop/callable_examples.php
@@ -707,7 +745,106 @@ foreach ($a as $key => $value) {
 }
 
 ```
+* Another example of what is considered callable:
+```
+<?php
 
+class Test {
+    public function callIt(callable $callback, array $params) {
+        return $callback($params);
+    }
+}
+
+$operands[0] = 2;
+$operands[1] = 3;
+$callback = function ($p) {
+    return 'The result of '
+           . $p[0] . ' times ' . $p[1]
+           . ' is ' . ($p[0] * $p[1]);
+};
+
+$anon = new class() {
+	public function __invoke(array $params)
+	{
+		return 'The sum is: ' . array_sum($params);
+	}
+};
+
+$stat = new class() {
+	public function sum(array $params)
+	{
+		return 'The sum is: ' . array_sum($params);
+	}
+};
+
+class Whatever
+{
+	public static function sum(array $params)
+	{
+		return 'The sum is: ' . array_sum($params);
+	}
+}
+
+
+$test = new Test;
+echo $test->callIt($callback, $operands);
+echo PHP_EOL;
+echo $test->callIt('array_sum', $operands);
+echo PHP_EOL;
+echo $test->callIt($anon, $operands);
+echo PHP_EOL;
+echo $test->callIt([$stat, 'sum'], $operands);
+echo PHP_EOL;
+echo $test->callIt('Whatever::sum', $operands);
+```
+Type `int` can "widen" to `float` without any loss of precision
+```
+<?php
+declare(strict_types=1);
+class Test
+{
+	public function add(float $a, float $b)
+	{
+		return 'The sum is: ' . ($a + $b);
+	}
+}
+
+$test = new Test();
+// still works OK: int --> float doesn't lose precision
+echo __LINE__ . ':' . $test->add(2, 2);
+echo PHP_EOL;
+echo __LINE__ . ':' . $test->add(2.555, 2.666);
+echo PHP_EOL;
+```
+If `declare(strict_types=1)` is not in effect, it does a soft typecast
+```
+<?php
+//declare(strict_types=1);
+class Test
+{
+	public function add(float $a, float $b) : float
+	{
+		return $a + $b;
+	}
+}
+
+$test = new Test();
+// works OK
+echo __LINE__ . ':' . $test->add(2, 2);
+echo PHP_EOL;
+
+// works OK
+echo __LINE__ . ':' . $test->add(2.555, 2.666);
+echo PHP_EOL;
+
+// works OK
+echo __LINE__ . ':' . $test->add('2.555', '2.666');
+echo PHP_EOL;
+
+// Fatal Error
+echo __LINE__ . ':' . $test->add('x2.555', 'x2.666');
+echo PHP_EOL;
+```
 Example of going from a specific data type to a more general data type
 ```
 <?php
