@@ -10,6 +10,12 @@ Last Slide: http://localhost:8882/#/3/24
   * Look for `public function __call($method,$params)`
 
 ## Homework
+For Wed 10 May 2023
+* Lab: Traits
+* Lab: Prepared Statements
+* Lab: Stored Procedure
+* Lab: Transaction
+
 For Mon 08 May 2023
 * Lab: Interfaces
 * Lab: Type Hinting
@@ -931,6 +937,35 @@ Other examples of `static` and `traits`
 * https://github.com/dbierer/classic_php_examples/tree/master/oop/*static*.php
 * https://github.com/dbierer/classic_php_examples/tree/master/oop/*trait*.php
 
+Simple Trait example
+```
+<?php
+trait TestTrait
+{
+	public function test()
+	{
+		return 'TRAIT';
+	}
+}
+
+class Top
+{
+	use TestTrait;
+}
+
+class Child extends Top
+{
+}
+
+$top = new Top();
+$child = new Child();
+
+echo $top->test();
+echo PHP_EOL;
+echo $child->test();
+
+```
+
 ## PDO
 Adding options as 4th argument:
 ```
@@ -1106,6 +1141,8 @@ Class Vehicle {
 ```
 * http://localhost:8882/#/5/21
   * s/be One-to-Many:: How a single table row maps to multiple rows in another table.
+* http://localhost:8882/#/3/123
+  * s/be "Class" (leave it at that)
 
 ## Q & A
 * Q: Can you use the keyword "new" in property or const definition in 8.1?
