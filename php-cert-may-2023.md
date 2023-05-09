@@ -1,7 +1,14 @@
 # PHP Certification -- May 2023
 
 ## Homework
-For Thu 09 May 2023
+For Thu 11 May 2023
+* Quiz questions for Topic #8 (Databases)
+* Quiz questions for Topic #9 (Security)
+* Quiz questions for Topic #10 (Web)
+* Quiz questions for Topic #11 (Errors)
+* [If time permits] Final mock exam
+
+For Tue 09 May 2023
 * Quiz questions for Topic #7 (OOP)
 * Mock Exam #2
 
@@ -1051,6 +1058,57 @@ PHP Fatal error:  Uncaught TypeError: Argument 1 passed to test() must be of the
   * You can't return anything
   * You can't return `NULL`
   * However, `return` with no args is allowed so that you break out of the method if needed
+* Anonymous classes can't be serialized
+```
+<?php
+$sum = new class () {
+    public $num = 0;
+    public function __invoke($val) {
+        $this->num += $val;
+    }
+};
+
+// can't do this!
+$str = serialize($sum);
+echo $str . PHP_EOL;
+$obj = unserialize($str);
+array_walk($a, $obj);
+echo 'Sum of Digits: ' . $obj->num;
+echo PHP_EOL;
+
+// actual output:
+/*
+ * PHP Fatal error:  Uncaught Exception: Serialization of 'class@anonymous' is not allowed in /srv/code/test.php:14
+*/
+
+```
+* Traits example
+```
+<?php
+
+trait TestTrait1 {
+    public function someTest() {
+        return '1111111' . PHP_EOL;
+    }
+}
+trait TestTrait2 {
+    protected function someTest() {
+        return '2222222' . PHP_EOL;
+    }
+}
+class TestClass {
+    use TestTrait1, TestTrait2 {
+		// if there's a collision, must resolve it first
+		TestTrait1::someTest insteadof TestTrait2;
+		// keyword "as" redefines both visibility and the name
+		TestTrait2::someTest as public someTestTwo;
+	}
+}
+$a = new TestClass();
+echo $a->someTest();
+echo $a->someTestTwo();
+```
+
 * SPL
   * Make sure you study:
     * `*Iterator*` : just know what they are
