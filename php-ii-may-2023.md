@@ -3,6 +3,12 @@
 Last Slide: http://localhost:8882/#/3/24
 
 ## TODO
+* Q: Why are we not getting the "headers already sent" error in the VM?
+
+* Q: What are the typical settings for `max-age` in this header:
+```
+header('Cache-Control: must-revalidate, max-age=0');
+```
 * Q: Can you create an object instance when first declaring a  property in PHP 8.1 or 8.2?
 
 * Q: Can you find an example of using `__call()?`
@@ -10,6 +16,9 @@ Last Slide: http://localhost:8882/#/3/24
   * Look for `public function __call($method,$params)`
 
 ## Homework
+for Fri 12 May 2023
+* Lab: Validate an Email Address
+
 For Wed 10 May 2023
 * Lab: Traits
 * Lab: Prepared Statements
@@ -35,7 +44,7 @@ For Wed 03 May 2023
   * Start looking here: `/home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp`
 
 Mantas: https://github.com/aon21/lab-project
-Oishin:
+Oishin: https://github.com/OishinSmith/php2Oishin
 
 ## VM Notes
 ### Expanded VM Instructions
@@ -1102,6 +1111,21 @@ Simplified ETag Example:
 * See: https://github.com/dbierer/classic_php_examples/blob/master/web/etag.php
 
 ## Regex
+Example of searching for a specific file name pattern in a directory
+```
+<?php
+$list = scandir(__DIR__);
+var_dump($list);
+$pattern = '/^exam.*\.php$/';
+foreach ($list as $item) {
+	echo $item . ': ';
+	preg_match($pattern, $item, $match);
+	echo (!empty($match[0])) ? 'MATCH' : '';
+	echo PHP_EOL;
+}
+
+```
+
 Misc examples
 ```
 <?php
@@ -1122,6 +1146,42 @@ foreach ($data as $pattern => $value) {
 	}
 }
 ```
+Shows the use of "?" to indicate an optional "s"
+```
+<?php
+$list = [
+	'http://zend.com',
+	'https://www.perforce.com',
+	'ftp://unlikelysource.com',
+	'file:///some/path/to/file',
+];
+// searches for http:// or https://
+$pattern = '!^https?://\w*!i';
+foreach ($list as $item) {
+	echo $item . ': ';
+	preg_match($pattern, $item, $match);
+	echo (!empty($match[0])) ? 'MATCH' : '';
+	echo PHP_EOL;
+}
+
+```
+Example of `preg_replace()`
+```
+<?php
+$test = '<script>alert("test");</script>';
+$pattern = ['/</','/>/','/;/'];
+
+echo preg_replace($pattern, '', $test);
+echo PHP_EOL;
+// output: "scriptalert("test")/script"
+
+$test = '$script{"alert"} = "script"';
+$pattern = ['/{/','/}/'];
+$replace = ['[', ']'];
+echo preg_replace($pattern, $replace, $test);
+// $script["alert"] = "script"
+```
+
 PHP 5 to PHP 7 code converter using `preg_replace_callback_array()`
 * https://github.com/dbierer/php7cookbook/blob/master/source/chapter01/chap_01_php5_to_php7_code_converter.php#L3
 * https://github.com/dbierer/php7cookbook/blob/master/source/Application/Parse/Convert.php
@@ -1143,6 +1203,8 @@ Class Vehicle {
   * s/be One-to-Many:: How a single table row maps to multiple rows in another table.
 * http://localhost:8882/#/3/123
   * s/be "Class" (leave it at that)
+* http://localhost:8882/#/6/4
+  * `$contents` is overwritten: typo?
 
 ## Q & A
 * Q: Can you use the keyword "new" in property or const definition in 8.1?
