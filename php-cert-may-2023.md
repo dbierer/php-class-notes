@@ -1,5 +1,7 @@
 # PHP Certification -- May 2023
 
+TODO: Find out why magic `_get()` interferes with echoing a valid property (see `class Magic` example below)
+
 ## Homework
 For Thu 11 May 2023
 * Quiz questions for Topic #8 (Databases)
@@ -930,6 +932,33 @@ echo $test->this;
     * `unset()`
     * Called in a function/method and function/method call ends
     * Overwritten
+* Example:
+```
+<?php
+class Magic
+{
+	public $a = "A";
+	protected $b = ['a' => 'A', 'b' => 'B', 'c' => 'C'];
+	protected $c = [1, 2, 3];
+	public function __get($v)
+	{
+		echo "$v,";
+		return $this->b[$v];
+	}
+	public function __set($var, $val)
+	{
+		echo "$var:$val";
+		$this->var = $val;
+	}
+}
+$m = new Magic();
+echo $m->a . "," . $m->b . "," . $m->c . ",";
+$m->c = "CC";
+echo $m->a . "," . $m->b . "," . $m->c . PHP_EOL;
+
+// actual output: b,c,A,B,C,c:CCvar:CCb,c,A,B,C
+// WHY does "A" not show up in the start?
+```
 * Interfaces can be used as "free agents" to define functionality
   * This example ties an interface into an inheritance hierarchy
 ```
@@ -1207,6 +1236,65 @@ URL: https://www.php.net/manual/en/ini.list.php
 Form postings
 * HTML input get `enctype` attribute
   * See: https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/enctype
+Session mechanism
+* NOTE: the session mechanism serializes everything
+* Cannot store type `resource` e.g file handles, data connections
+* Cannot store anonymous functions
+* Cannot store anonymous classes either
+```
+<?php
+class Test
+{
+	public $name = 'Fred Flintstone';
+	public function getName()
+	{
+		return $this->name;
+	}
+}
+
+session_start();
+$name = $_SESSION['name'] ?? '';
+$func = $_SESSION['func'] ?? '';
+$anon = $_SESSION['anon'] ?? '';
+if (empty($_SESSION['name'])) {
+	echo 'First Time <br />';
+	$name = new Test();
+	$_SESSION['name'] = $name;
+	$_SESSION['func'] = function ($name) { return $name->name; };
+	$_SESSION['anon'] = new class () { public function getName($name) { return $name->name; }};
+} else {
+	echo 'Second Time <br />';
+	echo $name->getName();
+	echo $func($name);
+	echo $anon->getName($name);
+}
+
+// actual output:
+/*
+First Time <br />PHP Fatal error:  Uncaught Exception: Serialization of 'Closure' is not allowed in [no active file]:0
+First Time <br />PHP Fatal error:  Uncaught Exception: Serialization of 'class@anonymous' is not allowed in [no active file]:0
+ */
+```
+Beware of `$GLOBALS`
+```
+<?php
+namespace test {
+	$a = 'AAA';
+}
+namespace whatever {
+	echo $a; // outputs "AAA"
+}
+namespace {
+	$GLOBALS['a'] = 'BBB';
+	echo $a;	// outputs 'BBB'
+	var_dump($GLOBALS);
+}
+```
+Headers
+* `header()` can also set the response code
+```
+header(string $header, bool $replace = true, int $response_code = 0): void
+```
 
 ## Error Handling
 Example of aggregated Catch block:
