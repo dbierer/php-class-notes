@@ -1060,12 +1060,32 @@ $pat = '/<a.*?href=("|\')(.*?)("|\').*?>/';
 preg_match_all($pat, $str, $match);
 var_dump($match);
 ```
+Example email validation
+```
+<?php
+$email = [
+	'oishin@gmail.com',
+	'douglas.bierer@company.com',
+	'george@some.company.com',
+	'joe25@dc.ie',
+	'noona@some.company.co.th',
+	'invalid&/*@company',
+	'2abc@abc.com',
+];
+$pattern = '/^[a-z][a-z0-9.-]*@([a-z0-9]+\.)+[a-z]{2,4}$/i';
+foreach ($email as $item) {
+	echo $item . ' [';
+	echo (preg_match($pattern, $item)) ? 'VALID' : 'INVALID';
+	echo ']' . PHP_EOL;
+}
+```
 ## Composer
 Example of advanced usage including scripts
 * https://github.com/laminas/laminas-mvc-skeleton/blob/master/composer.json
 You can add alternates to `packagist.org` using the `repositories` key in the composer.json file
 * Example: https://wpackagist.org/
 If you dependency issues, consider adding the `--ignore-platform-reqs` to the `composer install` or `composer update` directive
+* This is especially true if you're running 8.1 or 8.2 and the packagist project is set for PHP 7.4 or 8.0
 
 ## Web Services
 Example of SOAP Client
