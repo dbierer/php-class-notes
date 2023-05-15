@@ -35,6 +35,29 @@ sudo systemctl restart apache2
 ```
 
 ## Class Notes
+Unicode characters:
+```
+// any unicode character
+echo "\u{0252} \u{0282}";
+```
+
+Mixing HTML and PHP
+```
+<?php
+// mixing HTML and PHP: need the closing tag
+$first = 'Fred';
+$last  = 'Flintstone';
+$status = 'Caveman';
+?>
+<h1>Name</h1>
+<hr />
+<!-- Standard PHP tag -->
+<?php echo $first . ' ' . $last; ?>
+<br />
+<!-- Implied echo; same result -->
+<?= $first . ' ' . $last; ?>
+```
+
 Handling file uploads
 * See: https://github.com/dbierer/classic_php_examples/blob/master/web/f%E2%80%8Eile_upload.php
 
@@ -118,6 +141,15 @@ echo $contents;
 ```
 
 ## Foundation
+Operators
+* Modulus
+```
+<?php
+$minutes = 149;
+echo 'Hours: ' . ((int) ($minutes / 60)) . ' minutes: ' . ($minutes % 60);
+// Output: Hours: 2 minutes: 29
+```
+
 Docblocks
 * See: https://phpdoc.org/
 * Also: https://docs.phpdoc.org/3.0/guide/references/phpdoc/basic-syntax.html#basic-syntax
