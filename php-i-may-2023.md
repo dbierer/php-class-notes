@@ -5,15 +5,11 @@
 * Post the entire block of course code to the download folder
   * Send link via email to attendees
 
-* Q: Do you have an example of HTML SELECT using ternary operator to pre-select a value?
-
-* Find example of `continue` (Common\Data\BigCsv???)
-
-* Find a more practical example of unpacking a complex array into variables using `list()`
-* A: See line 639 in this file
-
 ## Homework
-For Wed 19 Apr 2023
+For Fri 19 May 2023
+* https://collabedit.com/8f4tk
+
+For Wed 17 May 2023
 * Update/Upgrade the VM
 * For now, avoid upgrading Ubuntu. Leave it at version 20.*
 * Follow these instructions:
@@ -141,15 +137,7 @@ echo $contents;
 ```
 
 ## Foundation
-Operators
-* Modulus
-```
-<?php
-$minutes = 149;
-echo 'Hours: ' . ((int) ($minutes / 60)) . ' minutes: ' . ($minutes % 60);
-// Output: Hours: 2 minutes: 29
-```
-
+### Comments
 Docblocks
 * See: https://phpdoc.org/
 * Also: https://docs.phpdoc.org/3.0/guide/references/phpdoc/basic-syntax.html#basic-syntax
@@ -158,6 +146,35 @@ Attributes
 * The compiled right into the code
 * Docblocks are ignored for the most part
 * See: https://www.php.net/manual/en/language.attributes.overview.php
+### Operators
+* Back tics
+  * Makes your code less portable
+  * OS specific
+  * Costly in terms of resource usage
+  * Here's an example of using back tics but making it more portable
+```
+<?php
+if (PHP_OS_FAMILY === 'Windows') {
+	echo `dir *.*`;
+} else {
+	echo `ls -l`;
+}
+
+```
+
+* Modulus
+```
+<?php
+$minutes = 149;
+echo $minutes
+	 . ' minutes is '
+	 . ((int) ($minutes / 60))
+	 . ' hours and '
+	 . ($minutes % 60)
+	 . ' minutes'
+	 . PHP_EOL;
+// Output: 149 minutes is 2 hours and 29 minutes
+```
 Concatenate operator and order or precedence is different between PHP 7 and PHP 8
 ```
 <?php
@@ -271,8 +288,16 @@ var_dump($days);
 }
 */
 ```
+### Variables / Constants
 Example of assigning constants:
 * See: https://github.com/dbierer/filecms-website/blob/main/bootstrap.php
+Difference between `const` and `define()`
+* `const`
+  * Respects the scope in which it's define
+  * Mainly used in OOP
+* `define()` is truly global
+  * Used where you need the constant everywhere
+
 A better way of assigning sub-arrays:
 ```
 <?php
@@ -290,6 +315,23 @@ print_r($mission);
 ```
 
 ## Control Structures
+Example if / elseif / else
+```
+<?php
+$a = 30;
+$b = 20;
+
+if ($a < $b) {
+	$result = 'less than';
+} elseif( $a === $b) {
+	$result = 'equal to';
+} else {
+	$result = 'greater than';
+}
+echo $a . ' is ' . $result . ' ' . $b . '.';
+echo PHP_EOL;
+```
+
 An alternate "if" syntax is available:
 ```
 <?php
@@ -311,6 +353,24 @@ $name = (isset($_GET['name'])) ? strip_tags($_GET['name']) : 'Default';
 $location = (isset($_GET['location'])) ? strip_tags($_GET['location']) : 'Some City';
 echo htmlspecialchars($name . ' lives in ' . $location);
 ```
+Another ternary example
+```
+<?php
+$name = (isset($_GET['name'])) ? strip_tags($_GET['name']) : 'Default';
+$age  = (isset($_GET['age']))  ? (int) $_GET['age']        : 0;
+$city = (isset($_GET['city'])) ? strip_tags($_GET['city']) : 'Unknown';
+
+echo '<pre>';
+echo '<ul>';
+echo '<li>' . 'Name: ' . htmlspecialchars($name) . '</li>';
+echo '<li>' . 'Age : ' . htmlspecialchars($age) . '</li>';
+echo '<li>' . 'City: ' . htmlspecialchars($city) . '</li>';
+echo '</ul>';
+echo '</pre>';
+
+phpinfo(INFO_VARIABLES);
+```
+
 `match` also supports a default value:
 ```
 <?php
