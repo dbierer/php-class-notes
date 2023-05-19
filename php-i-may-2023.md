@@ -6,6 +6,9 @@
   * Send link via email to attendees
 
 ## Homework
+For Mon 22 May 2023
+* https://collabedit.com/nxp4h
+
 For Fri 19 May 2023
 * https://collabedit.com/8f4tk
 
@@ -370,7 +373,6 @@ echo '</pre>';
 
 phpinfo(INFO_VARIABLES);
 ```
-
 `match` also supports a default value:
 ```
 <?php
@@ -733,6 +735,56 @@ If you want other formats, use one of these options:
 * `NumberFormatter` class
 * `number_format()` function
 * `printf()` family of functions (uses a format string)
+
+Use `round()` (out of the "Math" extension) to round values up or down
+```
+<?php
+$items = [10.41, 15.96 , 30.99, 46.99];
+var_dump($items);
+
+// Add an 8% markup
+foreach ($items as $key => $value) {
+    //store the new value back into the array
+    $items[$key] = round($value * 1.08, 2);
+    echo $items[$key] . '<br>' . PHP_EOL;
+}
+
+var_dump($items);
+```
+### Loops
+Using a `foreach()` loop to iterate through a 3-level array
+```
+<?php
+// Build the crew
+$mission = [
+    'STS395' => [
+        ['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
+        ['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
+        ['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist']
+    ]
+];
+
+foreach($mission as $mission_id => $crew) {
+	echo $mission_id . ':' . PHP_EOL;
+	foreach ($crew as $num => $astronaut) {
+		echo $num . ':' . PHP_EOL;
+		foreach ($astronaut as $key => $value) {
+			echo $key . "\t" . $value . PHP_EOL;
+		}
+	}
+}
+```
+Using a `while()` loop to execute based upon a time condition
+```
+<?php
+$counter = 0;
+$current = time();
+$stop  = time() + 2;	// 2 seconds
+while ($current <= $stop){
+	$current = time();
+	echo $counter++ . ' ';
+}
+```
 
 
 ## HTTP Basics
@@ -2135,5 +2187,9 @@ Use `var_export($data, TRUE)` to return a string that can be placed into the err
 
 
 ## ERRATA
+* http://localhost:8881/#/4/55
+  * 'mose'???
 * http://localhost:8881/#/5/59
   * Please change form name to "days" instead of "gender"
+* General Note:
+  * Code blocks are hard to read
