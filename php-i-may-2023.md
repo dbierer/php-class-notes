@@ -4,8 +4,13 @@
 ## NOTE TO SELF:
 * Post the entire block of course code to the download folder
   * Send link via email to attendees
+* Get latest `slides.pdf` by Wednesday
 
 ## Homework
+For Wed 24 May 2023
+* Poke around in the OrderApp on the VM
+* https://collabedit.com/76dbn
+
 For Mon 22 May 2023
 * https://collabedit.com/nxp4h
 
@@ -734,6 +739,30 @@ When rendering numeric values, PHP defaults to decimal (i.e. base 10)
 If you want other formats, use one of these options:
 * `NumberFormatter` class
 * `number_format()` function
+```
+<?php
+function formatCurrency(float $value, string $arg='$') {
+    switch (strtolower($arg)) {
+        case 'euro' :
+        case '€' :
+            $result = number_format($value, 2, ',', ' ') . '€';
+            break;
+        case 'pound' :
+        case '£' :
+            $result = '£' . number_format($value, 2, '.', ',');
+            break;
+        case 'dollar' :
+        case '$' :
+            $result = '$' . number_format($value, 2, '.', ',');
+            break;
+    }
+    return $result;
+}
+echo formatCurrency(9999, 'euro') ?? 'Unknown'; // 9 999, €
+echo PHP_EOL;
+echo formatCurrency(9999, '$') ?? 'Unknown';    // $9,999.
+```
+
 * `printf()` family of functions (uses a format string)
 
 Use `round()` (out of the "Math" extension) to round values up or down
