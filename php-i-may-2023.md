@@ -4,7 +4,6 @@
 ## NOTE TO SELF:
 * Post the entire block of course code to the download folder
   * Send link via email to attendees
-* Get latest `slides.pdf` by Wednesday
 
 ## Homework
 For Wed 24 May 2023
@@ -143,6 +142,29 @@ $contents = file_get_contents('https://google.com/');
 $contents = str_ireplace('Google', 'Boogle', $contents);
 echo $contents;
 ```
+Resetting the error log:
+```
+$filename = '/some/path/error.log';
+ini_set('error_log', $filename);
+```
+`glob()`
+* Returns full path file info
+* Accepts a "filter" for filenames
+`scandir()`
+* Returns all files in a given directory
+* Filenames only, not full path
+```
+<?php
+$list = [
+	'glob' => glob(__DIR__ . '/*'),
+	'scan' => scandir(__DIR__),
+];
+
+var_dump($list);
+```
+NOTE: `glob()` and `scandir()` are not recursive
+* Use `RecursiveDirectoryIterator` if you need to scan an entire directory structure
+* https://www.php.net/RecursiveDirectoryIterator
 
 ## Foundation
 ### Comments
@@ -2069,6 +2091,46 @@ foreach ($list as $fn) {
 }
 echo "</table>\n";
 ```
+Example of form processing
+```
+<?php
+$msg = '';
+if(!empty($_GET)) {
+    $email = $_GET['email'] ?? '';
+    $date  = $_GET['date']  ?? '';
+    if(!empty($email) && !empty($date)) {
+        $email = filter_var(strip_tags(trim($email)), FILTER_SANITIZE_EMAIL);
+        $date  = strip_tags(trim($date));
+        $msg = 'Data is validated and sanitized, handle it ...';
+    } else {
+        $msg = 'Invalid input';
+    }
+} else {
+    // no form data has been posted
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>untitled</title>
+<meta name="generator" content="Geany 1.36" />
+</head>
+<body>
+<form method="get">
+	Email: <input name="email" type="email" />
+	<br />
+	Date: <input name="date" type="date" />
+	<br />
+	<input type="submit"/>
+</form>
+<hr />
+<?= $msg; ?>
+<?php phpinfo(INFO_VARIABLES); ?>
+</body>
+</html>
+```
+
 Example of cookie usage:
 * https://github.com/dbierer/classic_php_examples/blob/master/web/cookie_counter.php
 Example of session usage:
