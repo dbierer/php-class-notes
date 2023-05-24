@@ -2216,9 +2216,9 @@ Use `var_export($data, TRUE)` to return a string that can be placed into the err
 
 
 ## ERRATA
-* http://localhost:8881/#/4/55
-  * 'mose'???
-* http://localhost:8881/#/5/59
-  * Please change form name to "days" instead of "gender"
+x* http://localhost:8881/#/4/55
+x  * 'mose'???
+x* http://localhost:8881/#/5/59
+x  * Please change form name to "days" instead of "gender"
 * General Note:
   * Code blocks are hard to read
