@@ -1,31 +1,8 @@
 # PHP SECURITY CLASS NOTES
 
-Last: http://localhost:8885/#/5/18
 IMPORTANT: find out why "xxe" vulnerability isn't working
 
 ## Assignments
-For Fri 20 Jan 2023:
-* Secure File Uploads
-* Secure CAPTCHA Lab
-  * OPTIONAL: you do need a Google account and need to apply for a reCAPTCHA key
-
-For Wed 18 Jan 2023:
-* SQL Injection: Portal Exercise
-* Brute Force Detector Class Exercise
-* Brute Force Zed Attack Proxy Project Exercise
-* Cross-Site Scripting (XSS): Tidy Class Exercise #1
-* Cross-Site Scripting (XSS): Portal Exercise
-* Cross Site Request Forgery (CSRF) Portal Exercise
-* Security Misconfiguration Portal Exercise
-* External XML Entities Portal Exercise
-* Command Injection lab
-* Unrestricted File Inclusion Lab
-
-For Wed 11 Jan 2023:
-* Refresh the VM using the updated Vagrantfile
-  * Also: update the existing software (see "Expanded VM Installation Instructions" below)
-* Application Setup: Zed Attack Proxy
-* Try your hand at cracking passwords using `hashcat`
 
 ## Security App Login
 Choose "Login"
@@ -33,28 +10,6 @@ Choose "Login"
 * Password: password
 
 ## TODO
-* Q: Is Sodium cross-platform?
-* A: ???
-
-* Q: Auth/ACL examples?
-* A: ???
-
-* Q: Example using DOM to clean allowed HTML
-* A: TBD
-
-* Q: Find article on password complexity
-* A: TBD
-
-* Q: Find reference in https://wiki.php.net/rfc for deprecated back tics
-* A: Suggestion was declined for PHP 8
-  * See: https://wiki.php.net/rfc/deprecate-backtick-operator-v2
-
-* Q: Find article that documents the 2-stage SQL injection attack
-* A: https://bertwagner.com/posts/how-to-steal-data-using-a-second-order-sql-injection-attack/
-
-* Get a `Faraday Bag` for your keyless entry vehicle!
-  * https://www.bbc.com/news/business-47023003
-  * https://www.locksmiths.co.uk/faq/keyless-car-theft/
 
 ## Docker Container Instructions
 * Install Docker and Docker Compose
@@ -506,6 +461,7 @@ LAB: quick test: download form, make a change, submit manually, and see that you
 * http://thehackernews.com/2017/02/HoeflerText-font-chrome.html
 
 ## SQL INJECTION:
+* https://tech.co/news/data-breaches-updated-list
 * https://www.quora.com/As-of-2016-are-there-websites-vulnerable-to-SQL-injection
 * https://threatpost.com/attackers-targeting-unpatched-joomla-sites-through-sql-injection-vulnerability/115179/
 * http://www.tripwire.com/state-of-security/latest-security-news/one-million-wordpress-websites-vulnerable-to-sql-injection-attack/
@@ -861,14 +817,22 @@ Owasp.org tools page
   * A: Simple answer: we don't know and Google is not telling
   * A: See: https://security.googleblog.com/2014/12/are-you-robot-introducing-no-captcha.html
 
+* Q: Find reference in https://wiki.php.net/rfc for deprecated back tics
+* A: Suggestion was declined for PHP 8
+  * See: https://wiki.php.net/rfc/deprecate-backtick-operator-v2
+
+* Q: Find article that documents the 2-stage SQL injection attack
+* A: https://bertwagner.com/posts/how-to-steal-data-using-a-second-order-sql-injection-attack/
+
+* Get a `Faraday Bag` for your keyless entry vehicle!
+  * https://www.bbc.com/news/business-47023003
+  * https://www.locksmiths.co.uk/faq/keyless-car-theft/
+
 * How to get rid of `system problem detected` message on Ubuntu
   * Have to remove the crash report
 ```
 sudo rm /var/crash/*
 ```
-
-
-
 
 ## CLASS CODE EXAMPLES
 
