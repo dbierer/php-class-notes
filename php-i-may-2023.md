@@ -4,6 +4,7 @@
 ## NOTE TO SELF:
 * Post the entire block of course code to the download folder
   * Send link via email to attendees
+* Add instructions to install phpMyAdmin in the VM
 
 ## Homework
 For Wed 24 May 2023
@@ -477,10 +478,10 @@ sudo apt -y upgrade
 
 Install phpMyAdmin
 * Download the latest version from `https://www.phpmyadmin.net`
-* Make note of the version number (e.g. `5.2.0`)
+* Make note of the version number (e.g. `5.2.1`)
 ```
 cd
-VER=5.2.0
+VER=5.2.1
 unzip Downloads/phpMyAdmin-$VER-all-languages.zip
 sudo cp -r phpMyAdmin-$VER-all-languages/* /usr/share/phpmyadmin
 sudo cp /usr/share/phpmyadmin/config.sample.inc.php /usr/share/phpmyadmin/config.inc.php
@@ -1362,10 +1363,84 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 // $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 ```
+Example drawn from the course materials
+```
+<?php
+function saveOrder($conn, array $data) {
+    // Build a query
+    $query = vsprintf('INSERT INTO orders '
+					  . '(date,status,amount,description,customer) '
+					  . "VALUES ('%d', '%s', '%d', '%s', '%s')", $data);
+
+    // Execute the query returning boolean true on success
+    return mysqli_query($conn, $query);
+}
+
+function getOrders($conn) {
+    // Build a query
+    $query = 'SELECT * FROM orders';
+
+    // Execute the query returning boolean true on success
+    $result = mysqli_query($conn, $query);
+    $data = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+		$data[] = $row;
+	}
+	return $data;
+}
+
+$config = [
+	'db' => [
+        'dsn' => '127.0.0.1',
+        'username' => 'vagrant',
+        'password' => 'vagrant',
+        'database' => 'phpcourse'
+    ],
+];
+
+$conn = mysqli_connect($config['db']['dsn'], $config['db']['username'], $config['db']['password'], $config['db']['database']);
+$data = [time(), 'open', 400, 'office chair', 3];
+echo saveOrder($conn, $data) ? 'Data saved' : 'Data not saved';
+$list = getOrders($conn);
+foreach ($list as $row)
+	vprintf("%d \t %s \t %d \t %s \t %s \n", $row);
+```
+Example of an SQL JOIN:
+```
+mysql> select * from customers as c join orders as o on c.id = o.customer;
++----+-----------+-----------+----+------------+----------+--------+--------------------------+----------+
+| id | firstname | lastname  | id | date       | status   | amount | description              | customer |
++----+-----------+-----------+----+------------+----------+--------+--------------------------+----------+
+|  4 | Susan     | Chu       |  1 | 1355097600 | complete |    560 |                          |        4 |
+|  3 | J         | Flores    |  2 | 1359062345 | invoiced |   9800 |                          |        3 |
+|  2 | Janet     | Levitz    |  3 | 1357948800 | held     |    300 |                          |        2 |
+|  3 | J         | Flores    |  4 | 1359500400 | open     |     34 | Paper                    |        3 |
+|  1 | George    | Stevenson |  5 | 1359586800 | open     |   4570 | PHP development          |        1 |
+|  5 | Thomas    | White     |  6 | 1359586800 | invoiced |   2000 | Laptop                   |        5 |
+|  3 | J         | Flores    |  7 | 1360796400 | open     |    300 | A big box of chocolates. |        3 |
+|  3 | J         | Flores    |  8 | 1685102423 | open     |    400 | office chair             |        3 |
+|  3 | J         | Flores    |  9 | 1685102435 | open     |    400 | office chair             |        3 |
++----+-----------+-----------+----+------------+----------+--------+--------------------------+----------+
+9 rows in set (0.00 sec)
+```
 
 ## Miscellaneous
 Highly recommended JavaScript library
 * https://jquery.com/
+Different ways of representing the number 9:
+```
+<?php
+$a = [
+	9,		// decimal
+	0b1001,	// binary
+	0o11,	// octal
+	011,	// octal
+	0x09,	// hexadecimal
+];
+
+foreach ($a as $num) echo $num . PHP_EOL;
+```
+
 
 ## Basic
 * Testing for TRUE/FALSE
@@ -2284,3 +2359,4 @@ x* http://localhost:8881/#/5/59
 x  * Please change form name to "days" instead of "gender"
 * General Note:
   * Code blocks are hard to read
+  * Last section (Language Updates): already in the course
