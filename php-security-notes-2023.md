@@ -11,13 +11,33 @@ Choose "Login"
 
 ## TODO
 
-## Docker Container Instructions
+## Update/Upgrade the VM
+* For now, avoid upgrading Ubuntu. Leave it at version 20.*
+* Follow these instructions:
+  * https://opensource.unlikelysource.com/expanded_vm_instructions.pdf
+* Upgrade/update:
+```
+sudo dpkg --configure -a
+sudo apt -y update && sudo apt -f -y install && sudo apt -y full-upgrade
+```
+
+* Apache reconfig:
+```
+sudo apt-add-repository ppa:ondrej/apache2
+sudo apt install libapache2-mod-php8.2
+sudo a2dismod php8.0
+sudo systemctl restart apache2
+sudo a2enmod php8.2
+sudo systemctl restart apache2
+```
+
+## Docker Installation Instructions
 * Install Docker and Docker Compose
   * https://www.docker.com/get-started/
   * or, from the command line:
 ```
 sudo apt install docker
-sudo apt install docker-composer
+sudo apt install docker-compose
 ```
 * To test the Docker installation:
 ```
@@ -62,27 +82,6 @@ ps
 * Restart PHP-FPM:
 ```
 # /usr/sbin/php-fpm81
-```
-
-## Expanded VM Installation Instructions
-To install the VM, use this Vagrantfile (instead of the one provided):
-* https://opensource.unlikelysource.com/zend-training/security/Vagrantfile
-* Otherwise, follow the instructions in the VM Installation Guide provided in your course welcome email
-When the VM is running
-* Username: `vagrant`
-* Password: `vagrant`
-Update the VM
-* When prompted to "A new version of Ubuntu is available. Would you like to upgraade?"
-  * Choose "Don't Upgrade"
-* When prompted to "Updated software is available for this computer. Do you want to install it now?"
-  * Choose "Update"
-  * This could take some time! (1 to 2 hours depending on your connection speed)
-  * Alternatively, you can decline and run `sudo apt-get -y upgrade` from the command prompt
-    * Runs slightly faster than GUI version
-* Install PHP 8.1 and restart Apache (to enable new PHP 8.1 module)
-```
-sudo apt install -y php8.1
-sudo /etc/init.d/apache2 restart
 ```
 
 ## General Notes
