@@ -19,16 +19,6 @@ sudo dpkg --configure -a
 sudo apt -y update && sudo apt -f -y install && sudo apt -y full-upgrade
 ```
 
-* Apache reconfig:
-```
-sudo apt-add-repository ppa:ondrej/apache2
-sudo apt install libapache2-mod-php8.2
-sudo a2dismod php8.0
-sudo systemctl restart apache2
-sudo a2enmod php8.2
-sudo systemctl restart apache2
-```
-
 ## Docker Installation Instructions
 * Install Docker and Docker Compose in the VM
   * READ: https://www.docker.com/get-started/
@@ -66,8 +56,18 @@ unzip -o security_training.zip
 ```
 * Update the `/etc/hosts` file in the VM
 ```
-sudo echo "10.20.20.10    security sandbox orderapp phpmyadmin" >> /etc/hosts
+sudo vi /etc/hosts
 ```
+* Use the down arrow to go to the end of the file
+* Hit Shift + A
+* Add this line:
+```
+10.20.20.10    security sandbox orderapp phpmyadmin
+```
+* Save the file:
+  * Esc
+  * :
+  * wq!
 * Test from the VM browser: `http://security`
   * Username: `vagrant`
   * Password: `vagrant`
