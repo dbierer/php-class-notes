@@ -1,7 +1,5 @@
 # PHP SECURITY CLASS NOTES
 
-IMPORTANT: find out why "xxe" vulnerability isn't working
-
 ## Assignments
 
 ## Security App Login
@@ -32,56 +30,51 @@ sudo systemctl restart apache2
 ```
 
 ## Docker Installation Instructions
-* Install Docker and Docker Compose
-  * https://www.docker.com/get-started/
-  * or, from the command line:
+* Install Docker and Docker Compose in the VM
+  * READ: https://www.docker.com/get-started/
+  * From the command line:
 ```
 sudo apt install docker
 sudo apt install docker-compose
+```
+* READ: https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user
+* Add "vagrant" to "docker" group:
+```
+sudo usermod -aG docker $USER
 ```
 * To test the Docker installation:
 ```
 docker run hello-world
 ```
-* Create a blank dir
-* Download and upzip source into the blank dir (TBD)
+
+## Security Training Apps Installation
+From inside the VM, open a command line terminal, and proceed as follows:
+* Change to the default workspaces directory
+```
+cd /home/vagrant/Zend/workspaces/DefaultWorkspace
+```
+* Download and upzip source into the blank dir
+  * The source url (SOURCE_URL) will be provided by your instructor
+```
+wget SOURCE_URL -o security_training.zip
+unzip -o security_training.zip
+```
 * Run:
 ```
 ./admin.sh build
-./admin.sh up -d
+./admin.sh up
+```
+* Update the `/etc/hosts` file in the VM
+```
+sudo echo "10.20.20.10    security sandbox orderapp phpmyadmin" >> /etc/hosts
+```
+* Test from the VM browser: `http://security`
+  * Username: `vagrant`
+  * Password: `vagrant`
+  * Database: `security`
+* Test if you can shell into the Docker container:
+```
 ./admin.sh shell
-# update the database:
-/tmp/restore_db.sh
-```
-* Update the `/etc/hosts` file on your *host* computer (e.g. not the Docker image computer)
-```
-10.20.20.10    security sandbox orderapp phpmyadmin
-```
-
-## Running Docker in VM
-If you get the message:
-```
-```
-* See: https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user
-* Add "vagrant" to "docker" group:
-```
-sudo usermod -aG docker $USER
-```
-Also try this:
-```
-sudo snap install docker
-```
-If you need to restart PHP-FPM, do this:
-```
-ps
-```
-* Make a note of the `php-fpm: master process` number, then:
-```
-# kill <NUMBER>
-```
-* Restart PHP-FPM:
-```
-# /usr/sbin/php-fpm81
 ```
 
 ## General Notes
@@ -1165,15 +1158,14 @@ if(isset($_GET['img'])) {
 * http://localhost:8885/#/6/43
   * Duplicate slide: remove
 
-* Fix the nginx.conf so that you can run the apps off /var/www/html
-* Why can't you run apps using Docker on Windows?
-
 * Brute Force Detector Class Exercise
   * Image doesn't show up
   * Rewrite to make worse: distinguish between user/pwd
 ```
 $stmt   = $pdo->query("SELECT * FROM users WHERE user='$username' AND password='$pass'");
 ```
+* XXE lab:
+  * Find out why "xxe" vulnerability isn't working
 * Cross Site Request Forgery (CSRF) Portal Exercise
   * Move the form into "with.php" so that you can add extra security
 x* OrderApp: make sure it's working (insecurely)
@@ -1185,6 +1177,7 @@ x* External XML Entities not on the list!
 x* UFI lab
 x  * `ost this URL` ???
 x  * Looks like the `*.phtml` file has an unclosed `<a>` tag
+
 
 ## Actual Attacks from Customer Access Log (sanitized)
 ```
