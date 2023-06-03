@@ -76,6 +76,14 @@ sudo echo "10.20.20.10    security sandbox orderapp phpmyadmin" >> /etc/hosts
 ```
 ./admin.sh shell
 ```
+* If you experience Docker error messages, stop any running containers and do a "system prune":
+```
+docker container ls
+docker container stop NAME_OR_ID_1
+docker container stop NAME_OR_ID_2
+# etc.
+docker system prune
+```
 
 ## General Notes
 PHP Road Map:
@@ -1141,23 +1149,6 @@ if(isset($_GET['img'])) {
 }
 ```
 ## ERRATA
-* http://localhost:8885/#/3/27
-  * line 3: logic should sleep if the username and/or password is invalid!
-* http://localhost:8885/#/3/67
-  * Need to update that screenshot!
-* http://localhost:8885/#/3/68
-  * NOTE: `track_errors` removed in PHP 8
-* http://localhost:8885/#/5/13
-  * Index "0" is undefined!
-* http://localhost:8885/#/5/7
-  * "lab" s/be "Lab"
-* http://localhost:8885/#/5/20
-  * Missing underscore: `move_uploaded file().`
-* http://localhost:8885/#/6/22
-  * Remove the 5th paragraph: no longer true!
-* http://localhost:8885/#/6/43
-  * Duplicate slide: remove
-
 * Brute Force Detector Class Exercise
   * Image doesn't show up
   * Rewrite to make worse: distinguish between user/pwd
