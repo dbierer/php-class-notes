@@ -15,7 +15,6 @@ sudo apt -y update && sudo apt -f -y install && sudo apt -y full-upgrade
 sudo apt-add-repository ppa:ondrej/apache2
 sudo apt install libapache2-mod-php8.2
 sudo a2dismod php8.0
-sudo systemctl restart apache2
 sudo a2enmod php8.2
 sudo systemctl restart apache2
 ```
@@ -27,21 +26,10 @@ Make note of the version number (e.g. 5.2.1)
 ```
 cd /tmp
 set VER=5.2.1
-mv Downloads/phpMyAdmin-$VER-all-languages.zip .
-unzip Downloads/phpMyAdmin-$VER-all-languages.zip
+wget https://files.phpmyadmin.net/phpMyAdmin/$VER/phpMyAdmin-$VER-all-languages.zip .
+unzip phpMyAdmin-$VER-all-languages.zip
 sudo cp -r phpMyAdmin-$VER-all-languages/* /usr/share/phpmyadmin
 sudo cp /usr/share/phpmyadmin/config.sample.inc.php /usr/share/phpmyadmin/config.inc.php
-```
-Create the "blowfish secret"
-```
-sudo -i
-export SECRET=`php -r "echo md5(date('Y-m-d-H-i-s') . rand(1000,9999));"`
-echo "\$cfg['blowfish_secret']='$SECRET';" >> /usr/share/phpmyadmin/config.inc.php
-exit
-```
-Set permissions
-```
-sudo chown -R www-data /usr/share/phpmyadmin
 ```
 
 ## General Lab Notes
