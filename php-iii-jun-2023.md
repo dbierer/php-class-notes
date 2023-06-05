@@ -1,6 +1,9 @@
 # PHP III - Jun 2023
 
+Last: http://localhost:8883/#/2/32
+
 ## TODO
+* Get the latest slides.pdf to the attendees for this class
 
 ## VM Update
 Follow these instructions:
@@ -35,6 +38,7 @@ sudo cp /usr/share/phpmyadmin/config.sample.inc.php /usr/share/phpmyadmin/config
 ## General Lab Notes
 * Lab Code:
   * Clone this repo: https://github.com/dbierer/php-iii-demos.git
+  * Source code is located here: `/home/vagrant/Zend/workspaces/DefaultWorkspace`
 * Lab: Adding Middleware
   * Take the code from the slides
   * Add a middleware request handler that implements an update (HTTP "PATCH")
@@ -174,6 +178,56 @@ echo $date->format('l, j M Y');
 echo PHP_EOL;
 
 ```
+## Generator
+Example that demonstrates memory savings using a Generator
+```
+<?php
+$arr = range(1,100000);
+function test(array $arr)
+{
+	$result = [];
+	foreach ($arr as $item)
+		$result[] = $item * 1.08;
+	return $result;
+}
+
+foreach (test($arr) as $item) echo $item . ' ';
+echo 'Peak Memory: ' . memory_get_peak_usage(); // Peak Memory: 4,596,064
+
+function test2(array $arr)
+{
+	foreach ($arr as $item)
+		yield $item * 1.08;
+}
+
+foreach (test2($arr) as $item) echo $item . ' ';
+echo 'Peak Memory: ' . memory_get_peak_usage(); // Peak Memory: 2,494,824
+
+```
+Extracting a return value from a Generator
+* The iteration must be complete
+* Use `getReturn()` to extract the return value
+```
+<?php
+$arr = range(1,100000);
+
+function test2(array $arr)
+{
+	$sum = 0;
+	foreach ($arr as $item) {
+		$new = $item * 1.08;
+		yield $new;
+		$sum += $new;
+	}
+	return $sum;
+}
+
+$gen = test2($arr);
+foreach ($gen as $item) echo $item . ' ';
+echo PHP_EOL;
+echo $gen->getReturn();
+```
+
 ## Anonymous Class
 Example where the return value is an anon class with different methods to render its data
 ```
@@ -183,6 +237,57 @@ class Test
     public function getObject(array $arr)
     {
 		return new class ($arr) {
+			public $arr = [];
+			public function __construct(array $arr)
+			{
+				$this->arr = $arr;
+			}
+			public function asHtml()
+			{
+				$html = '<ul>' . PHP_EOL;
+				foreach ($this->arr as $item) $html .= '<li>' . $item . '</li>' . PHP_EOL;
+				$html .= '</ul>' . PHP_EOL;
+				return $html;
+			}
+			public function asJson()
+			{
+				return json_encode($this->arr, JSON_PRETTY_PRINT);
+			}
+		};
+	}
+}
+
+$arr = ['AAA','BBB','CCC','DDD'];
+$obj = (new Test())->getObject($arr);
+echo $obj->asHtml();
+echo $obj->asJson();
+var_dump($obj->arr);
+var_dump($obj);
+```
+Example from the slide "Event Listener" using `__invoke()` to make it callable:
+```
+// An anonymous event class listener example	
+$listener = new class {
+    public function __invoke(Event $e) 
+    {	
+        echo "The big event \" { $e->getName ()} \" is happening!" ;
+    }
+};
+```
+Potential problem: how does the user (i.e. another developer) know that this functionality is available
+* Solution: have the anonymous class implement an interface:
+```
+<?php
+interface HtmlJson
+{
+	public function asHtml();
+	public function asJson();
+}
+class Test
+{
+    public function getObject(array $arr)
+    {
+		return new class ($arr) implements HtmlJson {
 			public $arr = [];
 			public function __construct(array $arr)
 			{
