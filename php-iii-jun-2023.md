@@ -2,24 +2,23 @@
 
 ## TODO
 
-## Lab Notes
-* Lab Code:
-  * Clone this repo: https://github.com/dbierer/php-iii-demos.git
-* Lab: Adding Middleware
-  * Take the code from the slides
-  * Add a middleware request handler that implements an update (HTTP "PATCH")
-* Lab: New Extension
-  * Lab needs additional work
-  * If you follow the instructions here exactly, "test1()" works, but "test2()" does not
-    * https://www.zend.com/resources/php-extensions/building-and-installing-php-extension
-* Lab: Docker Compose Labs
-  * Have a look at the article on Orchestration: https://www.zend.com/blog/what-is-cloud-orchestration
-* CLI utility to reset JIT:
-    * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch10/php8_jit_reset.php
-
 ## VM Update
 Follow these instructions:
   * https://opensource.unlikelysource.com/expanded_vm_instructions.pdf
+  * Upgrade/update commands from the PDF:
+```
+sudo dpkg --configure -a
+sudo apt -y update && sudo apt -f -y install && sudo apt -y full-upgrade
+```
+  * Apache reconfig from the PDF:
+```
+sudo apt-add-repository ppa:ondrej/apache2
+sudo apt install libapache2-mod-php8.2
+sudo a2dismod php8.0
+sudo systemctl restart apache2
+sudo a2enmod php8.2
+sudo systemctl restart apache2
+```
 
 ### Install phpMyAdmin
 Download the latest version from https://www.phpmyadmin.net
@@ -44,6 +43,21 @@ Set permissions
 ```
 sudo chown -R www-data /usr/share/phpmyadmin
 ```
+
+## General Lab Notes
+* Lab Code:
+  * Clone this repo: https://github.com/dbierer/php-iii-demos.git
+* Lab: Adding Middleware
+  * Take the code from the slides
+  * Add a middleware request handler that implements an update (HTTP "PATCH")
+* Lab: New Extension
+  * Lab needs additional work
+  * If you follow the instructions here exactly, "test1()" works, but "test2()" does not
+    * https://www.zend.com/resources/php-extensions/building-and-installing-php-extension
+* Lab: Docker Compose Labs
+  * Have a look at the article on Orchestration: https://www.zend.com/blog/what-is-cloud-orchestration
+* CLI utility to reset JIT:
+    * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch10/php8_jit_reset.php
 
 ## Custom PHP Lab Notes
 
