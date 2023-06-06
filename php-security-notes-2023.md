@@ -1,6 +1,16 @@
 # PHP SECURITY CLASS NOTES
 
 ## Assignments
+For Thursday 8 Jun 2023
+* Update the VM as per the instructions below
+* Install Docker and Docker Compose on the VM
+* Install the security training app (see below)
+* Security Training App:
+  * SQL Injection
+  * Brute force
+
+For Tuesday 13 Jun 2023
+* Lab: Zed Attack Proxy Project Exercise
 
 ## Security App Login
 Choose "Login"
@@ -8,6 +18,12 @@ Choose "Login"
 * Password: password
 
 ## TODO
+* Get a list of attack servers to which you can subscribe
+* Get a list of Symfony security-related classes
+  * Also have a look at database security classes
+  * Doctrine security
+* Find the "official" email regex
+* Get updated slides to attendees
 
 ## Update/Upgrade the VM
 * For now, avoid upgrading Ubuntu. Leave it at version 20.*
@@ -1149,6 +1165,9 @@ if(isset($_GET['img'])) {
 }
 ```
 ## ERRATA
+* http://localhost:8885/#/3/11
+  * Missing a close single quote on line 1
+
 * Brute Force Detector Class Exercise
   * Image doesn't show up
   * Rewrite to make worse: distinguish between user/pwd
