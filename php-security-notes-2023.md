@@ -19,10 +19,25 @@ Choose "Login"
 
 ## TODO
 * Get a list of attack servers to which you can subscribe
+  * https://www.cybrary.it/blog/hacking-as-a-service
+  * https://www.crowdstrike.com/cybersecurity-101/ransomware/ransomware-as-a-service-raas/
+  * https://www.techrepublic.com/article/what-it-costs-to-hire-a-hacker-on-the-dark-web/
+  * https://www.upwork.com/hire/hackers/
+  * https://arstechnica.com/information-technology/2014/03/nsas-automated-hacking-engine-offers-hands-free-pwning-of-the-world/
+  * https://www.wired.com/story/autosploit-tool-makes-unskilled-hacking-easier-than-ever/
+  * https://www.ptsecurity.com/ww-en/analytics/custom-hacking-services/
+  * https://evolutionhackers.com/
+  * https://www.businessinsider.com/things-hire-hacker-to-do-how-much-it-costs-2018-11?op=1#4-infiltrate-instagram-129-4
+* Do-It-Yourself
+  * https://www.metasploit.com/
+  * https://github.com/NullArray/AutoSploit
 * Get a list of Symfony security-related classes
-  * Also have a look at database security classes
+  * Primary form validation: https://symfony.com/doc/current/validation.html
   * Doctrine security
+    * https://stackoverflow.com/questions/67623086/is-this-doctrine-query-sql-injection-proof
+    * https://www.doctrine-project.org/projects/doctrine-dbal/en/current/reference/security.html
 * Find the "official" email regex
+  * https://stackoverflow.com/questions/201323/how-can-i-validate-an-email-address-using-a-regular-expression
 * Get updated slides to attendees
 
 ## Update/Upgrade the VM
