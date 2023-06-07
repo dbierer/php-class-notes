@@ -3,7 +3,7 @@
 Last: http://localhost:8883/#/2/32
 
 ## TODO
-* Get the latest slides.pdf to the attendees for this class
+* Get reference on binary trees and how they can be used to model real-life data
 
 ## VM Update
 Follow these instructions:
@@ -28,7 +28,7 @@ Make note of the version number (e.g. 5.2.1)
 * From a terminal window:
 ```
 cd /tmp
-set VER=5.2.1
+set VER="5.2.1"
 wget https://files.phpmyadmin.net/phpMyAdmin/$VER/phpMyAdmin-$VER-all-languages.zip .
 unzip phpMyAdmin-$VER-all-languages.zip
 sudo cp -r phpMyAdmin-$VER-all-languages/* /usr/share/phpmyadmin
@@ -515,6 +515,15 @@ function showBase(array $link, array $base)
 echo showBase($forward, $base);
 echo showBase($reverse, $base);
 ```
+Example of a linked list
+```
+<?php
+$arr  = ['A' => 111, 'B' => 222, 'C' => 333, 'D' => 444, 'E' => 555, 'F' => 666];
+$rev = range('F','A');
+$fwd = range('A','F');
+foreach ($fwd as $key) echo $arr[$key] . PHP_EOL;;
+foreach ($rev as $key) echo $arr[$key] . PHP_EOL;;
+```
 Example of doubly linked list (using `SplDoublyLinkedList`)
 ```
 <?php
@@ -535,6 +544,21 @@ function showBaseObj(object $obj)
 echo showBaseObj($obj);
 $obj->setIteratorMode(SplDoublyLinkedList::IT_MODE_LIFO );
 echo showBaseObj($obj);
+
+```
+Recurse through an entire directory structure
+```
+<?php
+$path = __DIR__ . '/../../orderapp';
+$dir  = new RecursiveDirectoryIterator($path);
+$rec  = new RecursiveIteratorIterator($dir);
+
+foreach ($rec as $key => $val) {
+	// $key == full path + filename
+	echo $key . PHP_EOL;
+	// $val == SplFileInfo instance
+	var_dump($val);
+}
 
 ```
 
