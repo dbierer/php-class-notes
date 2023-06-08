@@ -1,6 +1,18 @@
 # PHP SECURITY CLASS NOTES
 
+Last: http://localhost:8885/#/3/89
+
 ## Assignments
+For Tuesday 13 Jun 2023
+* Cross-Site Scripting (XSS)
+   * Tidy Class Exercise #1
+   * Portal Exercise
+* Cross Site Request Forgery (CSRF)
+  * Portal Exercise
+* Security Misconfiguration
+  * Portal Exercise
+* External XML Entities
+  * Portal Exercise
 For Thursday 8 Jun 2023
 * Update the VM as per the instructions below
 * Install Docker and Docker Compose on the VM
@@ -18,28 +30,10 @@ Choose "Login"
 * Password: password
 
 ## TODO
-* Get a list of attack servers to which you can subscribe
-  * https://www.cybrary.it/blog/hacking-as-a-service
-  * https://www.crowdstrike.com/cybersecurity-101/ransomware/ransomware-as-a-service-raas/
-  * https://www.techrepublic.com/article/what-it-costs-to-hire-a-hacker-on-the-dark-web/
-  * https://www.upwork.com/hire/hackers/
-  * https://arstechnica.com/information-technology/2014/03/nsas-automated-hacking-engine-offers-hands-free-pwning-of-the-world/
-  * https://www.wired.com/story/autosploit-tool-makes-unskilled-hacking-easier-than-ever/
-  * https://www.ptsecurity.com/ww-en/analytics/custom-hacking-services/
-  * https://evolutionhackers.com/
-  * https://www.businessinsider.com/things-hire-hacker-to-do-how-much-it-costs-2018-11?op=1#4-infiltrate-instagram-129-4
-* Do-It-Yourself
-  * https://www.metasploit.com/
-  * https://github.com/NullArray/AutoSploit
-* Get a list of Symfony security-related classes
-  * Primary form validation: https://symfony.com/doc/current/validation.html
-  * Doctrine security
-    * https://stackoverflow.com/questions/67623086/is-this-doctrine-query-sql-injection-proof
-    * https://www.doctrine-project.org/projects/doctrine-dbal/en/current/reference/security.html
-* Find the "official" email regex
-  * https://stackoverflow.com/questions/201323/how-can-i-validate-an-email-address-using-a-regular-expression
-* Get updated slides to attendees
+* Check why the "XXE" lab is not working
+  * Is a PHP XML extension not loaded?
 
+## Q & A
 ## Update/Upgrade the VM
 * For now, avoid upgrading Ubuntu. Leave it at version 20.*
 * Follow these instructions:
@@ -855,6 +849,33 @@ Owasp.org tools page
 * Q: Find article that documents the 2-stage SQL injection attack
 * A: https://bertwagner.com/posts/how-to-steal-data-using-a-second-order-sql-injection-attack/
 
+* Q: Do you have a list of attack servers to which you can subscribe?
+* A: Not exactly, but check out these references:
+  * https://www.cybrary.it/blog/hacking-as-a-service
+  * https://www.crowdstrike.com/cybersecurity-101/ransomware/ransomware-as-a-service-raas/
+  * https://www.techrepublic.com/article/what-it-costs-to-hire-a-hacker-on-the-dark-web/
+  * https://www.upwork.com/hire/hackers/
+  * https://arstechnica.com/information-technology/2014/03/nsas-automated-hacking-engine-offers-hands-free-pwning-of-the-world/
+  * https://www.wired.com/story/autosploit-tool-makes-unskilled-hacking-easier-than-ever/
+  * https://www.ptsecurity.com/ww-en/analytics/custom-hacking-services/
+  * https://evolutionhackers.com/
+  * https://www.businessinsider.com/things-hire-hacker-to-do-how-much-it-costs-2018-11?op=1#4-infiltrate-instagram-129-4
+	* Do-It-Yourself
+	  * https://www.metasploit.com/
+	  * https://github.com/NullArray/AutoSploit
+	 
+* Q: What are some of the Symfony security-related classes?
+* A: Primary form validation: https://symfony.com/doc/current/validation.html
+  * Doctrine security
+    * https://stackoverflow.com/questions/67623086/is-this-doctrine-query-sql-injection-proof
+    * https://www.doctrine-project.org/projects/doctrine-dbal/en/current/reference/security.html
+
+* Q: What is the "official" email regex?
+* A: https://stackoverflow.com/questions/201323/how-can-i-validate-an-email-address-using-a-regular-expression
+
+
+
+
 * Get a `Faraday Bag` for your keyless entry vehicle!
   * https://www.bbc.com/news/business-47023003
   * https://www.locksmiths.co.uk/faq/keyless-car-theft/
@@ -864,6 +885,7 @@ Owasp.org tools page
 ```
 sudo rm /var/crash/*
 ```
+
 
 ## CLASS CODE EXAMPLES
 
@@ -1227,6 +1249,46 @@ x  * Looks like the `*.phtml` file has an unclosed `<a>` tag
 ```
 
 ## LAB SOLUTIONS
+SQLI
+```
+<?php
+/* This is the code file you need to modify */
+global $config;
+use SecurityApp\App;
+if (isset($_GET['Submit'])) {
+
+    // Retrieve data
+    $safe = (int) $_GET['id'];
+    $orig = $_GET['id'];
+    
+    if ($safe == $orig) {
+
+		//Employ ACL to determine access
+
+		try {
+
+			$stmt = App::getPdo($config)->prepare("SELECT first_name, last_name FROM users WHERE user_id = :id");
+			$result = $stmt->execute([':id' => $safe]);
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+			if ($stmt->rowCount() > 0) {
+				App::$html .= '<pre>';
+				App::$html .= 'ID: ' . $safe . '<br>First name: ' . htmlspecialchars($result['first_name']) . '<br>Surname: ' . htmlspecialchars($result['last_name']);
+				App::$html .= '</pre>';
+			}
+		} catch (PDOException $e) {
+			App::$html .= '<pre>' . $e->getMessage() . '</pre>';
+		}
+
+	} else {
+		
+		App::$html .= 'Invalid user supplied data';
+		error_log(__FILE__ . ':' . 'User ID did resolve to an integer');
+
+	}
+
+}
+```
 Brute Force
 ```
 <?php
@@ -1238,6 +1300,9 @@ global $config;
 
 if( isset( $_REQUEST['Login'] ) ) {
     $time_current = time();
+    // Attacker can just refresh cookies, thereby starting a new session
+    // however, this is another layer of security, and is worthy of consideration
+    // Also create a client profile based upon external factors such as the IP address, user agent, etc.
     $time_stored  = $_SESSION['time'] ?? $time_current;
     // add a safety check to see if login requests are too frequent
     if (($time_current - $time_stored) < 1000) {
@@ -1251,7 +1316,9 @@ if( isset( $_REQUEST['Login'] ) ) {
             $stmt->execute([$username, $pass]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
         }catch(Exception $e){
-            exit('<pre>' . $e->getMessage() . '</pre>');
+            error_log(__FILE__ . ':' . $e->getMessage());
+            // redirect to a safe page
+            // use randomization so the result differs each time
         }
         if( $result && count($result) ) {
             // Login Successful
