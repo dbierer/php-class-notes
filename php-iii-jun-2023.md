@@ -1,9 +1,27 @@
 # PHP III - Jun 2023
 
-Last: http://localhost:8883/#/2/32
+Last: http://localhost:8883/#/4/57
 
+## Homework
+For Mon 12 Jun 2023
+* Lab: Built-in Web Server
+* Lab: OpCache and JIT
+* Lab: Existing Extension
+  * Note: we're using PHP 8.2, so change refs from `8.1` to `8.2` in the lab
+* Lab: FFI
+  * Clone this repo: https://github.com/dbierer/php-iii-demos.git
+  * Contains the "C" code
 ## TODO
-* Get reference on binary trees and how they can be used to model real-life data
+* Q: Add to the notes how to set up `pecl`
+* A:
+
+* Q: What are "interned strings"?
+* A: 
+
+* Q: Do you have a good reference on binary trees and how they can be used to model real-life data?
+* A: See: https://stackoverflow.com/questions/2130416/what-are-the-applications-of-binary-trees
+* A: See: http://cslibrary.stanford.edu/110/BinaryTrees.html
+* A: See: https://www.geeksforgeeks.org/applications-advantages-and-disadvantages-of-binary-search-tree/
 
 ## VM Update
 Follow these instructions:
@@ -566,6 +584,8 @@ foreach ($rec as $key => $val) {
 * See: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_subject_observer_storage_object.php
 
 ## CLI
+One of the best implementations for CLI is `Symfony/Console`
+* See: https://symfony.com/doc/current/components/console.html
 Example using both CLI args and interactive:
 ```
 <?php
@@ -866,3 +886,6 @@ Press <enter> to keep the current choice[*], or type selection number:
 
 
 ## ERRATA
+* http://localhost:8883/#/4/33
+  * Lines 18 - 20 should come before line 10
+  * Otherwise, the cache is not really being used at all!
