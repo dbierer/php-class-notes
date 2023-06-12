@@ -11,12 +11,18 @@ For Mon 12 Jun 2023
 * Lab: FFI
   * Clone this repo: https://github.com/dbierer/php-iii-demos.git
   * Contains the "C" code
-## TODO
-* Q: Add to the notes how to set up `pecl`
-* A:
 
-* Q: What are "interned strings"?
-* A: 
+## TODO
+* Q: How do you set up `pecl` in the VM?
+* A: sudo apt install php8.2-pear
+
+* Q: What is an "interned" string?
+* A: Any strings interned in the startup phase. Common to all the threads, won't be free'd until process exit. If we want an ability to add permanent strings even after startup, it would be still possible on costs of locking in the thread safe builds.
+* A: See: https://github.com/php/php-src/blob/master/Zend/zend_string.c
+
+* Q: What is `opcache.interned_strings_buffer`?
+* A: The amount of memory used to store interned strings in MB
+* A: See: https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.interned-strings-buffer
 
 * Q: Do you have a good reference on binary trees and how they can be used to model real-life data?
 * A: See: https://stackoverflow.com/questions/2130416/what-are-the-applications-of-binary-trees
@@ -284,10 +290,10 @@ var_dump($obj);
 ```
 Example from the slide "Event Listener" using `__invoke()` to make it callable:
 ```
-// An anonymous event class listener example	
+// An anonymous event class listener example
 $listener = new class {
-    public function __invoke(Event $e) 
-    {	
+    public function __invoke(Event $e)
+    {
         echo "The big event \" { $e->getName ()} \" is happening!" ;
     }
 };
