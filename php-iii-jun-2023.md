@@ -3,6 +3,13 @@
 Last: http://localhost:8883/#/4/57
 
 ## Homework
+For Wed 14 Jun 2023
+* Lab: New Extension
+* Lab: Customized PHP (all 3 labs)
+* Lab: Docker (all Docker labs)
+  * Example `Dockerfile`: `/path/to/php-iii-demos/docker/Docker/Dockerfile`
+* Lab: Docker Compose (all labs)
+
 For Mon 12 Jun 2023
 * Lab: Built-in Web Server
 * Lab: OpCache and JIT
@@ -13,11 +20,18 @@ For Mon 12 Jun 2023
   * Contains the "C" code
 
 ## TODO
+* Q: Get the syntax for switching between PHP versions
+* A: ???
+
+* Q: Is there a major difference between `Swoole` and `OpenSwoole`?
+* A: ???
+
 * Q: How do you set up `pecl` in the VM?
-* A: sudo apt install php8.2-pear
+* A: ???
 
 * Q: What is an "interned" string?
-* A: Any strings interned in the startup phase. Common to all the threads, won't be free'd until process exit. If we want an ability to add permanent strings even after startup, it would be still possible on costs of locking in the thread safe builds.
+* A: Any strings interned in the startup phase. Common to all the threads, won't be free'd until process exit. 
+     If we want an ability to add permanent strings even after startup, it would be still possible on costs of locking in the thread safe builds.
 * A: See: https://github.com/php/php-src/blob/master/Zend/zend_string.c
 
 * Q: What is `opcache.interned_strings_buffer`?
@@ -63,6 +77,8 @@ sudo cp /usr/share/phpmyadmin/config.sample.inc.php /usr/share/phpmyadmin/config
 * Lab Code:
   * Clone this repo: https://github.com/dbierer/php-iii-demos.git
   * Source code is located here: `/home/vagrant/Zend/workspaces/DefaultWorkspace`
+* Lab: OpCache and JIT
+  * The code for the Mandelbrot needs `__construct()`
 * Lab: Adding Middleware
   * Take the code from the slides
   * Add a middleware request handler that implements an update (HTTP "PATCH")
@@ -895,3 +911,5 @@ Press <enter> to keep the current choice[*], or type selection number:
 * http://localhost:8883/#/4/33
   * Lines 18 - 20 should come before line 10
   * Otherwise, the cache is not really being used at all!
+* JIT Lab
+  * Also need to enable JIT in the `xxx/conf.d/opcache.ini` file
