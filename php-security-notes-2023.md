@@ -1,8 +1,22 @@
 # PHP SECURITY CLASS NOTES
 
-Last: http://localhost:8885/#/3/89
+Last: http://localhost:8885/#/5/9
 
 ## Assignments
+For Thur 15 Jun 2023
+* External XML Entities (XXE)
+  * Portal Exercise
+* Insecure Deserialization
+  * Portal Exercise
+* Insecure Direct Object References
+  * Portal Exercise
+* Missing Function Access Level Control (ACL)
+  * Portal Exercise
+* Unvalidated Redirects and Forwards
+  * Portal Exercise
+* Command Injection
+  * Portal Exercise
+
 For Tuesday 13 Jun 2023
 * Cross-Site Scripting (XSS)
    * Tidy Class Exercise #1
@@ -10,8 +24,6 @@ For Tuesday 13 Jun 2023
 * Cross Site Request Forgery (CSRF)
   * Portal Exercise
 * Security Misconfiguration
-  * Portal Exercise
-* External XML Entities
   * Portal Exercise
 For Thursday 8 Jun 2023
 * Update the VM as per the instructions below
@@ -30,8 +42,6 @@ Choose "Login"
 * Password: password
 
 ## TODO
-* Check why the "XXE" lab is not working
-  * Is a PHP XML extension not loaded?
 
 ## Q & A
 ## Update/Upgrade the VM
@@ -232,6 +242,8 @@ Configuration Management
     * https://www.linkedin.com/pulse/official-php-git-server-attacked-enrico-zimuel/
   * https://www.cvedetails.com/
   * https://www.cvedetails.com/vulnerability-list/vendor_id-6538/product_id-11031/version_id-235563/Jquery-Jquery-1.6.4.html
+  * Docker desktop for Windows/Mac has a vulnerability checker
+  
 * Invalidated Redirects and Forwards
   * https://www.indusface.com/blog/google-vulnerable-open-redirect/
   * https://www.securityfocus.com/bid/82463/discuss
@@ -406,6 +418,7 @@ LAB: quick test: download form, make a change, submit manually, and see that you
 * 5: use apachectl -l and apachectl -M to see which modules are loaded
     look for ssl_module especially
 * 6: php.ini settings: allow_url_include = off; open_basedir = /set/this/to/something; doc_root = /set/to/something
+* 7: Look under response headers in the browser tools. Is the version of PHP exposed?
 
 ## Missing Function Level Access Control
 * 1: Utilize an Access Control List (ACL) which defines:
@@ -1211,8 +1224,8 @@ if(isset($_GET['img'])) {
 ```
 $stmt   = $pdo->query("SELECT * FROM users WHERE user='$username' AND password='$pass'");
 ```
-* XXE lab:
-  * Find out why "xxe" vulnerability isn't working
+x* XXE lab:
+x  * Find out why "xxe" vulnerability isn't working
 * Cross Site Request Forgery (CSRF) Portal Exercise
   * Move the form into "with.php" so that you can add extra security
 x* OrderApp: make sure it's working (insecurely)
@@ -1224,6 +1237,7 @@ x* External XML Entities not on the list!
 x* UFI lab
 x  * `ost this URL` ???
 x  * Looks like the `*.phtml` file has an unclosed `<a>` tag
+* Make sure reference to CVE is moved here: https://www.cve.org/
 
 
 ## Actual Attacks from Customer Access Log (sanitized)
