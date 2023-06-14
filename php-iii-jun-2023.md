@@ -3,6 +3,11 @@
 Last: http://localhost:8883/#/4/57
 
 ## Homework
+For Fri 16 Jun 2023
+* Lab: REST Service Development Lab
+* Lab: Adding Middleware
+* Lab: Swoole Extension
+
 For Wed 14 Jun 2023
 * Lab: New Extension
 * Lab: Customized PHP (all 3 labs)
@@ -21,7 +26,7 @@ For Mon 12 Jun 2023
 
 ## TODO
 * Q: Get the syntax for switching between PHP versions
-* A: update-alternatives
+* A: `update-alternatives`
 * A: see: https://askubuntu.com/questions/1373755/how-to-change-php-version-in-ubuntu-20-04-console
 
 * Q: Is there a major difference between `Swoole` and `OpenSwoole`?
