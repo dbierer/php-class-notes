@@ -21,10 +21,12 @@ For Mon 12 Jun 2023
 
 ## TODO
 * Q: Get the syntax for switching between PHP versions
-* A: ???
+* A: update-alternatives
+* A: see: https://askubuntu.com/questions/1373755/how-to-change-php-version-in-ubuntu-20-04-console
 
 * Q: Is there a major difference between `Swoole` and `OpenSwoole`?
-* A: ???
+* A: OpenSwoole was forked from Swoole but nobody is willing to discuss the split.
+* A: see: https://github.com/swoole/swoole-src/issues/4450
 
 * Q: How do you set up `pecl` in the VM?
 * A: ???
