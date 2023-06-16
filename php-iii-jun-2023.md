@@ -1,6 +1,7 @@
 # PHP III - Jun 2023
 
 Last: http://localhost:8883/#/4/57
+Send the latest version of slides
 
 ## Homework
 For Fri 16 Jun 2023
@@ -25,6 +26,7 @@ For Mon 12 Jun 2023
   * Contains the "C" code
 
 ## TODO
+
 * Q: Get the syntax for switching between PHP versions
 * A: `update-alternatives`
 * A: see: https://askubuntu.com/questions/1373755/how-to-change-php-version-in-ubuntu-20-04-console
@@ -97,6 +99,18 @@ sudo cp /usr/share/phpmyadmin/config.sample.inc.php /usr/share/phpmyadmin/config
   * Have a look at the article on Orchestration: https://www.zend.com/blog/what-is-cloud-orchestration
 * CLI utility to reset JIT:
     * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch10/php8_jit_reset.php
+* Swoole Lab
+  * Had to install OpenSwoole
+* API Tools Lab
+  * Don't forget to add `--ignore-platform-reqs` when installing Laminas API Tools
+```
+composer --ignore-platform-reqs create-project laminas-api-tools/api-tools-skeleton
+```
+  * If you install it in another directory other than the one in the lab, you can do this:
+```
+cd path/to/api/tools
+php -S 0.0.0.0:8080 -t public public/index.php
+```
 
 ## Custom PHP Lab Notes
 
@@ -920,3 +934,15 @@ Press <enter> to keep the current choice[*], or type selection number:
   * Otherwise, the cache is not really being used at all!
 * JIT Lab
   * Also need to enable JIT in the `xxx/conf.d/opcache.ini` file
+* Middleware Lab
+  * http://localhost:8883/#/7/16
+  * Remove "*" from this line!
+```
+$sql = 'DELETE * FROM orders WHERE id = ?';
+```
+* Swoole Server Lab
+  * http://localhost:8883/#/8/31
+  * Need to add to Composer command `--ignore-platform-reqs`
+* http://localhost:8883/#/8/39
+  * Version has changed `v4`
+  
