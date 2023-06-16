@@ -1,21 +1,30 @@
 # PHP SECURITY CLASS NOTES
 
-Last: http://localhost:8885/#/5/9
+Last: http://localhost:8885/#/6/10
+
+## TODO
+* Q: In the Docker container, where is the error log when using `error_log`
+
+* Q: How to launch an XXE attack that inserts `/etc/passwd` into the `guestbook`?
+
+* Q: What is the Symfony equivalent of Pub/Sub or Event/Trigger/Listeners
+
+* Q: Check out the Insecure CAPTCHA Lab and see what's going on with it
+
+
 
 ## Assignments
+For Tue 20 Jun 2023
+* Unrestricted File Inclusion Lab
+* Secure File Uploads Lab
+
 For Thur 15 Jun 2023
 * External XML Entities (XXE)
-  * Portal Exercise
 * Insecure Deserialization
-  * Portal Exercise
 * Insecure Direct Object References
-  * Portal Exercise
 * Missing Function Access Level Control (ACL)
-  * Portal Exercise
 * Unvalidated Redirects and Forwards
-  * Portal Exercise
 * Command Injection
-  * Portal Exercise
 
 For Tuesday 13 Jun 2023
 * Cross-Site Scripting (XSS)
@@ -40,8 +49,6 @@ For Tuesday 13 Jun 2023
 Choose "Login"
 * Username: admin
 * Password: password
-
-## TODO
 
 ## Q & A
 ## Update/Upgrade the VM
@@ -257,6 +264,10 @@ Configuration Management
 * Insecure CAPTCHA
   * https://andresriancho.com/recaptcha-bypass-via-http-parameter-pollution/
   * Reverse CAPTCHA discussion: https://www.tectite.com/vbforums/showthread.php?5752-Reverse-CAPTCHA-Thoughts-Tips-and-Questions
+* External XML Entities
+  * Set up the SOAP service to log access to detect any potential hacking attempts
+  * Implement web server based extended logging (e.g., Apache module `mod_forensic` and `mod_security`)
+ 
 * Recommended Headers:
   * OWASP recommends the following:
 ```
@@ -464,6 +475,7 @@ LAB: quick test: download form, make a change, submit manually, and see that you
 * 2: Enumerate the strategies and only store the enumeration in the cookie; upon return compare with a whitelist of strategies
 * 3: Create a digital signature or hash of the object to be stored and confirm upon restoration
 * 4: Check to see if `__wakeup()` has been defined, and if so, make sure it doesn't invalidate security measures when object is restored
+* 5: Check to see if the restored object class is `__PHP_Incomplete_Class` and take avoidance measures if true
 
 ## Command Injection
 * 1: Do you really need to run system(), exec() etc.?  Maybe another way
@@ -1238,7 +1250,10 @@ x* UFI lab
 x  * `ost this URL` ???
 x  * Looks like the `*.phtml` file has an unclosed `<a>` tag
 * Make sure reference to CVE is moved here: https://www.cve.org/
-
+* Insecure Deserialization
+  * Need to rewrite this instruction to use the new URL
+  * "From the browser tool, click on the original request index.php?action=idsz. Note that a cookie is sent."
+  
 
 ## Actual Attacks from Customer Access Log (sanitized)
 ```
