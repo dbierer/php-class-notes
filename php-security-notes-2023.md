@@ -3,6 +3,8 @@
 Last: http://localhost:8885/#/6/10
 
 ## TODO
+* Q: Get documentation on PKCS 8?
+
 * Q: In the Docker container, where is the error log when using `error_log`
 * A: Need to add this command to `/path/to/security/app/docker/Dockerfile`:
 ```
@@ -10,8 +12,10 @@ echo "error_log=/var/log/php$PHP_VER/error.log" >> /etc/php$PHP_VER/php.ini
 ```
 
 * Q: How to launch an XXE attack that inserts `/etc/passwd` into the `guestbook`?
+* A: TBD -- Thursday
 
 * Q: What is the Symfony equivalent of Pub/Sub or Event/Trigger/Listeners
+* A: TBD -- Thursday
 
 * Q: Check out the Insecure CAPTCHA Lab and see what's going on with it
 * A: The domains used in the Docker container are not accepted by Google
@@ -23,6 +27,14 @@ echo "error_log=/var/log/php$PHP_VER/error.log" >> /etc/php$PHP_VER/php.ini
 
 
 ## Assignments
+For Thu 22 Jun 2023
+* Lab: Sensitive Data Exposure
+* See the XXE attack in action
+* Setup Google reCaptcha
+* Work with the ZAP tool
+* ??? Work with Symfony security
+* Changes that are of interest in PHP8.2 and 8.3
+
 For Tue 20 Jun 2023
 * Unrestricted File Inclusion Lab
 * Secure File Uploads Lab
@@ -1246,6 +1258,7 @@ if(isset($_GET['img'])) {
 * http://localhost:8885/#/3/11
   * Missing a close single quote on line 1
 
+
 * Brute Force Detector Class Exercise
   * Image doesn't show up
   * Rewrite to make worse: distinguish between user/pwd
@@ -1265,6 +1278,7 @@ x* External XML Entities not on the list!
 x* UFI lab
 x  * `ost this URL` ???
 x  * Looks like the `*.phtml` file has an unclosed `<a>` tag
+* Correct the link under the "Hack" menu: goes to the wrong place
 * Make sure reference to CVE is moved here: https://www.cve.org/
 * Insecure Deserialization
   * Need to rewrite this instruction to use the new URL
