@@ -112,6 +112,13 @@ cd /home/vagrant/Zend/workspaces/DefaultWorkspace
 wget SOURCE_URL -o security_training.zip
 unzip -o security_training.zip
 ```
+* Update Composer packages
+```
+cd security
+php composer.phar --ignore-platform-reqs install
+cd ../symfony/project
+php composer.phar --ignore-platform-reqs install
+```
 * Run:
 ```
 ./admin.sh build
@@ -125,7 +132,7 @@ sudo vi /etc/hosts
 * Hit Shift + A
 * Add this line:
 ```
-10.20.20.10    security sandbox orderapp phpmyadmin
+10.20.20.10    security sandbox orderapp phpmyadmin soap symfony
 ```
 * Save the file:
   * Esc
