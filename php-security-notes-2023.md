@@ -4,6 +4,7 @@ Last: http://localhost:8885/#/6/10
 
 ## TODO
 * Q: Get documentation on PKCS 8?
+* A: https://www.openssl.org/docs/man1.1.1/man1/openssl-pkcs8.html
 
 * Q: In the Docker container, where is the error log when using `error_log`
 * A: Need to add this command to `/path/to/security/app/docker/Dockerfile`:
@@ -12,10 +13,11 @@ echo "error_log=/var/log/php$PHP_VER/error.log" >> /etc/php$PHP_VER/php.ini
 ```
 
 * Q: How to launch an XXE attack that inserts `/etc/passwd` into the `guestbook`?
-* A: TBD -- Thursday
+* A: See: https://owasp.org/www-community/vulnerabilities/XML_External_Entity_(XXE)_Processing
 
-* Q: What is the Symfony equivalent of Pub/Sub or Event/Trigger/Listeners
-* A: TBD -- Thursday
+* Q: What is the Symfony equivalent of Pub/Sub or Event/Trigger/Listeners?
+* A: See: https://symfony.com/doc/current/components/event_dispatcher.html
+* A: See: https://github.com/symfony/symfony/tree/master/src/Symfony/Component/EventDispatcher
 
 * Q: Check out the Insecure CAPTCHA Lab and see what's going on with it
 * A: The domains used in the Docker container are not accepted by Google
@@ -34,6 +36,8 @@ For Thu 22 Jun 2023
 * Work with the ZAP tool
 * ??? Work with Symfony security
 * Changes that are of interest in PHP8.2 and 8.3
+  * Review: https://www.php.net/releases/8.2/en.php
+  * Review: https://wiki.php.net/rfc#php_83
 
 For Tue 20 Jun 2023
 * Unrestricted File Inclusion Lab
