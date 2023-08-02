@@ -1,6 +1,64 @@
 # PHP SECURITY CLASS NOTES
 
+Last: http://localhost:8885/#/6/10
+
+## TODO
+* Q: Get documentation on PKCS 8?
+* A: https://www.openssl.org/docs/man1.1.1/man1/openssl-pkcs8.html
+
+* Q: In the Docker container, where is the error log when using `error_log`
+* A: Need to add this command to `/path/to/security/app/docker/Dockerfile`:
+```
+echo "error_log=/var/log/php$PHP_VER/error.log" >> /etc/php$PHP_VER/php.ini
+```
+
+* Q: How to launch an XXE attack that inserts `/etc/passwd` into the `guestbook`?
+* A: See: https://owasp.org/www-community/vulnerabilities/XML_External_Entity_(XXE)_Processing
+
+* Q: What is the Symfony equivalent of Pub/Sub or Event/Trigger/Listeners?
+* A: See: https://symfony.com/doc/current/components/event_dispatcher.html
+* A: See: https://github.com/symfony/symfony/tree/master/src/Symfony/Component/EventDispatcher
+
+* Q: Check out the Insecure CAPTCHA Lab and see what's going on with it
+* A: The domains used in the Docker container are not accepted by Google
+* A: You can use `localhost` for testing ... but it becomes problematic with the VM and security app
+
+* Q: Is there any Symfony CAPTCHA integration?
+* A: See: https://packagist.org/packages/gregwar/captcha-bundle
+* A: See: https://packagist.org/packages/karser/karser-recaptcha3-bundle
+
+
 ## Assignments
+For Thu 22 Jun 2023
+* Lab: Sensitive Data Exposure
+* See the XXE attack in action
+* Setup Google reCaptcha
+* Work with the ZAP tool
+* ??? Work with Symfony security
+* Changes that are of interest in PHP8.2 and 8.3
+  * Review: https://www.php.net/releases/8.2/en.php
+  * Review: https://wiki.php.net/rfc#php_83
+
+For Tue 20 Jun 2023
+* Unrestricted File Inclusion Lab
+* Secure File Uploads Lab
+
+For Thur 15 Jun 2023
+* External XML Entities (XXE)
+* Insecure Deserialization
+* Insecure Direct Object References
+* Missing Function Access Level Control (ACL)
+* Unvalidated Redirects and Forwards
+* Command Injection
+
+For Tuesday 13 Jun 2023
+* Cross-Site Scripting (XSS)
+   * Tidy Class Exercise #1
+   * Portal Exercise
+* Cross Site Request Forgery (CSRF)
+  * Portal Exercise
+* Security Misconfiguration
+  * Portal Exercise
 For Thursday 8 Jun 2023
 * Update the VM as per the instructions below
 * Install Docker and Docker Compose on the VM
@@ -17,29 +75,7 @@ Choose "Login"
 * Username: admin
 * Password: password
 
-## TODO
-* Get a list of attack servers to which you can subscribe
-  * https://www.cybrary.it/blog/hacking-as-a-service
-  * https://www.crowdstrike.com/cybersecurity-101/ransomware/ransomware-as-a-service-raas/
-  * https://www.techrepublic.com/article/what-it-costs-to-hire-a-hacker-on-the-dark-web/
-  * https://www.upwork.com/hire/hackers/
-  * https://arstechnica.com/information-technology/2014/03/nsas-automated-hacking-engine-offers-hands-free-pwning-of-the-world/
-  * https://www.wired.com/story/autosploit-tool-makes-unskilled-hacking-easier-than-ever/
-  * https://www.ptsecurity.com/ww-en/analytics/custom-hacking-services/
-  * https://evolutionhackers.com/
-  * https://www.businessinsider.com/things-hire-hacker-to-do-how-much-it-costs-2018-11?op=1#4-infiltrate-instagram-129-4
-* Do-It-Yourself
-  * https://www.metasploit.com/
-  * https://github.com/NullArray/AutoSploit
-* Get a list of Symfony security-related classes
-  * Primary form validation: https://symfony.com/doc/current/validation.html
-  * Doctrine security
-    * https://stackoverflow.com/questions/67623086/is-this-doctrine-query-sql-injection-proof
-    * https://www.doctrine-project.org/projects/doctrine-dbal/en/current/reference/security.html
-* Find the "official" email regex
-  * https://stackoverflow.com/questions/201323/how-can-i-validate-an-email-address-using-a-regular-expression
-* Get updated slides to attendees
-
+## Q & A
 ## Update/Upgrade the VM
 * For now, avoid upgrading Ubuntu. Leave it at version 20.*
 * Follow these instructions:
@@ -80,6 +116,13 @@ cd /home/vagrant/Zend/workspaces/DefaultWorkspace
 wget SOURCE_URL -o security_training.zip
 unzip -o security_training.zip
 ```
+* Update Composer packages
+```
+cd security
+php composer.phar --ignore-platform-reqs install
+cd ../symfony/project
+php composer.phar --ignore-platform-reqs install
+```
 * Run:
 ```
 ./admin.sh build
@@ -93,7 +136,7 @@ sudo vi /etc/hosts
 * Hit Shift + A
 * Add this line:
 ```
-10.20.20.10    security sandbox orderapp phpmyadmin
+10.20.20.10    security sandbox orderapp phpmyadmin soap symfony
 ```
 * Save the file:
   * Esc
@@ -119,6 +162,8 @@ docker system prune
 ## General Notes
 PHP Road Map:
 * https://wiki.php.net/rfc
+Recent Attacks:
+* https://www.rawstory.com/global-cyberattack-louisianaoregon-residents/
 
 ### LAB NOTES
 * Good Overview of the Stats and Costs:
@@ -161,108 +206,101 @@ Configuration Management
 * https://www.ansible.com/
 * https://www.puppet.com/
 
-## LATEST
-* SQL Injection
-  * .NET: https://visualstudiomagazine.com/articles/2019/10/22/top-net-attacks.aspx
-  * Find a Place CMS Directory 1.5: https://www.exploit-db.com/exploits/46418
-  * phpMyAdmin Designer Feature SQL Injection Vulnerability: https://tools.cisco.com/security/center/viewAlert.x?alertId=59526
-  * Wordpress Plugin Vulnerabilities: https://www.woobro.com/wordpress-sql-injection-how-to-prevent-attacks-in-2019/
-  * https://www.exploit-db.com/papers/13045/
-  * https://bertwagner.com/2018/03/20/how-to-steal-data-using-a-second-order-sql-injection-attack/
-  * https://gbhackers.com/latest-google-sql-dorks/
-  * https://nakedsecurity.sophos.com/2018/02/19/hackers-sentenced-for-sql-injections-that-cost-300-million/
-  * DEF: http://cwe.mitre.org/data/definitions/89.html
-  * TOOL: http://sqlmap.org/
-* Brute Force
-  * https://ktla.com/2018/08/20/latest-scam-email-has-your-real-password-inside-heres-how-they-got-it/
-  * https://cybersecurityreviews.net/2019/07/30/nas-targeted-by-brute-force-ransomware-attacks/
-  * https://resources.infosecinstitute.com/popular-tools-for-brute-force-attacks/
-  * https://www.abuseipdb.com/check/203.195.130.124
-  * https://hackercombat.com/password-cracking-tool-hydra/
-  * https://securityaffairs.co/wordpress/84948/hacking/hacker-hacked-iot-botnets.html
-  * https://gbhackers.com/brute-force-attack-from-outlaw/
-  * phpLiteAdmin: Apr 2018: http://k3research.outerhaven.de/posts/small-mistakes-lead-to-big-problems.html
-  * Blocked Attempts on WordPress Sites: https://www.wordfence.com/blog/2019/01/analyzing-a-week-of-blocked-attacks/
-  * https://www.securityweek.com/spring-2018-password-attacks
-  * https://betanews.com/2018/07/03/a-rare-breed-of-the-brute-force-a-history-of-one-attack/
-  * https://www.theregister.co.uk/2018/04/03/magento_brute_force_attack/
-  * https://blog.paranoidpenguin.net/2018/01/another-significant-wordpress-brute-force-attack-in-the-works/
-  * RESOURCES: Good "how to": https://chrisdecairos.ca/intercepting-traffic-with-zaproxy/
-  * TOOL: https://www.metasploit.com/
-  * TOOL: https://www.hackeroyale.com/crack-passwords-using-thc-hydra/
-  * TOOL: simulates a botnet using brute force to crack passwords:
-    * https://github.com/JPaulMora/Pyrit
-* XSS
-  * PHP Script Mall Email Script: https://hackingvila.wordpress.com/2019/02/16/xss-vulnerability-in-responsive-video-news-script-php-script-mall/
-  * KindEditor: https://github.com/0xUhaw/CVE-Bins/tree/master/KindEditor
-  * https://nvd.nist.gov/vuln/detail/CVE-2018-1000556
-  * https://snyk.io/vuln/npm:bootstrap:20160627
-  * https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
-  * https://www.owasp.org/index.php/DOM_based_XSS_Prevention_Cheat_Sheet
-  * TOOL: https://www.virustotal.com/#/home/url
-  * DEF: http://cwe.mitre.org/data/definitions/79.html
-  * EXPLANATION: https://stackoverflow.com/questions/2526522/csrf-cross-site-request-forgery-attack-example-and-prevention-in-php
-  * RESOURCES: https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity
-    * Uses Subresource Integrity to verify the integrity of the jQuery source
-* Broken Auth / Session Mgmt
-  * Monstra: https://github.com/monstra-cms/monstra/issues/429
-  * PHP Proxy: https://pentest.com.tr/exploits/PHP-Proxy-3-0-3-Local-File-Inclusion.html
-  * https://www.okta.com/security-blog/2018/03/5-identity-attacks-that-exploit-your-broken-authentication/
-  * https://www.exploit-db.com/exploits/44220/
-  * https://blog.knowbe4.com/heads-up-new-exploit-hacks-linkedin-2-factor-auth.-see-this-kevin-mitnick-video
-* Insecure Direct Obj Refs
-  * https://www.sec-consult.com/en/blog/advisories/insecure-direct-object-reference-in-testlink-open-source-test-management/index.html
-  * Demo: http://sweetscomplete.bad.local/
-* CSRF
-  * Excellent description of the vulnerability and how to mitigate its effects:
-    * https://www.gspann.com/resources/blogs/prevention-of-cross-site-request-forgery-vulnerability/
-  * usualToolCMS: https://github.com/fdbao/UsualToolCMS/issues/1
-  * ZBlogPHP: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-9153
-  * Vanguard Financial Services: https://github.com/d4wner/Vulnerabilities-Report/blob/master/Vanguard.md
-  * PHP Scripts Mall: https://gkaim.com/cve-2018-15187-vikas-chaudhary/
-  * https://www.cvedetails.com/cve/CVE-2018-10267/
-  * WordPress Plugin (again): https://www.cvedetails.com/cve/CVE-2018-10233/
-* Security Misconfig
-  * https://www.wordfence.com/blog/2019/05/privilege-escalation-flaw-present-in-slick-popup-plugin/
-  * Node.js debugger mode code execution: https://exchange.xforce.ibmcloud.com/vulnerabilities/153454
-  * phpMyAdmin: https://www.cvedetails.com/cve/CVE-2017-18264/
-  * https://www.databreaches.net/samba-federal-employee-benefit-association-programming-error-resulted-in-mismailed-information/
-  * http://arstechnica.com/security/2016/05/faulty-https-settings-leave-dozens-of-visa-sites-vulnerable-to-forgery-attacks/
-* Sensitive Data Exp
-  * https://www.nytimes.com/2017/09/07/business/equifax-cyberattack.html
-  * Jenkins: https://www.cvedetails.com/cve/CVE-2018-1000601/
-* Missing Function Level Access Control
-  * https://www.symantec.com/security-center/vulnerabilities/writeup/103638
-* Using Open Source w/ Known Vulnerabilities
-  * Even PHP itself!
-    * https://www.linkedin.com/pulse/official-php-git-server-attacked-enrico-zimuel/
-  * https://www.cvedetails.com/
-  * https://www.cvedetails.com/vulnerability-list/vendor_id-6538/product_id-11031/version_id-235563/Jquery-Jquery-1.6.4.html
-* Invalidated Redirects and Forwards
-  * https://www.indusface.com/blog/google-vulnerable-open-redirect/
-  * https://www.securityfocus.com/bid/82463/discuss
-* Web Server Security
-  * https://httpd.apache.org/security/vulnerabilities_24.html
-  * Don't forget about https://modsecurity.org/
-* Command Injection
-  * https://www.wordfence.com/blog/2019/05/os-command-injection-vulnerability-patched-in-wp-database-backup-plugin/
-* Secure File Uploads
-  * Anti-Virus filter for ZF: https://www.sitepoint.com/zf-clamav/
-* Insecure CAPTCHA
-  * https://andresriancho.com/recaptcha-bypass-via-http-parameter-pollution/
-  * Reverse CAPTCHA discussion: https://www.tectite.com/vbforums/showthread.php?5752-Reverse-CAPTCHA-Thoughts-Tips-and-Questions
-* Recommended Headers:
-  * OWASP recommends the following:
-```
-// timeout, path, domain, httpCookie, httpOnly
-session_set_cookie_params(900, '/', NULL, TRUE, TRUE);
-// other recommended headers
-header('Pragma: no-cache');
-header('Cache-Control: no-cache,no-store,must-revalidate');
-header('X-Frame-Options: DENY');
-header('X-XSS-Protection: 1');
-header('X-Content-Type-Options: nosniff');
-```
+## Past Attacks
+SQL Injection
+* .NET: https://visualstudiomagazine.com/articles/2019/10/22/top-net-attacks.aspx
+* Find a Place CMS Directory 1.5: https://www.exploit-db.com/exploits/46418
+* phpMyAdmin Designer Feature SQL Injection Vulnerability: https://tools.cisco.com/security/center/viewAlert.x?alertId=59526
+* Wordpress Plugin Vulnerabilities: https://www.woobro.com/wordpress-sql-injection-how-to-prevent-attacks-in-2019/
+* https://www.exploit-db.com/papers/13045/
+* https://bertwagner.com/2018/03/20/how-to-steal-data-using-a-second-order-sql-injection-attack/
+* https://gbhackers.com/latest-google-sql-dorks/
+* https://nakedsecurity.sophos.com/2018/02/19/hackers-sentenced-for-sql-injections-that-cost-300-million/
+* DEF: http://cwe.mitre.org/data/definitions/89.html
+* TOOL: http://sqlmap.org/
+Brute Force
+* https://ktla.com/2018/08/20/latest-scam-email-has-your-real-password-inside-heres-how-they-got-it/
+* https://cybersecurityreviews.net/2019/07/30/nas-targeted-by-brute-force-ransomware-attacks/
+* https://resources.infosecinstitute.com/popular-tools-for-brute-force-attacks/
+* https://www.abuseipdb.com/check/203.195.130.124
+* https://hackercombat.com/password-cracking-tool-hydra/
+* https://securityaffairs.co/wordpress/84948/hacking/hacker-hacked-iot-botnets.html
+* https://gbhackers.com/brute-force-attack-from-outlaw/
+* phpLiteAdmin: Apr 2018: http://k3research.outerhaven.de/posts/small-mistakes-lead-to-big-problems.html
+* Blocked Attempts on WordPress Sites: https://www.wordfence.com/blog/2019/01/analyzing-a-week-of-blocked-attacks/
+* https://www.securityweek.com/spring-2018-password-attacks
+* https://betanews.com/2018/07/03/a-rare-breed-of-the-brute-force-a-history-of-one-attack/
+* https://www.theregister.co.uk/2018/04/03/magento_brute_force_attack/
+* https://blog.paranoidpenguin.net/2018/01/another-significant-wordpress-brute-force-attack-in-the-works/
+* RESOURCES: Good "how to": https://chrisdecairos.ca/intercepting-traffic-with-zaproxy/
+* TOOL: https://www.metasploit.com/
+* TOOL: https://www.hackeroyale.com/crack-passwords-using-thc-hydra/
+* TOOL: simulates a botnet using brute force to crack passwords:
+* https://github.com/JPaulMora/Pyrit
+XSS
+* PHP Script Mall Email Script: https://hackingvila.wordpress.com/2019/02/16/xss-vulnerability-in-responsive-video-news-script-php-script-mall/
+* KindEditor: https://github.com/0xUhaw/CVE-Bins/tree/master/KindEditor
+* https://nvd.nist.gov/vuln/detail/CVE-2018-1000556
+* https://snyk.io/vuln/npm:bootstrap:20160627
+* https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
+* https://www.owasp.org/index.php/DOM_based_XSS_Prevention_Cheat_Sheet
+* TOOL: https://www.virustotal.com/#/home/url
+* DEF: http://cwe.mitre.org/data/definitions/79.html
+* EXPLANATION: https://stackoverflow.com/questions/2526522/csrf-cross-site-request-forgery-attack-example-and-prevention-in-php
+* RESOURCES: https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity
+* Uses Subresource Integrity to verify the integrity of the jQuery source
+Broken Auth / Session Mgmt
+* Monstra: https://github.com/monstra-cms/monstra/issues/429
+* PHP Proxy: https://pentest.com.tr/exploits/PHP-Proxy-3-0-3-Local-File-Inclusion.html
+* https://www.okta.com/security-blog/2018/03/5-identity-attacks-that-exploit-your-broken-authentication/
+* https://www.exploit-db.com/exploits/44220/
+* https://blog.knowbe4.com/heads-up-new-exploit-hacks-linkedin-2-factor-auth.-see-this-kevin-mitnick-video
+Insecure Direct Obj Refs
+* https://www.sec-consult.com/en/blog/advisories/insecure-direct-object-reference-in-testlink-open-source-test-management/index.html
+* Demo: http://sweetscomplete.bad.local/
+CSRF
+* Excellent description of the vulnerability and how to mitigate its effects:
+* https://www.gspann.com/resources/blogs/prevention-of-cross-site-request-forgery-vulnerability/
+* usualToolCMS: https://github.com/fdbao/UsualToolCMS/issues/1
+* ZBlogPHP: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-9153
+* Vanguard Financial Services: https://github.com/d4wner/Vulnerabilities-Report/blob/master/Vanguard.md
+* PHP Scripts Mall: https://gkaim.com/cve-2018-15187-vikas-chaudhary/
+* https://www.cvedetails.com/cve/CVE-2018-10267/
+* WordPress Plugin (again): https://www.cvedetails.com/cve/CVE-2018-10233/
+Security Misconfig
+* https://www.wordfence.com/blog/2019/05/privilege-escalation-flaw-present-in-slick-popup-plugin/
+* Node.js debugger mode code execution: https://exchange.xforce.ibmcloud.com/vulnerabilities/153454
+* phpMyAdmin: https://www.cvedetails.com/cve/CVE-2017-18264/
+* https://www.databreaches.net/samba-federal-employee-benefit-association-programming-error-resulted-in-mismailed-information/
+* http://arstechnica.com/security/2016/05/faulty-https-settings-leave-dozens-of-visa-sites-vulnerable-to-forgery-attacks/
+Sensitive Data Exp
+* https://www.nytimes.com/2017/09/07/business/equifax-cyberattack.html
+* Jenkins: https://www.cvedetails.com/cve/CVE-2018-1000601/
+Missing Function Level Access Control
+* https://www.symantec.com/security-center/vulnerabilities/writeup/103638
+Using Open Source w/ Known Vulnerabilities
+* Even PHP itself!
+* https://www.linkedin.com/pulse/official-php-git-server-attacked-enrico-zimuel/
+* https://www.cvedetails.com/
+* https://www.cvedetails.com/vulnerability-list/vendor_id-6538/product_id-11031/version_id-235563/Jquery-Jquery-1.6.4.html
+* Docker desktop for Windows/Mac has a vulnerability checker
+Invalidated Redirects and Forwards
+* https://www.indusface.com/blog/google-vulnerable-open-redirect/
+* https://www.securityfocus.com/bid/82463/discuss
+Web Server Security
+* https://httpd.apache.org/security/vulnerabilities_24.html
+* Don't forget about https://modsecurity.org/
+Command Injection
+* https://www.wordfence.com/blog/2019/05/os-command-injection-vulnerability-patched-in-wp-database-backup-plugin/
+Secure File Uploads
+* Anti-Virus filter for ZF: https://www.sitepoint.com/zf-clamav/
+Insecure CAPTCHA
+* https://andresriancho.com/recaptcha-bypass-via-http-parameter-pollution/
+* Reverse CAPTCHA discussion: https://www.tectite.com/vbforums/showthread.php?5752-Reverse-CAPTCHA-Thoughts-Tips-and-Questions
+External XML Entities
+* Set up the SOAP service to log access to detect any potential hacking attempts
+* Implement web server based extended logging (e.g., Apache module `mod_forensic` and `mod_security`)
+
 
 # Tools
 
@@ -365,6 +403,19 @@ $document->getElementById("name-output"); // doesn't have querySelector by defau
 ```
 * 12: Might need to set [`CORS`](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) headers to allow "legal" cross information sharing for servers under your control
 
+* 13: Recommended Headers:
+  * OWASP recommends the following:
+```
+// timeout, path, domain, httpCookie, httpOnly
+session_set_cookie_params(900, '/', NULL, TRUE, TRUE);
+// other recommended headers
+header('Pragma: no-cache');
+header('Cache-Control: no-cache,no-store,must-revalidate');
+header('X-Frame-Options: DENY');
+header('X-XSS-Protection: 1');
+header('X-Content-Type-Options: nosniff');
+```
+
 ## Insecure Direct Object Reference / Missing Function Level Access Control
 * 1: When building the SELECT, encrypt the database key which is exposed to the form
 * 2: Implement proper access control for valuable company resources ("objects")
@@ -412,6 +463,7 @@ LAB: quick test: download form, make a change, submit manually, and see that you
 * 5: use apachectl -l and apachectl -M to see which modules are loaded
     look for ssl_module especially
 * 6: php.ini settings: allow_url_include = off; open_basedir = /set/this/to/something; doc_root = /set/to/something
+* 7: Look under response headers in the browser tools. Is the version of PHP exposed?
 
 ## Missing Function Level Access Control
 * 1: Utilize an Access Control List (ACL) which defines:
@@ -457,6 +509,7 @@ LAB: quick test: download form, make a change, submit manually, and see that you
 * 2: Enumerate the strategies and only store the enumeration in the cookie; upon return compare with a whitelist of strategies
 * 3: Create a digital signature or hash of the object to be stored and confirm upon restoration
 * 4: Check to see if `__wakeup()` has been defined, and if so, make sure it doesn't invalidate security measures when object is restored
+* 5: Check to see if the restored object class is `__PHP_Incomplete_Class` and take avoidance measures if true
 
 ## Command Injection
 * 1: Do you really need to run system(), exec() etc.?  Maybe another way
@@ -477,10 +530,6 @@ LAB: quick test: download form, make a change, submit manually, and see that you
 ## Javascript
 * 1: consider using "code obfuscation" to obscure your javascript to slow down potential attacks from this vector
 * 2: consider using "minified" JS libraries which improves performance and is more difficult to read
-
-## Levy Document
--- UC Berkeley Study
--- Technical + Business Impact of Successful SQL Injection Attacks
 
 # LINK HISTORY
 
@@ -515,11 +564,27 @@ LAB: quick test: download form, make a change, submit manually, and see that you
 * http://www.cyberciti.biz/tips/php-security-best-practices-tutorial.html
 
 ## RESOURCES:
+* https://security.berkeley.edu/education-awareness
 * https://security.sensiolabs.org/
 * https://www.netsparker.com/blog/web-security/sql-injection-cheat-sheet/
 * http://kalilinuxcourse.blogspot.com/2015/11/hack-facebook-using-python-script-via-brute-force-attack.html
 * http://phpsec.org/projects/guide/4.html
 * https://info.whitehatsec.com/rs/whitehatsecurity/images/2015-Stats-Report.pdf
+* http://sectools.org/
+* https://panopticlick.eff.org/
+* https://www.torproject.org/
+* http://www.hackthissite.org/
+* https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
+* http://www.google.com/webmasters/hacked/
+* http://www.qaguild.com/resources_tools.php#web // website security vulnerability testing tools
+* http://lists.webappsec.org/pipermail/websecurity_lists.webappsec.org/
+* https://www.owasp.org/index.php/Main_Page
+* http://owasptop10.googlecode.com/files/OWASP%20Top%2010%20-%202010.pdf (OWASP Top 10)
+* http://net-square.com/ns_whitepapers.shtml
+* http://howto.cnet.com/8301-11310_39-20098098-285/how-to-check-if-a-web-site-is-safe/?tag=mncol;mlt_related
+* https://github.com/sandeepcr529/codespy
+* http://sla.ckers.org/forum/
+
 
 ## ATTACKS:
 * http://arstechnica.com/security/2016/06/how-linkedins-password-sloppiness-hurts-us-all/
@@ -605,13 +670,21 @@ LAB: quick test: download form, make a change, submit manually, and see that you
 joomla 1.5.26 hack: * http://3dwebdesign.org/forum/new-joomla-1-5-26-and-joomla-2-5-exploit-t1113
 SEE: www/php_sec/exploits/joomla_godaddy/*
 
-Top 10 joomla security issues: * http://www.deanmarshall.co.uk/joomla-services/joomla-security/joomla-security-issues.html
-bluestork template hack: * http://truxtertech.com/2012/10/joomla-bluestork-built-in-virus/
-htaccess hacked / GoDaddy: * http://www.novel139.info/bbs/forum.php?mod=viewthread&tid=485
-how to secure a joomla site which has been hacked: * http://forum.joomla.org/viewtopic.php?f=621&t=582854
-forum post assistant: * https://github.com/ForumPostAssistant/FPA/zipball/en-GB
-From Google type this: inurl:"jos_users" inurl:"index.php"
--- drupal
+Top 10 joomla security issues:
+* http://www.deanmarshall.co.uk/joomla-services/joomla-security/joomla-security-issues.html
+Bluestork template hack:
+* http://truxtertech.com/2012/10/joomla-bluestork-built-in-virus/
+Htaccess hacked / GoDaddy:
+* http://www.novel139.info/bbs/forum.php?mod=viewthread&tid=485
+How to secure a joomla site which has been hacked:
+* http://forum.joomla.org/viewtopic.php?f=621&t=582854
+Forum post assistant:
+* https://github.com/ForumPostAssistant/FPA/zipball/en-GB
+From Google type this:
+```
+inurl:"jos_users" inurl:"index.php"
+```
+Drupal
 * http://drupal.org/node/1815912
 
 ## WEBSITES WITH ERRORS:
@@ -627,9 +700,12 @@ From Google type this: inurl:"jos_users" inurl:"index.php"
 * https://www.youtube.com/watch?v=igub7ZF5p40 [hacking things using Google, includes PHP issue]
 
 ## HACKS EXPLAINED ON YOUTUBE:
-SQL Injection: * https://www.youtube.com/watch?v=N7l6pPEDuPM
-Joomla Hack:* http://www.youtube.com/watch?v=KFr1k7-8HT8
-Facebook SQL Injection: * https://www.youtube.com/watch?v=1yfTaXndMEM
+SQL Injection:
+* https://www.youtube.com/watch?v=N7l6pPEDuPM
+Joomla Hack:
+* http://www.youtube.com/watch?v=KFr1k7-8HT8
+Facebook SQL Injection:
+* https://www.youtube.com/watch?v=1yfTaXndMEM
 OWASP Security Tutorial Series:
 * https://www.youtube.com/watch?v=_Z9RQSnf8-g [owasp xss]
 * https://www.youtube.com/watch?v=pypTYPaU7mM&feature=plcp [owasp injection]
@@ -686,22 +762,6 @@ OWASP Security Tutorial Series:
 * http://www.datamation.com/security/
 10 Ways the IT Department Enables Cybercrime:
 * http://www.datamation.com/ebooks/35577710/95980/2117740/118895
-
-## RESOURCES:
-* http://sectools.org/
-* https://panopticlick.eff.org/
-* https://www.torproject.org/
-* http://www.hackthissite.org/
-* https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
-* http://www.google.com/webmasters/hacked/
-* http://www.qaguild.com/resources_tools.php#web // website security vulnerability testing tools
-* http://lists.webappsec.org/pipermail/websecurity_lists.webappsec.org/
-* https://www.owasp.org/index.php/Main_Page
-* http://owasptop10.googlecode.com/files/OWASP%20Top%2010%20-%202010.pdf (OWASP Top 10)
-* http://net-square.com/ns_whitepapers.shtml
-* http://howto.cnet.com/8301-11310_39-20098098-285/how-to-check-if-a-web-site-is-safe/?tag=mncol;mlt_related
-* https://github.com/sandeepcr529/codespy
-* http://sla.ckers.org/forum/
 
 ## WEBINARS:
 * http://www.zend.com/en/webinar/Framework/70170000000by7j-BSWAWZF2-20130123.flv // building secure ZF2 apps
@@ -810,14 +870,14 @@ Snort.org
 Owasp.org tools page
 
 * Q: Fingerprinting suggestions?
-  * A: https://github.com/Valve/fingerprintjs2
+* A: https://github.com/Valve/fingerprintjs2
 
 * Q: What is a botnet?
-  * A: A network of slaved computers infected with controlling malware.
-   See: https://en.wikipedia.org/wiki/Botnet
+* A: A network of slaved computers infected with controlling malware.
+See: https://en.wikipedia.org/wiki/Botnet
 
 * Q: How large can a botnet become?
-  * A: The largest botnets detected in 2015 were the following:
+* A: The largest botnets detected in 2015 were the following:
 ```
    Ramnit: 3,000,000 computers
    Zeus: 3,600,000 computers
@@ -832,21 +892,21 @@ Owasp.org tools page
    * See: https://en.wikipedia.org/wiki/Botnet
 
 * Q: How secure is Oauth2?
-  * A: See: https://www.esecurityplanet.com/mobile-security/5-tips-on-using-oauth-2.0-for-secure-authorization.html
+* A: See: https://www.esecurityplanet.com/mobile-security/5-tips-on-using-oauth-2.0-for-secure-authorization.html
 
 * Q: Is there a guide to follow if my website has been hacked?
-  * A: This is for WordPress, but the steps are good for any PHP based site:
-  * https://codex.wordpress.org/FAQ_My_site_was_hacked
+* A: This is for WordPress, but the steps are good for any PHP based site:
+* https://codex.wordpress.org/FAQ_My_site_was_hacked
 
 * Q: Are there other "official" definitions of vulnerabilities outside of OWASP?
-  * A: See: https://nvd.nist.gov/vuln/categories
+* A: See: https://nvd.nist.gov/vuln/categories
 
 * Q: How do I figure out the size of my "attack surface"?
-  * A: There is a good set of guidelines on owasp.org here: https://www.owasp.org/index.php/Attack_Surface_Analysis_Cheat_Sheet
+* A: There is a good set of guidelines on owasp.org here: https://www.owasp.org/index.php/Attack_Surface_Analysis_Cheat_Sheet
 
 * Q: How does the "Are You A Robot" captcha work?
-  * A: Simple answer: we don't know and Google is not telling
-  * A: See: https://security.googleblog.com/2014/12/are-you-robot-introducing-no-captcha.html
+* A: Simple answer: we don't know and Google is not telling
+* A: See: https://security.googleblog.com/2014/12/are-you-robot-introducing-no-captcha.html
 
 * Q: Find reference in https://wiki.php.net/rfc for deprecated back tics
 * A: Suggestion was declined for PHP 8
@@ -855,6 +915,31 @@ Owasp.org tools page
 * Q: Find article that documents the 2-stage SQL injection attack
 * A: https://bertwagner.com/posts/how-to-steal-data-using-a-second-order-sql-injection-attack/
 
+* Q: Do you have a list of attack servers to which you can subscribe?
+* A: Not exactly, but check out these references:
+  * https://www.cybrary.it/blog/hacking-as-a-service
+  * https://www.crowdstrike.com/cybersecurity-101/ransomware/ransomware-as-a-service-raas/
+  * https://www.techrepublic.com/article/what-it-costs-to-hire-a-hacker-on-the-dark-web/
+  * https://www.upwork.com/hire/hackers/
+  * https://arstechnica.com/information-technology/2014/03/nsas-automated-hacking-engine-offers-hands-free-pwning-of-the-world/
+  * https://www.wired.com/story/autosploit-tool-makes-unskilled-hacking-easier-than-ever/
+  * https://www.ptsecurity.com/ww-en/analytics/custom-hacking-services/
+  * https://evolutionhackers.com/
+  * https://www.businessinsider.com/things-hire-hacker-to-do-how-much-it-costs-2018-11?op=1#4-infiltrate-instagram-129-4
+	* Do-It-Yourself
+	  * https://www.metasploit.com/
+	  * https://github.com/NullArray/AutoSploit
+
+* Q: What are some of the Symfony security-related classes?
+* A: Primary form validation: https://symfony.com/doc/current/validation.html
+  * Doctrine security
+    * https://stackoverflow.com/questions/67623086/is-this-doctrine-query-sql-injection-proof
+    * https://www.doctrine-project.org/projects/doctrine-dbal/en/current/reference/security.html
+
+* Q: What is the "official" email regex?
+* A: https://stackoverflow.com/questions/201323/how-can-i-validate-an-email-address-using-a-regular-expression
+
+## MISC
 * Get a `Faraday Bag` for your keyless entry vehicle!
   * https://www.bbc.com/news/business-47023003
   * https://www.locksmiths.co.uk/faq/keyless-car-theft/
@@ -864,6 +949,7 @@ Owasp.org tools page
 ```
 sudo rm /var/crash/*
 ```
+
 
 ## CLASS CODE EXAMPLES
 
@@ -1183,14 +1269,15 @@ if(isset($_GET['img'])) {
 * http://localhost:8885/#/3/11
   * Missing a close single quote on line 1
 
+
 * Brute Force Detector Class Exercise
   * Image doesn't show up
   * Rewrite to make worse: distinguish between user/pwd
 ```
 $stmt   = $pdo->query("SELECT * FROM users WHERE user='$username' AND password='$pass'");
 ```
-* XXE lab:
-  * Find out why "xxe" vulnerability isn't working
+x* XXE lab:
+x  * Find out why "xxe" vulnerability isn't working
 * Cross Site Request Forgery (CSRF) Portal Exercise
   * Move the form into "with.php" so that you can add extra security
 x* OrderApp: make sure it's working (insecurely)
@@ -1202,6 +1289,11 @@ x* External XML Entities not on the list!
 x* UFI lab
 x  * `ost this URL` ???
 x  * Looks like the `*.phtml` file has an unclosed `<a>` tag
+* Correct the link under the "Hack" menu: goes to the wrong place
+* Make sure reference to CVE is moved here: https://www.cve.org/
+* Insecure Deserialization
+  * Need to rewrite this instruction to use the new URL
+  * "From the browser tool, click on the original request index.php?action=idsz. Note that a cookie is sent."
 
 
 ## Actual Attacks from Customer Access Log (sanitized)
@@ -1227,6 +1319,46 @@ x  * Looks like the `*.phtml` file has an unclosed `<a>` tag
 ```
 
 ## LAB SOLUTIONS
+SQLI
+```
+<?php
+/* This is the code file you need to modify */
+global $config;
+use SecurityApp\App;
+if (isset($_GET['Submit'])) {
+
+    // Retrieve data
+    $safe = (int) $_GET['id'];
+    $orig = $_GET['id'];
+
+    if ($safe == $orig) {
+
+		//Employ ACL to determine access
+
+		try {
+
+			$stmt = App::getPdo($config)->prepare("SELECT first_name, last_name FROM users WHERE user_id = :id");
+			$result = $stmt->execute([':id' => $safe]);
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+			if ($stmt->rowCount() > 0) {
+				App::$html .= '<pre>';
+				App::$html .= 'ID: ' . $safe . '<br>First name: ' . htmlspecialchars($result['first_name']) . '<br>Surname: ' . htmlspecialchars($result['last_name']);
+				App::$html .= '</pre>';
+			}
+		} catch (PDOException $e) {
+			App::$html .= '<pre>' . $e->getMessage() . '</pre>';
+		}
+
+	} else {
+
+		App::$html .= 'Invalid user supplied data';
+		error_log(__FILE__ . ':' . 'User ID did resolve to an integer');
+
+	}
+
+}
+```
 Brute Force
 ```
 <?php
@@ -1238,6 +1370,9 @@ global $config;
 
 if( isset( $_REQUEST['Login'] ) ) {
     $time_current = time();
+    // Attacker can just refresh cookies, thereby starting a new session
+    // however, this is another layer of security, and is worthy of consideration
+    // Also create a client profile based upon external factors such as the IP address, user agent, etc.
     $time_stored  = $_SESSION['time'] ?? $time_current;
     // add a safety check to see if login requests are too frequent
     if (($time_current - $time_stored) < 1000) {
@@ -1251,7 +1386,9 @@ if( isset( $_REQUEST['Login'] ) ) {
             $stmt->execute([$username, $pass]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
         }catch(Exception $e){
-            exit('<pre>' . $e->getMessage() . '</pre>');
+            error_log(__FILE__ . ':' . $e->getMessage());
+            // redirect to a safe page
+            // use randomization so the result differs each time
         }
         if( $result && count($result) ) {
             // Login Successful

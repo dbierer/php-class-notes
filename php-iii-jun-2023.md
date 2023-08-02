@@ -1,9 +1,56 @@
 # PHP III - Jun 2023
 
-Last: http://localhost:8883/#/2/32
+Last: http://localhost:8883/#/4/57
+Send the latest version of slides
+
+## Homework
+For Fri 16 Jun 2023
+* Lab: REST Service Development Lab
+* Lab: Adding Middleware
+* Lab: Swoole Extension
+
+For Wed 14 Jun 2023
+* Lab: New Extension
+* Lab: Customized PHP (all 3 labs)
+* Lab: Docker (all Docker labs)
+  * Example `Dockerfile`: `/path/to/php-iii-demos/docker/Docker/Dockerfile`
+* Lab: Docker Compose (all labs)
+
+For Mon 12 Jun 2023
+* Lab: Built-in Web Server
+* Lab: OpCache and JIT
+* Lab: Existing Extension
+  * Note: we're using PHP 8.2, so change refs from `8.1` to `8.2` in the lab
+* Lab: FFI
+  * Clone this repo: https://github.com/dbierer/php-iii-demos.git
+  * Contains the "C" code
 
 ## TODO
-* Get the latest slides.pdf to the attendees for this class
+
+* Q: Get the syntax for switching between PHP versions
+* A: `update-alternatives`
+* A: see: https://askubuntu.com/questions/1373755/how-to-change-php-version-in-ubuntu-20-04-console
+
+* Q: Is there a major difference between `Swoole` and `OpenSwoole`?
+* A: OpenSwoole was forked from Swoole but nobody is willing to discuss the split.
+* A: see: https://github.com/swoole/swoole-src/issues/4450
+
+* Q: How do you set up `pecl` in the VM?
+* A: ???
+
+* Q: What is an "interned" string?
+* A: Any strings interned in the startup phase. Common to all the threads, won't be free'd until process exit. 
+     If we want an ability to add permanent strings even after startup, it would be still possible on costs of locking in the thread safe builds.
+* A: See: https://github.com/php/php-src/blob/master/Zend/zend_string.c
+
+* Q: What is `opcache.interned_strings_buffer`?
+* A: The amount of memory used to store interned strings in MB
+* A: See: https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.interned-strings-buffer
+
+* Q: Do you have a good reference on binary trees and how they can be used to model real-life data?
+* A: See: https://stackoverflow.com/questions/2130416/what-are-the-applications-of-binary-trees
+* A: See: http://cslibrary.stanford.edu/110/BinaryTrees.html
+* A: See: https://www.geeksforgeeks.org/applications-advantages-and-disadvantages-of-binary-search-tree/
 
 ## VM Update
 Follow these instructions:
@@ -28,7 +75,7 @@ Make note of the version number (e.g. 5.2.1)
 * From a terminal window:
 ```
 cd /tmp
-set VER=5.2.1
+set VER="5.2.1"
 wget https://files.phpmyadmin.net/phpMyAdmin/$VER/phpMyAdmin-$VER-all-languages.zip .
 unzip phpMyAdmin-$VER-all-languages.zip
 sudo cp -r phpMyAdmin-$VER-all-languages/* /usr/share/phpmyadmin
@@ -39,6 +86,8 @@ sudo cp /usr/share/phpmyadmin/config.sample.inc.php /usr/share/phpmyadmin/config
 * Lab Code:
   * Clone this repo: https://github.com/dbierer/php-iii-demos.git
   * Source code is located here: `/home/vagrant/Zend/workspaces/DefaultWorkspace`
+* Lab: OpCache and JIT
+  * The code for the Mandelbrot needs `__construct()`
 * Lab: Adding Middleware
   * Take the code from the slides
   * Add a middleware request handler that implements an update (HTTP "PATCH")
@@ -50,6 +99,18 @@ sudo cp /usr/share/phpmyadmin/config.sample.inc.php /usr/share/phpmyadmin/config
   * Have a look at the article on Orchestration: https://www.zend.com/blog/what-is-cloud-orchestration
 * CLI utility to reset JIT:
     * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch10/php8_jit_reset.php
+* Swoole Lab
+  * Had to install OpenSwoole
+* API Tools Lab
+  * Don't forget to add `--ignore-platform-reqs` when installing Laminas API Tools
+```
+composer --ignore-platform-reqs create-project laminas-api-tools/api-tools-skeleton
+```
+  * If you install it in another directory other than the one in the lab, you can do this:
+```
+cd path/to/api/tools
+php -S 0.0.0.0:8080 -t public public/index.php
+```
 
 ## Custom PHP Lab Notes
 
@@ -266,10 +327,10 @@ var_dump($obj);
 ```
 Example from the slide "Event Listener" using `__invoke()` to make it callable:
 ```
-// An anonymous event class listener example	
+// An anonymous event class listener example
 $listener = new class {
-    public function __invoke(Event $e) 
-    {	
+    public function __invoke(Event $e)
+    {
         echo "The big event \" { $e->getName ()} \" is happening!" ;
     }
 };
@@ -515,6 +576,15 @@ function showBase(array $link, array $base)
 echo showBase($forward, $base);
 echo showBase($reverse, $base);
 ```
+Example of a linked list
+```
+<?php
+$arr  = ['A' => 111, 'B' => 222, 'C' => 333, 'D' => 444, 'E' => 555, 'F' => 666];
+$rev = range('F','A');
+$fwd = range('A','F');
+foreach ($fwd as $key) echo $arr[$key] . PHP_EOL;;
+foreach ($rev as $key) echo $arr[$key] . PHP_EOL;;
+```
 Example of doubly linked list (using `SplDoublyLinkedList`)
 ```
 <?php
@@ -537,11 +607,28 @@ $obj->setIteratorMode(SplDoublyLinkedList::IT_MODE_LIFO );
 echo showBaseObj($obj);
 
 ```
+Recurse through an entire directory structure
+```
+<?php
+$path = __DIR__ . '/../../orderapp';
+$dir  = new RecursiveDirectoryIterator($path);
+$rec  = new RecursiveIteratorIterator($dir);
+
+foreach ($rec as $key => $val) {
+	// $key == full path + filename
+	echo $key . PHP_EOL;
+	// $val == SplFileInfo instance
+	var_dump($val);
+}
+
+```
 
 `SplSubject` and `SplObserver` used to form a pipeline:
 * See: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_subject_observer_storage_object.php
 
 ## CLI
+One of the best implementations for CLI is `Symfony/Console`
+* See: https://symfony.com/doc/current/components/console.html
 Example using both CLI args and interactive:
 ```
 <?php
@@ -842,3 +929,20 @@ Press <enter> to keep the current choice[*], or type selection number:
 
 
 ## ERRATA
+* http://localhost:8883/#/4/33
+  * Lines 18 - 20 should come before line 10
+  * Otherwise, the cache is not really being used at all!
+* JIT Lab
+  * Also need to enable JIT in the `xxx/conf.d/opcache.ini` file
+* Middleware Lab
+  * http://localhost:8883/#/7/16
+  * Remove "*" from this line!
+```
+$sql = 'DELETE * FROM orders WHERE id = ?';
+```
+* Swoole Server Lab
+  * http://localhost:8883/#/8/31
+  * Need to add to Composer command `--ignore-platform-reqs`
+* http://localhost:8883/#/8/39
+  * Version has changed `v4`
+  
