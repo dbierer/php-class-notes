@@ -2,11 +2,22 @@
 
 ## TODO
 * Lookup document root folder for MAMP
-
+* Last slide: http://localhost:8881/#/3
 
 ## Class Notes
 How PHP actually works:
 * https://www.zend.com/blog/exploring-new-php-jit-compiler
+
+Pre-assigning default values that match the data type:
+```
+<?php
+$a = '';	// string
+$b = 0;		// int
+$c = 0.0;	// float
+$d = TRUE;	// bool
+
+var_dump($a, $b, $c, $d);
+```
 
 ## Update/Upgrade the VM
 * For now, avoid upgrading Ubuntu. Leave it at version 20.*
