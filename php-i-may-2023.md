@@ -4,7 +4,9 @@
 ## NOTE TO SELF:
 * Post the entire block of course code to the download folder
   * Send link via email to attendees
-* Add instructions to install phpMyAdmin in the VM
+* How to run the class source code in XAMPP or MAMP
+  * Get instructions to the attendees
+
 
 ## Homework
 For Wed 24 May 2023
@@ -42,7 +44,7 @@ sudo systemctl restart apache2
 Unicode characters:
 ```
 // any unicode character
-echo "\u{0252} \u{0282}";
+echo '\u{0252} \u{0282}';
 ```
 
 Mixing HTML and PHP
@@ -106,7 +108,7 @@ Array
 )
 */
 
-// Use "asort()" to retain key/value relationships
+// Use 'asort()' to retain key/value relationships
 $astronaut = ['firstName' => 'Mark', 'lastName' => 'Watney',
         'Specialty' => 'Botanist'];
 asort($astronaut);
@@ -150,7 +152,7 @@ ini_set('error_log', $filename);
 ```
 `glob()`
 * Returns full path file info
-* Accepts a "filter" for filenames
+* Accepts a 'filter' for filenames
 `scandir()`
 * Returns all files in a given directory
 * Filenames only, not full path
@@ -215,13 +217,13 @@ $bar = 10;
 
 // In PHP 8: line 8 is interpreted exactly as in line 11
 // In PHP 7: line 8 is interpreted exactly as in line 14
-echo "sum: " . $foo + $bar;
+echo 'sum: ' . $foo + $bar;
 
 // Math operations have higher precedence
-echo "sum: " . ($foo + $bar);
+echo 'sum: ' . ($foo + $bar);
 
 // Evaluated left-to-right results fatal
-echo ("sum: " . $foo) + $bar;
+echo ('sum: ' . $foo) + $bar;
 
 ```
 Adding to arrays:
@@ -259,7 +261,7 @@ ID101
 */
 
 ```
-Using the "spread" (variadics) operator to "flatten" two arrays into one
+Using the 'spread' (variadics) operator to 'flatten' two arrays into one
 * NOTE: you could also just do this: `$days = array_combine($a, $b);`
 ```
 <?php
@@ -277,22 +279,22 @@ var_dump($days);
   [0]=>
   array(4) {
     [0]=>
-    string(3) "Mon"
+    string(3) 'Mon'
     [1]=>
-    string(3) "Tue"
+    string(3) 'Tue'
     [2]=>
-    string(3) "Wed"
+    string(3) 'Wed'
     [3]=>
-    string(3) "Thu"
+    string(3) 'Thu'
   }
   [1]=>
   array(3) {
     [0]=>
-    string(3) "Fri"
+    string(3) 'Fri'
     [1]=>
-    string(3) "Sat"
+    string(3) 'Sat'
     [2]=>
-    string(3) "Sun"
+    string(3) 'Sun'
   }
 }
 */
@@ -303,19 +305,19 @@ var_dump($days);
  /*
   * array(7) {
   [0]=>
-  string(3) "Mon"
+  string(3) 'Mon'
   [1]=>
-  string(3) "Tue"
+  string(3) 'Tue'
   [2]=>
-  string(3) "Wed"
+  string(3) 'Wed'
   [3]=>
-  string(3) "Thu"
+  string(3) 'Thu'
   [4]=>
-  string(3) "Fri"
+  string(3) 'Fri'
   [5]=>
-  string(3) "Sat"
+  string(3) 'Sat'
   [6]=>
-  string(3) "Sun"
+  string(3) 'Sun'
 }
 */
 ```
@@ -363,17 +365,17 @@ echo $a . ' is ' . $result . ' ' . $b . '.';
 echo PHP_EOL;
 ```
 
-An alternate "if" syntax is available:
+An alternate 'if' syntax is available:
 ```
 <?php
 $foo = 10;
 $bar = 10;
 if ( $foo > $bar ) :
-    echo "Foo is greater than bar";
+    echo 'Foo is greater than bar';
 elseif ($foo < $bar) :
-    echo "Foo is less than bar";
+    echo 'Foo is less than bar';
 else :
-    echo "Foo is equal to bar";
+    echo 'Foo is equal to bar';
 endif;
 ```
 Example of the ternary operator extracting URL params
@@ -405,7 +407,7 @@ phpinfo(INFO_VARIABLES);
 ```
 <?php
 // match does a *strict* comparison
-// the example below returns "None of the above"
+// the example below returns 'None of the above'
 $result = match ('1') {
     0 => 'Foo',
     1 => 'Bar',
@@ -427,16 +429,16 @@ $actual   = 0;
 $problem  = '';
 foreach($launch as $checklist => $status) {
     if ($status === 'Checked') {
-		echo "$checklist is a go <br>\n";
+		echo '$checklist is a go <br>\n';
 		$actual++;
 	} else {
 		$problem .= $checklist . ':' . $status . PHP_EOL;
 	}
 }
 if ($actual === $expected) {
-	echo "Launch is a GO!<br />\n";
+	echo 'Launch is a GO!<br />\n';
 } else {
-	echo "Launch aborted<br />\n";
+	echo 'Launch aborted<br />\n';
 	echo $problem;
 }
 
@@ -450,14 +452,14 @@ $items = array('CPU'  => 600,
 			   'brush' => 0,
 			   'GPU'  => 500 );
 if (empty($items)) {
-	echo "Sorry, no items!";
+	echo 'Sorry, no items!';
 	exit;
 }
 reset($items);	// moves pointer to start
 do {
 	$item = key($items);
 	$value = current($items);
-	echo  "$item = $" . $value *1.85 .  "<br>\n";
+	echo  '$item = $' . $value *1.85 .  '<br>\n';
 } while (next($items) !== FALSE);
 ```
 IMPORTANT: `each()` was removed in PHP 8.1!!!
@@ -486,11 +488,11 @@ unzip Downloads/phpMyAdmin-$VER-all-languages.zip
 sudo cp -r phpMyAdmin-$VER-all-languages/* /usr/share/phpmyadmin
 sudo cp /usr/share/phpmyadmin/config.sample.inc.php /usr/share/phpmyadmin/config.inc.php
 ```
-* Create the "blowfish secret"
+* Create the 'blowfish secret'
 ```
 sudo -i
-export SECRET=`php -r "echo md5(date('Y-m-d-H-i-s') . rand(1000,9999));"`
-echo "\$cfg['blowfish_secret']='$SECRET';" >> /usr/share/phpmyadmin/config.inc.php
+export SECRET=`php -r 'echo md5(date('Y-m-d-H-i-s') . rand(1000,9999));'`
+echo '\$cfg['blowfish_secret']='$SECRET';' >> /usr/share/phpmyadmin/config.inc.php
 exit
 ```
 Set permissions
@@ -532,7 +534,7 @@ General examples of many concepts covered in class
 Great explanation on how PHP works
 * https://www.zend.com/blog/exploring-new-php-jit-compiler
 
-An alternative way to run PHP is in "async" mode
+An alternative way to run PHP is in 'async' mode
 * https://www.zend.com/blog/swoole
 * ReactPHP framework
   * https://reactphp.org/
@@ -584,12 +586,12 @@ $a = ['A','B','C'];
 You can use type coercion as a form of security
 ```
 <?php
-// reads a URL parameter "id"
+// reads a URL parameter 'id'
 $id = $_GET['id'] ?? 0;
 $id = (int) $id;	// any scripting is removed
 echo 'ID: ' . $id;
 ```
-Formal "docblock" specification:
+Formal 'docblock' specification:
 * https://docs.phpdoc.org/3.0/guide/getting-started/what-is-a-docblock.html
 
 `Attributes` can be used in PHP 8 in place of docblocks
@@ -609,9 +611,9 @@ function add(int $a, int $b) : int
 }
 
 echo add(2,2);
-echo "\n";
+echo '\n';
 
-#[description("Adds two integers") ]
+#[description('Adds two integers') ]
 #[int(a) ]
 #[int(b) ]
 #[returns(a - b)]
@@ -621,7 +623,7 @@ function sub(int $a, int $b) : int
 }
 
 echo sub(2,2);
-echo "\n";
+echo '\n';
 ```
 You can also use words for logicals:
 ```
@@ -657,19 +659,19 @@ echo ($foo != $bar or $foo > $bar); // 1
 echo ($foo != $bar xor $foo > $bar); // 1
 ```
 
-Flattening or "unpacking" arrays:
+Flattening or 'unpacking' arrays:
 ```
 <?php
 $abc = ['A','B','C'];
 $def = ['D','E','F'];
 // this ends up with 2 element, each a sub-array
 $foo = [$abc, $def];
-// this "flattens" the two arrays and you end with
+// this 'flattens' the two arrays and you end with
 // a single 1 dimensioned array
 $bar = [...$abc, ...$def];
 var_dump($foo, $bar);
 ```
-"Packing" an array by using the variadics operator as in the function signature
+'Packing' an array by using the variadics operator as in the function signature
 ```
 <?php
 // Argument packing
@@ -678,7 +680,7 @@ $bar = 5;
 $baz = 99;
 
 // this use of the variadics operator
-// has the effect of "packing" the array
+// has the effect of 'packing' the array
 function sum(...$args){
 	// if you allow for an unlimited # arguments
 	// you need to write you function to account for that
@@ -706,19 +708,19 @@ var_dump($a);
 home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public/test.php:10:
 array(7) {
   [1] =>
-  string(1) "A"
+  string(1) 'A'
   [3] =>
-  string(1) "B"
+  string(1) 'B'
   [2] =>
-  string(1) "C"
+  string(1) 'C'
   [6] =>
-  string(1) "D"
+  string(1) 'D'
   [7] =>
-  string(1) "E"
+  string(1) 'E'
   [4] =>
-  string(1) "F"
+  string(1) 'F'
   [8] =>
-  string(1) "G"
+  string(1) 'G'
 }
  */
 ```
@@ -752,7 +754,7 @@ $mission = [
 $mission['STS395'][] = ['firstName' => 'Lada', 'lastName' => '--', 'specialty' => 'My Favorite Dog'];
 // change specialty
 $mission['STS395'][1]['specialty'] = 'Senior Commander';
-// adds an "id" element to the 1st sub-array
+// adds an 'id' element to the 1st sub-array
 $mission['STS395'][1]['id'] = 101;
 
 var_dump($mission);
@@ -788,7 +790,7 @@ echo formatCurrency(9999, '$') ?? 'Unknown';    // $9,999.
 
 * `printf()` family of functions (uses a format string)
 
-Use `round()` (out of the "Math" extension) to round values up or down
+Use `round()` (out of the 'Math' extension) to round values up or down
 ```
 <?php
 $items = [10.41, 15.96 , 30.99, 46.99];
@@ -821,7 +823,7 @@ foreach($mission as $mission_id => $crew) {
 	foreach ($crew as $num => $astronaut) {
 		echo $num . ':' . PHP_EOL;
 		foreach ($astronaut as $key => $value) {
-			echo $key . "\t" . $value . PHP_EOL;
+			echo $key . '\t' . $value . PHP_EOL;
 		}
 	}
 }
@@ -906,9 +908,9 @@ $mission = [
 ];
 
 foreach ($mission as $key => $value) {
-	echo "Mission: $key\n";
+	echo 'Mission: $key\n';
 	foreach ($value as $i => $entry) {
-		echo $entry['firstName'] . ' ' . $entry['lastName'] . "\n";
+		echo $entry['firstName'] . ' ' . $entry['lastName'] . '\n';
 	}
 }
 ```
@@ -928,17 +930,17 @@ $mission = [
 ];
 
 foreach ($mission as $key => $value) {
-	echo "Mission: $key\n";
+	echo 'Mission: $key\n';
 	foreach ($value as $i => list('firstName' => $first, 'lastName' => $last)) {
-		echo $first . ' ' . $last . "\n";
+		echo $first . ' ' . $last . '\n';
 	}
 }
 
 foreach ($mission as $key => $value) {
-	echo "Mission: $key\n";
+	echo 'Mission: $key\n';
 	foreach ($value as $i => $entry) {
 		extract($entry);
-		echo $firstName . ' ' . $lastName . "\n";
+		echo $firstName . ' ' . $lastName . '\n';
 	}
 }
 
@@ -957,18 +959,18 @@ $mission = [
 
 // unpack a numeric array in the foreach() directly
 foreach ($mission as $key => $value) {
-	echo "Mission: $key\n";
+	echo 'Mission: $key\n';
 	foreach ($value as $i => list($first, $last, $specialty)) {
-		echo "$first $last is a $specialty\n";
+		echo '$first $last is a $specialty\n';
 	}
 }
 
 // unpack a numeric array inside the foreach() loop
 foreach ($mission as $key => $value) {
-	echo "Mission: $key\n";
+	echo 'Mission: $key\n';
 	foreach ($value as $i => $entry) {
 		[$first, $last, $specialty] = $entry;
-		echo "$first $last is a $specialty\n";
+		echo '$first $last is a $specialty\n';
 	}
 }
 ```
@@ -986,7 +988,7 @@ $messages = [
 $found = 0;
 $search = 'ERROR';
 foreach ($messages as $item) {
-    // "str_contains()" is only available in PHP 8!
+    // 'str_contains()' is only available in PHP 8!
 	if (str_contains($item, $search)) {
 		$found++;
 		break;
@@ -995,7 +997,7 @@ foreach ($messages as $item) {
 echo ($found)
 	? 'ERROR found'
 	: 'All OK';
-echo "\n";
+echo '\n';
 ```
 You should provide a data type hint for functions with components that are sensitive to the wrong data type
 * Protects the function from abuse
@@ -1029,14 +1031,14 @@ Use `declare(strict_types=1)` to enforce all type hints for that file
 <?php
 // if the following line is omitted, the type-hint acts like a filter (type-cast)
 declare(strict_types=1);
-// Example of function using "type hinting"
+// Example of function using 'type hinting'
 function add(int $a, int $b) : int
 {
 	return $a + $b;
 }
 
-echo "The sum of 2 and 2 is " . add(2, 2) . "\n";
-echo "The sum of 33.33 and 22.22 is " . add(33.33, 22.22) . "\n";
+echo 'The sum of 2 and 2 is ' . add(2, 2) . '\n';
+echo 'The sum of 33.33 and 22.22 is ' . add(33.33, 22.22) . '\n';
 
 ```
 Nullable type: `?string` === `string|null`
@@ -1046,7 +1048,7 @@ Nullable type: `?string` === `string|null`
 
 function get_full_name(string $first, string $last, string|null $middle = NULL)
 {
-	return ($middle) ? "$first $middle $last\n" : "$first $last\n";
+	return ($middle) ? '$first $middle $last\n' : '$first $last\n';
 }
 
 echo get_full_name('Fred', 'Flintstone', 'John');
@@ -1057,7 +1059,7 @@ echo get_full_name('Barney', 'Rubble');
 
 function get_full_name2(string $first, string $last, ?string $middle = NULL)
 {
-	return ($middle) ? "$first $middle $last\n" : "$first $last\n";
+	return ($middle) ? '$first $middle $last\n' : '$first $last\n';
 }
 
 echo get_full_name2('Fred', 'Flintstone', 'John');
@@ -1102,7 +1104,7 @@ $tax = 0.10;
 while ($items = current($invoiceItems)) {
     $amountWithTax =  $items['invoiceAmount'] + ($items['invoiceAmount'] * $tax);
     echo 'invoice #' . $items['invoiceNumber'] . ' with invoice amount ' . $items['invoiceAmount'] . ' has the final amount of ' .  $amountWithTax . ' after adding the tax';
-    echo "\n";
+    echo '\n';
     next($invoiceItems);
 }
 ```
@@ -1134,11 +1136,11 @@ function validate(array $data, string &$err_msg) : bool
 	$error = 0;
 	// checks for only alpha characters
 	if (!ctype_alpha($data['name'])) {
-		$err_msg .= "Only letters are allowed in the name\n";
+		$err_msg .= 'Only letters are allowed in the name\n';
 		$error++;
 	}
 	if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-		$err_msg .= "Invalid email address\n";
+		$err_msg .= 'Invalid email address\n';
 		$error++;
 	}
 	return ($error === 0);
@@ -1150,7 +1152,7 @@ $data = [
 ];
 $message = '';
 if (validate($data, $message)) {
-	echo "All OK\n";
+	echo 'All OK\n';
 } else {
 	echo $message;
 }
@@ -1176,7 +1178,7 @@ do
 {
 	if (strpos($purchases[$i]['date'], $month) === 0)  {
 		list($prod, $date, $price) = array_values($purchases[$i]);
-		echo "<b>Product sold:</b> $prod\t$price\t$date\n";
+		echo '<b>Product sold:</b> $prod\t$price\t$date\n';
 	}
     $i++;
 }
@@ -1198,7 +1200,7 @@ Example of `vprintf` + `printf()`
 <?php
 $a = 5398;
 printf('%016b', $a);
-echo "\n";
+echo '\n';
 
 $data =	[
 	['Fred', 999.99, 'Caveman'],
@@ -1206,7 +1208,7 @@ $data =	[
 ];
 
 foreach ($data as $row)
-	vprintf('Name: %12s : Amount %8.2f : Title: %12s' . "\n", $row);
+	vprintf('Name: %12s : Amount %8.2f : Title: %12s' . '\n', $row);
 ```
 Example of using `substr()` to extract a filename extension
 ```
@@ -1215,8 +1217,8 @@ $fn = 'whatever.php';
 $allowed = ['jpg', 'png', 'gif'];
 $ext = substr(trim($fn), -3);
 echo (in_array($ext, $allowed)) ? 'Allowed' : 'Denied';
-echo "\n";
-// comes back as "Denied" because the extension is not on the allowed list
+echo '\n';
+// comes back as 'Denied' because the extension is not on the allowed list
 ```
 Sanitizing a filename
 ```
@@ -1233,7 +1235,7 @@ if ($path[strlen($path) - 1] === '/') {
 } else {
 	$final = $path . '/' . $fn;
 }
-echo str_replace('//', '/', $final) . "\n";
+echo str_replace('//', '/', $final) . '\n';
 ```
 Example of a callback tree that produces output in different formats
 * Uses anonymous functions
@@ -1254,9 +1256,9 @@ $callbacks = [
 ];
 
 echo $callbacks['json']($arr);
-echo "\n";
+echo '\n';
 echo $callbacks['html']($arr);
-echo "\n";
+echo '\n';
 ```
 
 ## I/O
@@ -1268,7 +1270,7 @@ $fn = '/home/vagrant/Downloads/countryInfo.txt';
 $fh = fopen($fn, 'r');
 $data = [];
 while (!feof($fh)) {
-	$temp = fgetcsv($fh, separator:"\t");
+	$temp = fgetcsv($fh, separator:'\t');
 	if (empty($temp) || $temp[0][0] === '#') continue;
 	$data[] = $temp;
 }
@@ -1297,7 +1299,7 @@ if ($_POST) {
     $opts = [
         'http' => [
             'method'  => 'POST',
-            'header'  => implode("\r\n", $headers),
+            'header'  => implode('\r\n', $headers),
             'content' => http_build_query($_POST)
         ]
     ];
@@ -1313,7 +1315,7 @@ $name = 'data.txt';
 $textArray = ['Some ', 'text', 'abc', 'jiofsjij'];
 $file = fopen($name, 'w+');
 foreach($textArray as $text) {
-  fwrite($file, $text . "\n");
+  fwrite($file, $text . '\n');
 }
 rewind($file);
 // another approach
@@ -1328,14 +1330,14 @@ Getting a list of files in a directory
 // single directory
 $path = __DIR__;
 $list = glob($path . '/*');
-foreach ($list as $fn) echo $fn . "\n";
+foreach ($list as $fn) echo $fn . '\n';
 
 // or grab an entire directory tree
 // see: https://php.net/SPL
 $iter = new RecursiveDirectoryIterator($path);
 $all  = new RecursiveIteratorIterator($iter);
 // $obj === SplFileInfo instance
-foreach ($all as $fn => $obj) echo $fn . "\n";
+foreach ($all as $fn => $obj) echo $fn . '\n';
 ```
 PHP Packages
 * Composer:
@@ -1370,7 +1372,7 @@ function saveOrder($conn, array $data) {
     // Build a query
     $query = vsprintf('INSERT INTO orders '
 					  . '(date,status,amount,description,customer) '
-					  . "VALUES ('%d', '%s', '%d', '%s', '%s')", $data);
+					  . 'VALUES ('%d', '%s', '%d', '%s', '%s')', $data);
 
     // Execute the query returning boolean true on success
     return mysqli_query($conn, $query);
@@ -1403,7 +1405,7 @@ $data = [time(), 'open', 400, 'office chair', 3];
 echo saveOrder($conn, $data) ? 'Data saved' : 'Data not saved';
 $list = getOrders($conn);
 foreach ($list as $row)
-	vprintf("%d \t %s \t %d \t %s \t %s \n", $row);
+	vprintf('%d \t %s \t %d \t %s \t %s \n', $row);
 ```
 Example of an SQL JOIN:
 ```
@@ -1448,11 +1450,11 @@ foreach ($a as $num) echo $num . PHP_EOL;
 <?php
 $offline = 1;
 $status = (empty($offline)) ? 'ONLINE' : 'OFFLINE';
-echo "The system is $status\n";
+echo 'The system is $status\n';
 $status = ($offline === 0) ? 'ONLINE' : 'OFFLINE';
-echo "The system is $status\n";
+echo 'The system is $status\n';
 $status = ($offline) ? 'ONLINE' : 'OFFLINE';
-echo "The system is $status\n";
+echo 'The system is $status\n';
 ```
 * Using objects to store multiple properties
 ```
@@ -1485,32 +1487,32 @@ var_dump($whatever);
 ```
 <?php
 // see: https://unicode-table.com/en/sets/top-emoji/
-$emoji = "\u{1F602}"
-	   . "\u{1F60D}"
-	   . "\u{1F923}"
-	   . "\u{1F60A}"
-	   . "\u{1F60E}"
-	   . "\u{1F606}"
-	   . "\u{1F601}"
-	   . "\u{1F609}"
-	   . "\u{1F914}"
-	   . "\u{1F605}"
-	   . "\u{1F614}"
-	   . "\u{1F644}";
+$emoji = '\u{1F602}'
+	   . '\u{1F60D}'
+	   . '\u{1F923}'
+	   . '\u{1F60A}'
+	   . '\u{1F60E}'
+	   . '\u{1F606}'
+	   . '\u{1F601}'
+	   . '\u{1F609}'
+	   . '\u{1F914}'
+	   . '\u{1F605}'
+	   . '\u{1F614}'
+	   . '\u{1F644}';
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 <head>
-<meta charset="utf-8" />
+<meta charset='utf-8' />
 <title>untitled</title>
-<meta name="generator" content="Geany 1.34.1" />
+<meta name='generator' content='Geany 1.34.1' />
 </head>
 <body>
 <?= $emoji ?>
 </body>
 </html>
 ```
-* Running an OS command using "back ticks"
+* Running an OS command using 'back ticks'
 ```
 <?php
 $path = 'C:\Users\ACER\Repos\classic_php_examples';
@@ -1522,21 +1524,21 @@ if (PHP_OS_FAMILY === 'Windows') {
 }
 echo $out;
 ```
-* Using the "spread" operator (also called "splat" operator) to flatten two arrays
+* Using the 'spread' operator (also called 'splat' operator) to flatten two arrays
 ```
 <?php
 $a = [111, 222, 333];
 $b = [444, 555, 666];
 $c = [...$a, ...$b];
-echo $c[5]; // would like to see "666"
+echo $c[5]; // would like to see '666'
 var_dump($c);
 
 // gives the same results as $c
 $d = array_merge($a, $b);
-echo $d[5]; // would like to see "666"
+echo $d[5]; // would like to see '666'
 var_dump($d);
 ```
-* Example using the "spread" operator to "pack" arguments into an array
+* Example using the 'spread' operator to 'pack' arguments into an array
 ```
 <?php
 function sum_of_values($label, ...$a)
@@ -1545,7 +1547,7 @@ function sum_of_values($label, ...$a)
 }
 
 echo sum_of_values('The sum is', 1, 2, 3, 4, 5, 6);
-echo "\n";
+echo '\n';
 echo sum_of_values('The total is', 11, 22, 33);
 ```
 * Alternate array assignment example
@@ -1577,9 +1579,9 @@ $mission = [
 ];
 // typical for a progammatic add someplace in your code at runtime
 $mission['STS395'][] = ['firstName' => 'Fred', 'lastName' => 'Flintstone', 'specialty' => 'Caveman'];
-echo "\n {$mission['STS395'][4]['firstName']}  {$mission['STS395'][4]['lastName']}\n"; // output: Fred Flintstone
+echo '\n {$mission['STS395'][4]['firstName']}  {$mission['STS395'][4]['lastName']}\n'; // output: Fred Flintstone
 var_dump($mission);
-echo "\n" . __LINE__ . "\n";
+echo '\n' . __LINE__ . '\n';
 
 // extract the last names from the multi-dim array:
 $lastNames = array_column($mission['STS395'], 'lastName');
@@ -1604,12 +1606,12 @@ foreach($missions as $mission => $astronauts) {
 	foreach($astronauts as $y => $row) {
 		echo 'Crew Member: ' . ($y + 1) . PHP_EOL;
 		foreach ($row as $x => $item) {
-			echo $x . "\t" . $item . "\n";
+			echo $x . '\t' . $item . '\n';
 		}
 	}
 }
 ```
-* Example from homework accepting URL parameter "day"
+* Example from homework accepting URL parameter 'day'
 ```
 $allowed   = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 $dayOfWeek = $_GET['day'] ?? '';
@@ -1654,7 +1656,7 @@ $mission = [
 ];
 
 foreach ($mission['STS395'] as list($first, $last, $spec)) {
-	echo "$first $last is a $spec\n";
+	echo '$first $last is a $spec\n';
 }
 
 $mission = [
@@ -1666,7 +1668,7 @@ $mission = [
 ];
 
 foreach ($mission['STS395'] as list('firstName' => $first, 'lastName' => $last, 'specialty' => $spec)) {
-	echo "$first $last is a $spec\n";
+	echo '$first $last is a $spec\n';
 }
 
 // conventional approach:
@@ -1674,7 +1676,7 @@ foreach ($mission['STS395'] as $val) {
 	$first = $val['firstName'] ?? '';
 	$last = $val['lastName'] ?? '';
 	$spec = $val['specialty'] ?? '';
-	echo "$first $last is a $spec\n";
+	echo '$first $last is a $spec\n';
 }
 
 ```
@@ -1685,7 +1687,7 @@ function parse1($arr)
 {
 	$out = '';
 	foreach ($arr as $key => $val)
-		$out .= $key . ':' . $val . "\n";
+		$out .= $key . ':' . $val . '\n';
 	return $out;
 }
 
@@ -1704,7 +1706,7 @@ function parse2(iterable $arr)
 {
 	$out = '';
 	foreach ($arr as $key => $val)
-		$out .= $key . ':' . $val . "\n";
+		$out .= $key . ':' . $val . '\n';
 	return $out;
 }
 
@@ -1863,7 +1865,7 @@ if (validate($inputs, $messages)) {
 
 Anonymous functions examples:
 * https://github.com/dbierer/classic_php_examples/blob/master/basics/type_hint_anon_function_example.php
-* This example "stores" an SQL query for later use:
+* This example 'stores' an SQL query for later use:
 ```
 <?php
 function get_select(string $table, string $where, PDO $pdo)
@@ -1905,18 +1907,18 @@ foreach ($list as $fn) {
 	foreach ($contents as $num => $line) {
 		if (strpos($line, $search) !== FALSE) {
 			echo $fn . PHP_EOL;
-			printf("%4d : %s\n", $num, $line);
+			printf('%4d : %s\n', $num, $line);
 		}
 	}
 }
 ```
-Example from the "f" labs:
+Example from the 'f' labs:
 ```
 <?php
 $path = __DIR__;
 $filename = $path . '/Text3.txt';
-// open in "append" mode
-// add "+" if you need to later read the file as well
+// open in 'append' mode
+// add '+' if you need to later read the file as well
 $handler = fopen($filename, 'a+');
 if (!$handler) {
 	echo 'Cannot open file.';
@@ -1927,7 +1929,7 @@ if (!$handler) {
 	$text = $data .PHP_EOL ;
 	$bytes = fwrite($handler,$text);
 	echo $bytes . ' bytes written.';
-	echo "File contents:\n";
+	echo 'File contents:\n';
 	// moves file pointer to start
 	rewind($handler);
 	// echoes entire file
@@ -1964,7 +1966,7 @@ Example of file info using `printf()`:
 <?php
 printf('%50s : %5s : %3s' . PHP_EOL, 'Filename', 'Size', 'Num');
 $pattern = '%50s : %5d : %3d' . PHP_EOL;
-foreach (glob("*.php") as $filename) {
+foreach (glob('*.php') as $filename) {
 	printf($pattern, $filename, filesize($filename), count(file($filename)));
 }
 ```
@@ -1973,7 +1975,7 @@ foreach (glob("*.php") as $filename) {
 To output a PDF `/path/to/file.pdf`
 ```
 header('Content-Type: application/pdf');
-header('Content-Disposition: attachment; filename="file.pdf");
+header('Content-Disposition: attachment; filename='file.pdf');
 readfile('/path/to/file.pdf');
 exit;
 ```
@@ -2004,40 +2006,40 @@ switch (TRUE) {
 	default :
 		$browser = 'Unknown';
 }
-echo "We have detected the following:<br />\n";
-echo $browser . "<br />\n";
-echo $os . "<br />\n";
+echo 'We have detected the following:<br />\n';
+echo $browser . '<br />\n';
+echo $os . '<br />\n';
 
 ```
-Example of receiving data via "GET"
+Example of receiving data via 'GET'
 ```
 <?php
 // data is received from the browser via the URL
 $first = $_GET['first'] ?? '';
 $last  = $_GET['last'] ?? '';
 ?>
-<form method="get">
-First Name: <input type="text" name="first" value="<?= $first ?>"/>
+<form method='get'>
+First Name: <input type='text' name='first' value='<?= $first ?>'/>
 <br />
-Last Name: <input type="text" name="last"  value="<?= $last ?>"/>
+Last Name: <input type='text' name='last'  value='<?= $last ?>'/>
 <br />
-<input type="submit" />
+<input type='submit' />
 </form>
 <?php phpinfo(INFO_VARIABLES); ?>
 ```
-Example of receiving data via "POST"
+Example of receiving data via 'POST'
 ```
 <?php
 // data is received from the browser in the *body* of the request
 $first = $_POST['first'] ?? '';
 $last  = $_POST['last'] ?? '';
 ?>
-<form method="post">
-First Name: <input type="text" name="first" value="<?= $first ?>"/>
+<form method='post'>
+First Name: <input type='text' name='first' value='<?= $first ?>'/>
 <br />
-Last Name: <input type="text" name="last"  value="<?= $last ?>"/>
+Last Name: <input type='text' name='last'  value='<?= $last ?>'/>
 <br />
-<input type="submit" />
+<input type='submit' />
 </form>
 <?php phpinfo(INFO_VARIABLES); ?>
 ```
@@ -2049,14 +2051,14 @@ Same thing with added security
 $first = trim(strip_tags($_POST['first'] ?? ''));
 $last  = trim(strip_tags($_POST['last'] ?? ''));
 ?>
-<form method="post">
-<!-- "escape" the output using htmlspecialchars() for security reasons -->
-First Name: <input type="text" name="first" value="<?= htmlspecialchars($first); ?>"/>
+<form method='post'>
+<!-- 'escape' the output using htmlspecialchars() for security reasons -->
+First Name: <input type='text' name='first' value='<?= htmlspecialchars($first); ?>'/>
 <!-- example of actual output: &lt;script&gt;alert(&#039;hahaha&#039;);&lt;/script&gt; -->
 <br />
-Last Name: <input type="text" name="last"  value="<?= htmlspecialchars($last); ?>"/>
+Last Name: <input type='text' name='last'  value='<?= htmlspecialchars($last); ?>'/>
 <br />
-<input type="submit" />
+<input type='submit' />
 </form>
 <?php phpinfo(INFO_VARIABLES); ?>
 ```
@@ -2070,14 +2072,14 @@ var_dump($parsed);
 // output
 /*
  * array(4) {
-  ["scheme"]=>
-  string(5) "https"
-  ["host"]=>
-  string(16) "mars-express.com"
-  ["path"]=>
-  string(17) "/path/to/whatever"
-  ["query"]=>
-  string(21) "id=124&mission=STS395"
+  ['scheme']=>
+  string(5) 'https'
+  ['host']=>
+  string(16) 'mars-express.com'
+  ['path']=>
+  string(17) '/path/to/whatever'
+  ['query']=>
+  string(21) 'id=124&mission=STS395'
 }
 */
 ```
@@ -2110,11 +2112,11 @@ if (!empty($_POST)) {
 	$name = $_POST['name'] ?? '';
 	if ($name) {
 		if (strlen($name) > 16) {
-			$message .= "Name must be 16 chars or less\n";
+			$message .= 'Name must be 16 chars or less\n';
 			$error++;
 		}
 		if (!ctype_alpha($name)) {
-			$message .= "Name must have only letters\n";
+			$message .= 'Name must have only letters\n';
 			$error++;
 		}
 		// example of filtering
@@ -2123,27 +2125,27 @@ if (!empty($_POST)) {
 	// validate day_select
 	$daySelect = $_POST['day_select'] ?? '';
 	if (!in_array($daySelect, $allowed)) {
-		$message .= "Day was not included in the set of allowed days\n";
+		$message .= 'Day was not included in the set of allowed days\n';
 		$error++;
 	}
 }
-$message .= ($error === 0) ? "Form data is valid\n" : "Form data has errors\n";
+$message .= ($error === 0) ? 'Form data is valid\n' : 'Form data has errors\n';
 ?>
-<form method="post">
-Name: <input type="text" name="name" value="<?= htmlspecialchars($name) ?>" />
-<br />Email: <input type="email" name="email" />
-<br />Date: <input type="date" name="date" />
-<br /><select name="day_select">
+<form method='post'>
+Name: <input type='text' name='name' value='<?= htmlspecialchars($name) ?>' />
+<br />Email: <input type='email' name='email' />
+<br />Date: <input type='date' name='date' />
+<br /><select name='day_select'>
 <?php foreach ($days as $day) echo '<option>' . $day . '</option>'; ?>
 </select>
 <br />
 <?php
 foreach ($days as $day) {
-	echo '<input type="checkbox" name="day_check[]" value="' . $day . '" />' . $day . '&nbsp;';
+	echo '<input type='checkbox' name='day_check[]' value='' . $day . '' />' . $day . '&nbsp;';
 }
 ?>
 </select>
-<br /><input type="submit" />
+<br /><input type='submit' />
 </form>
 <?= nl2br($message); ?>
 <?php phpinfo(INFO_VARIABLES); ?>
@@ -2158,13 +2160,13 @@ echo '<table>';
 echo '<tr><th>Name</th><th>Size in Bytes</th><th>Lines</th></tr>';
 foreach ($list as $fn) {
 	echo '<tr>';
-	echo "<td>" . basename($fn) . "</td>";
+	echo '<td>' . basename($fn) . '</td>';
 	echo '<td>' . filesize($fn) . '</td>';
 	$lines = count(file($fn)) - 1;
-	echo "<td>$lines</td>";
+	echo '<td>$lines</td>';
 	echo '</tr>';
 }
-echo "</table>\n";
+echo '</table>\n';
 ```
 Example of form processing
 ```
@@ -2185,19 +2187,19 @@ if(!empty($_GET)) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 <head>
-<meta charset="utf-8" />
+<meta charset='utf-8' />
 <title>untitled</title>
-<meta name="generator" content="Geany 1.36" />
+<meta name='generator' content='Geany 1.36' />
 </head>
 <body>
-<form method="get">
-	Email: <input name="email" type="email" />
+<form method='get'>
+	Email: <input name='email' type='email' />
 	<br />
-	Date: <input name="date" type="date" />
+	Date: <input name='date' type='date' />
 	<br />
-	<input type="submit"/>
+	<input type='submit'/>
 </form>
 <hr />
 <?= $msg; ?>
@@ -2224,16 +2226,16 @@ File upload example:
 $first = trim(strip_tags($_POST['first'] ?? ''));
 $last  = trim(strip_tags($_POST['last'] ?? ''));
 ?>
-<form method="post" enctype="multipart/form-data">
-<!-- "escape" the output using htmlspecialchars() for security reasons -->
-First Name: <input type="text" name="first" value="<?= htmlspecialchars($first); ?>"/>
+<form method='post' enctype='multipart/form-data'>
+<!-- 'escape' the output using htmlspecialchars() for security reasons -->
+First Name: <input type='text' name='first' value='<?= htmlspecialchars($first); ?>'/>
 <!-- example of actual output: &lt;script&gt;alert(&#039;hahaha&#039;);&lt;/script&gt; -->
 <br />
-Last Name: <input type="text" name="last"  value="<?= htmlspecialchars($last); ?>"/>
+Last Name: <input type='text' name='last'  value='<?= htmlspecialchars($last); ?>'/>
 <br />
-File Upload: <input type="file" name="upload" />
+File Upload: <input type='file' name='upload' />
 <br />
-<input type="submit" />
+<input type='submit' />
 </form>
 <?php phpinfo(INFO_VARIABLES); ?>
 ```
@@ -2246,8 +2248,8 @@ Sessions:
   * Best to use this as is: `session_regenerate_id()` (i.e. don't supply the `TRUE` argument)
 
 For HTML forms:
-* Use `method="GET"` if you want the user to bookmark the form posting (i.e. site search)
-* Use `method="POST"` if you have a large amount of data to be posted in the form
+* Use `method='GET'` if you want the user to bookmark the form posting (i.e. site search)
+* Use `method='POST'` if you have a large amount of data to be posted in the form
   * Mandatory if you do a file upload!
 ## Database
 Rankings: https://db-engines.com/en/ranking
@@ -2289,7 +2291,7 @@ function connect()
 
 function select()
 {
-    $query = "SELECT * FROM customers ORDER BY lastname";
+    $query = 'SELECT * FROM customers ORDER BY lastname';
     $results = [];
     // Set the query
     $result = mysqli_query(connect(), $query);
@@ -2300,19 +2302,19 @@ function select()
 
 function insert(string $firstname, string $lastname)
 {
-    $query = "INSERT INTO customers (firstname, lastname) VALUES ('$firstname','$lastname')";
+    $query = 'INSERT INTO customers (firstname, lastname) VALUES ('$firstname','$lastname')';
     return mysqli_query(connect(), $query);
 }
 
 function update(string $field, int|string $data, string $where)
 {
-    $query = "UPDATE customers SET $field = '$data' WHERE $where";
+    $query = 'UPDATE customers SET $field = '$data' WHERE $where';
     return mysqli_query(connect(), $query);
 }
 
 function delete(string $where)
 {
-    $query = "DELETE FROM customers WHERE $where";
+    $query = 'DELETE FROM customers WHERE $where';
     return mysqli_query(connect(), $query);
 }
 
@@ -2356,7 +2358,7 @@ Use `var_export($data, TRUE)` to return a string that can be placed into the err
 x* http://localhost:8881/#/4/55
 x  * 'mose'???
 x* http://localhost:8881/#/5/59
-x  * Please change form name to "days" instead of "gender"
+x  * Please change form name to 'days' instead of 'gender'
 * General Note:
   * Code blocks are hard to read
   * Last section (Language Updates): already in the course
