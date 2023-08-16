@@ -2,17 +2,20 @@
 
 ## TODO
 * Last: http://localhost:8881/#/4/9
+* Instructions to add XAMPP php.exe to Windows system path:
+  * https://mikesmith.us/add-xampps-php-execution-path-to-environment-variables-in-windows-10-11/
 * Get better examples of:
 	* anonymous and arrow function usage
 	* match using anonymous or arrow functions as a value
 * Ask Nicole about adding recording to the LMS
   * They're working on it!
 * Ask Nicole about: the last day scheduled date is odd
-* Instructions to add XAMPP php.exe to Windows system path:
-  * https://mikesmith.us/add-xampps-php-execution-path-to-environment-variables-in-windows-10-11/
 * XAMPP web server document root: `C:\xampp\htdocs`
 
 ## Homework
+For Last Day
+* https://collabedit.com/kq6bm
+
 For Tues 15 Aug 2023
 * https://collabedit.com/ggm6b
 
@@ -491,6 +494,77 @@ $arr = ['A' => 111, 'C' => 333, 'E' => 555, 'B' => 222, 'D' => 444];
 asort($arr);
 var_dump($arr);
 ```
+Reading a CSV file and echoing the results:
+```
+<?php
+// Open and test for success
+if (!$fh = fopen(__DIR__ . '/bitcoin.csv', 'r')) exit('Unable to open file');
+
+$data = [];
+while (!feof($fh)) {
+    $data[] = fgetcsv($fh);
+}
+
+// Iterate the retrieved contents and output
+foreach ($data as $row) {
+	if (empty($row) || !is_array($row)) continue;
+    echo implode("\t", $row);
+    echo '<br>' . PHP_EOL;
+}
+
+// Close the resource when finished
+fclose($fh);
+```
+Example using `file_put_contents()` and `file_get_contents()`
+```
+<?php
+$file = 'target.txt';
+$contents = 'This is a text file' . PHP_EOL;
+// NOTE: file_put_contents doesn't add a linefeed
+$bytes = file_put_contents( $file, $contents, FILE_APPEND);
+echo "$bytes bytes written to the file: $file" . PHP_EOL;
+echo file_get_contents($file);
+echo PHP_EOL;
+```
+Redirect to another web page:
+```
+<?php
+// this is how you redirect to another web page:
+header('Location: https://training.zend.com/');
+exit;
+```
+Example of HTML form + security measures
+```
+<?php
+$item = '';
+$priority = 0;
+if(!empty($_POST)) {
+    $item = $_POST['item'] ?? '';
+    $priority = $_POST['priority'] ?? '';
+    if(!empty($item) && !empty($priority)) {
+        $item = filter_var(strip_tags($item), FILTER_SANITIZE_STRING);
+        $priority = (int) $priority;
+        echo 'Data is validated and sanitized, handle it ...';
+    } else {
+        echo 'Invalid input';
+        exit;
+    }
+} else {
+    // no form data has been posted
+    echo 'No form data has been posted';
+}
+?>
+<form action="test.php" method="post">
+    <fieldset>
+        <legend>Add Checklist Item</legend>
+        <label for="item">Enter the checklist item</label>
+        <input type="text" name="item" id="item" value="<?= htmlspecialchars($item); ?>">
+        <label for="priority">Enter the priority</label>
+        <input type="text" name="priority" id="priority" value="<?= htmlspecialchars($priority); ?>" >
+        <input type="submit" value="Submit">
+    </fieldset>
+</form>
+```
 
 ## Update/Upgrade the VM
 * For now, avoid upgrading Ubuntu. Leave it at version 20.*
@@ -518,7 +592,10 @@ Automatic documentation generation
 * It also has the formal definition of a 'doc block'
 Reserved constants:
 * https://www.php.net/manual/en/reserved.constants.php
-
+Packagist website:
+* https://packagist.org/
+WordPress packagist website:
+* https://wpackagist.org/
 
 ## Errata
 * http://localhost:8881/#/5/7
