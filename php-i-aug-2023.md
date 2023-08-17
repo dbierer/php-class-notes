@@ -25,6 +25,48 @@ For Thurs 10 Aug 2023
 For Tues 8 Aug 2023
 * https://collabedit.com/x6952
 
+## XAMPP Setup
+1. Open XAMPP control panel
+2. Start Apache and MySQL
+3. From the browser launch phpMyAdmin: `http://localhost/phpmyadmin`
+4. Create a database `phpcourse`
+5. Select that database
+6. Import from the file: `/path/to/project/orderapp/sql/phpcourse.sql`
+  * Ignore warnings
+7. Create Apache virtual host definitions for `orderapp` and `sandbox`
+8. Restart Apache from control panel
+9. Open the hosts file in `C:\windows\system32\drivers\etc`
+  * Open using Notepad with Administrator privileges
+10. Add these host entries:
+```
+127.0.0.1     localhost
+127.0.0.1     orderapp
+127.0.0.1     sandbox
+```
+Here's a good overview:
+* https://stackoverflow.com/questions/27754367/how-to-set-up-apache-virtual-hosts-on-xampp-windows
+
+```
+<Directory C:/Users/ACER/php-foundations>
+	AllowOverride All
+	Require all granted
+</Directory>
+
+<VirtualHost *:80>
+    DocumentRoot "C:/xampp/htdocs/"
+    ServerName localhost
+    ErrorLog "logs/localhost-error.log"
+    CustomLog "logs/localhost-access.log" common
+</VirtualHost>
+
+<VirtualHost *:80>
+    DocumentRoot "C:/Users/ACER/php-foundations/orderapp/public"
+    ServerName orderapp
+    ErrorLog "logs/orderapp-error.log"
+    CustomLog "logs/orderapp-access.log" common
+</VirtualHost>
+```
+
 ## Class Notes
 Useful string functions:
 * `substr()`
