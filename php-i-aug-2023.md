@@ -1,16 +1,16 @@
 # PHP Foundations -- Aug 2023
 
 ## TODO
-* Last: http://localhost:8881/#/4/9
 * Instructions to add XAMPP php.exe to Windows system path:
   * https://mikesmith.us/add-xampps-php-execution-path-to-environment-variables-in-windows-10-11/
-* Get better examples of:
+* Q: Get better examples of:
 	* anonymous and arrow function usage
 	* match using anonymous or arrow functions as a value
-* Ask Nicole about adding recording to the LMS
-  * They're working on it!
-* Ask Nicole about: the last day scheduled date is odd
-* XAMPP web server document root: `C:\xampp\htdocs`
+* A: See: * https://github.com/dbierer/classic_php_examples/blob/master/basics/type_hint_anon_function_example.php
+* A: Also see below
+
+* Q: Ask Nicole about adding recording to the LMS
+* A: They're working on it!
 
 ## Homework
 For Last Day
@@ -26,6 +26,7 @@ For Tues 8 Aug 2023
 * https://collabedit.com/x6952
 
 ## XAMPP Setup
+XAMPP web server document root: `C:\xampp\htdocs`
 1. Open XAMPP control panel
 2. Start Apache and MySQL
 3. From the browser launch phpMyAdmin: `http://localhost/phpmyadmin`
@@ -33,21 +34,11 @@ For Tues 8 Aug 2023
 5. Select that database
 6. Import from the file: `/path/to/project/orderapp/sql/phpcourse.sql`
   * Ignore warnings
-7. Create Apache virtual host definitions for `orderapp` and `sandbox`
-8. Restart Apache from control panel
-9. Open the hosts file in `C:\windows\system32\drivers\etc`
-  * Open using Notepad with Administrator privileges
-10. Add these host entries:
+7. Create a user `vagrant` with a password `vagrant` with all privileges to `phpcourse` on `localhost`
+8. Create Apache virtual host definitions for `orderapp` and `sandbox`
+  * Place this config into `C:/xampp/apache/conf/extra/httpd-vhosts.conf`:
 ```
-127.0.0.1     localhost
-127.0.0.1     orderapp
-127.0.0.1     sandbox
-```
-Here's a good overview:
-* https://stackoverflow.com/questions/27754367/how-to-set-up-apache-virtual-hosts-on-xampp-windows
-
-```
-<Directory C:/Users/ACER/php-foundations>
+<Directory C:/Users/azure/php-foundations>
 	AllowOverride All
 	Require all granted
 </Directory>
@@ -60,12 +51,36 @@ Here's a good overview:
 </VirtualHost>
 
 <VirtualHost *:80>
-    DocumentRoot "C:/Users/ACER/php-foundations/orderapp/public"
+    DocumentRoot "C:/Users/azure/php-foundations/orderapp/public"
     ServerName orderapp
     ErrorLog "logs/orderapp-error.log"
     CustomLog "logs/orderapp-access.log" common
 </VirtualHost>
+
+<VirtualHost *:80>
+    DocumentRoot "C:/Users/azure/php-foundations/sandbox/public"
+    ServerName sandbox
+    ErrorLog "logs/sandbox-error.log"
+    CustomLog "logs/sandbox-access.log" common
+</VirtualHost>
 ```
+  * Change `C:/Users/azure/php-foundations` to the path where you unzipped the course applications
+9. Restart Apache from control panel
+10. Open the hosts file in `C:\windows\system32\drivers\etc`
+  * Open using Notepad with Administrator privileges
+11. Add these host entries:
+```
+127.0.0.1     localhost
+127.0.0.1     orderapp
+127.0.0.1     sandbox
+```
+12. Test:
+  * `http://sandbox/`
+  * `http://orderapp/`
+
+Here's a good overview:
+* https://stackoverflow.com/questions/27754367/how-to-set-up-apache-virtual-hosts-on-xampp-windows
+
 
 ## Class Notes
 Useful string functions:
@@ -606,6 +621,56 @@ if(!empty($_POST)) {
         <input type="submit" value="Submit">
     </fieldset>
 </form>
+```
+Example of a callback tree that produces output in different formats
+* Uses anonymous functions
+```
+<?php
+$arr = ['A' => 111,'B' => 222,'C' => 333];
+
+$callbacks = [
+	// arrow function works well here
+	'json' => fn(array $data) => json_encode($data, JSON_PRETTY_PRINT),
+	// needs multiple lines of code, so we use an anonymous function
+	'html' => function (array $data) {
+		$out = '<table>';
+		foreach ($data as $key => $value)
+			$out .= '<tr><th>' . $key . '</th><td>' . $value . '</td></tr>';
+		$out .= '</table>';
+		return $out; }
+];
+
+echo $callbacks['json']($arr);
+echo "\n";
+echo $callbacks['html']($arr);
+echo "\n";
+```
+Anonymous functions examples:
+* This example "stores" an SQL query for later use:
+```
+<?php
+function get_select(string $table, string $where, PDO $pdo)
+{
+	$sql = 'SELECT * FROM ' . $table . ' WHERE ' . $where;
+	return function () use ($sql) {
+		$stmt = $pdo->query($sql);
+		$result = [];
+		while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+			$result[] = $row;
+		}
+		return $result;
+	};
+}
+$select = get_select('orders', 'id = 1', $pdo);
+
+// do something
+// ...
+// do something
+
+foreach ($select() as $row) {
+	// display the row
+	// maybe using printf()
+}
 ```
 
 ## Update/Upgrade the VM
