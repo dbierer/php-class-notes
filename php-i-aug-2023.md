@@ -672,6 +672,24 @@ foreach ($select() as $row) {
 	// maybe using printf()
 }
 ```
+Typical production settings:
+* https://github.com/dbierer/filecms-website/blob/main/bootstrap.php
+```
+<?php
+// start session and define key global constants
+define('BASE_DIR', __DIR__);
+define('HTML_DIR', BASE_DIR . '/templates/site');
+define('SRC_DIR', BASE_DIR . '/src');
+// set up error handling
+error_reporting(E_ALL);
+ini_set('display_errors', 0);   // change this to "1" during website development
+ini_set('error_log', BASE_DIR . '/logs/error.log');
+// uses Composer autoloader
+require BASE_DIR . '/vendor/autoload.php';
+// start session
+session_start();
+return require SRC_DIR . '/config/config.php';
+```
 
 ## Update/Upgrade the VM
 * For now, avoid upgrading Ubuntu. Leave it at version 20.*
@@ -703,6 +721,16 @@ Packagist website:
 * https://packagist.org/
 WordPress packagist website:
 * https://wpackagist.org/
+File Upload example:
+* https://github.com/dbierer/classic_php_examples/blob/master/web/f%E2%80%8Eile_upload.php
+Cookie example:
+* https://github.com/dbierer/classic_php_examples/blob/master/web/cookie_counter.php
+Session example:
+* https://github.com/dbierer/classic_php_examples/blob/master/web/session_counter.php
+General Resource:
+* https://github.com/dbierer/classic_php_examples/
+Database rankings:
+* https://db-engines.com/en/ranking
 
 ## Errata
 * http://localhost:8881/#/5/7
