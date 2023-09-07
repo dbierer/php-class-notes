@@ -1,10 +1,10 @@
 # PHP II - Sep 2023
 
+Last: http://php-oop/#/3/68
 
 ## TODO
-* Instructions on how to
-  * set up virtual hosts for the course projects
-  * populate the database for class
+* Pull Maze Runner code out into a public repo
+* Find plugin example that uses `__call()`
 
 ## Homework
 For Thu 7 Sep 2023
@@ -376,7 +376,6 @@ Practical anonymous class example:
 * Example of returning data in object form with 2 different rendering methods: JSON or array
 ```
 <?php
-
 class UserEntity {
     public function __construct(
         public string $firstName,
@@ -384,17 +383,20 @@ class UserEntity {
     ) {}
     public function getData()
     {
-        return new class($this->firstName, $this->lastName)
+        return new class(get_object_vars($this))
         {
-            public function __construct(public string $firstName, public string $lastName)
-            {}
+			public array $data = [];
+            public function __construct(...$vars)
+            {
+				$this->data = $vars;
+			}
             public function getJson()
             {
-                return json_encode(get_object_vars($this), TRUE);
+                return json_encode($this->data, TRUE);
             }
             public function getArrayCopy()
             {
-                return get_object_vars($this);
+                return $this->data;
             }
         };
     }
@@ -406,6 +408,33 @@ $user2 = new UserEntity('Monte' , 'Python');
 echo $user1->getData()->getJson();
 echo PHP_EOL;
 var_dump($user2->getData()->getArrayCopy());
+```
+Overriding method example rewritten so that it works:
+```
+<?php
+// The superclass
+class UserEntity {
+    protected string $firstName;
+    protected function setFirstName ($firstName) {
+        $this->firstName = $firstName;
+    }
+}
+
+// The subclass
+class GuestUser extends UserEntity {
+    protected string $mi;
+    public function setFirstName($firstName, $mi = null) {
+        $this->firstName = (!$mi) ? $firstName : $firstName . ' ' . $mi;
+    }
+    public function getFirstName()
+    {
+		return $this->firstName;
+	}
+}
+
+$guest = new GuestUser();
+$guest->setFirstName('Fred', 'J');
+echo $guest->getFirstName();
 ```
 
 Restrictions when overriding a method:
@@ -459,8 +488,8 @@ class UserEntity {
     }
 
     public function __toString(): string {
-        return get_class($this);
-        // return json_encode(get_object_vars($this), TRUE);
+        //return get_class($this);
+        return json_encode(get_object_vars($this), TRUE);
     }
 }
 
@@ -475,6 +504,9 @@ echo $reflect;
 // This interface is automatically assigned by PHP 8 and above
 // as long as you define __toString()
 ```
+Examples of `__get()` and `__set()`
+* https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_magic_get_set.php
+* https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_magic_get_set_unlimited_properties_controlled.php
 
 Example of `__destruct()`
 * https://github.com/dbierer/filecms-core/blob/main/src/Common/Image/Captcha.php
@@ -556,17 +588,19 @@ class UserEntity {
     }
     public function __serialize()
     {
-        return [
-            'firstName' => $this->firstName,
-            'lastName' => $this->lastName,
-            'sleep_date' => date('Y-m-d H:i:s')];
+		$vars = get_object_vars($this);
+		$vars['sleep_date'] = date('Y-m-d H:i:s');
+		unset($vars['hash']);
+        return $vars;
     }
     public function __unserialize($array)
     {
         // $array contains values restored from the serialization
+		foreach ($array as $var => $val) {
+			if ($var === 'sleep_date') continue;
+			$this->$var = $val;
+		}
         $this->hash = bin2hex(random_bytes(8));
-        $this->firstName = $array['firstName'];
-        $this->lastName = $array['lastName'];
     }
     public function getFullName()
     {
@@ -630,6 +664,56 @@ echo $test->fname . ' ' . $test->lname
      . ' has a balance of ' . $test->balance
      . ' and ' . $test->doesNotExist;
 ```
+Example of `__destruct()`
+```
+<?php
+class Test1
+{
+	public function __destruct()
+	{
+		echo __CLASS__ . ':' . microtime(TRUE) . PHP_EOL;
+	}
+}
+class Test2
+{
+	public function __destruct()
+	{
+		echo __CLASS__ . ':' . microtime(TRUE) . PHP_EOL;
+	}
+}
+class Test3
+{
+	public function __destruct()
+	{
+		echo __CLASS__ . ':' . microtime(TRUE) . PHP_EOL;
+	}
+}
+class Test4
+{
+	public function __destruct()
+	{
+		echo __CLASS__ . ':' . microtime(TRUE) . PHP_EOL;
+	}
+}
+
+$test1 = new Test1();
+$test2 = new Test2();
+$test3 = new Test3();
+$test4 = new Test4();
+
+unset($test1);
+$test2 = NULL;
+echo 'Last Line: ' . __LINE__ . PHP_EOL;
+// actual output:
+/*
+Test1:1694104612.2758
+Test2:1694104612.276
+Last Line: 38
+Test4:1694104612.276
+Test3:1694104612.276
+*/
+```
+
 Other examples of magic methods:
 * https://github.com/dbierer/classic_php_examples/tree/master/oop
 * Look for `oop_magic*.php`
