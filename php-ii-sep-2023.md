@@ -16,53 +16,68 @@ For Thu 7 Sep 2023
 ## XAMPP Notes
 
 ### Add vhost definition for `sandbox` and `orderapp`
-Follow these instructions to add an Apache vhost (virtual host) definition to sandbox in VM to use as a website
+Follow these instructions to add an Apache vhost (virtual host) definition to the `orderapp`, `sandbox`, and `php2` websites:
 * From a terminal window (command prompt):
   * Run `gedit` as the root user:
 ```
 sudo gedit
 ```
   * Open the file `/etc/hosts`
-  * Add an entry to the local hosts file to simulate a server named "sandbox"
+  * Add an entry to the local hosts file to simulate servers named `orderapp`, `sandbox`, and `php2`
 ```
-127.0.0.1 sandbox
+127.0.0.1   orderapp sandbox php2
 ```
   * Save the file
-  * Open a new file (press the "+" icon next to "Open")
-  * Paste this into the editor:
+  * Make a note of where you unzipped the course files
+    * In this set of instructions we'll call it `/path/to/files`
+  * Make a note of where XAMPP stores its Apache vhost configuration
+    * In this set of instructions we'll call it `/xampp/apache/conf/extra/httpd-vhosts.conf`
+    * Open this file and paste this in at the bottom of the file:
 ```
 <VirtualHost *:80>
+   ServerName orderapp
+   DocumentRoot /path/to/files/orderapp/public
+   <Directory /path/to/files/orderapp/public>
+       Options Indexes FollowSymlinks MultiViews
+       AllowOverride All
+       Require all granted
+   </Directory>
+</VirtualHost>
+<VirtualHost *:80>
    ServerName sandbox
-   DocumentRoot /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox
-   <Directory /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/>
+   DocumentRoot /path/to/files/sandbox
+   <Directory /path/to/files/sandbox >
+       Options Indexes FollowSymlinks MultiViews
+       AllowOverride All
+       Require all granted
+   </Directory>
+</VirtualHost>
+<VirtualHost *:80>
+   ServerName php2
+   DocumentRoot /path/to/files/php2
+   <Directory /path/to/files/php2 >
        Options Indexes FollowSymlinks MultiViews
        AllowOverride All
        Require all granted
    </Directory>
 </VirtualHost>
 ```
-  * Save as `/etc/apache2/sites-available/sandbox.conf`
+  * Save the above file
   * Exit `gedit`
-  * Test the new simulated server
+  * Use the XAMPP control panel to restart Apache
+  * Test the new simulated server from the command line
 ```
 ping -c3 sandbox
 ```
-  * Enable the new vhost
-```
-sudo a2ensite sandbox
-```
-  * Restart Apache
-```
-sudo systemctl restart apache2
-```
-  * Access `sandbox` from the VM browser: `http://sandbox`
+  * Access `sandbox` from the your browser: `http://sandbox/`
 
 
-### Install `git`
-* Open a terminal window and run this command:
-```
-sudo apt install -y git
-```
+### Restore the database
+* Open phpMyAdmin from the XAMPP console
+* Create a database called `phpcourse`
+* Select the new database
+* Assign a user `vagrant` with password `vagrant` to the `phpcourse` database
+* Select "Import" and choose the file located under `/path/to/files/orderapp/data/sql/phpcourse.sql`
 
 ## Resources
 Code examples: https://github.com/dbierer/classic_php_examples
