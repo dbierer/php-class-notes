@@ -1,9 +1,12 @@
 # PHP Architect - Sep 2023
 
+Last: http://localhost:8883/#/2/28
+
 ## Homework
 
 ## TODO
 * Look into certificate expiration issue regarding Vagrantfile process
+* Look for example of form filtering using callbacks
 
 ## VM Update
 Follow these instructions:
@@ -44,6 +47,10 @@ Object Relational Mapping
 * https://www.doctrine-project.org/
 Example of Active Record (database design)
 * https://github.com/dbierer/classic_php_examples/blob/master/db/db_active_record_example.php
+Relative DateTime Formats
+* https://www.php.net/manual/en/datetime.formats.php#datetime.formats.relative
+Example of a working "Event" system
+* https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/events.html
 
 ## General Lab Notes
 * Lab Code:
@@ -253,6 +260,33 @@ echo $gen->getReturn();
 ```
 
 ## Anonymous Class
+Example shown on the slides with a slight modification
+```
+<?php
+// change as needed
+define('REGEX', '!.*?spl.*?\.php!i');
+
+// starting path for search
+$path  = realpath(__DIR__);
+
+// set up directory iteration
+$dirIterator = new RecursiveDirectoryIterator($path);
+$recIterator = new RecursiveIteratorIterator($dirIterator);
+
+// define filter using an anonymous class
+$filtIterator = new class ($recIterator) extends FilterIterator {
+    public function accept()
+    {
+		// $this->key() : returns the filename (full path)
+		// $this->current(): returns an SplFileInfo instance
+        return preg_match(REGEX, $this->current()->getBasename());
+    }
+};
+
+// display results
+foreach ($filtIterator as $name => $obj) echo $name . "\n";
+```
+
 Example where the return value is an anon class with different methods to render its data
 ```
 <?php
@@ -933,4 +967,6 @@ $sql = 'DELETE * FROM orders WHERE id = ?';
   * Need to add to Composer command `--ignore-platform-reqs`
 * http://localhost:8883/#/8/39
   * Version has changed `v4`
-
+* http://localhost:8883/#/2/6
+  * Link to Relative Time Formats not working
+  * s/be: https://www.php.net/manual/en/datetime.formats.php#datetime.formats.relative
