@@ -42,6 +42,8 @@ sudo cp /usr/share/phpmyadmin/config.sample.inc.php /usr/share/phpmyadmin/config
 ## Class Notes
 Object Relational Mapping
 * https://www.doctrine-project.org/
+Example of Active Record (database design)
+* https://github.com/dbierer/classic_php_examples/blob/master/db/db_active_record_example.php
 
 ## General Lab Notes
 * Lab Code:
