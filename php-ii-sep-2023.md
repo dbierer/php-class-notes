@@ -3,8 +3,16 @@
 Last: http://php-oop/#/3/68
 
 ## TODO
-* Pull Maze Runner code out into a public repo
-* Find plugin example that uses `__call()`
+* Q: Where is the Maze Runner code?
+* A: See: https://github.com/dbierer/php_games/tree/main/src/PhpTraining/Maze
+* A: It will show you a simple OOP architecture that includes an abstract class and an interface
+
+
+* Q: Can you find plugin example that uses `__call()`?
+* A: See: https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractController.php
+* A: See: https://github.com/laminas/laminas-mvc/blob/3.6.x/src/Controller/PluginManager.php
+* A: See: https://github.com/laminas/laminas-mvc/tree/3.6.x/src/Controller/Plugin
+
 
 ## Homework
 For Thu 7 Sep 2023

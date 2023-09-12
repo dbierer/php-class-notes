@@ -6,7 +6,10 @@ Last: http://localhost:8883/#/2/28
 
 ## TODO
 * Look into certificate expiration issue regarding Vagrantfile process
-* Look for example of form filtering using callbacks
+
+* Q: Do you have an example of form filtering using callbacks?
+* A: See: https://github.com/dbierer/classic_php_examples/blob/master/web/form_with_filtering_and_validation.php
+
 
 ## VM Update
 Follow these instructions:
