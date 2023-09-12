@@ -13,6 +13,9 @@ Last: http://php-oop/#/3/68
 * A: See: https://github.com/laminas/laminas-mvc/blob/3.6.x/src/Controller/PluginManager.php
 * A: See: https://github.com/laminas/laminas-mvc/tree/3.6.x/src/Controller/Plugin
 
+* Q: Do you have an example of form filtering using callbacks?
+* A: See: https://github.com/dbierer/classic_php_examples/blob/master/web/form_with_filtering_and_validation.php
+
 
 ## Homework
 For Thu 7 Sep 2023
