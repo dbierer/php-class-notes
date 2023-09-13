@@ -5,6 +5,12 @@ Last: http://php-oop/#/3/115
 ## Homework
 
 ## TODO
+* `SplHeap`
+  * Real life examples
+  * Also difference between `SplMinHeap` and `SplMaxHeap`
+
+* Confirm phpMyAdmin alternate installation instructions
+
 * Look into certificate expiration issue regarding Vagrantfile process
 
 * Q: Do you have an example of form filtering using callbacks?
