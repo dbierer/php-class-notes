@@ -3,6 +3,10 @@
 Last: http://php-oop/#/3/68
 
 ## TODO
+* Q: Is there a relationship between Laravel Eloquent and Doctrine ORM?
+* A: No. They both do a similar job, but where Doctrine is a separate project, Eloquent is embedded in Laravel under `Illuminate\Database\Eloquent\*`
+
+
 * Q: Where is the Maze Runner code?
 * A: See: https://github.com/dbierer/php_games/tree/main/src/PhpTraining/Maze
 * A: It will show you a simple OOP architecture that includes an abstract class and an interface
@@ -97,6 +101,8 @@ Where it all started:
 * Seminal work: "Design Patterns: Elements of Reusable Object-Oriented Software"
 PHP Road Map:
 * https://wiki.php.net/rfc
+Active Record Example
+* https://github.com/dbierer/classic_php_examples/blob/master/db/db_active_record_example.php
 
 ## Class Notes
 
@@ -1307,6 +1313,12 @@ Class Vehicle {
   * s/be "Class" (leave it at that)
 * http://localhost:8882/#/6/4
   * `$contents` is overwritten: typo?
+* http://php-oop/#/3/131
+  * Enums are *not* covered in PHP Architect course
+* http://php-oop/#/5/14
+  * Also add: Larvel Eloquent
+* http://php-oop/#/5/42
+  * The code to call the stored procedure doesn't need to use `prepare()/execute()`
 
 ## Q & A
 * Q: Can you use the keyword "new" in property or const definition in 8.1?
