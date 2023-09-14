@@ -5,16 +5,22 @@ Last: http://php-oop/#/3/115
 ## Homework
 
 ## TODO
-* `SplHeap`
-  * Real life examples
-  * Also difference between `SplMinHeap` and `SplMaxHeap`
+* Q: Do you have examples using `SplHeap`?
+* A: See: https://doeken.org/blog/heaps-explained-in-php
 
-* Confirm phpMyAdmin alternate installation instructions
+* Q: What is the difference between `SplMinHeap` and `SplMaxHeap`?
+* A: See: https://stackoverflow.com/questions/47254521/whats-the-difference-between-splheap-splminheap-splmaxheap-and-splpriorityque
+* A: See: https://www.php.net/manual/en/splminheap.compare.php
+* A: See: https://www.php.net/manual/en/splmaxheap.compare.php
+* A: If you wish to override `compare()` use `SplHeap`
 
-* Look into certificate expiration issue regarding Vagrantfile process
+* Q: phpMyAdmin alternate installation instructions?
+* A: See: https://docs.phpmyadmin.net/en/latest/setup.html
 
 * Q: Do you have an example of form filtering using callbacks?
 * A: See: https://github.com/dbierer/classic_php_examples/blob/master/web/form_with_filtering_and_validation.php
+
+* Look into certificate expiration issue regarding Vagrantfile process
 
 
 ## VM Update
@@ -35,21 +41,8 @@ sudo systemctl restart apache2
 ```
 
 ### Install phpMyAdmin [Optional]
-First check to see if you can't just install it as a package
-```
-sudo apt -y install phpmyadmin
-```
-Download the latest version from https://www.phpmyadmin.net
-Make note of the version number (e.g. 5.2.1)
-* From a terminal window:
-```
-cd /tmp
-set VER="5.2.1"
-wget https://files.phpmyadmin.net/phpMyAdmin/$VER/phpMyAdmin-$VER-all-languages.zip .
-unzip phpMyAdmin-$VER-all-languages.zip
-sudo cp -r phpMyAdmin-$VER-all-languages/* /usr/share/phpmyadmin
-sudo cp /usr/share/phpmyadmin/config.sample.inc.php /usr/share/phpmyadmin/config.inc.php
-```
+Follow these instructions to install using Composer:
+* https://docs.phpmyadmin.net/en/latest/setup.html#installing-using-composer
 
 ## Class Notes
 Object Relational Mapping
