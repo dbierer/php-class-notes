@@ -3,6 +3,16 @@
 Last: http://php-oop/#/3/115
 
 ## Homework
+For Mon 18 Sep 2023
+* https://collabedit.com/ct6b2
+* Lab Code:
+  * Clone this repo: https://github.com/dbierer/php-iii-demos.git
+  * Includes helpful sample code to give you a head start on the labs
+* Lab: OpCache and JIT
+  * The code for the Mandelbrot needs `__construct()`
+* Lab: Existing Extension
+* Lab: FFI
+* Lab: New Extension [Optional]
 
 ## TODO
 * Q: Do you have examples using `SplHeap`?
@@ -53,6 +63,8 @@ Relative DateTime Formats
 * https://www.php.net/manual/en/datetime.formats.php#datetime.formats.relative
 Example of a working "Event" system
 * https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/events.html
+Good explanation of OpCache and JIT
+* https://www.zend.com/blog/exploring-new-php-jit-compiler
 
 ## General Lab Notes
 * Lab Code:
@@ -972,3 +984,5 @@ $sql = 'DELETE * FROM orders WHERE id = ?';
 * http://localhost:8883/#/2/6
   * Link to Relative Time Formats not working
   * s/be: https://www.php.net/manual/en/datetime.formats.php#datetime.formats.relative
+* http://localhost:8883/#/4/44
+  * The label s/be above the command!
