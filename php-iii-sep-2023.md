@@ -3,8 +3,12 @@
 Last: http://php-oop/#/3/115
 
 ## Homework
-
+For Mon 18 Sep 2023
+*
 ## TODO
+* Q: Library that allows you to bridge CPP code into a PHP extension
+* A:
+
 * Q: Do you have examples using `SplHeap`?
 * A: See: https://doeken.org/blog/heaps-explained-in-php
 
@@ -621,9 +625,12 @@ foreach ($rec as $key => $val) {
 }
 
 ```
-
-`SplSubject` and `SplObserver` used to form a pipeline:
+`SplSubject`,`SplObserver`, and `SplObjectStorage` used to implement Subject/Observer pattern:
 * See: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_subject_observer_storage_object.php
+`SplFixedArray` example:
+* https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_spl_fixed_arr_compared_with_array_and_array_object.php
+Example of an autoloader that uses an array mapping technique to locate files that represent classes
+* See: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_autoload_example_using_map_algorithm.php
 
 ## CLI
 One of the best implementations for CLI is `Symfony/Console`
