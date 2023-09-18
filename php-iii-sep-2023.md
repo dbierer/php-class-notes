@@ -3,11 +3,25 @@
 Last: http://php-oop/#/3/115
 
 ## Homework
+For Wed 20 Sep 2023
+* Lab: Custom PHP
+* Lab: Docker Image Build
+
 For Mon 18 Sep 2023
-*
+* Lab: OpCache and JIT
+  * http://localhost:8883/#/4/39
+* Lab: Existing Extension
+  * http://localhost:8883/#/4/48
+* Lab: FFI
+  * http://localhost:8883/#/4/56
+* Lab: New Extension [optional]
+  * http://localhost:8883/#/4/63
+
 ## TODO
+* Dig up AWS login info for demo Wednesday
+
 * Q: Library that allows you to bridge CPP code into a PHP extension
-* A:
+* A: https://www.php-cpp.com/
 
 * Q: Do you have examples using `SplHeap`?
 * A: See: https://doeken.org/blog/heaps-explained-in-php
@@ -91,7 +105,7 @@ php -S 0.0.0.0:8080 -t public public/index.php
 ## Custom PHP Lab Notes
 
 * Clone from github
-* Switch to branch php-8.3.0
+* Switch to branch php-8.3.0beta3
 ```
 git checkout php-8.3.0
 ```
@@ -172,6 +186,9 @@ Final Solution:
 sudo apt install -y libbz2-dev  libpng-dev zlib1g-dev libsodium-dev \
                     libreadline-dev libcurl4-openssl-dev libbz2-dev
 ```
+
+To switch versions use `update-alternatives --config php` (see below for more info)
+
 
 ## Advanced PHP
 Full `DateTime::format()` codes:
@@ -979,3 +996,7 @@ $sql = 'DELETE * FROM orders WHERE id = ?';
 * http://localhost:8883/#/2/6
   * Link to Relative Time Formats not working
   * s/be: https://www.php.net/manual/en/datetime.formats.php#datetime.formats.relative
+* http://localhost:8883/#/4/48
+  * Add a note to the effect that you need to change "8.1" to the current version
+* http://localhost:8883/#/4/56
+  * Add a note to the effect that you should copy the code from the previous slides
