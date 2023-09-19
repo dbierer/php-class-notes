@@ -6,11 +6,9 @@ Last: http://php-oop/#/3/68
 * Q: Is there a relationship between Laravel Eloquent and Doctrine ORM?
 * A: No. They both do a similar job, but where Doctrine is a separate project, Eloquent is embedded in Laravel under `Illuminate\Database\Eloquent\*`
 
-
 * Q: Where is the Maze Runner code?
 * A: See: https://github.com/dbierer/php_games/tree/main/src/PhpTraining/Maze
 * A: It will show you a simple OOP architecture that includes an abstract class and an interface
-
 
 * Q: Can you find plugin example that uses `__call()`?
 * A: See: https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractController.php
@@ -22,6 +20,8 @@ Last: http://php-oop/#/3/68
 
 
 ## Homework
+For Thu 21 Sep 2023
+* Lab: Validate an Email Address
 For Thu 7 Sep 2023
 * Install XAMPP
   * https://www.apachefriends.org/download.html
@@ -1119,6 +1119,10 @@ Headers can include any valid headers as per RFC 2822
 * See: http://www.faqs.org/rfcs/rfc2822
 
 ## Regex
+Other examples:
+* https://github.com/dbierer/classic_php_examples/blob/master/regex/preg_replace_callback.php
+* https://github.com/dbierer/classic_php_examples/blob/master/regex/preg_replace_callback_array_orig.php
+
 Alternatives to finding chars at beginning or end of a string:
 ```
 <?php
@@ -1146,6 +1150,34 @@ $pat = '/<a.*?href=("|\')(.*?)("|\').*?>/';
 preg_match_all($pat, $str, $match);
 var_dump($match);
 ```
+Example using `preg_replace()` and sub patterns to reformat a date
+```
+<?php
+$test = 'Oct 21, 2023';
+$pattern = '/^(\w{3}) (\d{1,2}), (.*?)/';
+$result = preg_replace($pattern, '$2 $1 $3', $test);
+echo $result . PHP_EOL;	// 21 Oct 2023
+```
+Masking out all except the last 4 digits of a CC number:
+```
+<?php
+$num = [
+	'111-222-3333-4444',
+	'5555-6666-7777-8888',
+	'1234565'
+];
+$pat = '/^\d{3,4}-\d{3,4}-\d{3,4}-(\d{3,4})$/';
+$sub = '****-****-****-$1';
+foreach ($num as $item) {
+	if (preg_match($pat, $item)) {
+		echo preg_replace($pat, $sub, $item);
+	} else {
+		echo 'Invalid Number: ' . $item;
+	}
+	echo PHP_EOL;
+}
+```
+
 Example email validation
 ```
 <?php
