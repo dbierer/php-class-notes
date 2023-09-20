@@ -3,6 +3,11 @@
 Last: http://php-oop/#/3/115
 
 ## Homework
+For Fri 22 Sep 2023
+* REST Service Development Lab
+* Lab: Adding Middleware
+  * Low level example: https://github.com/dbierer/strat_post
+
 For Wed 20 Sep 2023
 * Lab: Custom PHP
 * Lab: Docker Image Build
@@ -870,6 +875,8 @@ Configuration Management tools
 * Puppet
 
 ## Resources
+* Great source of real world data
+  * https://geonames.org
 * https://github.com/dbierer/php-iii-demos.git
 * https://github.com/dbierer/php-iii-dec-2021.git
 * https://github.com/dbierer/php-iii-jul-2022.git
