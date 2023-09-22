@@ -3,6 +3,9 @@
 Last: http://php-oop/#/3/68
 
 ## TODO
+* Q: What's the Composer directive to change "vendor" to another name?
+
+
 * Q: Is there a relationship between Laravel Eloquent and Doctrine ORM?
 * A: No. They both do a similar job, but where Doctrine is a separate project, Eloquent is embedded in Laravel under `Illuminate\Database\Eloquent\*`
 
@@ -1202,10 +1205,43 @@ Example of advanced usage including scripts
 * https://github.com/laminas/laminas-mvc-skeleton/blob/master/composer.json
 You can add alternates to `packagist.org` using the `repositories` key in the composer.json file
 * Example: https://wpackagist.org/
+* See: https://github.com/dbierer/automated_wp_installation.git
+
 If you dependency issues, consider adding the `--ignore-platform-reqs` to the `composer install` or `composer update` directive
 * This is especially true if you're running 8.1 or 8.2 and the packagist project is set for PHP 7.4 or 8.0
 
 ## Web Services
+Example using `SimpleXML`
+```
+<?php
+// A simpleXML load file example
+$xml = simplexml_load_file( 'produce.xml' );
+
+// Get the vegies
+$vegies = $xml->vegetables;
+
+// Get the first vegie using array notation
+echo $vegies->vegetable->name . PHP_EOL;
+echo $vegies->vegetable[1]->name . PHP_EOL;
+
+$new = $vegies->addChild('vegetable');
+$new->addChild('name', 'carrots');
+$new->addChild('price', 0.99);
+
+// Output item data
+foreach ( $vegies as $node ) {
+    echo "Content: " . $node->vegetable->name . "\n" ;
+}
+
+// Output XML from the SimpleXMLElement object
+echo $xml->asXML();
+
+// Output to an xml file
+$xml->asXML( 'newproduce.xml' );
+
+var_dump($xml);
+```
+
 Example of SOAP Client
 * https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
 How to generate an HTTP `PUT`, `POST`, etc.
@@ -1228,6 +1264,65 @@ $fp = fopen('https://url', 'r', false, $context);
 ```
 Study by Oracle that compares SOAP and REST
 * https://www.ateam-oracle.com/post/performance-study-rest-vs-soap-for-mobile-applications
+Example of `json_encode()` with `protected` properties
+```
+<?php
+class Transport
+{
+	public $type = '';	// petrol | electric
+	public $passengers = [];	// # passengers
+}
+class Bus extends Transport
+{
+	public $type = 'petrol';
+	public function __construct(
+		public int $seats = 0,
+		public int $toilets = 0 )
+		{}
+}
+class Passenger
+{
+	public function __construct(
+		protected string $name = '',
+		protected string $date_travel = '')
+	{}
+}
+
+$bus = new Bus(44,2);
+$bus->passengers = [
+	0 => new Passenger('Joe', '2023-09-21'),
+	1 => new Passenger('Jane', '2023-09-22')
+];
+
+$json = json_encode($bus, JSON_PRETTY_PRINT);
+echo $json . PHP_EOL;
+
+// actual output (JSON cannot read non-public properties!)
+/*
+{
+    "type": "petrol",
+    "passengers": [
+        {},
+        {}
+    ],
+    "seats": 44,
+    "toilets": 2
+}
+*/
+```
+In the above example, if you want access to `protected` properties, you'd need to add something like this to the `Bus` class:
+```
+	public function getJson()
+	{
+		$data = get_object_vars($this);
+		foreach ($this->passengers as $one) {
+			$data['passenger'][] = $one->getValues();
+		}
+		return json_encode($data, JSON_PRETTY_PRINT);
+	}
+```
+Otherwise ... JUST MAKE THEM PUBLIC!!!
+
 ## Output Control
 Example using output buffering to create inner content
 ```
