@@ -23,8 +23,6 @@ For Mon 18 Sep 2023
   * http://localhost:8883/#/4/63
 
 ## TODO
-* Dig up AWS login info for demo Wednesday
-
 * Q: Library that allows you to bridge CPP code into a PHP extension
 * A: https://www.php-cpp.com/
 
