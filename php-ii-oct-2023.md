@@ -1,6 +1,14 @@
 # PHP II - Oct 2023
 
-Last Slide: http://localhost:8882/#/3/24
+## To Do
+* Get the last VM apps uploaded by Thursday
+
+## Homework
+For Thu 5 Oct 2023
+* Update the VM as per notes below
+* Lab: Namespace
+* Lab: Create a Class
+* Lab: Create an Extensible Super Class
 
 ## VM Notes
 ### Expanded VM Instructions
