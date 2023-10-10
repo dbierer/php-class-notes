@@ -4,11 +4,20 @@
 * Get the last VM apps uploaded by Thursday
 
 ## Homework
+For Thu 12 Oct 2023
+* Lab: Magic Methods
+* Lab: Abstract Classes
+
 For Thu 5 Oct 2023
 * Update the VM as per notes below
 * Lab: Namespace
 * Lab: Create a Class
 * Lab: Create an Extensible Super Class
+
+Andrey: https://github.com/andreyonokoy/5heartbeats
+Michael: https://github.com/earthbound10/PHP-OOP
+Andre: https://github.com/OctoKing-dev/ZendTraining/tree/relationbuilder
+
 
 ## VM Notes
 ### Expanded VM Instructions
@@ -107,6 +116,11 @@ sudo apt install -y git
 ### Install php Adminer
 * Download the latest version from `https://www.adminer.org/`
 * Copy the downloaded file to `/var/www/html/adminer.php`
+  * Open a terminal window
+```
+sudo cp ~/Downloads/adminer-xxx-yyy.php /var/www/html/adminer.php
+```
+
 * To access: `http://localhost/adminer.php`
   * Host: 127.0.0.1
   * User: vagrant
@@ -375,6 +389,32 @@ echo $user1->getData()->getJson();
 echo PHP_EOL;
 var_dump($user2->getData()->getArrayCopy());
 ```
+Example of overriding a method:
+```
+<?php
+class UserEntity {
+    protected string|null $firstName;
+    public function setFirstName ($firstName) {
+        $this->firstName = $firstName;
+    }
+}
+ 
+// The subclass
+class GuestUser extends UserEntity {
+    protected ?string $mi;
+    public function setFirstName($firstName, $mi = null) {
+        $this->firstName = trim($firstName);
+		$this->mi = ($mi ?? '');
+    }
+}
+
+$user1 = new GuestUser();
+$user1->setFirstName('Jack');
+$user2 = new GuestUser();
+$user2->setFirstName('Monte' , 'P');
+
+var_dump($user1, $user2);
+```
 
 Restrictions when overriding a method:
 * When overriding a method, you can "expand" the data type in the signature
@@ -475,6 +515,47 @@ var_dump($obj);
 
 ```
 Example of `__sleep()` and `__wakeup()`
+```
+<?php
+class UserEntity
+{
+    public function __construct(
+        protected string $firstName,
+        protected string $lastName,
+        protected float $balance,
+        protected int $id,
+        protected string $creditCardNum
+    ) {}
+    public function getFullName()
+    {
+        return $this->firstName . ' ' . $this->lastName;
+    }
+    public function getJson()
+    {
+		return json_encode(get_object_vars($this));
+	}
+	public function __sleep()
+	{
+		$_SESSION['cc'] = $this->creditCardNum;
+		return ['firstName','lastName','balance','id'];
+	}
+	public function __wakeup()
+	{
+		$this->creditCardNum = $_SESSION['cc'] ?? '';
+	}
+}
+session_start();
+$user = new UserEntity('Fred', 'Flintstone', 999.99, 101, '1111-2222-3333-4444');
+$text = serialize($user);
+//$text = $user->getJson();
+echo $text . "\n";
+$obj = unserialize($text);
+//$obj = json_decode($text);
+echo $obj->getFullName() . "\n";
+var_dump($obj);
+```
+
+Another Example of `__sleep()` and `__wakeup()`
 ```
 <?php
 class UserEntity {
@@ -601,6 +682,19 @@ echo $test->fname . ' ' . $test->lname
 Other examples of magic methods:
 * https://github.com/dbierer/classic_php_examples/tree/master/oop
 * Look for `oop_magic*.php`
+
+Three important magic methods not covered in the slides
+* `__invoke()`
+  * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_magic_invoke_and_tostring.php
+* `__destruct()`
+  * See: https://github.com/dbierer/filecms-core/blob/main/src/Common/Image/Captcha.php
+* `__call()`
+	* Often used to implement "plugins" 
+	* Avoids having to hard code methods into base classes
+	* Used to extend the framework without having to rewrite your base source code
+	* Example: https://github.com/laminas/laminas-mvc/blob/3.6.x/src/Controller/AbstractController.php
+	  * Look at `__call()`
+  
 
 Example of Abstract class with abstract method:
 * https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractController.php
@@ -1178,7 +1272,10 @@ Class Vehicle {
   * s/be "Class" (leave it at that)
 * http://localhost:8882/#/6/4
   * `$contents` is overwritten: typo?
-
+* http://localhost:8882/#/3/43
+  * Need to add "?" in front of data type: `protected ?string $mi;`
+  * Why does it assign firstName as NULL for the first time called?
+  
 ## Q & A
 * Q: Can you use the keyword "new" in property or const definition in 8.1?
 * A: Yes, but with restrictions.
