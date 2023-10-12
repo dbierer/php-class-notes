@@ -1,9 +1,15 @@
 # PHP II - Oct 2023
 
 ## To Do
-* Get the last VM apps uploaded by Thursday
+* http://localhost:8882/#/3/121
 
 ## Homework
+For Tue 17 Oct 2023
+* Lab: Interfaces
+* Lab: Type Hinting
+* Lab: Build Custom Exception Class
+* Lab: Traits
+
 For Thu 12 Oct 2023
 * Lab: Magic Methods
 * Lab: Abstract Classes
@@ -14,8 +20,12 @@ For Thu 5 Oct 2023
 * Lab: Create a Class
 * Lab: Create an Extensible Super Class
 
-Andrey: https://github.com/andreyonokoy/5heartbeats
-Michael: https://github.com/earthbound10/PHP-OOP
+Andrey: 
+* https://github.com/andreyonokoy/5heartbeats
+* https://github.com/dbierer/PHP-OOP-Andrey.git
+Michael: 
+* https://github.com/earthbound10/PHP-OOP
+* https://github.com/dbierer/PHP-OOP-Michael.git
 Andre: https://github.com/OctoKing-dev/ZendTraining/tree/relationbuilder
 
 
@@ -145,6 +155,8 @@ Where it all started:
 * Seminal work: "Design Patterns: Elements of Reusable Object-Oriented Software"
 PHP Road Map:
 * https://wiki.php.net/rfc
+Coding Standards: PSR-1 and PSR-12
+* https://www.php-fig.org/psr/
 
 ## Class Notes
 
@@ -989,6 +1001,8 @@ Stack trace:
 ```
 Using `static` functionality to get a singleton instance
 * https://github.com/dbierer/filecms-core/blob/main/src/Common/Generic/Messages.php
+Using `static` for a registry style storage class
+* https://github.com/dbierer/filecms-core/blob/main/src/Common/Generic/Registry.php
 Other examples of `static` and `traits`
 * https://github.com/dbierer/classic_php_examples/tree/master/oop/*static*.php
 * https://github.com/dbierer/classic_php_examples/tree/master/oop/*trait*.php
