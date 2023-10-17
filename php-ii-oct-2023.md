@@ -1,9 +1,17 @@
 # PHP II - Oct 2023
 
 ## To Do
-* http://localhost:8882/#/3/121
-
+* Get course materials to attendees once updated
+* http://localhost:8882/#/6
+* Get actual title the seminal work on software design patterns
+  * Also look at: Martin Fowler's book "Patterns of Enterprise Application Architecture"
+  
 ## Homework
+For Thu 19 Oct 2023
+* Lab: Prepared Statements
+* Lab: Stored Procedure
+* Lab: Transaction
+
 For Tue 17 Oct 2023
 * Lab: Interfaces
 * Lab: Type Hinting
@@ -1289,7 +1297,9 @@ Class Vehicle {
 * http://localhost:8882/#/3/43
   * Need to add "?" in front of data type: `protected ?string $mi;`
   * Why does it assign firstName as NULL for the first time called?
-  
+* http://localhost:8882/#/3/131
+  * NOTE: the last paragraph isn't true!!!
+    
 ## Q & A
 * Q: Can you use the keyword "new" in property or const definition in 8.1?
 * A: Yes, but with restrictions.
