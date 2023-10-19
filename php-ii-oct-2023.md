@@ -1,12 +1,24 @@
 # PHP II - Oct 2023
 
+http://localhost:8882/#/8
+
 ## To Do
 * Get course materials to attendees once updated
-* http://localhost:8882/#/6
-* Get actual title the seminal work on software design patterns
-  * Also look at: Martin Fowler's book "Patterns of Enterprise Application Architecture"
+
+* What replaces `Pragma: no-cache` header?
+  * See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Pragma
+  * Possibly: `Cache-Control: no-cache` -- need to confirm this
+
+* Q: What was the actual title the seminal work on software design patterns?
+* A: "Design Patterns: Elements of Reusable Object-Oriented Software" (1994)
+  * See: https://en.wikipedia.org/wiki/Design_Patterns
+  * Also look at Martin Fowler's book "Patterns of Enterprise Application Architecture"
+    * https://martinfowler.com/books/eaa.html
   
 ## Homework
+For Mon 23 Oct 2023
+* Lab: Validate an Email Address
+
 For Thu 19 Oct 2023
 * Lab: Prepared Statements
 * Lab: Stored Procedure
@@ -1199,6 +1211,10 @@ echo '</table>';
 Simplified ETag Example:
 * See: https://github.com/dbierer/classic_php_examples/blob/master/web/etag.php
 
+## Email
+Official list of email headers:
+* https://www.iana.org/assignments/message-headers/message-headers.xhtml
+
 ## Regex
 Example of searching for a specific file name pattern in a directory
 ```
@@ -1270,6 +1286,53 @@ $replace = ['[', ']'];
 echo preg_replace($pattern, $replace, $test);
 // $script["alert"] = "script"
 ```
+Example using sub patterns:
+```
+<?php
+$str = '<a href="https://zend.com">Zend Website</a>';
+$pat = '/<a href="(.*?)">(.*?)<\/a>/';
+preg_match($pat, $str, $match);
+var_dump($match);
+
+// actual output:
+/*
+array(3) {
+  [0]=>
+  string(43) "<a href="https://zend.com">Zend Website</a>"
+  [1]=>
+  string(16) "https://zend.com"
+  [2]=>
+  string(12) "Zend Website"
+}
+*/
+```
+Example using `preg_replace()`
+```
+<?php
+$test = '<script>Bad Javascript</script>';	
+$pattern = '![^A-Za-z0-9 ]!';
+$str = preg_replace($pattern, ' ', $test);
+echo $str;
+echo PHP_EOL;
+echo strip_tags($test);
+
+// actual output:
+/*
+ script Bad Javascript  script 
+Bad Javascript
+*/
+```
+Using `$` to represent subpatterns when using `preg_replace()`
+```
+<?php
+$test = 'Dixon, Andre';	
+$pattern = '!([A-Za-z]+)?\, ([A-Za-z]+)?!i';
+$str = preg_replace($pattern, '$2 $1', $test);
+echo $str;
+echo PHP_EOL;
+
+// Actual output: "Andre Dixon"
+```
 
 PHP 5 to PHP 7 code converter using `preg_replace_callback_array()`
 * https://github.com/dbierer/php7cookbook/blob/master/source/chapter01/chap_01_php5_to_php7_code_converter.php#L3
@@ -1299,7 +1362,10 @@ Class Vehicle {
   * Why does it assign firstName as NULL for the first time called?
 * http://localhost:8882/#/3/131
   * NOTE: the last paragraph isn't true!!!
-    
+* http://localhost:8882/#/6/7 && http://localhost:8882/#/6/5
+  * NOTE: `Pragma: cache` is deprecated!    
+  * Use `Cache-Control: cache` instead (need to confirm)
+  
 ## Q & A
 * Q: Can you use the keyword "new" in property or const definition in 8.1?
 * A: Yes, but with restrictions.
