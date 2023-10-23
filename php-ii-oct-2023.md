@@ -7,7 +7,9 @@ http://localhost:8882/#/8
 
 * What replaces `Pragma: no-cache` header?
   * See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Pragma
-  * Possibly: `Cache-Control: no-cache` -- need to confirm this
+  * The `Cache-Control: no-cache` should be used for the reponse
+  * See: https://stackoverflow.com/questions/10314174/difference-between-pragma-and-cache-control-headers
+  * According to the HTTP/1.0 documentation, `Pragma: no-cache` header should only be used in requests.
 
 * Q: What was the actual title the seminal work on software design patterns?
 * A: "Design Patterns: Elements of Reusable Object-Oriented Software" (1994)
