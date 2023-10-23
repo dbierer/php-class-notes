@@ -5,6 +5,8 @@ http://localhost:8882/#/8
 ## To Do
 * Get course materials to attendees once updated
 
+* Get an example of a service container from Laminas Level 2 course
+
 * What replaces `Pragma: no-cache` header?
   * See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Pragma
   * The `Cache-Control: no-cache` should be used for the reponse
@@ -1340,6 +1342,33 @@ PHP 5 to PHP 7 code converter using `preg_replace_callback_array()`
 * https://github.com/dbierer/php7cookbook/blob/master/source/chapter01/chap_01_php5_to_php7_code_converter.php#L3
 * https://github.com/dbierer/php7cookbook/blob/master/source/Application/Parse/Convert.php
 
+## Regex
+Example email validation regex from Andrey:
+```
+^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$
+```
+Example from Michael:
+```
+ $pattern = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';
+```
+
+## Web Services
+REST request example:
+* https://github.com/dbierer/classic_php_examples/blob/master/web/rest_api_call_us_weather_svc.php
+SOAP example:
+* https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
+Example of sending JSON request to Authorize.net
+* https://github.com/AuthorizeNet/sample-code-php/tree/master
+ 
+## Dependency Injection
+Great overview of the DI design pattern:
+* https://martinfowler.com/articles/injection.html
+Configuration for DI services
+* See: https://github.com/zendtech/Laminas-Level-2-Attendee/blob/master/onlinemarket.complete/module/Model/config/module.config.php
+DI Factory
+* See: https://github.com/zendtech/Laminas-Level-2-Attendee/blob/master/onlinemarket.complete/module/Model/src/Adapter/Factory/PrimaryAdapterFactory.php
+* See: https://github.com/zendtech/Laminas-Level-2-Attendee/blob/master/onlinemarket.complete/module/Model/src/Model/Factory/CityCodesModelFactory.php
+
 ## Change Request
 * http://localhost:8882/#/3/22
   * "Some Mark Watney"???
@@ -1367,7 +1396,22 @@ Class Vehicle {
 * http://localhost:8882/#/6/7 && http://localhost:8882/#/6/5
   * NOTE: `Pragma: cache` is deprecated!    
   * Use `Cache-Control: cache` instead (need to confirm)
-  
+* http://localhost:8882/#/8/6
+  * Change example to Laminas!
+* http://localhost:8882/#/10/22
+  * S/be:
+```
+<?php
+$url = 'https://www.google.com';
+$ch  = curl_init();
+if (empty($ch)) exit('Unable to open connection');
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_HEADER, 0);
+$result = curl_exec($ch);
+var_dump($result);
+curl_close($ch);
+```
+    
 ## Q & A
 * Q: Can you use the keyword "new" in property or const definition in 8.1?
 * A: Yes, but with restrictions.
