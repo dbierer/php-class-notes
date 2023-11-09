@@ -1,68 +1,83 @@
 # PHP Foundations -- Oct 2023
 
 ## TODO
+* Add instructions for Adminer
+  * https://adminer.org
+* Add instructions for VM update
+
 ## Homework
+Homework for Fri 10 Nov 2023
+* https://collabedit.com/r5wf2
 
-## XAMPP Setup
-XAMPP web server document root: `C:\xampp\htdocs`
-1. Open XAMPP control panel
-2. Start Apache and MySQL
-3. From the browser launch phpMyAdmin: `http://localhost/phpmyadmin`
-4. Create a database `phpcourse`
-5. Select that database
-6. Import from the file: `/path/to/project/orderapp/sql/phpcourse.sql`
-  * Ignore warnings
-7. Create a user `vagrant` with a password `vagrant` with all privileges to `phpcourse` on `localhost`
-8. Create Apache virtual host definitions for `orderapp` and `sandbox`
-  * Place this config into `C:/xampp/apache/conf/extra/httpd-vhosts.conf`:
+## VM Notes
+### Expanded VM Instructions
+* https://opensource.unlikelysource.com/expanded_vm_instructions.pdf
+
+Info
+* Username: `vagrant`
+* Password: `vagrant`
+
+Do Not Accept the Update or Upgrade Prompts
+* Once you login it's important to wait a few seconds for the system to come fully up.
+* At this point you'll see two prompts: one to update, one to upgrade. Be sure to decline both of these options!
+Confirm that no unattended upgrades are in progress:
 ```
-<Directory C:/Users/azure/php-foundations>
-	AllowOverride All
-	Require all granted
-</Directory>
-
-<VirtualHost *:80>
-    DocumentRoot "C:/xampp/htdocs/"
-    ServerName localhost
-    ErrorLog "logs/localhost-error.log"
-    CustomLog "logs/localhost-access.log" common
-</VirtualHost>
-
-<VirtualHost *:80>
-    DocumentRoot "C:/Users/azure/php-foundations/orderapp/public"
-    ServerName orderapp
-    ErrorLog "logs/orderapp-error.log"
-    CustomLog "logs/orderapp-access.log" common
-</VirtualHost>
-
-<VirtualHost *:80>
-    DocumentRoot "C:/Users/azure/php-foundations/sandbox/public"
-    ServerName sandbox
-    ErrorLog "logs/sandbox-error.log"
-    CustomLog "logs/sandbox-access.log" common
-</VirtualHost>
+ps -ax |grep unattended
 ```
-  * Change `C:/Users/azure/php-foundations` to the path where you unzipped the course applications
-9. Restart Apache from control panel
-10. Open the hosts file in `C:\windows\system32\drivers\etc`
-  * Open using Notepad with Administrator privileges
-11. Add these host entries:
+If you see any listed (except for the last one which is the `grep` command):
+* Make a note of the "process ID" (PID)
+* Kill the process as follows:
 ```
-127.0.0.1     localhost
-127.0.0.1     orderapp
-127.0.0.1     sandbox
+sudo kill [PID]
 ```
-12. Test:
-  * `http://sandbox/`
-  * `http://orderapp/`
-Instructions to add XAMPP php.exe to Windows system path:
-* https://mikesmith.us/add-xampps-php-execution-path-to-environment-variables-in-windows-10-11/
 
-Here's a good overview:
-* https://stackoverflow.com/questions/27754367/how-to-set-up-apache-virtual-hosts-on-xampp-windows
+Now you can do the full update/upgrade
+* This doesn't upgrade the OS, just the packages
+* Open a command terminal and run these commands.
+```
+sudo dpkg --configure -a
+sudo apt -y update && sudo apt -f -y install && sudo apt -y full-upgrade
+```
+It will take several hours to complete so it's best to let it run overnight.
+
+Accept New Configuration
+* At some point you will be asked if you wish to retain the original php.ini configuration or accept the new. Go ahead and accept the new configuration.
+
+Update Apache PHP Module
+* So far PHP from the command line (PHP-CLI) has been updated. You'll still need to update the PHP Apache module using these commands. Please note that "8.0" is the old version, and "8.2" is the new version. You may have to change these two values as more recent versions become available.
+```
+sudo apt-add-repository ppa:ondrej/apache2
+sudo apt install libapache2-mod-php8.2
+sudo a2dismod php8.0
+sudo systemctl restart apache2
+sudo a2enmod php8.2
+sudo systemctl restart apache2
+```
+
+Installing Adminer database administration tool:
+* From the VM using its browser, download the desired version (e.g. adminer-4.8.1-mysql-en.php)
+* Move from the Downloads folder to `/var/www/html`
+```
+
+```
 
 
 ## Class Notes
+If you want to publish PHP code to the `http://sandbox/xxx.php`
+* Just create the code in this directory in the VM:
+```
+/home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public
+```
+
+Docblocks
+* PHP Documentor project
+* https://phpdoc.org/
+Comments
+* You can also use `Attributes`
+* They are part of the language and accessible at runtime
+* See: https://www.php.net/manual/en/language.attributes.syntax.php
+* Example: https://www.doctrine-project.org/projects/doctrine-orm/en/2.16/tutorials/getting-started.html#adding-bug-and-user-entities
+
 Useful string functions:
 * `substr()`
 * `str_replace()`
@@ -80,6 +95,16 @@ $c = 0.0;	// float
 $d = TRUE;	// bool
 
 var_dump($a, $b, $c, $d);
+```
+Pre-defined constants
+* Defined when PHP is installed
+* See: https://www.php.net/manual/en/reserved.constants.php
+
+Mixing HTML and PHP:
+* If you do this you need the closing tags!
+```
+<?php $name = 'Steven'; ?>
+<h1><?= $name; ?></h1>
 ```
 
 Example using the modulus operator to determine remaining minutes:
