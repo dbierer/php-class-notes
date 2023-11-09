@@ -63,6 +63,63 @@ Installing Adminer database administration tool:
 
 
 ## Class Notes
+Example of type juggling with comparison operators:
+```
+<?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+$a = '111';
+$b = 111;
+echo ($a == $b) ? 'Equal' : 'Not Equal';
+// Equal
+
+$a = ' 111 '; // recommended: use trim($a)
+$b = 111;
+echo ($a == $b) ? 'Equal' : 'Not Equal';
+// Equal
+
+$a = ' 111 x';
+$b = 111;
+echo ($a == $b) ? 'Equal' : 'Not Equal';
+// Not Equal
+
+$a = 'x111x';
+$b = 111;
+echo ($a == $b) ? 'Equal' : 'Not Equal';
+// Not Equal
+
+$a = 'ABC';
+$b = 111;
+echo ($a == $b) ? 'Equal' : 'Not Equal';
+// Not Equal
+
+// this causes a Fatal Error because PHP might lose precision
+echo $a + $b;
+// Fatal error:  Uncaught TypeError: Unsupported operand types: string + int in /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public/test.php:31
+```
+For comparison logicals, you can use words instead of symbols:
+```
+<?php
+$foo = 10;
+$bar = 5;
+echo ($foo == 10 && $bar == 5); // 1
+
+$foo = 5;
+$bar = 10;
+echo ($foo != $bar || $foo > $bar); // 1
+echo ($foo != $bar ^ $foo > $bar); // 1
+
+$foo = 10;
+$bar = 5;
+echo ($foo == 10 and $bar == 5); // 1
+
+$foo = 5;
+$bar = 10;
+echo ($foo != $bar or $foo > $bar); // 1
+echo ($foo != $bar xor $foo > $bar); // 1
+```
+
 If you want to publish PHP code to the `http://sandbox/xxx.php`
 * Just create the code in this directory in the VM:
 ```
@@ -165,7 +222,7 @@ var_dump($days);
 }
 */
 
-// the spread op flattens the 2 sub-arrays into a single linear array
+// the spread op (variadics) flattens the 2 sub-arrays into a single linear array
 $days     = [...$business, ...$weekend];
 var_dump($days);
 // actual output:
@@ -206,6 +263,36 @@ echo test(6,7,8,8,10,11,12,13,14,15);
 
 
 ```
+Difference between `define()` and `const` regarding constants:
+```
+<?php
+define('PATH', __DIR__);
+
+class Test
+{
+	const PATH = '/var/www/html';
+	public function getInternalPath()
+	{
+		return self::PATH;
+	}
+	public function getExternalPath()
+	{
+		return PATH;
+	}
+}
+
+echo PATH;			// current dir
+echo PHP_EOL;
+echo Test::PATH;	// /var/www/html
+echo PHP_EOL;
+
+$test = new Test();
+echo $test->getExternalPath();	// current dir
+echo PHP_EOL;
+echo $test->getInternalPath();	// /var/www/html
+echo PHP_EOL;
+```
+
 Adding elements to a multi-dimensional array
 ```
 <?php
@@ -233,12 +320,105 @@ $mission['STS395'][2]['specialty'] = 'WordPress Specialist';
 print_r($mission);
 
 ```
+Another multi-dim array example:
+```
+<?php
+$mission = [
+    'STS395' => [
+        ['firstName' => 'Mark', 'lastName' => 'Watney', 'specialty' => 'Botanist'],
+        ['firstName' => 'Melissa', 'lastName' => 'Lewis', 'specialty' => 'Commander'],
+        ['firstName' => 'Beth', 'lastName' => 'Johanssen', 'specialty' => 'Computer Specialist']
+		// adds right here
+    ]
+];
+
+$mission['STS395'][] = ['firstName' => 'Fred', 'lastName' => 'Flintstone', 'specialty' => 'Caveman'];
+$mission['STS396'][] = ['firstName' => 'Barney', 'lastName' => 'Rubble', 'specialty' => 'Caveman Neighbor'];
+
+$mission['STS396'][0]['firstName'] = 'Betty';
+
+print_r($mission);
+
+// actual output:
+/*
+Array
+(
+    [STS395] => Array
+        (
+            [0] => Array
+                (
+                    [firstName] => Mark
+                    [lastName] => Watney
+                    [specialty] => Botanist
+                )
+
+            [1] => Array
+                (
+                    [firstName] => Melissa
+                    [lastName] => Lewis
+                    [specialty] => Commander
+                )
+
+            [2] => Array
+                (
+                    [firstName] => Beth
+                    [lastName] => Johanssen
+                    [specialty] => Computer Specialist
+                )
+
+            [3] => Array
+                (
+                    [firstName] => Fred
+                    [lastName] => Flintstone
+                    [specialty] => Caveman
+                )
+
+        )
+
+    [STS396] => Array
+        (
+            [0] => Array
+                (
+                    [firstName] => Betty
+                    [lastName] => Rubble
+                    [specialty] => Caveman Neighbor
+                )
+
+        )
+
+)
+*/
+
+```
+
 Example using the ternary operator to establish a default value when accessing URL params
 ```
 <?php
 $name = (!empty($_GET['name'])) ? strip_tags($_GET['name']) : 'Default';
 echo '<h1>' . $name . '</h1>';
 ```
+Another example using the ternary operator + input and output sanitization:
+```
+<?php
+// sanitize inputs using "strip_tags()"
+$first = (isset($_GET['first'])) ? strip_tags($_GET['first']) : 'Default';
+$last  = (isset($_GET['last'])) ? strip_tags($_GET['last']) : 'Default';
+
+// output escaping:
+echo htmlspecialchars($first . ':' . $last);
+
+```
+This is the same thing as above, but uses the `??` instead:
+```
+<?php
+// sanitize inputs using "strip_tags()"
+$first = strip_tags($_GET['first'] ?? 'Default');
+$last  = strip_tags($_GET['last'] ?? 'Default');
+
+// output escaping:
+echo htmlspecialchars($first . ':' . $last);
+```
+
 You can use the '??' in place of a series of if/elseif
 ```
 <?php
