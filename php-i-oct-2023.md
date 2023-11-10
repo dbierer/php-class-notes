@@ -1,13 +1,20 @@
 # PHP Foundations -- Oct 2023
 
+Last: http://localhost:8881/#/5/17
+
 ## TODO
 * Add instructions for Adminer
   * https://adminer.org
-* Add instructions for VM update
+* Get reference to PHP 7 to 8 code converter vis a vis PHP 8 book
+  * Also: check to see if packagist.org has tools already available
+* Add a note to the next OOP class:
+  * Regex lab: use `preg_replace_callback_array()` to convert `switch` to `match`
 
 ## Homework
 Homework for Fri 10 Nov 2023
 * https://collabedit.com/r5wf2
+Homework for Mon 13 Nov 2023
+* https://collabedit.com/mh27n
 
 ## VM Notes
 ### Expanded VM Instructions
@@ -63,6 +70,9 @@ Installing Adminer database administration tool:
 
 
 ## Class Notes
+php.ini settings:
+* https://www.php.net/manual/en/ini.list.php
+
 Example of type juggling with comparison operators:
 ```
 <?php
@@ -499,6 +509,50 @@ Wilma Flintstone is a Cavewoman
 George Slate is a Boss
 */
 ```
+Example of "Fail Early"
+```
+<?php
+// trivial example of fail early
+$fn = __DIR__ . '/people.txt';
+
+function countLines(string $fn)
+{
+	// check to see if the file exists
+	// if not, no point to continue
+	if (!file_exists($fn)) return 0;
+	return count(file($fn));
+}
+
+echo 'The file ' . basename($fn) . ' has ' . countLines($fn) . ' lines' . PHP_EOL;
+```
+Example using `list()` to break out arrays into their components:
+```
+<?php
+$data = [
+	['Fred','Flintstone','Caveman'],
+	['Wilma','Flintstone','Cavewoman'],
+	['Barney','Rubble','Neighbor'],
+	['Betty','Rubble','Neighbor Wife'],
+];
+
+foreach ($data as list($first,$last,$role)) {
+	echo "$first $last has the role of $role\n";
+}
+
+// actual output:
+/*
+Fred Flintstone has the role of Caveman
+Wilma Flintstone has the role of Cavewoman
+Barney Rubble has the role of Neighbor
+Betty Rubble has the role of Neighbor Wife
+*/
+```
+When working with International customers, the `declare(encoding=xxx)` is limited to that file
+* For more flexibility consider using `mb_convert_encoding()`
+* For that to work the `mbstring` extension must be enabled
+  * For example, on Ubuntu, you can do this: `sudo apt install php8.2-mstring`
+  * Alternatively, activate manually in the `php.ini` file
+
 You should provide a data type hint for functions with components that are sensitive to the wrong data type
 * Protects the function from abuse
 * Makes the real source of the error quite clear
@@ -663,6 +717,60 @@ while ($items = current($invoiceItems)) {
     // maybe keep a count using "++" and use the count() function to see how many elements are in the array
 }
 ```
+Using assignment by reference to alias an array element:
+```
+<?php
+$config = [
+    'router' => [
+        'routes' => [
+            'market' => [
+                'type' => 'literal',
+                'options' => [
+                    'route' => '/market',
+                    'defaults' => [
+                        'controller' => 'IndexController',
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
+        ],
+    ],
+];
+$action = &$config['router']['routes']['market']['options']['defaults']['action'];
+
+$action = 'TEST';
+var_dump($config);
+
+// actual output:
+/*
+ * array(1) {
+  ["router"]=>
+  array(1) {
+    ["routes"]=>
+    array(1) {
+      ["market"]=>
+      array(2) {
+        ["type"]=>
+        string(7) "literal"
+        ["options"]=>
+        array(2) {
+          ["route"]=>
+          string(7) "/market"
+          ["defaults"]=>
+          array(2) {
+            ["controller"]=>
+            string(15) "IndexController"
+            ["action"]=>
+            &string(4) "TEST"
+          }
+        }
+      }
+    }
+  }
+}
+*/
+```
+
 Using named parameters
 ```
 <?php
@@ -931,3 +1039,5 @@ Database rankings:
 ## Errata
 * http://localhost:8881/#/5/7
   * Problem with the security function???
+* http://localhost:8881/#/4/50
+  * Separate the discussion of `list()` from that of by reference: too confusing!
