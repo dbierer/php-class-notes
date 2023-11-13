@@ -3,6 +3,9 @@
 Last: http://localhost:8881/#/5/17
 
 ## TODO
+* Q: Example of pagination
+* A: Take from the WordPress Plugin course
+
 * Q: Do you have a reference to PHP 7 to 8 code converter?
 * A: See: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/tree/main/ch11
 * A: Also: check to see if packagist.org has tools already available
@@ -12,7 +15,7 @@ Last: http://localhost:8881/#/5/17
 
 ## Homework
 Homework for Wed 15 Nov 2023
-*
+* https://collabedit.com/fchnb
 Homework for Mon 13 Nov 2023
 * https://collabedit.com/mh27n
 Homework for Fri 10 Nov 2023
@@ -808,6 +811,30 @@ $action = 'test';
 print_r($config);
 
 ```
+Functions should have 1 entrance and 1 exit (as per the rules of Structured Programming)
+```
+<?php
+function formatCurrency(float $value, string $arg='$') {
+    switch (strtolower($arg)) {
+        case 'euro' :
+        case '€' :
+            $result = number_format($value, 2, ',', ' ') . '€'; break;
+        case 'pound' :
+        case '£' :
+            $result = '£' . number_format($value, 2, '.', ','); break;
+        case 'dollar' :
+        case '$' :
+            $result = '$' . number_format($value, 2, '.', ','); break;
+        default :
+			$result = '';
+    }
+    return $result;
+}
+echo formatCurrency(9999, 'euro') ?? 'Unknown'; // 9 999,00€
+echo PHP_EOL;
+echo formatCurrency(9999, '$') ?? 'Unknown';    // $9,999.00
+echo PHP_EOL;
+```
 Example using `substr()`
 ```
 <?php
@@ -829,6 +856,57 @@ Insecure URL
 This is the path: /training.zend.com/
 */
 ```
+Example using negative offset with `substr()`
+```
+<?php
+$fn = __FILE__;
+$ext = substr($fn, -3);
+echo $fn . ' is a ' . $ext . ' file';
+echo PHP_EOL;
+
+$breakdown = explode('/', $fn);
+var_dump($breakdown);
+// actual output:
+/*
+ * /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public/test.php is a php file
+array(9) {
+  [0]=>
+  string(0) ""
+  [1]=>
+  string(4) "home"
+  [2]=>
+  string(7) "vagrant"
+  [3]=>
+  string(4) "Zend"
+  [4]=>
+  string(10) "workspaces"
+  [5]=>
+  string(16) "DefaultWorkspace"
+  [6]=>
+  string(7) "sandbox"
+  [7]=>
+  string(6) "public"
+  [8]=>
+  string(8) "test.php"
+}
+*/
+```
+Example using `stripos()` and `substr()`
+```
+<?php
+$str = file_get_contents('https://www.zend.com/');
+$pos = stripos($str, 'Migrations');
+if ($pos !== FALSE) {
+	$start = $pos - 20;
+	$end   = $pos + 12;
+	echo substr($str, $start, 40);
+}
+
+// actual output:
+// ration" data-title="Migrations" data-dru
+
+```
+
 Sorting examples
 ```
 <?php
@@ -846,6 +924,87 @@ var_dump($arr);
 $arr = ['A' => 111, 'C' => 333, 'E' => 555, 'B' => 222, 'D' => 444];
 asort($arr);
 var_dump($arr);
+```
+Similar to above with output:
+```
+<?php
+$arr = ['A' => 111, 'C' => 222, 'E' => 666, 'B' => 555, 'D' => 444, 'F' => 333];
+
+$test = $arr;
+sort($test);
+var_dump($test);
+
+$test = $arr;
+asort($test);
+var_dump($test);
+
+$test = $arr;
+ksort($test);
+var_dump($test);
+
+$test = $arr;
+arsort($test);
+var_dump($test);
+
+// actual output:
+/*
+ * array(6) {
+  [0]=>
+  int(111)
+  [1]=>
+  int(222)
+  [2]=>
+  int(333)
+  [3]=>
+  int(444)
+  [4]=>
+  int(555)
+  [5]=>
+  int(666)
+}
+array(6) {
+  ["A"]=>
+  int(111)
+  ["C"]=>
+  int(222)
+  ["F"]=>
+  int(333)
+  ["D"]=>
+  int(444)
+  ["B"]=>
+  int(555)
+  ["E"]=>
+  int(666)
+}
+array(6) {
+  ["A"]=>
+  int(111)
+  ["B"]=>
+  int(555)
+  ["C"]=>
+  int(222)
+  ["D"]=>
+  int(444)
+  ["E"]=>
+  int(666)
+  ["F"]=>
+  int(333)
+}
+array(6) {
+  ["E"]=>
+  int(666)
+  ["B"]=>
+  int(555)
+  ["D"]=>
+  int(444)
+  ["F"]=>
+  int(333)
+  ["C"]=>
+  int(222)
+  ["A"]=>
+  int(111)
+}
+*/
 ```
 Reading a CSV file and echoing the results:
 ```
@@ -985,6 +1144,22 @@ require BASE_DIR . '/vendor/autoload.php';
 // start session
 session_start();
 return require SRC_DIR . '/config/config.php';
+```
+Example reading / writing to a CSV file
+```
+<?php
+if (!$fh = fopen('people.csv', 'r+')) exit('Unable to open file');
+
+$data = [];
+while (!feof($fh)) {
+    $data[] = fgetcsv($fh);
+}
+fclose($fh);
+
+if (!$fh = fopen('people.csv', 'a')) exit('Unable to open file');
+fputcsv($fh, ['Fred', 'M']);
+readfile('people.csv');
+
 ```
 
 ## Update/Upgrade the VM
