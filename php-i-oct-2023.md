@@ -3,18 +3,20 @@
 Last: http://localhost:8881/#/5/17
 
 ## TODO
-* Add instructions for Adminer
-  * https://adminer.org
-* Get reference to PHP 7 to 8 code converter vis a vis PHP 8 book
-  * Also: check to see if packagist.org has tools already available
+* Q: Do you have a reference to PHP 7 to 8 code converter?
+* A: See: https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/tree/main/ch11
+* A: Also: check to see if packagist.org has tools already available
+
 * Add a note to the next OOP class:
   * Regex lab: use `preg_replace_callback_array()` to convert `switch` to `match`
 
 ## Homework
-Homework for Fri 10 Nov 2023
-* https://collabedit.com/r5wf2
+Homework for Wed 15 Nov 2023
+*
 Homework for Mon 13 Nov 2023
 * https://collabedit.com/mh27n
+Homework for Fri 10 Nov 2023
+* https://collabedit.com/r5wf2
 
 ## VM Notes
 ### Expanded VM Instructions
@@ -65,9 +67,10 @@ Installing Adminer database administration tool:
 * From the VM using its browser, download the desired version (e.g. adminer-4.8.1-mysql-en.php)
 * Move from the Downloads folder to `/var/www/html`
 ```
-
+# example:
+sudo cp adminer-4.8.1-mysql-en.php /var/www/html/adminer.php
 ```
-
+* Access from your browser: `http://localhost/adminer.php`
 
 ## Class Notes
 php.ini settings:
