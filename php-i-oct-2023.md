@@ -3,6 +3,8 @@
 Last: http://localhost:8881/#/5/17
 
 ## TODO
+* Get the next update to your attendees
+
 * Q: Example of pagination
 * A: Take from the WordPress Plugin course
 
@@ -14,6 +16,8 @@ Last: http://localhost:8881/#/5/17
   * Regex lab: use `preg_replace_callback_array()` to convert `switch` to `match`
 
 ## Homework
+Homework for Fri 17 Nov 2023
+* https://collabedit.com/cxgcn
 Homework for Wed 15 Nov 2023
 * https://collabedit.com/fchnb
 Homework for Mon 13 Nov 2023
@@ -1161,6 +1165,144 @@ fputcsv($fh, ['Fred', 'M']);
 readfile('people.csv');
 
 ```
+You can use `readfile()` to output a PDF
+* See example here: https://www.php.net/manual/en/function.readfile.php
+* Change `Content-Type` to `application/pdf`
+
+Example of a web script that searches a text file for a given string:
+```
+<?php
+// Example using `file()` to search a text file for an item
+// Returns the line number
+$fn = __DIR__ . '/example.txt';
+$list = file($fn);
+// use `strip_tags()` to sanitize the input
+$search = strip_tags($_GET['search'] ?? 'Default');
+$found = 0;
+foreach ($list as $num => $item) {
+	if (str_contains(strtolower($item), $search)) {
+		echo htmlspecialchars($search) . ' was found in ' . basename($fn) . ' on line ' . ++$num . "\n";
+		$found++;
+		break;
+	}
+}
+if ($found === 0) {
+	// use `htmlspecialchars()` to "escape" the output
+	echo htmlspecialchars($search) . ' was not found in ' . basename($fn) . "\n";
+}
+?>
+<form>Search For: <input type"text" name="search" /><input type="submit" /></form>
+```
+Example of a web script that records user selection and then does a redirect
+```
+<?php
+if (!empty($_GET)) {
+	// get input info
+	$ip = $_SERVER['REMOTE_ADDR'] ?? 'Unknown';
+	$lang = $_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? 'en';
+	$agent = $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown';
+	$fh = fopen('test.csv', 'a');
+	// determine target
+	$target = match($_GET['target']) {
+		'zend' => 'https://zend.com',
+		'unlikely' => 'https://unlikelysource.com',
+		'ibm' => 'https://ibm.com',
+		default => ''
+	};
+	// record user select
+	fputcsv($fh, [$ip, $target, $lang, $agent, date('Y-m-d H:i:s')]);
+	fclose($fh);
+	// redirect to target
+	if (!empty($target)) {
+		header('Location: ' . $target);
+		exit;
+	}
+}
+?>
+<h1>Destinations</h1>
+<a href="/test.php?target=zend">Zend</a>
+<br />
+<a href="/test.php?target=unlikely">Unlikelysource.com</a>
+<br />
+<a href="/test.php?target=ibm">IBM</a>
+```
+Example of output escaping:
+```
+<?php
+if (!empty($_POST)) {
+	// strip_tags() here would actually alter the input data
+	// $name = strip_tags($_POST['item']);
+	$name = $_POST['item'];
+}
+?>
+<form action="test.php" method="post">
+    <fieldset>
+        <legend>Add Checklist Item</legend>
+        <label for="item">Enter the checklist item</label>
+        <input type="text" name="item" id="item">
+        <label for="priority">Enter the priority</label>
+        <input type="text" name="priority" id="priority">
+        <input type="submit" value="Submit">
+    </fieldset>
+</form>
+<!-- this safeguards output, but doesn't remove characters -->
+<?= 'The item you entered is: ' . htmlspecialchars($name); ?>
+
+```
+If you need to adjust the amount of data to send on your server:
+* See: https://www.php.net/manual/en/ini.core.php#ini.post-max-size
+* Also see: https://www.php.net/manual/en/ini.core.php#ini.memory-limit
+
+Example using cookies:
+* https://github.com/dbierer/classic_php_examples/blob/master/web/cookie_counter.php
+Example using session (does the same thing):
+* https://github.com/dbierer/classic_php_examples/blob/master/web/session_counter.php
+Here's the documentation on adjusting session duration:
+* https://www.php.net/manual/en/function.session-set-cookie-params.php
+To extend the session, you need to adjust:
+* The expiration time of the session cookie (use `session_set_cookie_params()` )
+* You also need to update the session cache lifetime (use `session_cache_expire()` )
+  * See: https://www.php.net/manual/en/function.session-cache-expire.php
+* Also see: https://www.php.net/manual/en/function.session-set-save-handler.php
+* To check to see if the session is active use `session_status()`
+  * See: https://www.php.net/manual/en/function.session-status.php
+## Database
+Sample SQL query for use in the VM:
+```
+SELECT c.id, c.firstname, c.lastname, o.id AS order_id, o.date, o.status, o.amount, o.description
+FROM customers AS c
+JOIN orders AS o ON c.id = o.customer
+WHERE c.id = 3;
+```
+* output:
+```
+id	firstname	lastname	order_id	date	status	amount	description
+3	J	Flores	2	1359062345	invoiced	9800
+3	J	Flores	4	1359500400	open	34	Paper
+3	J	Flores	7	1360796400	open	300	A big box of chocolates.
+3	J	Flores	8	1685102423	open	400	office chair
+3	J	Flores	9	1685102435	open	400	office chair
+```
+Example retrieving results from the VM database:
+```
+$config = [
+    //The database access credentials
+    'db' => [
+        'dsn' => '127.0.0.1',
+        'username' => 'vagrant',
+        'password' => 'vagrant',
+        'database' => 'phpcourse'
+    ]
+];
+$conn = mysqli_connect($config['db']['dsn'], $config['db']['username'],
+        $config['db']['password'], $config['db']['database']);
+
+$sql = 'SELECT * FROM customers AS c JOIN orders AS o On c.id = o.customer';
+$query = mysqli_query($conn, $sql);
+while ($row = mysqli_fetch_assoc($query)) {
+	echo implode("\t", $row);
+}
+```
 
 ## Update/Upgrade the VM
 * For now, avoid upgrading Ubuntu. Leave it at version 20.*
@@ -1219,3 +1361,5 @@ Database rankings:
   * Problem with the security function???
 * http://localhost:8881/#/4/50
   * Separate the discussion of `list()` from that of by reference: too confusing!
+* http://localhost:8881/#/6/33
+  * s/be `emit` not `emmit`
