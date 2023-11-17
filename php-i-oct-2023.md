@@ -1303,6 +1303,64 @@ while ($row = mysqli_fetch_assoc($query)) {
 	echo implode("\t", $row);
 }
 ```
+Example collecting data from a form and inserting into the database:
+```
+<?php
+$item = '';
+$priority = 0;
+if(!empty($_POST)) {
+    $item = $_POST['item'] ?? '';
+    $id   = $_POST['id'] ?? '';
+    $qty  = $_POST['qty'] ?? '';
+    if(!empty($item) && !empty($id) && !empty($qty)) {
+        $item = filter_var(strip_tags($item), FILTER_SANITIZE_STRING);
+        $id = (int) $id;
+        $qty = (int) $qty;
+        echo 'Data is validated and sanitized, handle it ...';
+		$config = [
+			//The database access credentials
+			'db' => [
+				'dsn' => '127.0.0.1',
+				'username' => 'vagrant',
+				'password' => 'vagrant',
+				'database' => 'phpcourse'
+			]
+		];
+		$conn = mysqli_connect($config['db']['dsn'], $config['db']['username'],
+				$config['db']['password'], $config['db']['database']);
+
+		$sql = 'INSERT INTO orders (date, status, amount, description, customer) '
+		     . 'VALUES (' . time() . ',\'open\',' . $qty . ',\'' . $item . '\',' . $id . ')';
+		echo '<br />';
+		echo (mysqli_query($conn, $sql)) ? 'Success' : 'Failed';
+
+    } else {
+        echo 'Invalid input';
+        exit;
+    }
+} else {
+    // no form data has been posted
+    echo 'No form data has been posted';
+}
+?>
+<form action="test.php" method="post">
+    <fieldset>
+        <legend>Order</legend>
+        <label for="item">Item</label>
+        <input type="text" name="item" id="item">
+        <label for="id">Customer ID</label>
+        <input type="text" name="id" id="id">
+        <label for="qty">Quantity</label>
+        <input type="text" name="qty" id="qty">
+        <input type="submit" value="Submit">
+    </fieldset>
+</form>
+```
+## Tools
+To facilitate debugging at runtime:
+```
+error_log(__FILE__ . ':' . __LINE__ ':' . var_export($variable, TRUE));
+```
 
 ## Update/Upgrade the VM
 * For now, avoid upgrading Ubuntu. Leave it at version 20.*
@@ -1355,6 +1413,8 @@ General Resource:
 * https://github.com/dbierer/classic_php_examples/
 Database rankings:
 * https://db-engines.com/en/ranking
+XDebug
+* https://xdebug.org/
 
 ## Errata
 * http://localhost:8881/#/5/7
@@ -1363,3 +1423,6 @@ Database rankings:
   * Separate the discussion of `list()` from that of by reference: too confusing!
 * http://localhost:8881/#/6/33
   * s/be `emit` not `emmit`
+* http://localhost:8881/#/10/11
+  * Link to ZED Attack Proxy not found
+  * https://www.zaproxy.org/
