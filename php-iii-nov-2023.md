@@ -1,8 +1,15 @@
 # PHP Architect - Nov 2023
 
+Last: http://localhost:8883/#/2/46
+
 ## Homework
 
 ## TODO
+* Link to Apache jMeter
+* Instructions for Jenkins using the official Docker image
+* Link to relative time formats
+* Upload VM source code via Zoom
+* Q: when using @ + `time()` with `DateTime()` does it default to UTC?
 
 
 ## VM Update
@@ -172,26 +179,72 @@ To switch versions use `update-alternatives --config php` (see below for more in
 
 
 ## Advanced PHP
+Supplementary date-related functions:
+* https://www.php.net/manual/en/ref.calendar.php
+
 Full `DateTime::format()` codes:
 * https://www.php.net/manual/en/datetime.format.php
 Getting differences between dates, use `diff()`
 ```
 <?php
-$date1 = new DateTime('2022-11-11');
-$date2 = new DateTime('2022-11-29');
-$diff  = $date1->diff($date2);
+$today = new DateTime('now');
+$past  = new DateTime('1970-01-01');
+$future = new DateTime('2024-12-01');
+$diff[] = $today->diff($past);		// $diff->invert === 1
+$diff[] = $today->diff($future);	// $diff->invert === 0
 var_dump($diff);
-echo $diff->days . ':' . $diff->invert;
-echo PHP_EOL;
 
-
-$diff  = $date2->diff($date1);
-var_dump($diff);
-echo $diff->days . ':' . $diff->invert;
-echo PHP_EOL;
-// $invert property tell you if it's in the past or future
-// see: https://www.php.net/manual/en/class.dateinterval.php
-
+// actual output for today (2023-11-28)
+/*
+ * array(2) {
+  [0]=>
+  object(DateInterval)#4 (10) {
+    ["y"]=>
+    int(53)
+    ["m"]=>
+    int(10)
+    ["d"]=>
+    int(27)
+    ["h"]=>
+    int(2)
+    ["i"]=>
+    int(15)
+    ["s"]=>
+    int(15)
+    ["f"]=>
+    float(0.395718)
+    ["invert"]=>
+    int(1)
+    ["days"]=>
+    int(19689)
+    ["from_string"]=>
+    bool(false)
+  }
+  [1]=>
+  object(DateInterval)#5 (10) {
+    ["y"]=>
+    int(1)
+    ["m"]=>
+    int(0)
+    ["d"]=>
+    int(2)
+    ["h"]=>
+    int(21)
+    ["i"]=>
+    int(44)
+    ["s"]=>
+    int(44)
+    ["f"]=>
+    float(0.604282)
+    ["invert"]=>
+    int(0)
+    ["days"]=>
+    int(368)
+    ["from_string"]=>
+    bool(false)
+  }
+}
+*/
 ```
 Adding a date, create a `DateInterval` instance
 ```
@@ -239,6 +292,18 @@ foreach (test2($arr) as $item) echo $item . ' ';
 echo 'Peak Memory: ' . memory_get_peak_usage(); // Peak Memory: 2,494,824
 
 ```
+Does *not* implement the `Countable` interface:
+```
+function test2(array $arr)
+{
+	foreach ($arr as $item)
+		yield $item * 1.08;
+}
+$result = test2($arr);
+echo count($result); 
+// PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, Generator given in /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public/test.php:20
+```
+
 Extracting a return value from a Generator
 * The iteration must be complete
 * Use `getReturn()` to extract the return value
@@ -261,6 +326,24 @@ $gen = test2($arr);
 foreach ($gen as $item) echo $item . ' ';
 echo PHP_EOL;
 echo $gen->getReturn();
+```
+Make an object "iterable" by implementing `IteratorAggregate`:
+```
+<?php
+class Test implements IteratorAggregate
+{
+	public function __construct(public string $first, public string $last, public string $role) {}
+	public function getIterator()
+	{
+		return new ArrayIterator(get_object_vars($this));
+	}
+}
+
+$test = new Test('Fred', 'Flintstone', 'Caveman');
+
+foreach ($test as $item) echo $item . PHP_EOL;
+
+var_dump(iterator_to_array($test));
 ```
 
 ## Anonymous Class
