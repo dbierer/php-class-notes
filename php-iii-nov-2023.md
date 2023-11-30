@@ -3,14 +3,29 @@
 Last: http://localhost:8883/#/2/46
 
 ## Homework
+For Tues 5 Dec
+* Lab: Built-in Web Server
+
 
 ## TODO
-* Link to Apache jMeter
-* Instructions for Jenkins using the official Docker image
-* Link to relative time formats
-* Upload VM source code via Zoom
-* Q: when using @ + `time()` with `DateTime()` does it default to UTC?
+* Q: Link to Apache jMeter
+* A: https://jmeter.apache.org/
+  * Installation: just download the binary
 
+* Q: Instructions for Jenkins using the official Docker image
+* A: Still researching the Jenkins Alpine-based image
+  * https://github.com/jenkinsci/docker/blob/master/README.md
+  
+* Q: Link to relative time formats?
+* A: All formats: https://www.php.net/manual/en/datetime.formats.php
+* A: Relative time formats: https://www.php.net/manual/en/datetime.formats.php#datetime.formats.relative
+
+* Q: Upload VM source code via Zoom
+* A: Will upload during class
+  * Also, clone this repo: https://github.com/dbierer/php-iii-demos.git
+ 
+* Q: when using @ + `time()` with `DateTime()` does it default to UTC?
+* A: Still researching
 
 ## VM Update
 Follow these instructions:
