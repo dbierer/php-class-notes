@@ -2,6 +2,8 @@
 
 
 ## To Do
+VM Instructions
+
 ## Homework
 
 
@@ -13,7 +15,7 @@ Info
 * Username: `vagrant`
 * Password: `vagrant`
 
-Do Not Accept the Update or Upgrade Prompts
+Accept the Update prompt if you wish but don't accept the Upgrade Prompt
 * Once you login it's important to wait a few seconds for the system to come fully up.
 * At this point you'll see two prompts: one to update, one to upgrade. Be sure to decline both of these options!
 Confirm that no unattended upgrades are in progress:
@@ -31,8 +33,9 @@ Now you can do the full update/upgrade
 * This doesn't upgrade the OS, just the packages
 * Open a command terminal and run these commands.
 ```
-sudo dpkg --configure -a
-sudo apt -y update && sudo apt -f -y install && sudo apt -y full-upgrade
+sudo apt -y update
+sudo apt -f -y install
+sudo apt -y full-upgrade
 ```
 It will take several hours to complete so it's best to let it run overnight.
 
