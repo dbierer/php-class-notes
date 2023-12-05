@@ -3,18 +3,47 @@
 Last: http://localhost:8883/#/2/46
 
 ## Homework
+For Thur 7 Dec
+* Lab: OpCache and JIT
+  * Look in the php-iii-demos/JIT for starting code
+* Lab: Existing Extension
+  * Be sure to replace `php8.1` with the version on your system
+* Lab: FFI
+  * Look in the php-iii-demos/FFI for starting code
+* Lab: New Extension [Optional]
+* Lab: Custom PHP Labs
+  * Lab: Customized PHP Prerequisites
+  * Lab: Installing Library Dependencies
+  * Have a look at `Custom PHP Lab Notes` below
 For Tues 5 Dec
 * Lab: Built-in Web Server
 
 
 ## TODO
+* Q: What's the current alternative to `yum` on RedHat-based systems?
+* A: `dnf` is more recently used
+
+* Q: Pointers on PHP session management
+
+* Q: References to Doctrine data query cache
+
+* RE: STDIN: create a good example of its use
+
+* For the PHP III demos, get the `index.php` working correctly!
+
 * Q: Link to Apache jMeter
 * A: https://jmeter.apache.org/
   * Installation: just download the binary
 
 * Q: Instructions for Jenkins using the official Docker image
-* A: Still researching the Jenkins Alpine-based image
-  * https://github.com/jenkinsci/docker/blob/master/README.md
+* A: General usage: https://github.com/jenkinsci/docker/blob/master/README.md
+  * Use this image: `jenkins/jenkins:alpine3.18-jdk21`
+  * To run the image:
+```
+mkdir jenkins_home
+docker run -p 8080:8080 -p 50000:50000 --restart=on-failure -v jenkins_home:./jenkins_home jenkins/jenkins:alpine3.18-jdk21
+```
+  * To access, from a browser: `http://localhost:8080`
   
 * Q: Link to relative time formats?
 * A: All formats: https://www.php.net/manual/en/datetime.formats.php
@@ -25,7 +54,20 @@ For Tues 5 Dec
   * Also, clone this repo: https://github.com/dbierer/php-iii-demos.git
  
 * Q: when using @ + `time()` with `DateTime()` does it default to UTC?
-* A: Still researching
+* A: yes, it appears to be the case:
+```
+<?php
+$fmt = 'Y-m-d H:i:s';
+// change to your own timezone:
+echo (new DateTime('now', new DateTimezone('asia/bangkok')))->format($fmt);
+echo PHP_EOL;
+// both 'now' and @time() appear to default to UTC:
+echo (new DateTime('now'))->format($fmt);
+echo PHP_EOL;
+echo (new DateTime('@' . time()))->format($fmt);
+echo PHP_EOL;
+```
+
 
 ## VM Update
 Follow these instructions:
@@ -108,7 +150,7 @@ php -S 0.0.0.0:8080 -t public public/index.php
 ## Custom PHP Lab Notes
 
 * Clone from github
-* Switch to branch php-8.3.0beta3
+* Switch to branch php-8.3.0
 ```
 git checkout php-8.3.0
 ```
@@ -871,7 +913,15 @@ CREATE TABLE `data` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
-## JIT
+## Caching ad JIT
+To manipulate browser caching, you can use the `Cache-Control` header
+* See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+Normally OpCache ignores comments (including Annotations)
+* Doctrine uses these heavily
+* If you're running PHP 8 or above, Doctrine will use Attributes
+* See: https://www.doctrine-project.org/projects/doctrine-orm/en/2.17/reference/attributes-reference.html
+* See: https://www.php.net/manual/en/language.attributes.overview.php
+
 You can also use a `php.ini` setting of `on` to enable JIT:
 * `opcache.jit=on` this is an alias for `tracing`
 * Also, don't forget to enable opcache itself
@@ -879,6 +929,20 @@ You can also use a `php.ini` setting of `on` to enable JIT:
 ```
 ; example:
 opcache.jit_buffer_size=32M
+```
+## Extensions
+How do you tell if an extension is part of the "core"?
+* See: https://github.com/php/php-src/tree/master/ext
+How can you manipulate `php.ini` in a Docker container?
+* In the `Dockerfile` first install PHP
+* You can then do something like this:
+```
+# Make sure OpCache is enabled (should be done already!):
+export PHP_INI=/etc/php.ini
+sed -i 's/;zend_extension=opcache/zend_extension=opcache/g' $PHP_INI
+sed -i 's/;opcache.enable=0/opcache.enable=1/g' $PHP_INI
+sed -i 's/;opcache.enable_cli=0/opcache.enable_cli=1/g' $PHP_INI
+sed -i 's/;opcache.memory_consumption=128/opcache.memory_consumption=128/g' $PHP_INI
 ```
 
 ## ZendPHP on AWS
