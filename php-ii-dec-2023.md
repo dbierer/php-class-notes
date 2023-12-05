@@ -5,7 +5,13 @@
 VM Instructions
 
 ## Homework
-
+For Thu 7 Dec
+* Get the VM set up and updated
+* Lab: Namespace
+  * Look in the VM for this directory: `/home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp`
+* Lab: Create a Class
+  * Put some thought into this as we'll use this as the foundation for further development in later labs
+  * Highly recommended: create a GitHub repository to hold your work for this class
 
 ## VM Notes
 ### Expanded VM Instructions
