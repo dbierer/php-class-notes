@@ -12,6 +12,7 @@ For Thu 7 Dec
 * Lab: Create a Class
   * Put some thought into this as we'll use this as the foundation for further development in later labs
   * Highly recommended: create a GitHub repository to hold your work for this class
+* Lab: Create an Extensible Super Class
 
 ## VM Notes
 ### Expanded VM Instructions
