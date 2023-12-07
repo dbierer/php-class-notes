@@ -2,9 +2,18 @@
 
 
 ## To Do
-VM Instructions
+Make sure attendees get a copy of the updated class when it's released
+
+Q: Reference to readonly properties?
+
 
 ## Homework
+For Tue 12 Dec
+* Lab: Magic Methods
+* Lab: Abstract Classes
+  * Do this in conjunction with the super class lab mentioned earlier
+* Lab: Interfaces
+
 For Thu 7 Dec
 * Get the VM set up and updated
 * Lab: Namespace
@@ -13,6 +22,9 @@ For Thu 7 Dec
   * Put some thought into this as we'll use this as the foundation for further development in later labs
   * Highly recommended: create a GitHub repository to hold your work for this class
 * Lab: Create an Extensible Super Class
+
+William: https://github.com/williamhodge/TravelDealCrawler
+
 
 ## VM Notes
 ### Expanded VM Instructions
@@ -203,6 +215,15 @@ $test = new Test();
 var_dump($test->getIterator([1,2,3,4,5]));
 $what = new Whatever();
 var_dump($what->whatever());
+```
+Here's the example from the OrderApp, `index.php` which is in `public`:
+```
+spl_autoload_register(
+    function ($class) {
+        $file = str_replace('\\', '/', $class) . '.php';
+        require BASE . '/src/' . $file;
+    }
+);
 ```
 
 Class example:
@@ -484,6 +505,95 @@ echo $reflect;
 
 Example of `__destruct()`
 * https://github.com/dbierer/filecms-core/blob/main/src/Common/Image/Captcha.php
+Also:
+```
+<?php
+class Test
+{
+	public function __construct(public string $name) {}
+	public function __destruct()
+	{
+		echo __METHOD__ . ':' . $this->name . PHP_EOL;
+	}
+}
+
+$test1 = new Test('AAA');
+$test2 = new Test('BBB');
+$test3 = new Test('CCC');
+
+function whatever()
+{
+	$test4 = new Test('DDD');
+}
+whatever();
+
+$test1 = NULL;
+
+echo __LINE__ . PHP_EOL;
+
+// actual output:
+/*
+Test::__destruct:DDD
+Test::__destruct:AAA
+23
+Test::__destruct:CCC
+Test::__destruct:BBB
+*/
+```
+Example using `__invoke()` to turn an object into a super powered anonymous function:
+```
+<?php
+class ShowsJson
+{
+	public function __invoke(array $arr)
+	{
+		return json_encode($arr, JSON_PRETTY_PRINT);
+	}
+}
+
+class ShowsHtml
+{
+	public function __invoke(array $arr)
+	{
+		$html = '<ul>';
+		foreach ($arr as $value) $html .= '<li>' . $value . '</li>';
+		$html .= '</ul>';
+		return $html;
+	}
+}
+
+$json = new ShowsJson();
+$html = new ShowsHtml();
+
+echo $json(['AAA','BBB','CCC']);
+echo PHP_EOL;
+echo $html(['AAA','BBB','CCC']);
+echo PHP_EOL;
+```
+Using `__get()` to give you the ability to read a protected, but you are unable to write to the property
+* Effectively, this is a read-only property!
+* NOTE: readonly properties were introduced in PHP 8.3
+```
+<?php
+class UserEntity {
+    public function __construct(
+        protected string $firstName,
+        protected string $lastName
+    ) {}
+ 
+    // Returns an inaccessible property
+    public function __get($value) {
+        return $this->$value ?? NULL;
+    }
+}
+ 
+$userEntity = new UserEntity('Mark', 'Watney');
+echo $userEntity->firstName;
+$userEntity->firstName = 'Fred';
+
+// Actual output:
+// MarkPHP Fatal error:  Uncaught Error: Cannot access protected property
+``
 
 Serialization example:
 ```
@@ -740,6 +850,45 @@ $controller = new MvcController();
 $controller->setService('date', $callback);
 echo $controller->getService('date')();
 ```
+Interfaces can be implemented at any level within an inheritance structure
+* They act as "pseudo" superclass
+* They are not tied to specific level within the inheritance tree
+```
+<?php
+interface HashInterface
+{
+	public function generateHash(string $key) : string;
+}
+abstract class AbstractUser implements HashInterface
+{
+	public function __construct(public string $fname, public string $lname) {}
+}
+
+class OldStyleUser extends AbstractUser
+{
+	public function generateHash(string $key) : string
+	{
+		return md5($key);
+	}
+}
+
+class NewStyleUser extends AbstractUser
+{
+	public function generateHash(string $key) : string
+	{
+		return password_hash($key, PASSWORD_DEFAULT);
+	}	
+}
+
+$old = new OldStyleUser('Fred', 'Flintstone');
+$new = new NewStyleUser('George', 'Jetson');
+
+//echo $old->generateHash('password');
+echo PHP_EOL;
+echo $new->generateHash('password');
+echo PHP_EOL;
+```
+
 Example of "type widening"
 * The subclass can have a data type that's "wider" than the super class
 ```
@@ -1373,6 +1522,8 @@ $result = curl_exec($ch);
 var_dump($result);
 curl_close($ch);
 ```
+* http://localhost:8882/#/3/70
+  * This slide should go into the "Type Hint" section
 
 ## Q & A
 * Q: Can you use the keyword "new" in property or const definition in 8.1?
