@@ -1,8 +1,16 @@
 # PHP Architect - Nov 2023
 
 Last: http://localhost:8883/#/2/46
+Make sure attendees get updated course materials
 
 ## Homework
+For Sat 9 Dec (Fri 8 Dec for people living in Brazil)
+* Lab: ZendPHP for AWS [optional]
+* Lab: Docker Image Build
+* Lab: Commit the Image
+* Labs: Docker Compose Labs
+  * Do all labs
+  
 For Thur 7 Dec
 * Lab: OpCache and JIT
   * Look in the php-iii-demos/JIT for starting code
@@ -10,6 +18,7 @@ For Thur 7 Dec
   * Be sure to replace `php8.1` with the version on your system
 * Lab: FFI
   * Look in the php-iii-demos/FFI for starting code
+  * See: https://www.php.net/manual/en/migration83.deprecated.php
 * Lab: New Extension [Optional]
 * Lab: Custom PHP Labs
   * Lab: Customized PHP Prerequisites
@@ -20,6 +29,15 @@ For Tues 5 Dec
 
 
 ## TODO
+* Q: What some other approaches to `ENTRYPOINT` other than a simple naive loop?
+* A: 
+
+* Q: What's the difference between `docker start` and `docker run`?
+* A: The `docker run` command runs a command in a new container, pulling the image if needed and starting the container.
+* A: You can restart a stopped container with all its previous changes intact using `docker start`. 
+  * Use `docker ps -a` to view a list of all containers, including those that are stopped.
+  * See: https://docs.docker.com/engine/reference/commandline/run/
+
 * Q: What's the current alternative to `yum` on RedHat-based systems?
 * A: `dnf` is more recently used
 
@@ -1001,6 +1019,32 @@ Example `docker-compose.yml`
 Terraform templates
 * https://developer.hashicorp.com/terraform/language/functions/templatefile
 
+## REST Services
+Example using `parse_url()`
+```
+<?php
+$url = 'ftp://user:pwd@www.zend.com/en/services/training?id=1&view=index&component=user';
+var_dump(parse_url($url));
+// actual output:
+/*
+ * array(6) {
+  ["scheme"]=>
+  string(3) "ftp"
+  ["host"]=>
+  string(12) "www.zend.com"
+  ["user"]=>
+  string(4) "user"
+  ["pass"]=>
+  string(3) "pwd"
+  ["path"]=>
+  string(21) "/en/services/training"
+  ["query"]=>
+  string(30) "id=1&view=index&component=user"
+}
+*/
+
+```
+
 ## Middleware
 * Low level example: https://github.com/dbierer/strat_post
 
@@ -1018,7 +1062,9 @@ Configuration Management tools
 * https://github.com/dbierer/php-iii-demos.git
 * https://github.com/dbierer/php-iii-dec-2021.git
 * https://github.com/dbierer/php-iii-jul-2022.git
-
+* Something to keep your eye on:
+  * Machine Learning project: https://www.tensorflow.org/
+ 
 ## Q & A
 * Q: RE: Docker Compose: what's the difference/advantage of "ipam" vs. "overlay" for building networks?
 * A: `IPAM` is an old acronym that stands for "IP Address Management". It's not a protocol. You use `ipam` as a sub-key under your network service mainly to define static IP address information.
@@ -1161,3 +1207,11 @@ $sql = 'DELETE * FROM orders WHERE id = ?';
   * Add a note to the effect that you need to change "8.1" to the current version
 * http://localhost:8883/#/4/56
   * Add a note to the effect that you should copy the code from the previous slides
+* FFI Lab: Deprecation notice for this line:
+  * https://www.php.net/manual/en/migration83.deprecated.php
+```
+$arr = FFI::new('int[' . $max . ']');
+```
+* Custom PHP Lab:
+  * need to include instructions for making sure extensions are compiled for the right version of PHP
+  
