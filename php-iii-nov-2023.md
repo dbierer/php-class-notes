@@ -10,7 +10,7 @@ For Sat 9 Dec (Fri 8 Dec for people living in Brazil)
 * Lab: Commit the Image
 * Labs: Docker Compose Labs
   * Do all labs
-  
+
 For Thur 7 Dec
 * Lab: OpCache and JIT
   * Look in the php-iii-demos/JIT for starting code
@@ -29,12 +29,20 @@ For Tues 5 Dec
 
 
 ## TODO
+* RE: STDIN: create a good example of its use
+
+* For the PHP III demos, get the `index.php` working correctly!
+
 * Q: What some other approaches to `ENTRYPOINT` other than a simple naive loop?
-* A: 
+* A: Examples of Dockerfiles: https://github.com/dockersamples?q=&type=all&language=&sort=stargazers
+* A: Pertinent Docker reference:
+  * See: https://docs.docker.com/engine/reference/builder/#cmd
+  * See: https://docs.docker.com/engine/reference/builder/#entrypoint
+
 
 * Q: What's the difference between `docker start` and `docker run`?
 * A: The `docker run` command runs a command in a new container, pulling the image if needed and starting the container.
-* A: You can restart a stopped container with all its previous changes intact using `docker start`. 
+* A: You can restart a stopped container with all its previous changes intact using `docker start`.
   * Use `docker ps -a` to view a list of all containers, including those that are stopped.
   * See: https://docs.docker.com/engine/reference/commandline/run/
 
@@ -42,12 +50,18 @@ For Tues 5 Dec
 * A: `dnf` is more recently used
 
 * Q: Pointers on PHP session management
+* A: Read this about session timeouts:
+  * https://stackoverflow.com/questions/3476538/php-sessions-timing-out-too-quickly
+* A: Place session files in a directory under your control:
+  * https://www.php.net/session_save_path
+* A: Create your own session handler
+  * https://www.php.net/manual/en/function.session-set-save-handler.php
+  * Be sure to read the user comments!
 
 * Q: References to Doctrine data query cache
-
-* RE: STDIN: create a good example of its use
-
-* For the PHP III demos, get the `index.php` working correctly!
+* A: https://www.doctrine-project.org/projects/doctrine-orm/en/2.16/reference/caching.html
+* A: https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/second-level-cache.html
+* A: https://www.doctrine-project.org/projects/doctrine-dbal/en/3.7/reference/caching.html
 
 * Q: Link to Apache jMeter
 * A: https://jmeter.apache.org/
@@ -62,7 +76,7 @@ mkdir jenkins_home
 docker run -p 8080:8080 -p 50000:50000 --restart=on-failure -v jenkins_home:./jenkins_home jenkins/jenkins:alpine3.18-jdk21
 ```
   * To access, from a browser: `http://localhost:8080`
-  
+
 * Q: Link to relative time formats?
 * A: All formats: https://www.php.net/manual/en/datetime.formats.php
 * A: Relative time formats: https://www.php.net/manual/en/datetime.formats.php#datetime.formats.relative
@@ -70,7 +84,7 @@ docker run -p 8080:8080 -p 50000:50000 --restart=on-failure -v jenkins_home:./je
 * Q: Upload VM source code via Zoom
 * A: Will upload during class
   * Also, clone this repo: https://github.com/dbierer/php-iii-demos.git
- 
+
 * Q: when using @ + `time()` with `DateTime()` does it default to UTC?
 * A: yes, it appears to be the case:
 ```
@@ -375,7 +389,7 @@ function test2(array $arr)
 		yield $item * 1.08;
 }
 $result = test2($arr);
-echo count($result); 
+echo count($result);
 // PHP Fatal error:  Uncaught TypeError: count(): Argument #1 ($value) must be of type Countable|array, Generator given in /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/public/test.php:20
 ```
 
@@ -971,7 +985,10 @@ Steps taken to launch an instance:
 * Searched for "ZendPHP"
   * https://us-east-1.console.aws.amazon.com/marketplace/home#/search!mpSearch/search?text=ZendPHP
 * Selected "ZendPHP with Apache on Ubuntu 20.04 (BYOL)"
-  * Clicked on "Subscribe"
+  * Clicked on "Subscribe" or "Continue to Subscribe"
+  * Make a note of the "EC2 Instance Types"
+  * Make sure everything is $0 per hour
+  * Click on "Accept Terms"
   * From next menu clicked on "Continue to Configuration"
 * Choose configuration (including region, which could affect what services are in the "Free Tier")
   * Chose "US East (N. Virginia)"
@@ -983,16 +1000,39 @@ Steps taken to launch an instance:
   * Chose "Create New Key Pair"
     * RSA
     * PEM
+  * Created the directory `~/.aws`
   * Copied downloaded `*.pem` file to `~/.aws`
 * Clicked "Launch Instance"
-* From the next screen, chose "View Instance Details"
-  * Wrote down IP address `a.b.c.d`
+* Click "View All Instances"
+* From the next screen, chose the running instance
+  * Wrote down Public IPv4 address `a.b.c.d`
+    * Example: `52.90.232.221`
+  * Wrote down the Public IPv4 DNS
+    * Example: `ec2-52-90-232-221.compute-1.amazonaws.com`
+* Tested from browser:
+```
+http://a.b.c.d/
+```
 * Read instructions on connecting to the instance
   * https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstances.html?icmpid=docs_ec2_console
+    * Username: ubuntu
+    * Set permissions on the local keypair stored in `~/.aws`
+```
+chmod 400 key-pair-name.pem
+```
 * Shelled into instance:
+  * See: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/connect-linux-inst-ssh.html
 ```
-ssh -i .aws/php_iii_dec_2022.pem ubuntu@a.b.c.d
+ssh -i .aws/php_iii_dec_2023.pem ubuntu@a.b.c.d
+
 ```
+* Confirm your PHP version
+  * Write down the version
+  * e.g. "8.1"
+```
+sudo zendphpctl php-list-installed
+```
+
 * Set up sample app in `/var/www/html`
 ```
 cd /var/www
@@ -1001,6 +1041,19 @@ sudo apt install unzip
 sudo unzip post_code_test_app.zip
 sudo rm html/index.html
 ```
+* Configure nginx for PHP-FPM
+  * You'll need to remove one of the `fastcgi_pass` directives
+    * If you prefer to use the socket, be sure to check for the correct filename
+    * Run `ls -l /var/run/php` to confirm the name
+```
+sudo vi /etc/nginx/sites-available/default
+```
+* Restart PHP-FPM and nginx
+```
+sudo /etc/init.d/php8.1-zend-fpm restart
+sudo /etc/init.d/nginx restart
+```
+
 * Tested from browser:
 ```
 http://a.b.c.d/city=levittown&state=NY
@@ -1064,7 +1117,7 @@ Configuration Management tools
 * https://github.com/dbierer/php-iii-jul-2022.git
 * Something to keep your eye on:
   * Machine Learning project: https://www.tensorflow.org/
- 
+
 ## Q & A
 * Q: RE: Docker Compose: what's the difference/advantage of "ipam" vs. "overlay" for building networks?
 * A: `IPAM` is an old acronym that stands for "IP Address Management". It's not a protocol. You use `ipam` as a sub-key under your network service mainly to define static IP address information.
@@ -1214,4 +1267,4 @@ $arr = FFI::new('int[' . $max . ']');
 ```
 * Custom PHP Lab:
   * need to include instructions for making sure extensions are compiled for the right version of PHP
-  
+
