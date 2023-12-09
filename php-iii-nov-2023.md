@@ -1,9 +1,13 @@
 # PHP Architect - Nov 2023
 
-Last: http://localhost:8883/#/2/46
+Last: http://localhost:8883/#/8/7
 Make sure attendees get updated course materials
 
 ## Homework
+For Tue 12 Dec (Mon 11 Dec for certain other people)
+* REST Service Development Lab [Optional]
+* Lab: Adding Middleware
+
 For Sat 9 Dec (Fri 8 Dec for people living in Brazil)
 * Lab: ZendPHP for AWS [optional]
 * Lab: Docker Image Build
@@ -29,6 +33,11 @@ For Tues 5 Dec
 
 
 ## TODO
+* RE: Threads
+  * Good explanation of how they work
+  * Look into PHP and threads
+  * What's the difference between how Java and PHP handle threads
+  
 * RE: STDIN: create a good example of its use
 
 * For the PHP III demos, get the `index.php` working correctly!
@@ -1071,6 +1080,7 @@ Example `docker-compose.yml`
 * https://github.com/dbierer/Learn-MongoDB-4.x/blob/master/chapters/13/docker-compose.yml
 Terraform templates
 * https://developer.hashicorp.com/terraform/language/functions/templatefile
+* https://developer.hashicorp.com/terraform/intro
 
 ## REST Services
 Example using `parse_url()`
@@ -1117,6 +1127,8 @@ Configuration Management tools
 * https://github.com/dbierer/php-iii-jul-2022.git
 * Something to keep your eye on:
   * Machine Learning project: https://www.tensorflow.org/
+* Free world city and postcode data
+  * geonames.org
 
 ## Q & A
 * Q: RE: Docker Compose: what's the difference/advantage of "ipam" vs. "overlay" for building networks?
@@ -1267,4 +1279,12 @@ $arr = FFI::new('int[' . $max . ']');
 ```
 * Custom PHP Lab:
   * need to include instructions for making sure extensions are compiled for the right version of PHP
-
+* Docker lab
+  * When you commit an image you need the ID of the running container
+  * Check for syntax error in the `startup.sh` script in the Docker Compose lab
+  * This is not correct:
+```
+if [ -f $PROCESS_1_STATUS -o -f $PROCESS_2_STATUS ]; then
+```
+  * Should only test for 1 server per container in the Docker Compose lab
+* Mezzio create project is not working
