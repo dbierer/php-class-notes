@@ -76,16 +76,6 @@ For Tues 5 Dec
 * A: https://jmeter.apache.org/
   * Installation: just download the binary
 
-* Q: Instructions for Jenkins using the official Docker image
-* A: General usage: https://github.com/jenkinsci/docker/blob/master/README.md
-  * Use this image: `jenkins/jenkins:alpine3.18-jdk21`
-  * To run the image:
-```
-mkdir jenkins_home
-docker run -p 8080:8080 -p 50000:50000 --restart=on-failure -v jenkins_home:./jenkins_home jenkins/jenkins:alpine3.18-jdk21
-```
-  * To access, from a browser: `http://localhost:8080`
-
 * Q: Link to relative time formats?
 * A: All formats: https://www.php.net/manual/en/datetime.formats.php
 * A: Relative time formats: https://www.php.net/manual/en/datetime.formats.php#datetime.formats.relative
@@ -176,7 +166,21 @@ Example of a working "Event" system
 * CLI utility to reset JIT:
     * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch10/php8_jit_reset.php
 * Swoole Lab
-  * Had to install OpenSwoole
+  * Just install the default package:
+```
+sudo apt install php8.2-swoole
+```
+  * Change "8.2" to the current PHP version
+  * From `php-iii-demos` run composer install:
+```
+php composer.phar self-update
+php composer.phar install --ignore-platform-reqs
+```
+  * Run these three program under `src` and compare the time:
+    * `normal.php`
+    * `swoole.php`
+    * `react.php`
+
 * API Tools Lab
   * Don't forget to add `--ignore-platform-reqs` when installing Laminas API Tools
 ```
@@ -186,6 +190,13 @@ composer --ignore-platform-reqs create-project laminas-api-tools/api-tools-skele
 ```
 cd path/to/api/tools
 php -S 0.0.0.0:8080 -t public public/index.php
+```
+* Apache JMeter
+  * Download binary from: https://jmeter.apache.org/download_jmeter.cgi
+  * Extract to `/home/vagrant/jmeter`
+  * From a terminal window run the shell script:
+```
+/home/vagrant/jmeter/bin/jmeter.sh
 ```
 
 ## Custom PHP Lab Notes
@@ -274,6 +285,21 @@ sudo apt install -y libbz2-dev  libpng-dev zlib1g-dev libsodium-dev \
 ```
 
 To switch versions use `update-alternatives --config php` (see below for more info)
+
+## Jenkins Lab:
+Instructions for Jenkins using the official Docker image
+* General usage: https://github.com/jenkinsci/docker/blob/master/README.md
+  * Use this image: `jenkins/jenkins:alpine3.18-jdk21`
+  * To run the image:
+```
+mkdir jenkins_home
+docker run -p 8080:8080 -p 50000:50000 --restart=on-failure -v jenkins_home:`pwd`/jenkins_home jenkins/jenkins:alpine3.18-jdk21
+```
+  * Look for a message about the admin password
+    * S/be located here: `/var/jenkins_home/secrets/initialAdminPassword`
+  * To access, from a browser: `http://localhost:8080`
+  * Installed the "suggested" plugins + those on the list for the lab
+
 
 
 ## Advanced PHP
