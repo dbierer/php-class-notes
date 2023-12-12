@@ -33,14 +33,19 @@ For Tues 5 Dec
 
 
 ## TODO
-* RE: Threads
-  * Good explanation of how they work
-  * Look into PHP and threads
-  * What's the difference between how Java and PHP handle threads
-  
-* RE: STDIN: create a good example of its use
-
 * For the PHP III demos, get the `index.php` working correctly!
+
+* Q: Is PHP multi-threaded?
+* A: Short answer: yes, but only for CLI usage
+  * See: https://www.php.net/manual/en/intro.pthreads.php
+  * See: https://www.php.net/manual/en/intro.parallel.php
+  * Good explanation of how they work: https://stackoverflow.com/questions/5201852/what-is-a-thread-really
+  * What's the difference between how Java and PHP handle threads
+    * Just type the above sentence into Google ... there are hundreds of different answers!
+  
+* Q: RE: STDIN: do you have a good example of its use?
+* A: Best bet is to read through the reference docs and look at the user comments (lots of examples)
+  * https://www.php.net/manual/en/features.commandline.io-streams.php
 
 * Q: What some other approaches to `ENTRYPOINT` other than a simple naive loop?
 * A: Examples of Dockerfiles: https://github.com/dockersamples?q=&type=all&language=&sort=stargazers
