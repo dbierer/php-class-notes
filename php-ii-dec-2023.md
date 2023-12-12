@@ -5,7 +5,9 @@
 Make sure attendees get a copy of the updated class when it's released
 
 Q: Reference to readonly properties?
-
+A: Introduced in PHP 8.1. In PHP 8.2 support was added for `readonly` classes
+  * See: https://wiki.php.net/rfc/readonly_properties_v2
+  * See: https://wiki.php.net/rfc/readonly_amendments
 
 ## Homework
 For Tue 12 Dec
