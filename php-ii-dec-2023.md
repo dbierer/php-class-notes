@@ -4,12 +4,19 @@
 ## To Do
 Make sure attendees get a copy of the updated class when it's released
 
+Q: Instructions for adding additional language input sources to change keyboard to German
+
 Q: Reference to readonly properties?
 A: Introduced in PHP 8.1. In PHP 8.2 support was added for `readonly` classes
   * See: https://wiki.php.net/rfc/readonly_properties_v2
   * See: https://wiki.php.net/rfc/readonly_amendments
 
 ## Homework
+For Thu 14 Dec
+* Lab: Type Hinting
+* Lab: Build Custom Exception Class
+* Lab: Traits
+
 For Tue 12 Dec
 * Lab: Magic Methods
 * Lab: Abstract Classes
@@ -1099,7 +1106,88 @@ $bar = new Bar();
 var_dump($foo->getInstance());    // Foo
 var_dump($bar->getInstance());    // Bar
 ```
+Using `static` to "float down" to the lowest inheritance level
+```
+<?php
+class Foo 
+{	
+	public string $name = 'Fred Flintstone';
+    public function getInstance(): static
+    {
+        return new static();
+    }
+}
+
+class Bar extends Foo
+{}
+
+class Baz extends Bar
+{}
+
+
+$foo = new Foo();
+var_dump($foo->getInstance());
+
+$bar = new Bar();
+var_dump($bar->getInstance());
+
+$baz = new Baz();
+var_dump($baz->getInstance());
+
+// Actual Output
+/*
+ * object(Foo)#2 (1) {
+  ["name"]=>
+  string(15) "Fred Flintstone"
+}
+object(Bar)#3 (1) {
+  ["name"]=>
+  string(15) "Fred Flintstone"
+}
+object(Baz)#4 (1) {
+  ["name"]=>
+  string(15) "Fred Flintstone"
+}
+*/
+```
+Typical example using `Exception`
+```
+<?php
+class Test
+{	
+	/** 
+	 * Divide two numbers
+	 * 
+	 * @throws Exception if division by zero
+	 * @param float $a
+	 * @param float $b
+	 * @return float $a / $b
+	 */
+	public function divide(float $a, float $b) : float
+	{
+		if ($b == 0) {
+			throw new Exception('Cannot divide by zero!');
+		}
+		return $a / $b;
+	}
+}
+
+// this is the calling code, and is most likely 
+// found someplace else in the application:
+try {
+	$test = new Test();
+	echo $test->divide(22, 0);
+	echo PHP_EOL;
+} catch (Exception $e) {
+	error_log(__FILE__ . ':' . __LINE__ . ':' . $e->getTraceAsString());
+	echo $e->getMessage();
+}
+
+```
+
 Exception / Error example:
+* See: https://www.php.net/manual/en/language.exceptions.php
+
 ```
 <?php
 try {
