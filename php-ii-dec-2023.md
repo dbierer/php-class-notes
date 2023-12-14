@@ -4,7 +4,13 @@
 ## To Do
 Make sure attendees get a copy of the updated class when it's released
 
+Q: What are other design patterns that have superceded MVC?
+A: 
+
+Q: How do you set the (or find) the nesting limit for a particular PHP installation?
+
 Q: Instructions for adding additional language input sources to change keyboard to German
+A: See: https://askubuntu.com/questions/1272094/how-to-install-a-german-keyboard-layout-on-an-english-installation
 
 Q: Reference to readonly properties?
 A: Introduced in PHP 8.1. In PHP 8.2 support was added for `readonly` classes
@@ -12,6 +18,9 @@ A: Introduced in PHP 8.1. In PHP 8.2 support was added for `readonly` classes
   * See: https://wiki.php.net/rfc/readonly_amendments
 
 ## Homework
+For Tue 19 Dec
+* Lab: Look over the OrderApp (in the VM) and let me know if you have questions
+
 For Thu 14 Dec
 * Lab: Type Hinting
 * Lab: Build Custom Exception Class
@@ -1260,6 +1269,42 @@ echo PHP_EOL;
 echo $child->test();
 
 ```
+Example of nested objects:
+```
+<?php
+class Address
+{
+	public function __construct(
+		public string $streetAddress,
+		public string $city,
+		public string $postCode,
+		public string $country) {}
+}
+
+class User
+{
+	public function __construct(
+		public string $name,
+		public string $email,
+		public Address $address) {}
+}
+
+$user = new User(
+	'Fred Flintstone',
+	'fred@slate_and_granite.com',
+	new Address(
+		'201 Cobblestone Lane',
+		'Bedrock',
+		'00000',
+		'Unknown')
+);
+
+// how to get the city from User
+echo $user->name . ' lives in the city of ' . $user->address->city;
+echo PHP_EOL;
+
+var_dump($user);	
+```
 
 ## PDO
 Adding options as 4th argument:
@@ -1306,6 +1351,7 @@ $stmt->execute($data);
 ```
 Example of `PDO::FETCH_CLASS` mode:
 * See: https://github.com/dbierer/classic_php_examples/blob/master/db/db_pdo_fetch_class.php
+* Other examples: https://github.com/dbierer/classic_php_examples/tree/master/db
 
 ## Output Buffering
 To start output buffering automatically, in the `php.ini` file:
