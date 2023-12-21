@@ -4,8 +4,14 @@
 ## To Do
 Make sure attendees get a copy of the updated class when it's released
 
+Q: Do you have an example using `preg_grep()`?
+A:
+
+Q: What is "skeleton loading?"
+A:
+
 Q: What are other design patterns that have superceded MVC?
-A: 
+A:
 
 Q: How do you set the (or find) the nesting limit for a particular PHP installation?
 
@@ -598,13 +604,13 @@ class UserEntity {
         protected string $firstName,
         protected string $lastName
     ) {}
- 
+
     // Returns an inaccessible property
     public function __get($value) {
         return $this->$value ?? NULL;
     }
 }
- 
+
 $userEntity = new UserEntity('Mark', 'Watney');
 echo $userEntity->firstName;
 $userEntity->firstName = 'Fred';
@@ -895,7 +901,7 @@ class NewStyleUser extends AbstractUser
 	public function generateHash(string $key) : string
 	{
 		return password_hash($key, PASSWORD_DEFAULT);
-	}	
+	}
 }
 
 $old = new OldStyleUser('Fred', 'Flintstone');
@@ -1118,8 +1124,8 @@ var_dump($bar->getInstance());    // Bar
 Using `static` to "float down" to the lowest inheritance level
 ```
 <?php
-class Foo 
-{	
+class Foo
+{
 	public string $name = 'Fred Flintstone';
     public function getInstance(): static
     {
@@ -1163,10 +1169,10 @@ Typical example using `Exception`
 ```
 <?php
 class Test
-{	
-	/** 
+{
+	/**
 	 * Divide two numbers
-	 * 
+	 *
 	 * @throws Exception if division by zero
 	 * @param float $a
 	 * @param float $b
@@ -1181,7 +1187,7 @@ class Test
 	}
 }
 
-// this is the calling code, and is most likely 
+// this is the calling code, and is most likely
 // found someplace else in the application:
 try {
 	$test = new Test();
@@ -1303,7 +1309,7 @@ $user = new User(
 echo $user->name . ' lives in the city of ' . $user->address->city;
 echo PHP_EOL;
 
-var_dump($user);	
+var_dump($user);
 ```
 
 ## PDO
@@ -1365,6 +1371,33 @@ Headers can include any valid headers as per RFC 2822
 * See: http://www.faqs.org/rfcs/rfc2822
 
 ## Regex
+Simple example finds all files that start with "Test" and end with "php"
+```
+<?php
+$str = [
+	'Test.php',
+	'Test.jpg',
+	'Test2.php',
+	'Test2.png',
+	'No_Test.php',
+];
+
+// or you can use this:
+// $patt = '/\ATest.*php\Z/';
+
+$patt = '/^Test.*php$/';
+
+foreach ($str as $item) {
+	if (preg_match($patt, $item)) {
+		$found = 'Found';
+	} else {
+		$found = 'Not Found';
+	}
+	echo $item . ' was ' . $found . PHP_EOL;
+}
+
+```
+
 Alternatives to finding chars at beginning or end of a string:
 ```
 <?php
@@ -1392,6 +1425,17 @@ $pat = '/<a.*?href=("|\')(.*?)("|\').*?>/';
 preg_match_all($pat, $str, $match);
 var_dump($match);
 ```
+Using "dollar" notation to replace the order of subpatterns
+```
+<?php
+$str = 'Flintstone, Fred';
+$pat = '/([A-Za-z]+?), ([A-Za-z]+)/';
+$rep = '$2 $1';
+echo preg_replace($pat, $rep, $str);
+// Actual output: "Fred Flintstone"
+
+``
+
 Example email validation
 ```
 <?php
