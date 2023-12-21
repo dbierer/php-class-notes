@@ -4,14 +4,15 @@
 ## To Do
 Make sure attendees get a copy of the updated class when it's released
 
+Q: Can you use `filter_var()` with the `FILTER_VALIDATE_EMAIL` flag in place of a regex?
+A: It works at a very basic level, but doesn't catch everything. Recommend to a regex for rigorous validation (see examples below)
+
 Q: Do you have an example using `preg_grep()`?
-A:
+A: See: https://github.com/dbierer/classic_php_examples/blob/master/regex/preg_grep.php
 
 Q: What is "skeleton loading?"
-A:
-
-Q: What are other design patterns that have superceded MVC?
-A:
+A: Still researching this. From what I could see thus far, it appears to be a front-end technology.
+  * See: https://bootcamp.uxdesign.cc/skeleton-vs-loading-screens-enhancing-user-experience-during-content-loading-and-data-fetching-3a07b1bdbc9c
 
 Q: What some alternate reasons to use `ob_start()`
 A: One good reason is to have the ability to short-circuit long-running AJAX requests!
@@ -1653,6 +1654,10 @@ Example email validation regex from Andrey:
 Example from Michael:
 ```
  $pattern = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';
+```
+Example from William:
+```
+$pattern = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';
 ```
 
 ## Web Services
