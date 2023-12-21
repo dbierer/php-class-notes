@@ -4,10 +4,16 @@
 ## To Do
 Make sure attendees get a copy of the updated class when it's released
 
+Q: What some alternate reasons to use `ob_start()`
+A: One good reason is to have the ability to short-circuit long-running AJAX requests!
+
 Q: What are other design patterns that have superceded MVC?
-A: 
+A: There are plenty of modern alternatives.
+  * This is a good starting point: https://stackoverflow.com/questions/141912/alternatives-to-the-mvc
 
 Q: How do you set the (or find) the nesting limit for a particular PHP installation?
+A: There is no default nesting level for PHP -- it's determined by the OS. However, if you have XDebug installed, any errors might originate from that extension.
+  * See this article: https://stackoverflow.com/questions/4293775/increasing-nesting-function-calls-limit
 
 Q: Instructions for adding additional language input sources to change keyboard to German
 A: See: https://askubuntu.com/questions/1272094/how-to-install-a-german-keyboard-layout-on-an-english-installation
@@ -18,6 +24,9 @@ A: Introduced in PHP 8.1. In PHP 8.2 support was added for `readonly` classes
   * See: https://wiki.php.net/rfc/readonly_amendments
 
 ## Homework
+For Thu 21 Dec
+* Lab: Develop a Regex to validate an email address
+
 For Tue 19 Dec
 * Lab: Look over the OrderApp (in the VM) and let me know if you have questions
 
