@@ -1,11 +1,16 @@
-# PHP II - Dec 2023
+# PHP II - Jan 2024
 
 
 ## To Do
-Make sure attendees get a copy of the updated class when it's released
+* Make sure attendees get a copy of the updated class when it's released
+* Q: Do the PSRs recommend using `()` when creating new instances?
+
+* Q: What version of PHP disallows the auto-creation of properties without declaration?
 
 ## Homework
-
+For Wed 10 January
+* Update the VM as per the expanded instructions below
+* Lab: Namespace
 
 ## VM Notes
 ### Expanded VM Instructions
@@ -318,6 +323,37 @@ echo $test2->getName();
 
 var_dump($test1, $test2);
 ```
+Creation of dynamic properties is now deprecated (soon to be removed)
+```
+<?php
+class UserEntity
+{
+    public function __construct(
+		protected string $firstName, 
+		protected string $lastName)
+    {
+		// do nothing
+    }
+    public function init()
+    {
+		$this->time = new DateTime();
+    }
+    
+}
+ini_set('display_errors', 1);
+ini_set('error_reporting', E_ALL);
+
+$user1 = new UserEntity('Jack' , 'Ryan');
+$user2 = new UserEntity('Monte' , 'Python');
+$user1->init();
+$user2->init();
+
+var_dump($user1, $user2);
+
+// PHP Deprecated:  Creation of dynamic property UserEntity::$time 
+// is deprecated in /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/test.php on line 12
+```
+
 Example using `get_object_vars()` to return JSON representation of object properties
 ```
 <?php
@@ -1719,3 +1755,5 @@ A: Introduced in PHP 8.1. In PHP 8.2 support was added for `readonly` classes
 
 ## Change Request
 
+* http://localhost:8882/#/3/15
+  * Cannot have an active expression in the declaration at this point!
