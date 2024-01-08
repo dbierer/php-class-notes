@@ -5,33 +5,6 @@
 Make sure attendees get a copy of the updated class when it's released
 
 ## Homework
-For Thu 21 Dec
-* Lab: Develop a Regex to validate an email address
-
-For Tue 19 Dec
-* Lab: Look over the OrderApp (in the VM) and let me know if you have questions
-
-For Thu 14 Dec
-* Lab: Type Hinting
-* Lab: Build Custom Exception Class
-* Lab: Traits
-
-For Tue 12 Dec
-* Lab: Magic Methods
-* Lab: Abstract Classes
-  * Do this in conjunction with the super class lab mentioned earlier
-* Lab: Interfaces
-
-For Thu 7 Dec
-* Get the VM set up and updated
-* Lab: Namespace
-  * Look in the VM for this directory: `/home/vagrant/Zend/workspaces/DefaultWorkspace/orderapp`
-* Lab: Create a Class
-  * Put some thought into this as we'll use this as the foundation for further development in later labs
-  * Highly recommended: create a GitHub repository to hold your work for this class
-* Lab: Create an Extensible Super Class
-
-William: https://github.com/williamhodge/TravelDealCrawler
 
 
 ## VM Notes
@@ -165,7 +138,6 @@ Coding Standards: PSR-1 and PSR-12
 * https://www.php-fig.org/psr/
 
 ## Class Notes
-
 ### Namespaces
 Namespace standard: PSR-4
 * https://www.php-fig.org/psr/psr-4/
