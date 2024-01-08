@@ -630,7 +630,7 @@ $userEntity->firstName = 'Fred';
 
 // Actual output:
 // MarkPHP Fatal error:  Uncaught Error: Cannot access protected property
-``
+```
 
 Serialization example:
 ```
