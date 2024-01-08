@@ -1447,7 +1447,7 @@ $rep = '$2 $1';
 echo preg_replace($pat, $rep, $str);
 // Actual output: "Fred Flintstone"
 
-``
+```
 
 Example email validation
 ```
