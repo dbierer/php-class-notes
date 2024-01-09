@@ -4,8 +4,14 @@
 ## To Do
 * Make sure attendees get a copy of the updated class when it's released
 * Q: Do the PSRs recommend using `()` when creating new instances?
+* A: According to PSR-12::Section 4:
+  * When instantiating a new class, parentheses MUST always be present even when there are no arguments passed to the constructor.
+  * See: https://www.php-fig.org/psr/psr-12/#4-classes-properties-and-methods
 
 * Q: What version of PHP disallows the auto-creation of properties without declaration?
+* A: Here's the RFC: https://wiki.php.net/rfc/deprecate_dynamic_properties
+  * Dynamic property deprecation landed in PHP 8.2, however their final removal is not announced
+  * The RFC offers the attribute `#[AllowDynamicProperties]` as a way to opt-in to the use of dynamic properties.
 
 ## Homework
 For Wed 10 January
@@ -329,7 +335,7 @@ Creation of dynamic properties is now deprecated (soon to be removed)
 class UserEntity
 {
     public function __construct(
-		protected string $firstName, 
+		protected string $firstName,
 		protected string $lastName)
     {
 		// do nothing
@@ -338,7 +344,7 @@ class UserEntity
     {
 		$this->time = new DateTime();
     }
-    
+
 }
 ini_set('display_errors', 1);
 ini_set('error_reporting', E_ALL);
@@ -350,7 +356,7 @@ $user2->init();
 
 var_dump($user1, $user2);
 
-// PHP Deprecated:  Creation of dynamic property UserEntity::$time 
+// PHP Deprecated:  Creation of dynamic property UserEntity::$time
 // is deprecated in /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/test.php on line 12
 ```
 
