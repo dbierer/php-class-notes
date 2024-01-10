@@ -3,6 +3,9 @@
 
 ## To Do
 * Make sure attendees get a copy of the updated class when it's released
+
+* Q: Find the example where `__serialize()` is used to encrypt a CC number
+
 * Q: Do the PSRs recommend using `()` when creating new instances?
 * A: According to PSR-12::Section 4:
   * When instantiating a new class, parentheses MUST always be present even when there are no arguments passed to the constructor.
@@ -14,6 +17,12 @@
   * The RFC offers the attribute `#[AllowDynamicProperties]` as a way to opt-in to the use of dynamic properties.
 
 ## Homework
+For Fri 12 January
+* Lab: Create a Class
+* Lab: Create an Extensible Super Class
+* Lab: Magic Methods
+* Lab: Abstract Classes
+
 For Wed 10 January
 * Update the VM as per the expanded instructions below
 * Lab: Namespace
@@ -615,6 +624,30 @@ $userEntity->firstName = 'Fred';
 
 // Actual output:
 // MarkPHP Fatal error:  Uncaught Error: Cannot access protected property
+```
+Example using `__set()` as a "dropbox" where you can write the value but not read it
+* NOTE: it's recommended to not use this to assign dynamic properties as this feature is deprecated
+```
+<?php
+ini_set('display_errors',1);
+ini_set('error_reporting', E_ALL);
+class DropBox
+{
+	protected $values = [];
+    public function __set(string $name, mixed $value)
+    {
+        $this->values[$name] = $value;
+    }
+}
+$drop = new DropBox();
+$drop->key1 = bin2hex(random_bytes(8));
+$drop->key2 = bin2hex(random_bytes(8));
+$drop->key3 = bin2hex(random_bytes(8));
+$drop->key4 = bin2hex(random_bytes(8));
+
+var_dump($drop);
+
+echo $drop->values['key1']; // Fatal Error
 ```
 
 Serialization example:
@@ -1763,3 +1796,5 @@ A: Introduced in PHP 8.1. In PHP 8.2 support was added for `readonly` classes
 
 * http://localhost:8882/#/3/15
   * Cannot have an active expression in the declaration at this point!
+* http://localhost:8882/#/3/32
+  * Inconsistent use of "super class" vs. "superclass" and also "sub class" or "subclass"
