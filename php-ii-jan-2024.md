@@ -5,6 +5,7 @@
 * Make sure attendees get a copy of the updated class when it's released
 
 * Q: Find the example where `__serialize()` is used to encrypt a CC number
+* A: See below
 
 * Q: Do the PSRs recommend using `()` when creating new instances?
 * A: According to PSR-12::Section 4:
@@ -798,6 +799,67 @@ echo $native;
 echo PHP_EOL;
 var_dump($obj);
 ```
+Same example as above except that it encrypts a CC number before serialization
+```
+<?php
+class UserEntity 
+{
+	protected string $key = '';
+	protected string $iv  = '';
+    public function __construct(
+        protected string $firstName,
+        protected string $lastName,
+        protected string $ccNum)
+    {
+		$this->key  = substr(bin2hex(md5(rand(0,999999))), 0, 32);
+		$this->iv   = substr(bin2hex(md5(rand(0,999999))), 0, 32);
+    }
+    public function __serialize()
+    {
+		$_SESSION['key'] = $this->key;
+		$_SESSION['iv']  = $this->iv;
+        return [
+            'firstName' => $this->firstName,
+            'lastName'  => $this->lastName,
+            'ccNum'     => base64_encode(
+				openssl_encrypt(
+					$this->ccNum, 
+					'aes-256-ctr', 
+					$this->key, 
+					0, 
+					substr($this->iv, 0, 16)
+				)
+			),
+            'sleep_date' => date('Y-m-d H:i:s')];
+    }
+    public function __unserialize($array)
+    {
+        // $array contains values restored from the serialization
+		$this->key = $_SESSION['key'];
+		$this->iv  = $_SESSION['iv'];
+        $this->ccNum = openssl_decrypt(base64_decode($array['ccNum']), 'aes-256-ctr', $this->key, 0, substr($this->iv, 0, 16));
+        $this->firstName = $array['firstName'];
+        $this->lastName = $array['lastName'];
+    }
+    public function getFullName()
+    {
+        return $this->firstName . ' ' . $this->lastName;
+    }
+    public function getNativeString(): string {
+        return serialize($this);
+    }
+}
+$userEntity = new UserEntity('Mark', 'Watney', '1111-2222-3333-4444');
+var_dump($userEntity);
+echo PHP_EOL;
+
+$native = $userEntity->getNativeString();
+$obj  = unserialize($native);
+echo $native;
+echo PHP_EOL;
+var_dump($obj);
+```
+
 Example of when getters and setters are useful:
 ```
 class Test
