@@ -1,8 +1,18 @@
 # PHP II - Jan 2024
 
+Last: http://localhost:8882/#/3/66
 
 ## To Do
 * Make sure attendees get a copy of the updated class when it's released
+
+* Q: Why can't you "widen" from a super class that defines "int" and subclass that defines "float"?
+
+* Check GitHub examples for versions -- replace with "master"
+
+* Q: This is an excellent example of mandating functionality via interface
+  * https://github.com/laminas/laminas-filter/blob/master/src/FilterInterface.php
+  * https://github.com/laminas/laminas-filter/blob/master/src/AbstractFilter.php
+  * And then, look at any of the Filter classes
 
 * Q: Find the example where `__serialize()` is used to encrypt a CC number
 * A: See below
@@ -18,11 +28,15 @@
   * The RFC offers the attribute `#[AllowDynamicProperties]` as a way to opt-in to the use of dynamic properties.
 
 ## Homework
-For Fri 12 January
+For Mon 15 January
 * Lab: Create a Class
 * Lab: Create an Extensible Super Class
 * Lab: Magic Methods
 * Lab: Abstract Classes
+* Lab: Interfaces
+* Lab: Type Hinting
+* Lab: Custom Exception
+* Lab: Traits
 
 For Wed 10 January
 * Update the VM as per the expanded instructions below
@@ -926,6 +940,9 @@ Example of Abstract class with abstract method:
 * https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractActionController.php
 * https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractRestfulController.php
 
+Examples of classes with interfaces:
+* https://github.com/laminas/laminas-db/blob/master/src/Adapter/Adapter.php
+
 Interface example:
 ```
 <?php
@@ -1003,6 +1020,32 @@ $new = new NewStyleUser('George', 'Jetson');
 //echo $old->generateHash('password');
 echo PHP_EOL;
 echo $new->generateHash('password');
+echo PHP_EOL;
+```
+Example of type hinting
+```
+<?php
+// if activated: Fatal Error occurs on line 13
+// declare(strict_types=1);
+class Test
+{
+	public function add(int $a, int $b) : int
+	{
+		return $a + $b;
+	}
+}
+
+$test = new Test();
+echo $test->add(5.55, 6.66);	// output: 11
+echo PHP_EOL;
+
+echo $test->add(5, 6);			// output: 11
+echo PHP_EOL;
+
+echo $test->add('5', '6');		// output: 11
+echo PHP_EOL;
+
+echo $test->add('5x', 'x6');	// output: Fatal Error
 echo PHP_EOL;
 ```
 
@@ -1332,8 +1375,6 @@ Stack trace:
 */
 
 ```
-Using `static` functionality to get a singleton instance
-* https://github.com/dbierer/filecms-core/blob/main/src/Common/Generic/Messages.php
 Using `static` for a registry style storage class
 * https://github.com/dbierer/filecms-core/blob/main/src/Common/Generic/Registry.php
 Other examples of `static` and `traits`
