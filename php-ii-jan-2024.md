@@ -6,8 +6,8 @@ Last: http://localhost:8882/#/3/66
 * Make sure attendees get a copy of the updated class when it's released
 
 * Q: Why can't you "widen" from a super class that defines "int" and subclass that defines "float"?
-
-* Check GitHub examples for versions -- replace with "master"
+* A: PHP sees "int" and "float" as two completely different data types -- "float" is *not* a composite super type
+* A: Contrast that with "array" and "iterable". "array" is a discreet type whereas "iterable" is actually "array|Iterator"
 
 * Q: This is an excellent example of mandating functionality via interface
   * https://github.com/laminas/laminas-filter/blob/master/src/FilterInterface.php
@@ -816,7 +816,7 @@ var_dump($obj);
 Same example as above except that it encrypts a CC number before serialization
 ```
 <?php
-class UserEntity 
+class UserEntity
 {
 	protected string $key = '';
 	protected string $iv  = '';
@@ -837,10 +837,10 @@ class UserEntity
             'lastName'  => $this->lastName,
             'ccNum'     => base64_encode(
 				openssl_encrypt(
-					$this->ccNum, 
-					'aes-256-ctr', 
-					$this->key, 
-					0, 
+					$this->ccNum,
+					'aes-256-ctr',
+					$this->key,
+					0,
 					substr($this->iv, 0, 16)
 				)
 			),
@@ -931,7 +931,7 @@ Three important magic methods not covered in the slides
 	* Often used to implement "plugins"
 	* Avoids having to hard code methods into base classes
 	* Used to extend the framework without having to rewrite your base source code
-	* Example: https://github.com/laminas/laminas-mvc/blob/3.6.x/src/Controller/AbstractController.php
+	* Example: https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractController.php
 	  * Look at `__call()`
 
 
@@ -1831,7 +1831,7 @@ header('Cache-Control: must-revalidate, max-age=0');
 * A: See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
 
 * Q: Can you find an example of using `__call()?`
-* A: https://github.com/laminas/laminas-mvc/blob/3.6.x/src/Controller/AbstractController.php
+* A: https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractController.php
   * Look for `public function __call($method,$params)`
 
 * Q: Can you create an object instance when first declaring a property in PHP 8.1 or 8.2?
