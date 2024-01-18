@@ -5,9 +5,23 @@ Last: http://localhost:8882/#/3/66
 ## To Do
 * Make sure attendees get a copy of the updated class when it's released
 
+* Q: How do you use a "backed" Enum?
+```
+enum Gender : string
+{
+    case MALE = 'M';
+    case FEMALE = 'F';
+    case OTHER = 'O';
+}
+```
+
+* Q: Database agnostic design tool
+* A: See: DBeaver.io
+
 * Q: Why can't you "widen" from a super class that defines "int" and subclass that defines "float"?
 * A: PHP sees "int" and "float" as two completely different data types -- "float" is *not* a composite super type
 * A: Contrast that with "array" and "iterable". "array" is a discreet type whereas "iterable" is actually "array|Iterator"
+* A: See: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_type_hint_widening.php
 
 * Q: This is an excellent example of mandating functionality via interface
   * https://github.com/laminas/laminas-filter/blob/master/src/FilterInterface.php
