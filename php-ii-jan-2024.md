@@ -42,6 +42,12 @@ enum Gender : string
   * The RFC offers the attribute `#[AllowDynamicProperties]` as a way to opt-in to the use of dynamic properties.
 
 ## Homework
+For Tue 22 January
+* Lab: Prepared Statements
+* Lab: Stored Procedure
+* Lab: Transaction
+* Lab: Validate an Email Address
+
 For Mon 15 January
 * Lab: Create a Class
 * Lab: Create an Extensible Super Class
@@ -1461,6 +1467,30 @@ var_dump($user);
 ```
 
 ## PDO
+Example of a generic database class with built-in methods for INSERT, SELECT, UPDATE, DELETE
+* https://github.com/dbierer/classic_php_examples/blob/master/db/db_active_record_example.php
+Example using a stored procedure with `PDO::exec()`
+```
+<?php
+try {
+    // Get the connection instance
+    $pdo = new PDO('mysql:host=localhost;dbname=phpcourse','vagrant','vagrant',
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+ 
+    // Hard coded input parameters
+    $fname = 'Mark';
+    $lname = 'Watney';
+ 
+    // We can safely use `exec()` because the stored procedure is an INSERT 
+    // and we are only concerned with the number of rows affected
+    if ($pdo->exec(sprintf('CALL newCustomer (%s,%s)', $fname, $lname)) {
+        echo "New user $fname  $lname added";
+    }
+} catch (PDOException $e){
+    //Handle error
+}
+```
+
 Adding options as 4th argument:
 ```
 try {
@@ -1489,6 +1519,16 @@ try {
     //Handle error
 }
 ```
+You can use `PDO::quote()` to manually provide parameter escaping:
+```
+<?php
+$pdo = /* some PDO instance */
+$id  = (int) ($_GET['id'] ?? 0);
+$id  = ($id < 0) ? 0 : $id;
+// assuming $id is sanitized, quote() can be used to manually provide platform quoting
+$sql = 'SELECT id, first, last FROM users WHERE id=' . $pdo->quote($id);
+```
+
 Alternative way to execute without using `bindParam()`
 * Modifies: https://github.com/ealebrun/PHPII/blob/main/HW-2022-04-27
 ```
@@ -1915,3 +1955,7 @@ A: Introduced in PHP 8.1. In PHP 8.2 support was added for `readonly` classes
   * Cannot have an active expression in the declaration at this point!
 * http://localhost:8882/#/3/32
   * Inconsistent use of "super class" vs. "superclass" and also "sub class" or "subclass"
+* http://localhost:8882/#/7/4
+  * s/be "matches any character" (not "and")
+* http://localhost:8882/#/7/5
+  * the discussion `\b` belongs in the slide on built-in char classes
