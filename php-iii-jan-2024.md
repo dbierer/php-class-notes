@@ -540,6 +540,7 @@ looper($user);
 ```
 In this example, note that if we uncomment line 8, the legacy code still works
 * The reason is because `ArrayObject` implements `ArrayAccess`
+* We can also use an anonymous class to extend `ArrayObject` and add new functionality
 ```
 <?php
 $arr = [
@@ -547,13 +548,21 @@ $arr = [
 	'last'  => 'Flintstone',
 	'amount' => 99.99,
 ];
+
 // if you uncomment the next line, $arr becomes an object, but the remaining code works OK
-// $arr = new ArrayObject($arr);
+$arr = new class($arr) extends ArrayObject
+{
+	public function getJson()
+	{
+		return json_encode($this->getArrayCopy(), JSON_PRETTY_PRINT);
+	}
+};
 
 // some other code
 
-$purch = $_GET['purch'] ?? 1.11;
+$purch = (float) ($_GET['purch'] ?? 1.11);
 $arr['amount'] += $purch;
+$arr['tax']     = $arr['amount'] * 0.07;
 
 // some other code
 
@@ -562,6 +571,8 @@ echo '<table>';
 foreach ($arr as $key => $val)
 	echo '<tr><th>' . $key . '</th><td>' . $val . '</td></tr>' . PHP_EOL;
 echo '</table>';
+echo PHP_EOL;
+echo $arr->getJson();
 ```
 
 ### Stringable (new in PHP 8)
