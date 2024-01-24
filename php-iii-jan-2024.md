@@ -1,9 +1,47 @@
 # PHP Architect - Jan 2024
 
 ## Homework
+For Fri 26 Jan 2024
+* Lab: Built-in Web Server
 
 ## TODO
 * For the PHP III demos, get the `index.php` working correctly!
+
+* Rewrite this using key:value instead of what they're doing
+```
+<?php
+$list =[
+        'Comm check' => 1,
+        'Fuel load check' => 4,
+        'Batteries at max check' => 3,
+        'Space suit check' => 10,
+        'Landing struts retracted check' => 6
+    ];
+ 
+$sequencer = new class() extends SplHeap {
+	    // Set the sequence
+    public function compare($arr1, $arr2)
+    {
+        // Do the comparison using the spaceship operator
+        return $arr2[key($arr2)] <=> $arr1[key($arr1)];
+    }
+};
+
+ 
+foreach($list as $item => $priority) {
+    $sequencer->insert([$item => $priority]);
+}
+
+$sequencer->top();
+ 
+while($sequencer->valid()) {
+    // Grab and echo the correct sequence value value
+    echo key($sequencer->current()), PHP_EOL;
+ 
+    // Sequence
+    $sequencer->next();
+}
+```
 
 
 ## VM Update
@@ -574,6 +612,55 @@ echo '</table>';
 echo PHP_EOL;
 echo $arr->getJson();
 ```
+Using an interface as a data type
+```
+<?php
+interface AddInterface
+{
+	public function add(int $a, int $b) : int;
+}
+
+class Test implements AddInterface
+{
+	public function add(int $a, int $b) : int
+	{
+		return $a + $b;
+	}
+}
+
+class Baby extends Test
+{
+	public function sub(int $a, int $b) : int
+	{
+		return $a - $b;
+	}	
+}
+
+class Something implements AddInterface
+{
+	public function add(int $a, int $b) : int
+	{
+		return $a + $b;
+	}
+}
+
+function whatever(AddInterface $obj, int $x, int $y)
+{
+	echo "The sum of $x and $y is: ";
+	echo $obj->add($x, $y);
+	echo PHP_EOL;
+}
+
+// all three instances work because they are associated with AddInterface at some level
+$test = new Test();
+whatever($test, 2, 2);
+
+$baby = new Baby();
+whatever($baby, 2, 2);
+
+$some = new Something();
+whatever($some, 2, 2);
+```
 
 ### Stringable (new in PHP 8)
 Anytime you implement `__toString()`
@@ -730,6 +817,31 @@ $obj->setIteratorMode(SplDoublyLinkedList::IT_MODE_LIFO );
 echo showBaseObj($obj);
 
 ```
+Another example building the `SplDoublyLinkList` manually
+```
+<?php
+
+$val  = 100;
+$dbl  = new SplDoublyLinkedList();
+
+for ($x = 0; $x < 6; $x++) {
+	$dbl->add($x, $val);
+	$val += 100;
+}
+
+foreach ($dbl as $key => $val) {
+	echo $key . ':' . $val;
+	echo PHP_EOL;
+}
+
+$dbl->setIteratorMode(SplDoublyLinkedList::IT_MODE_LIFO);
+foreach ($dbl as $key => $val) {
+	echo $key . ':' . $val;
+	echo PHP_EOL;
+}
+
+```
+
 Recurse through an entire directory structure
 ```
 <?php
@@ -751,6 +863,20 @@ foreach ($rec as $key => $val) {
 * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_spl_fixed_arr_compared_with_array_and_array_object.php
 Example of an autoloader that uses an array mapping technique to locate files that represent classes
 * See: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_autoload_example_using_map_algorithm.php
+Example using recursive iterators to scan a directory structure:
+```
+<?php
+$dirIt = new RecursiveDirectoryIterator(__DIR__ . '/../../php3/src/ModSPL');
+$recur = new RecursiveIteratorIterator($dirIt);
+
+foreach($recur as $name => $obj){
+	if ($obj->isFile()) {
+		echo $obj->getBasename() . PHP_EOL;
+	} elseif ($obj->isDir()) {
+		echo $obj->getPath() . PHP_EOL;
+	}
+}
+```
 
 ## CLI
 One of the best implementations for CLI is `Symfony/Console`
