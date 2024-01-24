@@ -1,18 +1,26 @@
 # PHP II - Jan 2024
 
-Last: http://localhost:8882/#/3/66
 
 ## To Do
 * Make sure attendees get a copy of the updated class when it's released
 
+* Q: How many spaces do you need to indent when using YAML?
+* A: https://stackoverflow.com/questions/42247535/yaml-how-many-spaces-per-indent
+
 * Q: How do you use a "backed" Enum?
+* A: Here's a code fragment that illustrates the use of a backed Enum:
 ```
+<?php
+// "backed" enum
+// just by putting a return data type of `string` 
 enum Gender : string
 {
     case MALE = 'M';
     case FEMALE = 'F';
     case OTHER = 'O';
 }
+
+echo Gender::MALE->value;	// output: "M"
 ```
 
 * Q: Database agnostic design tool
@@ -23,7 +31,8 @@ enum Gender : string
 * A: Contrast that with "array" and "iterable". "array" is a discreet type whereas "iterable" is actually "array|Iterator"
 * A: See: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_type_hint_widening.php
 
-* Q: This is an excellent example of mandating functionality via interface
+* Q: Do you have a real-life example of an interface mandating functionality?
+* A: This is an excellent example of mandating functionality via interface
   * https://github.com/laminas/laminas-filter/blob/master/src/FilterInterface.php
   * https://github.com/laminas/laminas-filter/blob/master/src/AbstractFilter.php
   * And then, look at any of the Filter classes
@@ -191,7 +200,14 @@ PHP Road Map:
 * https://wiki.php.net/rfc
 Coding Standards: PSR-1 and PSR-12
 * https://www.php-fig.org/psr/
-
+ZendPHP Info
+* Docker Images: https://help.zend.com/zendphp/current/content/orchestration/docker.htm
+* https://help.zend.com/zendphp/current/content/introduction/introduction.htm
+PHP Roadmap
+* https://wiki.php.net/rfc
+* Migration Guides:
+  * https://www.php.net/manual/en/appendices.php
+ 
 ## Class Notes
 ### Namespaces
 Namespace standard: PSR-4
@@ -1650,6 +1666,10 @@ You can add alternates to `packagist.org` using the `repositories` key in the co
 * Example: https://wpackagist.org/
 If you dependency issues, consider adding the `--ignore-platform-reqs` to the `composer install` or `composer update` directive
 * This is especially true if you're running 8.1 or 8.2 and the packagist project is set for PHP 7.4 or 8.0
+If you want Composer to interactively build a `composer.json` file use this command:
+```
+composer --init
+```
 
 ## Web Services
 Example of SOAP Client
@@ -1959,3 +1979,10 @@ A: Introduced in PHP 8.1. In PHP 8.2 support was added for `readonly` classes
   * s/be "matches any character" (not "and")
 * http://localhost:8882/#/7/5
   * the discussion `\b` belongs in the slide on built-in char classes
+* http://localhost:8882/#/5/41
+  * Change the size of the params to 32 to match the database field size
+* http://localhost:8882/#/10/14 & 10/15
+  * Screenshot needs to be updated
+* http://localhost:8882/#/10/21
+  * Get rid of `class Test {`
+* Update section: needs to go up to 8.4
