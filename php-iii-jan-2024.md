@@ -1,44 +1,77 @@
 # PHP Architect - Jan 2024
 
 ## Homework
+For Mon 29 Jan 2024
+* Lab: OpCache and JIT
+* Lab: Existing Extension
+* Lab: FFI
+* Lab: New Extension [Optional]
+* Lab: Custom PHP
+  * Lab: Customized PHP Prerequisites
+  * Lab: Installing Library Dependencies
+  * Lab: Installing Customized PHP
+  
+  * Lab: New Extension
+  
 For Fri 26 Jan 2024
 * Lab: Built-in Web Server
 
 ## TODO
 * For the PHP III demos, get the `index.php` working correctly!
 
-* Rewrite this using key:value instead of what they're doing
+* Create an Apcu example of this code:
+```
+<?php
+// First check for cache
+if (file_exists('filecache')
+    && time() < (filemtime('filecache') + time() + 3600)) {
+    readfile('filecache');
+    exit;
+}
+// No cache so we need to produce the page
+$view = new stdClass();
+$view->label = 'Current Transaction Listing';
+$handle = fopen('bitcoin.csv', 'r');
+while($row = fgetcsv($handle)) $view->data[] = $row;
+fclose($handle);
+// Render the view
+ob_start();
+require 'layout.phtml';	// includes logic that renders $view
+// Save to cache (assumes write privileges)
+$output = ob_get_clean();
+file_put_contents('filecache', $output);
+// the page
+echo $output;
+```
+
+* Locate table schema for Stream Wrapper example
+
+* Create demo using `stream_context_create()` and `file_get_contents()`
+
+* Rewritten SplHeap example:
 ```
 <?php
 $list =[
-        'Comm check' => 1,
-        'Fuel load check' => 4,
-        'Batteries at max check' => 3,
-        'Space suit check' => 10,
-        'Landing struts retracted check' => 6
-    ];
- 
-$sequencer = new class() extends SplHeap {
+	1 => 'Comm check',
+	4 => 'Fuel load check',
+	3 => 'Batteries at max check',
+	9 => 'Space suit check',
+	6 => 'Landing struts retracted check',
+];
+ $sequencer = new class() extends SplHeap {
 	    // Set the sequence
     public function compare($arr1, $arr2)
     {
         // Do the comparison using the spaceship operator
-        return $arr2[key($arr2)] <=> $arr1[key($arr1)];
+        return key($arr2) <=> key($arr1);
     }
 };
-
- 
-foreach($list as $item => $priority) {
-    $sequencer->insert([$item => $priority]);
+foreach($list as $priority => $item) {
+    $sequencer->insert([$priority => $item]);
 }
-
 $sequencer->top();
- 
-while($sequencer->valid()) {
-    // Grab and echo the correct sequence value value
-    echo key($sequencer->current()), PHP_EOL;
- 
-    // Sequence
+ while($sequencer->valid()) {
+	printf("%02d : %s\n", key($sequencer->current()), current($sequencer->current()));
     $sequencer->next();
 }
 ```
