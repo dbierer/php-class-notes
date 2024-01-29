@@ -10,9 +10,9 @@ For Mon 29 Jan 2024
   * Lab: Customized PHP Prerequisites
   * Lab: Installing Library Dependencies
   * Lab: Installing Customized PHP
-  
+
   * Lab: New Extension
-  
+
 For Fri 26 Jan 2024
 * Lab: Built-in Web Server
 
@@ -23,9 +23,8 @@ For Fri 26 Jan 2024
 ```
 <?php
 // First check for cache
-if (file_exists('filecache')
-    && time() < (filemtime('filecache') + time() + 3600)) {
-    readfile('filecache');
+if (apcu_exists('filecache')) {
+    echo apcu_fetch('filecache');
     exit;
 }
 // No cache so we need to produce the page
@@ -39,12 +38,20 @@ ob_start();
 require 'layout.phtml';	// includes logic that renders $view
 // Save to cache (assumes write privileges)
 $output = ob_get_clean();
-file_put_contents('filecache', $output);
+apcu_store('filecache', $output, 3600);
 // the page
 echo $output;
 ```
 
 * Locate table schema for Stream Wrapper example
+* Look here: `/home/vagrant/Zend/workspaces/DefaultWorkspace/php3/src/ModAdvancedTechniques/IO/SQL/data.sql`
+```
+CREATE TABLE `data` (
+  `id` int(11) NOT NULL,
+  `data` varchar(255) NOT NULL,
+  `date` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+```
 
 * Create demo using `stream_context_create()` and `file_get_contents()`
 
@@ -666,7 +673,7 @@ class Baby extends Test
 	public function sub(int $a, int $b) : int
 	{
 		return $a - $b;
-	}	
+	}
 }
 
 class Something implements AddInterface
