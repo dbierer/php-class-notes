@@ -1,6 +1,19 @@
 # PHP Architect - Jan 2024
 
+W/out opcache: ~2.7
+with  opcache: ~2.5
+with JIT functio: ~0.75
+with JIT tracking: ~0.41
+
+
 ## Homework
+For Wed 31 Jan 2024
+* Lab: Docker Image Build
+  * Do all the labs in this section
+* Lab: Commit the Image
+* Lab: Docker Compose Labs
+  * Do all the labs in this section
+
 For Mon 29 Jan 2024
 * Lab: OpCache and JIT
 * Lab: Existing Extension
@@ -11,13 +24,15 @@ For Mon 29 Jan 2024
   * Lab: Installing Library Dependencies
   * Lab: Installing Customized PHP
 
-  * Lab: New Extension
-
 For Fri 26 Jan 2024
 * Lab: Built-in Web Server
 
 ## TODO
 * For the PHP III demos, get the `index.php` working correctly!
+
+* Create demo using `stream_context_create()` and `file_get_contents()`
+
+* What is the RedHat equivalent of Debian `update-alternatives`?
 
 * Create an Apcu example of this code:
 ```
@@ -52,8 +67,6 @@ CREATE TABLE `data` (
   `date` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ```
-
-* Create demo using `stream_context_create()` and `file_get_contents()`
 
 * Rewritten SplHeap example:
 ```
@@ -1423,3 +1436,8 @@ echo PHP_EOL;
 ```
 
 ## ERRATA
+* http://localhost:8883/#/5/18
+  * remove duplicate line:
+```
+#!/bin/bash
+```
