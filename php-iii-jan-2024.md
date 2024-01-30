@@ -1,9 +1,5 @@
 # PHP Architect - Jan 2024
 
-W/out opcache: ~2.7
-with  opcache: ~2.5
-with JIT functio: ~0.75
-with JIT tracking: ~0.41
 
 
 ## Homework
@@ -32,9 +28,12 @@ For Fri 26 Jan 2024
 
 * Create demo using `stream_context_create()` and `file_get_contents()`
 
-* What is the RedHat equivalent of Debian `update-alternatives`?
+* Q: What is the RedHat equivalent of Debian `update-alternatives`?
+* A: In the RedHat world it's just `alternatives`.
+  * See: https://www.redhat.com/sysadmin/alternatives-command
 
-* Create an Apcu example of this code:
+* Q: Do you have an Apcu example of the full-page cache example shown i the slides?
+* A: Here it is:
 ```
 <?php
 // First check for cache
@@ -58,8 +57,8 @@ apcu_store('filecache', $output, 3600);
 echo $output;
 ```
 
-* Locate table schema for Stream Wrapper example
-* Look here: `/home/vagrant/Zend/workspaces/DefaultWorkspace/php3/src/ModAdvancedTechniques/IO/SQL/data.sql`
+* Q: Where is the table schema for Stream Wrapper example?
+* A: Look here: `/home/vagrant/Zend/workspaces/DefaultWorkspace/php3/src/ModAdvancedTechniques/IO/SQL/data.sql`
 ```
 CREATE TABLE `data` (
   `id` int(11) NOT NULL,
@@ -68,7 +67,8 @@ CREATE TABLE `data` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ```
 
-* Rewritten SplHeap example:
+* Q: Do you have an `SplHeap` example that has the priority as a key instead of what's shown in the slides?
+* A: Here's the rewritten version:
 ```
 <?php
 $list =[
@@ -161,6 +161,15 @@ Example of a working "Event" system
   * Have a look at the article on Orchestration: https://www.zend.com/blog/what-is-cloud-orchestration
 * CLI utility to reset JIT:
     * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch10/php8_jit_reset.php
+    * Run the demo as a web page and adjust params under `/etc/php/PHP_VER/apache2/php.ini`
+    * Don't forget to renable JIT in `/etc/php/PHP_VER/apache2/conf.d/10-opcache.ini`
+    * Example timinig results:
+```
+w/out opcache: ~2.7
+with  opcache: ~2.5
+with JIT function: ~0.75
+with JIT tracking: ~0.41
+```
 * Swoole Lab
   * Just install the default package:
 ```
