@@ -1,8 +1,19 @@
 # PHP Architect - Jan 2024
 
 
+## TODO
+* Add Middleware slide code to php-iii-demos repo
+
+* For the PHP III demos, get the `index.php` working correctly!
+
 
 ## Homework
+For Fri 02 Feb 2024
+* Lab: Adding Middleware
+
+* REST Service Development Lab
+  * Do all labs under this section
+  
 For Wed 31 Jan 2024
 * Lab: Docker Image Build
   * Do all the labs in this section
@@ -23,10 +34,10 @@ For Mon 29 Jan 2024
 For Fri 26 Jan 2024
 * Lab: Built-in Web Server
 
-## TODO
-* For the PHP III demos, get the `index.php` working correctly!
-
-* Create demo using `stream_context_create()` and `file_get_contents()`
+## Q & A
+* Q: Example using `stream_context_create()` and `file_get_contents()`?
+* A: See: https://github.com/dbierer/classic_php_examples/blob/master/web/rest_api_call_us_weather_svc.php
+  * Also: https://github.com/dbierer/classic_php_examples/blob/master/security/auth_example.php
 
 * Q: What is the RedHat equivalent of Debian `update-alternatives`?
 * A: In the RedHat world it's just `alternatives`.
