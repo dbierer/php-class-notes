@@ -2,18 +2,23 @@
 
 
 ## TODO
-* Add Middleware slide code to php-iii-demos repo
+* DONE: Add Middleware slide code to php-iii-demos repo
 
 * For the PHP III demos, get the `index.php` working correctly!
 
 
 ## Homework
+For remaining labs:
+* PHP Async:
+  * Examples are in the php-iii-demos repo
+* For the last course module labs
+  * See lab notes below
+
 For Fri 02 Feb 2024
 * Lab: Adding Middleware
-
 * REST Service Development Lab
   * Do all labs under this section
-  
+
 For Wed 31 Jan 2024
 * Lab: Docker Image Build
   * Do all the labs in this section
