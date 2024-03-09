@@ -1,117 +1,11 @@
-# PHP Architect - Jan 2024
+# PHP Architect - Mar 2024
 
 
 ## TODO
-* DONE: Add Middleware slide code to php-iii-demos repo
-
 * For the PHP III demos, get the `index.php` working correctly!
 
 
 ## Homework
-For remaining labs:
-* PHP Async:
-  * Examples are in the php-iii-demos repo
-* For the last course module labs
-  * See lab notes below
-
-For Fri 02 Feb 2024
-* Lab: Adding Middleware
-* REST Service Development Lab
-  * Laminas API Tools
-  * Do all labs under this section
-
-For Wed 31 Jan 2024
-* Lab: Docker Image Build
-  * Do all the labs in this section
-* Lab: Commit the Image
-* Lab: Docker Compose Labs
-  * Do all the labs in this section
-
-For Mon 29 Jan 2024
-* Lab: OpCache and JIT
-* Lab: Existing Extension
-* Lab: FFI
-* Lab: New Extension [Optional]
-* Lab: Custom PHP
-  * Lab: Customized PHP Prerequisites
-  * Lab: Installing Library Dependencies
-  * Lab: Installing Customized PHP
-
-For Fri 26 Jan 2024
-* Lab: Built-in Web Server
-
-## Q & A
-* Q: Example using `stream_context_create()` and `file_get_contents()`?
-* A: See: https://github.com/dbierer/classic_php_examples/blob/master/web/rest_api_call_us_weather_svc.php
-  * Also: https://github.com/dbierer/classic_php_examples/blob/master/security/auth_example.php
-
-* Q: What is the RedHat equivalent of Debian `update-alternatives`?
-* A: In the RedHat world it's just `alternatives`.
-  * See: https://www.redhat.com/sysadmin/alternatives-command
-
-* Q: Do you have an Apcu example of the full-page cache example shown i the slides?
-* A: Here it is:
-```
-<?php
-// First check for cache
-if (apcu_exists('filecache')) {
-    echo apcu_fetch('filecache');
-    exit;
-}
-// No cache so we need to produce the page
-$view = new stdClass();
-$view->label = 'Current Transaction Listing';
-$handle = fopen('bitcoin.csv', 'r');
-while($row = fgetcsv($handle)) $view->data[] = $row;
-fclose($handle);
-// Render the view
-ob_start();
-require 'layout.phtml';	// includes logic that renders $view
-// Save to cache (assumes write privileges)
-$output = ob_get_clean();
-apcu_store('filecache', $output, 3600);
-// the page
-echo $output;
-```
-
-* Q: Where is the table schema for Stream Wrapper example?
-* A: Look here: `/home/vagrant/Zend/workspaces/DefaultWorkspace/php3/src/ModAdvancedTechniques/IO/SQL/data.sql`
-```
-CREATE TABLE `data` (
-  `id` int(11) NOT NULL,
-  `data` varchar(255) NOT NULL,
-  `date` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-```
-
-* Q: Do you have an `SplHeap` example that has the priority as a key instead of what's shown in the slides?
-* A: Here's the rewritten version:
-```
-<?php
-$list =[
-	1 => 'Comm check',
-	4 => 'Fuel load check',
-	3 => 'Batteries at max check',
-	9 => 'Space suit check',
-	6 => 'Landing struts retracted check',
-];
- $sequencer = new class() extends SplHeap {
-	    // Set the sequence
-    public function compare($arr1, $arr2)
-    {
-        // Do the comparison using the spaceship operator
-        return key($arr2) <=> key($arr1);
-    }
-};
-foreach($list as $priority => $item) {
-    $sequencer->insert([$priority => $item]);
-}
-$sequencer->top();
- while($sequencer->valid()) {
-	printf("%02d : %s\n", key($sequencer->current()), current($sequencer->current()));
-    $sequencer->next();
-}
-```
 
 
 ## VM Update
@@ -1461,6 +1355,78 @@ echo PHP_EOL;
 echo (new DateTime('@' . time()))->format($fmt);
 echo PHP_EOL;
 ```
+* Q: Example using `stream_context_create()` and `file_get_contents()`?
+* A: See: https://github.com/dbierer/classic_php_examples/blob/master/web/rest_api_call_us_weather_svc.php
+  * Also: https://github.com/dbierer/classic_php_examples/blob/master/security/auth_example.php
+
+* Q: What is the RedHat equivalent of Debian `update-alternatives`?
+* A: In the RedHat world it's just `alternatives`.
+  * See: https://www.redhat.com/sysadmin/alternatives-command
+
+* Q: Do you have an Apcu example of the full-page cache example shown i the slides?
+* A: Here it is:
+```
+<?php
+// First check for cache
+if (apcu_exists('filecache')) {
+    echo apcu_fetch('filecache');
+    exit;
+}
+// No cache so we need to produce the page
+$view = new stdClass();
+$view->label = 'Current Transaction Listing';
+$handle = fopen('bitcoin.csv', 'r');
+while($row = fgetcsv($handle)) $view->data[] = $row;
+fclose($handle);
+// Render the view
+ob_start();
+require 'layout.phtml';	// includes logic that renders $view
+// Save to cache (assumes write privileges)
+$output = ob_get_clean();
+apcu_store('filecache', $output, 3600);
+// the page
+echo $output;
+```
+
+* Q: Where is the table schema for Stream Wrapper example?
+* A: Look here: `/home/vagrant/Zend/workspaces/DefaultWorkspace/php3/src/ModAdvancedTechniques/IO/SQL/data.sql`
+```
+CREATE TABLE `data` (
+  `id` int(11) NOT NULL,
+  `data` varchar(255) NOT NULL,
+  `date` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+```
+
+* Q: Do you have an `SplHeap` example that has the priority as a key instead of what's shown in the slides?
+* A: Here's the rewritten version:
+```
+<?php
+$list =[
+	1 => 'Comm check',
+	4 => 'Fuel load check',
+	3 => 'Batteries at max check',
+	9 => 'Space suit check',
+	6 => 'Landing struts retracted check',
+];
+ $sequencer = new class() extends SplHeap {
+	    // Set the sequence
+    public function compare($arr1, $arr2)
+    {
+        // Do the comparison using the spaceship operator
+        return key($arr2) <=> key($arr1);
+    }
+};
+foreach($list as $priority => $item) {
+    $sequencer->insert([$priority => $item]);
+}
+$sequencer->top();
+ while($sequencer->valid()) {
+	printf("%02d : %s\n", key($sequencer->current()), current($sequencer->current()));
+    $sequencer->next();
+}
+```
+
 
 ## ERRATA
 * http://localhost:8883/#/5/18
