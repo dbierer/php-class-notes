@@ -1,12 +1,20 @@
 # PHP Architect - Mar 2024
 
-Last: http://localhost:8883/#/3/39
+Last: http://localhost:8883/#/4/57
 
 ## TODO
 * For the PHP III demos, get the `index.php` working correctly!
+* Q: what's the difference between JIT 'off' and 'disable'?
 
 
 ## Homework
+For Mon 18 Mar 2025
+* Lab: Built-in Web Server
+* Lab: OpCache and JIT
+* Lab Code:
+  * Clone this repo: https://github.com/dbierer/php-iii-demos.git
+* Lab: Existing Extension
+* Lab: FFI
 
 
 ## VM Update
@@ -62,15 +70,6 @@ Example of a working "Event" system
   * Source code is located here: `/home/vagrant/Zend/workspaces/DefaultWorkspace`
 * Lab: OpCache and JIT
   * The code for the Mandelbrot needs `__construct()`
-* Lab: Adding Middleware
-  * Take the code from the slides
-  * Add a middleware request handler that implements an update (HTTP "PATCH")
-* Lab: New Extension
-  * Lab needs additional work
-  * If you follow the instructions here exactly, "test1()" works, but "test2()" does not
-    * https://www.zend.com/resources/php-extensions/building-and-installing-php-extension
-* Lab: Docker Compose Labs
-  * Have a look at the article on Orchestration: https://www.zend.com/blog/what-is-cloud-orchestration
 * CLI utility to reset JIT:
     * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch10/php8_jit_reset.php
     * Run the demo as a web page and adjust params under `/etc/php/PHP_VER/apache2/php.ini`
@@ -82,6 +81,47 @@ with  opcache: ~2.5
 with JIT function: ~0.75
 with JIT tracking: ~0.41
 ```
+* Lab: New Extension
+  * Lab needs additional work
+  * If you follow the instructions here exactly, "test1()" works, but "test2()" does not
+    * https://www.zend.com/resources/php-extensions/building-and-installing-php-extension
+* Lab: Custom PHP
+* Suggested `./configure` options (place this all on one line):
+```
+./configure  \
+    --enable-cli \
+    --enable-filter \
+    --with-openssl \
+    --with-zlib \
+    --with-curl \
+    --enable-pdo \
+    --with-libxml \
+    --with-iconv \
+    --enable-cgi \
+    --enable-session \
+    --with-pdo-mysql \
+    --enable-phar \
+    --with-pdo-sqlite \
+    --with-pcre-jit \
+    --with-zip \
+    --enable-ctype \
+    --enable-gd \
+    --enable-bcmath \
+    --enable-sockets \
+    --with-bz2 \
+    --enable-exif \
+    --enable-intl \
+    --with-gettext \
+    --enable-opcache \
+    --enable-fileinfo \
+    --with-readline \
+    --with-sodium
+```
+* Lab: Adding Middleware
+  * Take the code from the slides
+  * Add a middleware request handler that implements an update (HTTP "PATCH")
+* Lab: Docker Compose Labs
+  * Have a look at the article on Orchestration: https://www.zend.com/blog/what-is-cloud-orchestration
 * Swoole Lab
   * Just install the default package:
 ```
@@ -126,37 +166,6 @@ git checkout php-PHP_VER
 ```
 * Follow the instructions
 * Be sure to install the pre-requisites!
-* Suggested `./configure` options (place this all on one line):
-```
-./configure  \
-    --enable-cli \
-    --enable-filter \
-    --with-openssl \
-    --with-zlib \
-    --with-curl \
-    --enable-pdo \
-    --with-libxml \
-    --with-iconv \
-    --enable-cgi \
-    --enable-session \
-    --with-pdo-mysql \
-    --enable-phar \
-    --with-pdo-sqlite \
-    --with-pcre-jit \
-    --with-zip \
-    --enable-ctype \
-    --enable-gd \
-    --enable-bcmath \
-    --enable-sockets \
-    --with-bz2 \
-    --enable-exif \
-    --enable-intl \
-    --with-gettext \
-    --enable-opcache \
-    --enable-fileinfo \
-    --with-readline \
-    --with-sodium
-```
 ### Dependency errors:
 
 ```
