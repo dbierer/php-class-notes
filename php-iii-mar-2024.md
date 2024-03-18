@@ -5,17 +5,31 @@ Last: http://localhost:8883/#/4/57
 ## TODO
 * For the PHP III demos, get the `index.php` working correctly!
 * Q: what's the difference between JIT 'off' and 'disable'?
+* A: 
+
+* Q: Is ZendPHP available for the Mac?
 
 
 ## Homework
-For Mon 18 Mar 2025
+For Wed 20 Mar 2024
+* Lab: New Extension
+* Lab: Custom PHP
+  * Lab: Customized PHP Prerequisites
+  * Lab: Installing Library Dependencies
+  * Lab: Installing Customized PHP
+* Lab: ZendPHP for AWS [optional]
+* Lab: Docker Image Build
+* Lab: Commit the Image
+* Lab: Docker Compose 
+    
+For Mon 18 Mar 2024
 * Lab: Built-in Web Server
 * Lab: OpCache and JIT
-* Lab Code:
-  * Clone this repo: https://github.com/dbierer/php-iii-demos.git
 * Lab: Existing Extension
 * Lab: FFI
-
+* Lab Notes:
+  * Clone this repo: https://github.com/dbierer/php-iii-demos.git
+  * Also have a look further down in this document for specific notes
 
 ## VM Update
 Follow these instructions:
@@ -166,6 +180,7 @@ git checkout php-PHP_VER
 ```
 * Follow the instructions
 * Be sure to install the pre-requisites!
+
 ### Dependency errors:
 
 ```
