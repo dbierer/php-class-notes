@@ -3,14 +3,24 @@
 Last: http://localhost:8883/#/4/57
 
 ## TODO
-* For the PHP III demos, get the `index.php` working correctly!
-* Q: what's the difference between JIT 'off' and 'disable'?
+* Q: How do you allow a user to run Docker commands
 * A: 
 
-* Q: Is ZendPHP available for the Mac?
+* For the PHP III demos, get the `index.php` working correctly!
+* Q: what's the difference between JIT 'off' and 'disable'?
+* A: JIT `off` means that JIT is off by default but can be enabled at runtime using `ini_set()`
+* A: JIT `disable` means that JIT is off by default and cannot be enabled unless this setting is changed
 
+* Q: Is ZendPHP available for the Mac?
+* A: Not at present
 
 ## Homework
+For Fri 22 Mar 2024
+* REST Service Development Lab
+  * Install Laminas API Tools
+  * Follow the lab otherwise
+* Lab: Adding Middleware
+  
 For Wed 20 Mar 2024
 * Lab: New Extension
 * Lab: Custom PHP
@@ -131,9 +141,15 @@ with JIT tracking: ~0.41
     --with-readline \
     --with-sodium
 ```
+
 * Lab: Adding Middleware
   * Take the code from the slides
   * Add a middleware request handler that implements an update (HTTP "PATCH")
+* Lab: Docker
+  * Need to add the `-f` flag to the `ln` command in the `Dockerfile`
+```
+    ln -s -f /usr/bin/php$PHP_VER /usr/bin/php
+```
 * Lab: Docker Compose Labs
   * Have a look at the article on Orchestration: https://www.zend.com/blog/what-is-cloud-orchestration
 * Swoole Lab
@@ -182,8 +198,115 @@ git checkout php-PHP_VER
 * Be sure to install the pre-requisites!
 
 ### Dependency errors:
+```
+vagrant@php-training:/tmp/php-src$ ./buildconf 
+buildconf: Checking installation
+buildconf: autoconf not found.
+           You need autoconf version 2.68 or newer installed
+           to build PHP from Git.
+vagrant@php-training:/tmp/php-src$ 
+```
+Installed `autoconf`; now `buildconf` works OK:
+```
+vagrant@php-training:/tmp/php-src$ sudo apt install autoconf
+... some output not shown ...
+vagrant@php-training:/tmp/php-src$ ./buildconf 
+buildconf: Checking installation
+buildconf: autoconf version 2.71 (ok)
+buildconf: Cleaning cache and configure files
+buildconf: Rebuilding configure
+buildconf: Rebuilding main/php_config.h.in
+buildconf: Run ./configure to proceed with customizing the PHP build.
+```
+Ran `configure` with the options shown above
+```
+vagrant@php-training:/tmp/php-src$ ./buildconf 
+buildconf: Checking installation
+buildconf: autoconf version 2.71 (ok)
+buildconf: Cleaning cache and configure files
+buildconf: Rebuilding configure
+... some output not shown ...
+checking for pkg-config... no
+checking for cc... no
+checking for gcc... no
+configure: error: in `/tmp/php-src':
+configure: error: no acceptable C compiler found in $PATH
+See `config.log' for more details
+```
+* Since this was a fresh Ubuntu 22 install, had to install `gcc`
+```
+vagrant@php-training:/tmp/php-src$ sudo apt install -y gcc
+```
+Installed the recommended dependencies:
+```
+sudo apt install -y pkg-config build-essential autoconf bison re2c \
+                    libxml2-dev libsqlite3-dev
+```
+Installed other potential dependencies based upon the `configure` options:
+```
+sudo apt install -y libbz2-dev  libpng-dev zlib1g-dev libsodium-dev \
+                    libreadline-dev libcurl4-openssl-dev libbz2-dev
+```
+Again, since this is a fresh version of Ubuntu, other errors arose:
+```
+No package 'openssl' found
+Consider adjusting the PKG_CONFIG_PATH environment variable if you
+installed software in a non-standard prefix.
+
+Alternatively, you may set the environment variables OPENSSL_CFLAGS
+and OPENSSL_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+```
+But OpenSSL is already installed!
+```
+vagrant@php-training:/tmp/php-src$ sudo apt install -y openssl
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+openssl is already the newest version (3.0.2-0ubuntu1.15).
+openssl set to manually installed.
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+```
+Same problem with the ZIP extension
+```
+configure: error: Package requirements (libzip >= 0.11 libzip != 1.3.1 libzip != 1.7.0) were not met:
+
+No package 'libzip' found
+No package 'libzip' found
+No package 'libzip' found
+
+Consider adjusting the PKG_CONFIG_PATH environment variable if you
+installed software in a non-standard prefix.
+
+Alternatively, you may set the environment variables LIBZIP_CFLAGS
+and LIBZIP_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+```
+* The `configure` error is because PHP uses `pkg-config` to locate dependent packages
+  * If a package was installed without `pkg-config` you either need to configure the package for `pkg-config` or set the environment vars indicated in the error message
+  * Solution: removed the `--with-openssl` and `--with-zip` options
+  * Reran `configure` and it worked OK
+  * Will have to install these two extensions separately using `pecl` or the equivalent
+Success! `make` worked :-)
+```
+...
+Generating phar.php
+Generating phar.phar
+PEAR package PHP_Archive not installed: generated phar will require PHP's phar extension be enabled.
+directorytreeiterator.inc
+phar.inc
+invertedregexiterator.inc
+clicommand.inc
+directorygraphiterator.inc
+pharcommand.inc
+
+Build complete.
+Don't forget to run 'make test'.
 
 ```
+
+
+### Earlier Errors
 checking for BZip2 in default path... not found
 configure: error: Please reinstall the BZip2 distribution
 ```
@@ -1176,7 +1299,8 @@ var_dump(parse_url($url));
 
 ## Middleware
 * Low level example: https://github.com/dbierer/strat_post
-
+* Example using Mezzio: 
+  * https://github.com/zendtech/ZendPHP-Attendee/blob/master/Basic_Installation_Alpine/mezzio/config/pipeline.php
 ## Async
 * Good article on async programming: https://www.zend.com/blog/using-swoole-and-mezzio
 
