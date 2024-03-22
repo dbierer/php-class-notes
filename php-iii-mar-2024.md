@@ -19,6 +19,7 @@ For Fri 22 Mar 2024
 * REST Service Development Lab
   * Install Laminas API Tools
   * Follow the lab otherwise
+  * Might need to add `--ignore-platform-reqs` when installing via Composer
 * Lab: Adding Middleware
   
 For Wed 20 Mar 2024
@@ -179,13 +180,6 @@ composer --ignore-platform-reqs create-project laminas-api-tools/api-tools-skele
 cd path/to/api/tools
 php -S 0.0.0.0:8080 -t public public/index.php
 ```
-* Apache JMeter
-  * Download binary from: https://jmeter.apache.org/download_jmeter.cgi
-  * Extract to `/home/vagrant/jmeter`
-  * From a terminal window run the shell script:
-```
-/home/vagrant/jmeter/bin/jmeter.sh
-```
 
 ## Custom PHP Lab Notes
 
@@ -307,6 +301,7 @@ Don't forget to run 'make test'.
 
 
 ### Earlier Errors
+```
 checking for BZip2 in default path... not found
 configure: error: Please reinstall the BZip2 distribution
 ```
@@ -365,6 +360,20 @@ docker run -p 8080:8080 -p 50000:50000 --restart=on-failure -v jenkins_home:`pwd
   * To access, from a browser: `http://localhost:8080`
   * Installed the "suggested" plugins + those on the list for the lab
 
+## Smoke Testing Lab
+Make sure Java is installed:
+```
+java --version
+```
+* If it's not installed it tells you how to install it!
+
+Download Apache JMeter
+  * Download binary from: https://jmeter.apache.org/download_jmeter.cgi
+  * Extract to `/home/vagrant/jmeter`
+  * From a terminal window run the shell script:
+```
+/home/vagrant/jmeter/bin/jmeter.sh
+```
 
 ## Advanced PHP
 Supplementary date-related functions:
