@@ -1,11 +1,13 @@
 # ZendPHP/ZendHQ Class Notes -- Mar 2024
 
-## Add Extensions:
-* xml
-* simplexml
-* dom
-* xmlwriter
-
+## Overall
+* Move the class to a 3 day
+* Make sure the Vagrantfile for the course install Docker and Docker-Compose
+  * Switch to `apt-get` to install Docker and Docker Compose
+* Lock in a specific version of Alpine
+* Update the Vagrantfile to configure Docker to run with a regular user
+* Consider just having attendees install ZendPHP/ZendHQ directly in the VM and don't use Docker/Docker-Compose
+* Consider locking into 8.2
 
 ## Issues Installing ZendPHP on Windows w/ IIS
 * Contact Josh Ziss for details
@@ -75,4 +77,55 @@ lrwxrwxrwx 1 root root      23 Mar 26 10:19 php-fpm -> /usr/sbin/php-fpm82zend
 * http://localhost:9999/#/4/21
   * just restart the `zendhqd` 
   
-    
+## Basic Installation lab
+* Remove `composer.lock`
+* http://localhost:9999/#/3/64
+  * Add a reference page with names of modules
+      
+* http://localhost:9999/#/3/57
+  * Move this to the end: showing other options
+  
+http://localhost:9999/#/3/60
+  * Mention that you need to be in the `/path/to/repo` directory
+
+  * Mention you need to find out what is your path (e.g. `echo $PATH`)
+  
+* http://localhost:9999/#/3/62
+  * Add reference to what needs to be done to access licensed LTS version
+
+* http://localhost:9999/#/3/62
+  * the `wget` and `echo` commands are not needed (confirm this)
+
+* http://localhost:9999/#/3/65
+  * Mention that this is optional
+  
+* http://localhost:9999/#/3/67
+  * Should also look at the FPM pool conf
+
+* Regarding `composer.phar install`
+  * There might be issues with 8.3 and Mezzio packages
+  * Maybe `ifconfig` to confirm IP address
+
+* nginx config file doesn't work! Use this instead:
+```
+server {
+    listen                  80;
+    root                    /var/www/mezzio/public;
+    index                   index.php;
+    server_name             _;
+    client_max_body_size    32m;
+    error_page              500 502 503 504  /50x.html;
+    location = /50x.html {
+        root              /var/lib/nginx/html;
+    }
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+        fastcgi_pass      127.0.0.1:9000;
+        fastcgi_index     index.php;
+        include           fastcgi.conf;
+        fastcgi_param     SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        fastcgi_param     SCRIPT_NAME      $fastcgi_script_name;
+    }
+}
+```
+
