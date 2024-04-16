@@ -4,6 +4,9 @@
 * Make sure attendees get a copy of the updated class when it's released
 
 ## Homework
+For Wed 17 Apr 2024
+* Lab: Namespace
+* Lab: Create a Class
 
 ## VM Notes
 When you first bring up the VM, after a few minutes you'll see a prompt to "Update Software"
@@ -193,6 +196,60 @@ spl_autoload_register(
     }
 );
 ```
+Other autoloading example:
+```
+<?php
+function loader($class) {
+	echo $class . PHP_EOL;
+	$fn = __DIR__ . '/' . str_replace('\\','/',$class) . '.php';
+	require_once($fn);
+}
+spl_autoload_register('loader');
+
+use X\Caller;
+
+$caller = new Caller();
+echo $caller->call_Z();
+echo PHP_EOL;
+echo $caller->call_A();
+
+// actual output:
+/*
+X\Caller
+X\Y\Z\Test
+X\Y\Z:X\Y\Z\Test:X\Y\Z\Test::test
+X\Y\A\Test
+X\Y\A:X\Y\A\Test:X\Y\A\Test::test
+*/
+```
+"Caller" class
+```
+<?php
+namespace X;
+
+use X\Y\Z\Test as ZTest;
+use X\Y\A\Test as ATest;
+
+class Caller
+{
+	public function call_Z()
+	{
+		// enclosing "new" in parentheses creates instance and allows its immediate use
+		return (new ZTest())->test();
+	}
+	public function call_A()
+	{
+		// alternatively, you can do this:
+		$test = new ATest();
+		$result = $test->test();
+		unset($test);
+		return $result;
+	}
+}
+
+```
+Example of class using constants:
+* https://github.com/dbierer/filecms-core/blob/main/src/Common/Generic/Messages.php
 
 Class example:
 ```
