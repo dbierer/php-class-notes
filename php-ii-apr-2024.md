@@ -7,6 +7,10 @@
 For Wed 17 Apr 2024
 * Lab: Namespace
 * Lab: Create a Class
+For Fri 19 Apr 2024
+* Lab: Create an Extensible Super Class
+* Lab: Magic Methods
+* Lab: Abstract Classes (combine with the Super Class lab)
 
 ## VM Notes
 When you first bring up the VM, after a few minutes you'll see a prompt to "Update Software"
@@ -422,10 +426,57 @@ Inheritance example:
 ```
 //             Transportation
 //                   $capacity + $passengers
-//    Land           Sea                   Air
-//     etc.
-//  Car  Truck    Sailboat Freighter   PropPlane   Jet
+//			Tires					Sea
+//			$tires					$rudder
+//    Land       Air    			Sailboat Freighter    
+//  Car  Truck   PropPlane   Jet
 //   etc.
+```
+Using `parent::` example:
+```
+<?php
+class Base
+{
+    protected string $lastName;
+    public function __construct(string $lastName)
+    {
+        $this->lastName = $lastName;
+    }
+    public function init(string $lastName)
+    {
+        $this->lastName = $lastName;
+	}
+    
+}
+ 
+
+class UserEntity extends Base
+{
+    protected string $firstName;
+    public function __construct(string $firstName, string $lastName)
+    {
+        $this->firstName = $firstName;
+        parent::__construct($lastName);
+    }
+    public function init(string $firstName, string $lastName)
+    {
+        $this->firstName = $firstName;
+        parent::init($lastName);
+	}
+}
+ 
+// The subclass
+class GuestUser extends UserEntity {
+    protected string $role;
+    public function __construct(string $firstName, string $lastName, $role)
+    {
+        $this->role = $role;
+    }
+    public function init(string $firstName, string $lastName)
+    {
+        parent::init($firstName, $lastName);
+	}
+}
 ```
 
 Practical anonymous class example:
@@ -557,6 +608,92 @@ echo $reflect;
 // Object of class [ <user> class UserEntity implements Stringable ] {
 // This interface is automatically assigned by PHP 8 and above
 // as long as you define __toString()
+```
+Another example of `__toString()`
+```
+<?php
+class Paragraph
+{
+	public function __construct(public string $text = '') {}
+	public function __toString()
+	{
+		return '<p>' . $this->text . '</p>';
+	}
+}
+class Bold
+{
+	public function __construct(public string $text = '') {}
+	public function __toString()
+	{
+		return '<b>' . $this->text . '</b>';
+	}
+}
+
+$text = <<<TAG
+This is paragraph 1
+This is paragraph 2
+This is bold
+TAG;
+
+$count = 0;
+$html  = '';
+foreach (explode("\n", $text) as $line) {
+	if ($count++ === 2) {
+		$line = new Bold($line);
+	}
+	echo (new Paragraph($line));
+}
+
+// actual output:
+// <p>This is paragraph 1</p><p>This is paragraph 2</p><p><b>This is bold</b></p>
+	
+```
+In PHP 8, any class that defines `__toString()` is automatically associated with the `Stringable` interface
+* Adding this code to the example above:
+```
+$reflect = new ReflectionObject($line);
+echo $reflect;
+```
+* Here's the output:
+```
+Object of class [ <user> class Bold implements Stringable ] {
+  @@ /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/test.php 10-17
+
+  - Constants [0] {
+  }
+
+  - Static properties [0] {
+  }
+
+  - Static methods [0] {
+  }
+
+  - Properties [1] {
+    Property [ public string $text ]
+  }
+
+  - Dynamic properties [0] {
+  }
+
+  - Methods [2] {
+    Method [ <user, ctor> public method __construct ] {
+      @@ /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/test.php 12 - 12
+
+      - Parameters [1] {
+        Parameter #0 [ <optional> string $text = '' ]
+      }
+    }
+
+    Method [ <user, prototype Stringable> public method __toString ] {
+      @@ /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/test.php 13 - 16
+
+      - Parameters [0] {
+      }
+      - Return [ string ]
+    }
+  }
+}
+
 ```
 
 Example of `__destruct()`
