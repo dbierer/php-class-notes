@@ -4,6 +4,13 @@
 * Make sure attendees get a copy of the updated class when it's released
 
 ## Homework
+https://github.com/s-wild/zend-lab
+For Mon 22 Apr 2024
+* Lab: Interfaces
+* Lab: Type Hinting
+* Lab: Build Custom Exception Class
+* Lab: Traits
+
 For Wed 17 Apr 2024
 * Lab: Namespace
 * Lab: Create a Class
@@ -1097,12 +1104,13 @@ interface ServiceInterface {
     public function getService(string $key);
     public function setService(string $key, callable $service);
 }
-
+interface TestInterface {
+    public function getTest(string $key);
+}
 abstract class AbstractController implements ServiceInterface {
     public const FORMAT = 'l, d M Y H:i:s';
     protected array $services = [];
 }
-
 class MvcController extends AbstractController
 {
     public function getService(string $key)
@@ -1114,6 +1122,17 @@ class MvcController extends AbstractController
         $this->services[$key] = $service;
     }
 }
+// NOTE: TestInterface mandates `getTest(string $whatever)`
+//       and inserts itself into the hierarchy at this point.
+//       The effect is seen from this point on down the inheritance hierarchy
+class TestController extends MvcController implements TestInterface
+{
+	public function getTest(string $whatever)
+	{
+		return $whatever;
+	}
+}
+
 
 $callback = new class () {
     protected $date = NULL;
@@ -1121,13 +1140,14 @@ $callback = new class () {
     {
         $this->date = new DateTime('now');
     }
+    // NOTE: by defining `__invoke()` the anonymous class is now considered "callable"
     public function __invoke()
     {
         return $this->date->format(AbstractController::FORMAT);
     }
 };
 
-$controller = new MvcController();
+$controller = new TestController();
 $controller->setService('date', $callback);
 echo $controller->getService('date')();
 ```
@@ -1169,6 +1189,50 @@ echo PHP_EOL;
 echo $new->generateHash('password');
 echo PHP_EOL;
 ```
+This example demonstrates using an interface as a type hint
+* Both `Boss` and `Underling` as well as `Whatever` work as arguments to `do_addition()` because they implement the correct interface.
+```
+<?php
+interface AddInterface
+{
+	public function add(int $a, int $b) : int;
+}
+
+class Boss implements AddInterface
+{
+	public function add(int $a, int $b) : int
+	{
+		return $a + $b;
+	}
+}
+
+class Underling extends Boss
+{}
+
+class Whatever implements AddInterface
+{
+	public function add(int $a, int $b) : int
+	{
+		return $a + $b;
+	}
+}
+
+
+function do_addition(AddInterface $obj, $a, $b)
+{
+	return $obj->add($a, $b);
+}
+
+$obj = new Boss();
+echo do_addition($obj, 2, 2);
+
+$obj = new Underling();
+echo do_addition($obj, 2, 2);
+
+$obj = new Whatever();
+echo do_addition($obj, 2, 2);
+```
+
 Example of type hinting
 ```
 <?php
@@ -1313,7 +1377,7 @@ echo $test->callIt([$stat, 'sum'], $operands);
 echo PHP_EOL;
 echo $test->callIt('Whatever::sum', $operands);
 ```
-Type `int` can "widen" to `float` without any loss of precision
+gType `int` can "widen" to `float` without any loss of precision
 ```
 <?php
 declare(strict_types=1);
@@ -1524,6 +1588,31 @@ Stack trace:
 ```
 Using `static` for a registry style storage class
 * https://github.com/dbierer/filecms-core/blob/main/src/Common/Generic/Registry.php
+```
+class Registry
+{
+	public static $items = [];
+	public static function set(string $key, mixed $value)
+	{
+		static::$items[$key] = $value;
+	}
+	public static function get(string $key)
+	{
+		return static::$items[$key] ?? NULL;
+	}
+}
+
+Registry::set('name', 'Doug Bierer');
+Registry::set('array', range('A','F'));
+
+// do something
+
+foreach (Registry::get('array') as $item) {
+	echo $item . ':' . Registry::get('name') . PHP_EOL;
+}
+
+```
+
 Other examples of `static` and `traits`
 * https://github.com/dbierer/classic_php_examples/tree/master/oop/*static*.php
 * https://github.com/dbierer/classic_php_examples/tree/master/oop/*trait*.php
