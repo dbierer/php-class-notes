@@ -2,9 +2,16 @@
 
 ## To Do
 * Make sure attendees get a copy of the updated class when it's released
-
+* Make sure the OrderApp is working
+  * Looks like a database issue
+ 
 ## Homework
 https://github.com/s-wild/zend-lab
+For Wed 24 Apr 2024
+* Lab: Prepared Statements
+* Lab: Stored Procedure
+* Lab: Transaction
+
 For Mon 22 Apr 2024
 * Lab: Interfaces
 * Lab: Type Hinting
@@ -1762,6 +1769,52 @@ $stmt->execute($data);
 Example of `PDO::FETCH_CLASS` mode:
 * See: https://github.com/dbierer/classic_php_examples/blob/master/db/db_pdo_fetch_class.php
 * Other examples: https://github.com/dbierer/classic_php_examples/tree/master/db
+```
+<?php
+class Order
+{ }
+
+$conf= [
+	'dsn' => 'mysql:unix_socket=/var/run/mysqld/mysqld.sock;dbname=phpcourse',
+	'username' => 'vagrant',
+	'password' => 'vagrant',
+	'options'  => [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION],
+];
+
+try {
+	$pdo = new PDO($conf['dsn'], $conf['username'], $conf['password'], $conf['options']);
+
+    // Execute a one-off SQL statement and get a statement object
+    $stmt = $pdo->query('SELECT * FROM orders');
+	$stmt->setFetchMode(PDO::FETCH_CLASS, 'Order');
+
+    // Returns an instance of Order, one row at a time
+    while ($result = $stmt->fetch()) {
+		var_dump($result);
+	}
+} catch (PDOException $e){
+    //Handle error
+}
+
+// partial output:
+/*
+object(Order)#3 (6) {
+  ["id"]=>
+  int(7)
+  ["date"]=>
+  string(10) "1360796400"
+  ["status"]=>
+  string(4) "open"
+  ["amount"]=>
+  int(300)
+  ["description"]=>
+  string(24) "A big box of chocolates."
+  ["customer"]=>
+  int(3)
+}
+*/
+
+```
 
 ## Output Buffering
 To start output buffering automatically, in the `php.ini` file:
