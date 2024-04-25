@@ -2,11 +2,42 @@
 
 ## To Do
 * Make sure attendees get a copy of the updated class when it's released
-* Make sure the OrderApp is working
-  * Looks like a database issue
+* Q: Why was the OrderApp not working?
+* A: The Apache/PHP module had to be updated to 8.3
+* A: Also, the pdo_mysql extension had to be installed
+  
+* Q: Do you have a list of regex testing websites?
+* A: I prefer this one as it's mainly for PHP and supports other functions above just `preg_match()`
+  * See: https://www.phpliveregex.com/
+* A: This one is good if you also need to test regexes in other languages:
+  * See: https://regex101.com/
+
+* Fix this example:
+```
+<?php
+$text = 'April 24, 2024 10:15 AM';
+$patt = '/^(\w)+?\b(\d)+?.*?(\d){4}(.*?)/';
+$repl = '$2 $1 $3 $4';
+echo preg_replace($patt, $repl, $text);
+
+```
+* Here's the working example:
+```
+<?php
+$test = 'April 24, 2024';
+$pattern = '!^([A-Za-z]+)? (\d{1,2}), (\d{2,4})$!i';
+$str = preg_replace($pattern, '$2 $1 $3', $test);
+echo $str;
+echo PHP_EOL;
+
+// Actual output: "24 April 2024"
+```
  
 ## Homework
 https://github.com/s-wild/zend-lab
+For Fri 26 Apr 2024
+* Lab: Validate an Email Address
+
 For Wed 24 Apr 2024
 * Lab: Prepared Statements
 * Lab: Stored Procedure
@@ -1823,9 +1854,12 @@ To start output buffering automatically, in the `php.ini` file:
 output_buffering=4096
 ```
 * See: https://www.php.net/manual/en/outcontrol.configuration.php#ini.output-buffering
+
 ## Email
 Headers can include any valid headers as per RFC 2822
 * See: http://www.faqs.org/rfcs/rfc2822
+Official list of email headers:
+* https://www.iana.org/assignments/message-headers/message-headers.xhtml
 
 ## Regex
 Simple example finds all files that start with "Test" and end with "php"
@@ -1852,6 +1886,16 @@ foreach ($str as $item) {
 	}
 	echo $item . ' was ' . $found . PHP_EOL;
 }
+
+```
+Matches a Canadian postal code
+```
+<?php
+$text = 'A2A 3B4';
+$patt = '/^\w\d\w \d\w\d$/';
+preg_match($patt, $text, $match);
+
+var_dump($match);
 
 ```
 
@@ -1892,7 +1936,6 @@ echo preg_replace($pat, $rep, $str);
 // Actual output: "Fred Flintstone"
 
 ```
-
 Example email validation
 ```
 <?php
@@ -1912,78 +1955,22 @@ foreach ($email as $item) {
     echo ']' . PHP_EOL;
 }
 ```
-## Composer
-Example of advanced usage including scripts
-* https://github.com/laminas/laminas-mvc-skeleton/blob/master/composer.json
-You can add alternates to `packagist.org` using the `repositories` key in the composer.json file
-* Example: https://wpackagist.org/
-If you dependency issues, consider adding the `--ignore-platform-reqs` to the `composer install` or `composer update` directive
-* This is especially true if you're running 8.1 or 8.2 and the packagist project is set for PHP 7.4 or 8.0
-If you want Composer to interactively build a `composer.json` file use this command:
-```
-composer --init
-```
 
-## Web Services
-Example of SOAP Client
-* https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
-How to generate an HTTP `PUT`, `POST`, etc.
-* See: https://www.php.net/stream_context_create
-```
-<?php
-$data = array ('foo' => 'bar', 'bar' => 'baz');
-$data = http_build_query($data);
-$context_options = array (
-        'http' => array (
-            'method' => 'POST',
-            'header'=> "Content-type: application/x-www-form-urlencoded\r\n"
-                . "Content-Length: " . strlen($data) . "\r\n",
-            'content' => $data
-            )
-        );
-
-$context = stream_context_create($context_options)
-$fp = fopen('https://url', 'r', false, $context);
-```
-Study by Oracle that compares SOAP and REST
-* https://www.ateam-oracle.com/post/performance-study-rest-vs-soap-for-mobile-applications
-## Output Control
-Example using output buffering to create inner content
-```
-<?php
-ob_start ();
-
-$values = ['TH'=>'Thailand','GB'=>'Great Britain','FR'=>'France'];
-foreach ($values as $key => $val)
-    echo '<tr><th>' . $key . '</th><td>' . $val . '</td></tr>';
-
-$contents = ob_get_clean();
-
-echo '<h1>My Cool Webpage</h1>';
-echo '<table>';
-echo $contents;
-echo '</table>';
-```
-Simplified ETag Example:
-* See: https://github.com/dbierer/classic_php_examples/blob/master/web/etag.php
-
-## Email
-Official list of email headers:
-* https://www.iana.org/assignments/message-headers/message-headers.xhtml
-
-## Regex
 Example of searching for a specific file name pattern in a directory
 ```
 <?php
 $list = scandir(__DIR__);
 var_dump($list);
-$pattern = '/^exam.*\.php$/';
+$pattern = '/^[\w].*?\.php$/';
 foreach ($list as $item) {
     echo $item . ': ';
     preg_match($pattern, $item, $match);
-    echo (!empty($match[0])) ? 'MATCH' : '';
+    echo (!empty($match[0])) ? 'MATCH' : 'NO MATCH';
     echo PHP_EOL;
 }
+
+// or
+var_dump(preg_grep($pattern, $list));
 
 ```
 
@@ -2065,12 +2052,12 @@ array(3) {
 Example using `preg_replace()`
 ```
 <?php
-$test = '<script>Bad Javascript</script>';
+$text = '<script>Bad Javascript</script>';
 $pattern = '![^A-Za-z0-9 ]!';
-$str = preg_replace($pattern, ' ', $test);
+$str = preg_replace($pattern, ' ', $text);
 echo $str;
 echo PHP_EOL;
-echo strip_tags($test);
+echo strip_tags($text);
 
 // actual output:
 /*
@@ -2081,20 +2068,19 @@ Bad Javascript
 Using `$` to represent subpatterns when using `preg_replace()`
 ```
 <?php
-$test = 'Dixon, Andre';
-$pattern = '!([A-Za-z]+)?\, ([A-Za-z]+)?!i';
-$str = preg_replace($pattern, '$2 $1', $test);
+$text = 'April 24, 2024';
+$pattern = '!^([A-Za-z]+)? (\d{1,2}), (\d{2,4})$!i';
+$str = preg_replace($pattern, '$2 $1 $3', $text);
 echo $str;
 echo PHP_EOL;
 
-// Actual output: "Andre Dixon"
+// Actual output: "24 April 2024"
 ```
 
 PHP 5 to PHP 7 code converter using `preg_replace_callback_array()`
 * https://github.com/dbierer/php7cookbook/blob/master/source/chapter01/chap_01_php5_to_php7_code_converter.php#L3
 * https://github.com/dbierer/php7cookbook/blob/master/source/Application/Parse/Convert.php
 
-## Regex
 Example email validation regex from Andrey:
 ```
 ^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$
@@ -2107,6 +2093,87 @@ Example from William:
 ```
 $pattern = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';
 ```
+
+
+## Composer
+Example of advanced usage including scripts
+* https://github.com/laminas/laminas-mvc-skeleton/blob/master/composer.json
+You can add alternates to `packagist.org` using the `repositories` key in the composer.json file
+* Example: https://wpackagist.org/
+If you dependency issues, consider adding the `--ignore-platform-reqs` to the `composer install` or `composer update` directive
+* This is especially true if you're running 8.1 or 8.2 and the packagist project is set for PHP 7.4 or 8.0
+If you want Composer to interactively build a `composer.json` file use this command:
+```
+composer --init
+```
+
+## Web Services
+Example of SOAP Client
+* https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
+How to generate an HTTP `PUT`, `POST`, etc.
+* See: https://www.php.net/stream_context_create
+```
+<?php
+$data = array ('foo' => 'bar', 'bar' => 'baz');
+$data = http_build_query($data);
+$context_options = array (
+        'http' => array (
+            'method' => 'POST',
+            'header'=> "Content-type: application/x-www-form-urlencoded\r\n"
+                . "Content-Length: " . strlen($data) . "\r\n",
+            'content' => $data
+            )
+        );
+
+$context = stream_context_create($context_options)
+$fp = fopen('https://url', 'r', false, $context);
+```
+Study by Oracle that compares SOAP and REST
+* https://www.ateam-oracle.com/post/performance-study-rest-vs-soap-for-mobile-applications
+## Output Control
+Example where you get a Warning "headers already sent"
+```
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// stops buffering
+ob_end_clean();
+
+header('Test-1: TEST1');
+echo '<br />' . __FILE__ . ':' . __LINE__;
+
+// returns a Warning:
+header('Test-2: TEST2');
+echo '<br />' . __FILE__ . ':' . __LINE__;
+
+// actual output:
+/*
+/home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/test.php:6
+Warning: Cannot modify header information - headers already sent by (output started at /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/test.php:6) in /home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/test.php on line 8
+
+/home/vagrant/Zend/workspaces/DefaultWorkspace/sandbox/test.php:9
+*/
+```
+
+Example using output buffering to create inner content
+```
+<?php
+ob_start ();
+
+$values = ['TH'=>'Thailand','GB'=>'Great Britain','FR'=>'France'];
+foreach ($values as $key => $val)
+    echo '<tr><th>' . $key . '</th><td>' . $val . '</td></tr>';
+
+$contents = ob_get_clean();
+
+echo '<h1>My Cool Webpage</h1>';
+echo '<table>';
+echo $contents;
+echo '</table>';
+```
+Simplified ETag Example:
+* See: https://github.com/dbierer/classic_php_examples/blob/master/web/etag.php
 
 ## Web Services
 REST request example:
@@ -2253,9 +2320,6 @@ echo Gender::MALE->value;	// output: "M"
   * https://github.com/laminas/laminas-filter/blob/master/src/FilterInterface.php
   * https://github.com/laminas/laminas-filter/blob/master/src/AbstractFilter.php
   * And then, look at any of the Filter classes
-
-* Q: Find the example where `__serialize()` is used to encrypt a CC number
-* A: See below
 
 * Q: Do the PSRs recommend using `()` when creating new instances?
 * A: According to PSR-12::Section 4:
