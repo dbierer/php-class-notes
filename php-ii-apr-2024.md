@@ -1,6 +1,10 @@
 # PHP II - Apr 2024
 
 ## To Do
+* Check date of webinar on PHP package developers falling behind release cycles
+  * May 2nd @ 1 PM EDT
+  * "Are CMS Ecosystems Keeping Pace With PHP?"  
+  * https://www.zend.com/resources/events/webinar/cms-ecosystem-php?region=noram#noram
 * Make sure attendees get a copy of the updated class when it's released
 * Q: Why was the OrderApp not working?
 * A: The Apache/PHP module had to be updated to 8.3
@@ -24,13 +28,13 @@ echo preg_replace($patt, $repl, $text);
 * Here's the working example:
 ```
 <?php
-$test = 'April 24, 2024';
-$pattern = '!^([A-Za-z]+)? (\d{1,2}), (\d{2,4})$!i';
-$str = preg_replace($pattern, '$2 $1 $3', $test);
+$text = 'April 24, 2024 10:15 AM';
+$pattern = '/^(\w+).*?(\d+).*?(\d{4})(.*?)$/';
+$str = preg_replace($pattern, '$2 $1 $3$4', $text);
 echo $str;
 echo PHP_EOL;
 
-// Actual output: "24 April 2024"
+// Actual output: "24 April 2024 10:15 AM"
 ```
  
 ## Homework
@@ -176,6 +180,8 @@ PHP Roadmap
 * https://wiki.php.net/rfc
 * Migration Guides:
   * https://www.php.net/manual/en/appendices.php
+Automated WordPress installation using Composer:
+* https://github.com/dbierer/automated_wp_installation/blob/main/install_wp_on_hosting_account.sh
  
 ## Class Notes
 ### Namespaces
@@ -2068,13 +2074,13 @@ Bad Javascript
 Using `$` to represent subpatterns when using `preg_replace()`
 ```
 <?php
-$text = 'April 24, 2024';
-$pattern = '!^([A-Za-z]+)? (\d{1,2}), (\d{2,4})$!i';
-$str = preg_replace($pattern, '$2 $1 $3', $text);
+$text = 'April 24, 2024 10:15 AM';
+$pattern = '/^(\w+).*?(\d+).*?(\d{4})(.*?)$/';
+$str = preg_replace($pattern, '$2 $1 $3$4', $text);
 echo $str;
 echo PHP_EOL;
 
-// Actual output: "24 April 2024"
+// Actual output: "24 April 2024 10:15 AM"
 ```
 
 PHP 5 to PHP 7 code converter using `preg_replace_callback_array()`
@@ -2108,6 +2114,83 @@ composer --init
 ```
 
 ## Web Services
+SimpleXML Example:
+```
+<?php
+// A simpleXML load file example
+$xml = simplexml_load_file( 'produce.xml' );
+ 
+// Get the vegies
+$vegies = $xml->vegetables;
+ 
+// Get the first vegie using array notation
+$vegie = $vegies->vegetable[0]->name;
+echo 'Content: ' . $vegie . "\n";
+
+$fruits = $xml->fruits;
+echo 'Content: ' . $fruits->fruit[0]->name . "\n" ;
+echo 'Content: ' . $fruits->fruit[1]->name . "\n" ;
+echo 'Content: ' . $fruits->fruit[2]->name . "\n" ;
+ 
+// Output item data
+foreach ( $fruits->fruit as $node ) {
+    echo 'Content: ' . $node->name . "\n" ;
+}
+ 
+// Output XML from the SimpleXMLElement object
+//echo $xml->asXML();
+ 
+// Output to an xml file
+$xml->asXML( 'newproduce.xml' );
+
+// actual ouput (minus the XML document)
+
+//var_dump($xml);
+
+/*
+Content: tomatoes
+Content: strawberries
+Content: bananas
+Content: apples
+Content: strawberries
+Content: bananas
+Content: apples
+
+*/
+```
+Here's the XML document:
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<produce xmlns:ea="test">
+	<vegetables>
+		<vegetable unit="pound">
+			<name>tomatoes</name>
+			<price>2.99</price>
+		</vegetable>
+		<vegetable unit="bunch">
+			<name>broccoli</name>
+			<price>4.99</price>
+		</vegetable>
+	</vegetables>
+	<fruits>
+		<fruit unit="pint">
+			<name>strawberries</name>
+			<price>4.99</price>
+			<time>seasonal</time>
+		</fruit>
+		<fruit unit="bunch">
+			<name>bananas</name>
+			<price>3.99</price>
+			<time>seasonal</time>
+		</fruit>
+		<fruit unit="bag">
+			<name>apples</name>
+			<price>4.99</price>
+			<time>seasonal</time>
+		</fruit>
+	</fruits>
+</produce>
+```
 Example of SOAP Client
 * https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
 How to generate an HTTP `PUT`, `POST`, etc.
