@@ -1,8 +1,11 @@
 # PHP II - May 2024
 
 ## To Do
+* Let Nicole know about setting up an extra session Weds next week
 
 ## Homework
+For Tuesday 15 May 2024
+* Get the VM up and running
 
 ## VM Notes
 The vagrant setup process can take up to 1 or 2 hours depending on your network connection.
@@ -73,6 +76,8 @@ Automated WordPress installation using Composer:
 ### Namespaces
 Namespace standard: PSR-4
 * https://www.php-fig.org/psr/psr-4/
+
+Simple example:
 
 Differences between PHP 7 and 8:
 ```
