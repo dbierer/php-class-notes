@@ -1,11 +1,19 @@
 # PHP II - May 2024
 
 ## To Do
-* Let Nicole know about setting up an extra session Weds next week
+* Q: Examples using $_SESSION?
+* A: See: https://github.com/dbierer/classic_php_examples/blob/master/web/session_counter.php
+* A: See: https://github.com/dbierer/classic_php_examples/blob/master/web/session_set_save_handler_example.php
+
+* Q: How to install VSCode in the VM?
+* A: See: https://linuxiac.com/install-visual-studio-code-on-ubuntu-22-04/
 
 ## Homework
 For Tuesday 15 May 2024
 * Get the VM up and running
+* Lab: Create a class
+* Lab: Create a Super Class
+* Lab: Magic Methods
 
 ## VM Notes
 The vagrant setup process can take up to 1 or 2 hours depending on your network connection.
@@ -26,9 +34,21 @@ Accept New Configuration
 Depending on your system, you might run into an ssh key/value pair error during the `vagrant up` process.
 Try the following:
 * In the VM toggle the network connection (lower right) on and off
+* If the VM has partially started, click "Reset" under the "Machine" top left menu option
 * If that doesn't work, and you're sitting at the command prompt, try the following:
 ```
 vagrant up --provision
+```
+
+### 502 Bad Gateway
+If you're getting this message from the browser inside the VM, do the following:
+* Open up a command prompt (CTL+ALT+T)
+* Check your PHP version: `php -v`
+  * Make a note of the number (e.g. "8.3")
+* Switch to "root": `sudo -i`
+* Open this file: `nano /etc/php/PHP_VERSION-zend/fpm/pool.d/www.conf`
+  * Substitute the PHP version in place of "PHP_VERSION"
+* Make these changes:
 ```
 
 ### Housekeeping
@@ -752,6 +772,50 @@ $drop->key4 = bin2hex(random_bytes(8));
 var_dump($drop);
 
 echo $drop->values['key1']; // Fatal Error
+```
+Example using `__call()` with a Plugin class
+```
+<?php
+class Test
+{
+	public function __construct(public object $plugin)
+	{}
+	public function getTest()
+	{
+		return 'This is coming from ' . __METHOD__;
+	}
+	public function __call($method, $args)
+	{
+		if (method_exists($this->plugin, $method)) {
+			$result = $this->plugin->$method($args);
+		} else {
+			$result = 'Undefined';
+		}
+		return $result;
+	}
+}
+class Plugin
+{
+	public function doesNotExist()
+	{
+		return 'This is coming from the plugin manager';
+	}
+}
+
+
+$test = new Test(new Plugin());
+
+echo $test->getTest();
+echo PHP_EOL;
+
+echo $test->doesNotExist();
+echo PHP_EOL;
+
+// actual output:
+/*
+This is coming from Test::getTest
+This is coming from the plugin manager
+*/
 ```
 
 Serialization example:
@@ -2352,6 +2416,8 @@ sudo systemctl restart apache2
 
 * http://localhost:8882/#/3/15
   * Cannot have an active expression in the declaration at this point!
+* http://localhost:8882/#/3/26
+  * Add `get_object_vars()`
 * http://localhost:8882/#/3/32
   * Inconsistent use of "super class" vs. "superclass" and also "sub class" or "subclass"
 * http://localhost:8882/#/7/4
@@ -2365,3 +2431,4 @@ sudo systemctl restart apache2
 * http://localhost:8882/#/10/21
   * Get rid of `class Test {`
 * Update section: needs to go up to 8.4
+*
