@@ -9,11 +9,16 @@
 * A: See: https://linuxiac.com/install-visual-studio-code-on-ubuntu-22-04/
 
 ## Homework
-For Tuesday 15 May 2024
+For Tuesday 22 May 2024
 * Get the VM up and running
 * Lab: Create a class
 * Lab: Create a Super Class
 * Lab: Magic Methods
+* Lab: Abstract Classes (do this in place of the "Super Class" lab)
+* Lab: Interfaces
+* Lab: Type Hinting
+* Lab: Build Custom Exception Class
+
 
 ## VM Notes
 The vagrant setup process can take up to 1 or 2 hours depending on your network connection.
@@ -46,9 +51,22 @@ If you're getting this message from the browser inside the VM, do the following:
 * Check your PHP version: `php -v`
   * Make a note of the number (e.g. "8.3")
 * Switch to "root": `sudo -i`
-* Open this file: `nano /etc/php/PHP_VERSION-zend/fpm/pool.d/www.conf`
-  * Substitute the PHP version in place of "PHP_VERSION"
+* Open this file with "nano": `nano /etc/php/$PHP_VER-zend/fpm/pool.d/www.conf`
+  * Substitute the PHP version in place of "$PHP_VER"
 * Make these changes:
+```
+; Replace this line:
+listen = /run/php/php$PHP_VER-zend-fpm.sock
+; With this:
+listen = 0.0.0.0:9000
+```
+* Restart PHP-FPM
+```
+/etc/init.d/php$PHP_VER-zend-fpm restart
+```
+* Restart nginx
+```
+/etc/init.d/nginx restart
 ```
 
 ### Housekeeping
@@ -1093,6 +1111,51 @@ Example of Abstract class with abstract method:
 * https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractActionController.php
 * https://github.com/laminas/laminas-mvc/blob/master/src/Controller/AbstractRestfulController.php
 
+Abstract class example:
+```
+<?php
+abstract class Base
+{
+	public const TABLE = '';
+	public array $data = [];
+	public function __construct(array $data)
+	{
+		$this->data = $data;
+	}
+	public abstract function insert() : bool;
+	public function getDataAsArray()
+	{
+		return get_object_vars($this->data);
+	}
+}
+
+// for each of the following subclasses:
+// 1. Create an insert() method
+// 2. Build the SQL pertinent to that class
+// 3. Send the SQL to the database to insert $this->data
+
+class Order extends Base
+{
+	public const TABLE = 'orders';
+}
+
+class Order_Line_Item extends Base
+{
+	public const TABLE = 'order_line_item';
+}
+
+class Customer extends Base
+{
+	public const TABLE = 'customers';
+}
+
+// output at this point:
+
+/*
+ * PHP Fatal error:  Class Order contains 1 abstract method and must therefore be declared abstract or implement the remaining methods (Base::insert) in C:\Users\ACER\Desktop\test.php on line 17
+*/
+```
+
 Examples of classes with interfaces:
 * https://github.com/laminas/laminas-db/blob/master/src/Adapter/Adapter.php
 
@@ -1257,6 +1320,53 @@ echo PHP_EOL;
 
 echo $test->add('5x', 'x6');	// output: Fatal Error
 echo PHP_EOL;
+```
+One more example of using interfaces
+```
+class Order extends Base implements InsertInterface
+{
+	public const TABLE = 'order_line_item';
+	public function insert() : bool
+	{
+		// some logic for order line items
+		return (bool) rand(0,1);
+	}
+}
+
+class Customer extends Base implements UpdateInterface
+{
+	public const TABLE = 'customers';
+	public function update(array $data) : bool
+	{
+		// some logic for orders
+		return (bool) rand(0,1);
+	}
+}
+
+class AddToDatabase
+{
+	// InsertInterface data type gaurantees the "insert()" method
+	public function addItem(InsertInterface $item)
+	{
+		// do something with the item instance
+		if ($item->insert()) {
+			$msg = 'Insert success';
+		} else {
+			$msg = 'Insert failure';
+		}
+		return $msg;
+	}
+}
+
+$add = new AddToDatabase();
+$item = new Order([1,2,3]);
+echo $add->addItem($item);	// works  OK
+echo PHP_EOL;
+
+$item = new Customer([1,2,3]);
+echo $add->addItem($item);	// Fatal Error
+echo PHP_EOL;
+
 ```
 
 Example of "type widening"
@@ -1544,6 +1654,28 @@ try {
 	echo $e->getMessage();
 }
 
+```
+Exceptions are planned ways of bailing out if unable continue:
+```
+<?php
+class Convert
+{
+	public array $arr = [];
+	public function toArray(string $filename)
+	{
+		if (!file_exists($filename)) {
+			throw new Exception('You need to supply a valid CSV file');
+		}
+		$fh = new SplFileObject($filename, 'r');
+		while ($row = $fh->fgetcsv()) {
+			$arr[] = $row;
+		}
+		return $arr;
+	}
+}
+
+$conv = new Convert();
+var_dump($conv->toArray('xyz.csv'));
 ```
 
 Exception / Error example:
@@ -2420,6 +2552,11 @@ sudo systemctl restart apache2
   * Add `get_object_vars()`
 * http://localhost:8882/#/3/32
   * Inconsistent use of "super class" vs. "superclass" and also "sub class" or "subclass"
+* http://localhost:8882/#/3/69
+  * No need to declare this as abstract
+* http://localhost:8882/#/3/first-class-examples
+  * Don't keep using `parent::`
+  * Only incliude 1 example
 * http://localhost:8882/#/7/4
   * s/be "matches any character" (not "and")
 * http://localhost:8882/#/7/5
