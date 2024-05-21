@@ -18,7 +18,7 @@ For Tuesday 22 May 2024
 * Lab: Interfaces
 * Lab: Type Hinting
 * Lab: Build Custom Exception Class
-
+* Lab: Traits
 
 ## VM Notes
 The vagrant setup process can take up to 1 or 2 hours depending on your network connection.
@@ -109,6 +109,8 @@ PHP Roadmap
   * https://www.php.net/manual/en/appendices.php
 Automated WordPress installation using Composer:
 * https://github.com/dbierer/automated_wp_installation/blob/main/install_wp_on_hosting_account.sh
+Example of rendering content body inside a layout:
+* https://github.com/dbierer/filecms-core/blob/main/src/Common/View/Html.php
 
 ## Class Notes
 ### Namespaces
@@ -1742,6 +1744,61 @@ foreach (Registry::get('array') as $item) {
 	echo $item . ':' . Registry::get('name') . PHP_EOL;
 }
 
+```
+This example shows using `static` to store what would normally be standalone functions:
+```
+<?php
+// you can also tie an interface to a static implementation:
+interface LowerInterface
+{
+	public static function makeLower(string $item);
+}
+
+class Generic implements LowerInterface
+{
+	public static $mode = 'upper';
+	public static function makeUpper(string $item)
+	{
+		return strtoupper($item);
+	}
+	public static function makeLower(string $item)
+	{
+		return strtolower($item);
+	}
+	public static function makeWhatever(string $item)
+	{
+		if (static::$mode === 'upper') {
+			$result = static::makeUpper($item);
+		} else {
+			$result = static::makeLower($item);
+		}
+		return $result;
+	}
+}
+
+$text = 'The quick brown fox jumped over the fence.';
+
+echo Generic::makeUpper($text);
+echo PHP_EOL;
+
+echo Generic::makeLower($text);
+echo PHP_EOL;
+
+Generic::$mode = 'upper';
+echo Generic::makeWhatever($text);
+echo PHP_EOL;
+
+Generic::$mode = 'lower';
+echo Generic::makeWhatever($text);
+echo PHP_EOL;
+
+// actual output
+/*
+ * THE QUICK BROWN FOX JUMPED OVER THE FENCE.
+the quick brown fox jumped over the fence.
+THE QUICK BROWN FOX JUMPED OVER THE FENCE.
+the quick brown fox jumped over the fence.
+*/
 ```
 
 Other examples of `static` and `traits`
