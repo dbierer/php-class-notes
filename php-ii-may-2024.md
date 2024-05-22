@@ -1,6 +1,10 @@
 # PHP II - May 2024
 
 ## To Do
+* Q: Why does the "Etag" header not get set?
+
+* Q: Research error in the "superclass_lab.php"
+
 * Q: Examples using $_SESSION?
 * A: See: https://github.com/dbierer/classic_php_examples/blob/master/web/session_counter.php
 * A: See: https://github.com/dbierer/classic_php_examples/blob/master/web/session_set_save_handler_example.php
@@ -9,6 +13,11 @@
 * A: See: https://linuxiac.com/install-visual-studio-code-on-ubuntu-22-04/
 
 ## Homework
+For Thursday 24 May 2024
+* Lab: Prepared Statements
+* Lab: Stored Procedure
+* Lab: Transaction
+
 For Tuesday 22 May 2024
 * Get the VM up and running
 * Lab: Create a class
@@ -111,6 +120,8 @@ Automated WordPress installation using Composer:
 * https://github.com/dbierer/automated_wp_installation/blob/main/install_wp_on_hosting_account.sh
 Example of rendering content body inside a layout:
 * https://github.com/dbierer/filecms-core/blob/main/src/Common/View/Html.php
+Database examples:
+* https://github.com/dbierer/classic_php_examples/tree/master/db
 
 ## Class Notes
 ### Namespaces
@@ -1873,6 +1884,42 @@ var_dump($user);
 ## PDO
 Example of a generic database class with built-in methods for INSERT, SELECT, UPDATE, DELETE
 * https://github.com/dbierer/classic_php_examples/blob/master/db/db_active_record_example.php
+Example showing `SELECT` and publishing results as an array of `User` class instances:
+```
+<?php
+$config = include __DIR__ . '/../orderapp/config/config.php';
+
+class User
+{
+	public $id;
+	public $first;
+	public $last;
+	public function __construct(array $row)
+	{
+		$this->id = $row['id'];
+		$this->first = $row['firstname'];
+		$this->last = $row['lastname'];
+	}
+}
+
+try {
+	$pdo = new PDO($config['db']['dsn'],
+				   $config['db']['username'],
+				   $config['db']['password'],
+				   $config['db']['options']);
+	$sql = 'SELECT id,firstname,lastname FROM customers';
+	$stmt = $pdo->query($sql);
+	while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+		$users[] = new User($row);
+	}
+	var_dump($users);
+} catch (Throwable $t) {
+	error_log(get_class($t) . ':' . $t->getMessage() . ':' . $t->getTraceAsString());
+	echo 'Database error';
+}
+
+```
+
 Example using a stored procedure with `PDO::exec()`
 ```
 <?php
@@ -1995,6 +2042,30 @@ object(Order)#3 (6) {
 }
 */
 
+```
+Rewritten example using stored procedure:
+```
+
+try {
+    // Get the connection instance
+    $pdo = new PDO('mysql:host=localhost;dbname=phpcourse','vagrant','vagrant',
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+
+    // Hard coded input parameters
+    $fname = 'Mark';
+    $lname = 'Watney';
+
+    // Prepare an SQL statement and get a statement object
+    $sql = 'CALL newCustomer (' . $fname . ',' . $lname . ');';
+    $stmt = $pdo->query($sql);
+
+    // Execute the SQL statement
+    if ($stmt->rowCount() > 0) {
+        echo "New user $fname  $lname added";
+    }
+} catch (PDOException $e){
+    //Handle error
+}
 ```
 
 ## Output Buffering
@@ -2625,4 +2696,5 @@ sudo systemctl restart apache2
 * http://localhost:8882/#/10/21
   * Get rid of `class Test {`
 * Update section: needs to go up to 8.4
-*
+* http://localhost:8882/#/6/3
+  * commandss

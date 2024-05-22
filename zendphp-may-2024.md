@@ -42,4 +42,11 @@ For Thursday 23 May 2024
 ## Class Notes
 Make sure you obtain a real or demo ZendHQ license before doing the labs.
 
+## Errata
+* PHP-FPM Lab:
+  * The link source for the demo app is not correct. Here's the correct link:
+```
+# ln -s /home/vagrant/Zend/Basic_Installation/mezzio /var/www/mezzio
+```
+
 
