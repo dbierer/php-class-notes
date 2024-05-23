@@ -2,8 +2,16 @@
 
 ## To Do
 * Q: Why does the "Etag" header not get set?
+* A: The value assigned to the header needs to be on quotes (")
+  * Here's the solution: `header('ETag: "' . $etag . '"');`
+  * https://github.com/dbierer/classic_php_examples/blob/master/web/etag.php
 
 * Q: Research error in the "superclass_lab.php"
+* A: If the subclass uses PHP 8 `__construct()` argument promotion, the superclass needs to as well
+* A: Otherwise you get this error:
+```
+PHP Fatal error:  Type of OrderPacked::$ordernumber must not be defined (as in class OrderInfo) in superclass_lab.php on line 53
+```
 
 * Q: Examples using $_SESSION?
 * A: See: https://github.com/dbierer/classic_php_examples/blob/master/web/session_counter.php
