@@ -79,37 +79,41 @@ server {
 
 
 ## Errata
+
+#### Fixed
 PHP-FPM Lab:
-  * The link source for the demo app is not correct. Here's the correct link:
+x  * The link source for the demo app is not correct. Here's the correct link:
 ```
 # ln -s /home/vagrant/Zend/Basic_Installation/mezzio /var/www/mezzio
 ```
-* Also need to install the DOM extension
+
+x* Also need to install the DOM extension
 
 * Check for situations where you need to be root, vs. just regular user
 
-* This `/etc/nginx/http.d/default` s/be `/etc/nginx/sites-available/default`
+x* This `/etc/nginx/http.d/default` s/be `/etc/nginx/sites-available/default`
 
-* IBMi is now in a separate section (remove from title slide)
+x* IBMi is now in a separate section (remove from title slide)
 
 * ZendPHP Supported versions
   * Centos Stream?
   * SuSE Linux?
-* Correct typo: "integrationv"
 
-* `zendphpctl php-list-installed` s/be `zendphpctl php list-installed`
+x* Correct typo: "integrationv"
 
-* Correct typo: "Det of practices"
+x* `zendphpctl php-list-installed` s/be `zendphpctl php list-installed`
 
-* ZendHQ installation lab: get rid of this "This lab is based upon the Alpine Docker image."
+x* Correct typo: "Det of practices"
 
-* change this 10.10.60.10 to "localhost" in the labs
+x* ZendHQ installation lab: get rid of this "This lab is based upon the Alpine Dockerx image."
+
+x* change this 10.10.60.10 to "localhost" in the labs
 
 ZendHQ Lab
 
 * Make it clear how to run the GUI
 * Mention from CLI you will see GTK error messages
-* Switch refs from 10.10.??? to localhost
+x* Switch refs from 10.10.??? to localhost
 * Need to restart the zendhqd after Lab: Change the Login Token
 * Confirm that zendhqd runs under systctl, if so, change lab instructions
 * Make sure the PHP zendhq extension config is mentioned in the labs
@@ -129,3 +133,5 @@ ZendHQ Lab
 
 * http://localhost:9999/#/10/7
   * Remove
+
+### Not Yet Fixed

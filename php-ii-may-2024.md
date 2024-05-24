@@ -2117,6 +2117,26 @@ foreach ($str as $item) {
 }
 
 ```
+This example extracts a URL from a string:
+```
+<?php
+$text = '<html><body><p>Something</p><p><a href="https://zend.com/">Click Here</a></p></body></html>';
+$patt = '/href="(.*?)"/';
+$match = [];
+if (preg_match($patt, $text, $match)) {
+	$url = $match[1] ?? '';
+	echo htmlspecialchars($text) . PHP_EOL;
+	echo 'The URL is: ' . $url . PHP_EOL;
+} else {
+	echo 'No Match';
+}
+
+// actual output:
+/*
+&lt;html&gt;&lt;body&gt;&lt;p&gt;Something&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://zend.com/&quot;&gt;Click Here&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+The URL is: https://zend.com/
+ */
+```
 Matches a Canadian postal code
 ```
 <?php
