@@ -5,8 +5,11 @@
 * Get list of `configure` options
 
 ## Homework
+For Wednesday 5/Thursday 6 Jun (depending on timezone!)
 * [Optional] Lab: Custom PHP
 * [Optional] Lab: Built-in Web Server
+* Lab: JIT
+* Lab: FFI
 
 ## Class Notes
 Object Relational Mapping
@@ -20,26 +23,73 @@ Example of a working "Event" system
 
 ## General Lab Notes
 * Lab Code:
-  * Clone this repo: https://github.com/dbierer/php-iii-demos.git
-  * Source code is located here: `/home/vagrant/Zend/workspaces/DefaultWorkspace`
+  * Source code is located here: `https://opensource.unlikelysource.com/zend-training/php-iii/course_projects.zip`
 * Lab: OpCache and JIT
-  * The code for the Mandelbrot needs `__construct()`
-* CLI utility to reset JIT:
+    * CLI utility to reset JIT:
     * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch10/php8_jit_reset.php
-    * Run the demo as a web page and adjust params under `/etc/php/PHP_VER/apache2/php.ini`
+    * Move `/home/vagrant/Zend/JIT/mandelbrot.php` to `/home/vagrant/Zend/sandbox/mandelbrot.php`
     * Don't forget to renable JIT in `/etc/php/PHP_VER/apache2/conf.d/10-opcache.ini`
+    * Adjust `php.ini` settings for OpCache and JIT
+      * Do a few test runs without OpCache or JIT
+      * Do a few test runs with OpCache
+      * Do a few test runs without OpCache and JIT in `function` mode
+      * Do a few test runs without OpCache and JIT in `tracing` mode
     * Example timinig results:
 ```
 w/out opcache: ~2.7
 with  opcache: ~2.5
 with JIT function: ~0.75
-with JIT tracking: ~0.41
+with JIT tracing: ~0.41
 ```
-* Lab: New Extension
+Lab: Custom PHP
+* See next subheading below
+
+Lab: New Extension
   * Lab needs additional work
   * If you follow the instructions here exactly, "test1()" works, but "test2()" does not
     * https://www.zend.com/resources/php-extensions/building-and-installing-php-extension
-* Lab: Custom PHP
+Lab: Adding Middleware
+  * Take the code from the slides
+  * Add a middleware request handler that implements an update (HTTP "PATCH")
+Lab: Docker
+  * Need to add the `-f` flag to the `ln` command in the `Dockerfile`
+```
+    ln -s -f /usr/bin/php$PHP_VER /usr/bin/php
+```
+Lab: Docker Compose Labs
+  * Have a look at the article on Orchestration: https://www.zend.com/blog/what-is-cloud-orchestration
+* Swoole Lab
+  * Just install the default package:
+```
+sudo apt install php8.3-swoole
+```
+  * Change "8.3" to the current PHP version
+  * From `php-iii-demos` run composer install:
+```
+php composer.phar self-update
+php composer.phar install --ignore-platform-reqs
+```
+  * Run these three program under `src` and compare the time:
+    * `normal.php`
+    * `swoole.php`
+    * `react.php`
+
+API Tools Lab
+* If you install it in another directory other than the one in the lab, you can do this:
+```
+cd path/to/api/tools
+php -S 0.0.0.0:8080 -t public public/index.php
+```
+
+## Custom PHP Lab Notes
+
+* Clone from github
+* Switch to branch target version of PHP (e.g. 7.4.11)
+```
+git checkout php-PHP_VER
+```
+* Follow the instructions
+* Be sure to install the pre-requisites!
 * Suggested `./configure` options (place this all on one line):
 ```
 ./configure  \
@@ -71,54 +121,6 @@ with JIT tracking: ~0.41
     --with-readline \
     --with-sodium
 ```
-
-* Lab: Adding Middleware
-  * Take the code from the slides
-  * Add a middleware request handler that implements an update (HTTP "PATCH")
-* Lab: Docker
-  * Need to add the `-f` flag to the `ln` command in the `Dockerfile`
-```
-    ln -s -f /usr/bin/php$PHP_VER /usr/bin/php
-```
-* Lab: Docker Compose Labs
-  * Have a look at the article on Orchestration: https://www.zend.com/blog/what-is-cloud-orchestration
-* Swoole Lab
-  * Just install the default package:
-```
-sudo apt install php8.3-swoole
-```
-  * Change "8.3" to the current PHP version
-  * From `php-iii-demos` run composer install:
-```
-php composer.phar self-update
-php composer.phar install --ignore-platform-reqs
-```
-  * Run these three program under `src` and compare the time:
-    * `normal.php`
-    * `swoole.php`
-    * `react.php`
-
-* API Tools Lab
-  * Don't forget to add `--ignore-platform-reqs` when installing Laminas API Tools
-```
-composer --ignore-platform-reqs create-project laminas-api-tools/api-tools-skeleton
-```
-  * For any interactive prompts select the suggested default value
-  * If you install it in another directory other than the one in the lab, you can do this:
-```
-cd path/to/api/tools
-php -S 0.0.0.0:8080 -t public public/index.php
-```
-
-## Custom PHP Lab Notes
-
-* Clone from github
-* Switch to branch target version of PHP (e.g. 7.4.11)
-```
-git checkout php-PHP_VER
-```
-* Follow the instructions
-* Be sure to install the pre-requisites!
 
 ### Dependency errors:
 ```
@@ -228,8 +230,7 @@ Don't forget to run 'make test'.
 
 ```
 
-
-### Earlier Errors
+### Other Errors
 ```
 checking for BZip2 in default path... not found
 configure: error: Please reinstall the BZip2 distribution
