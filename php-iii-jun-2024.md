@@ -1,15 +1,33 @@
-# PHP Architect - June 2024
-
+http://localhost:8883/#/2/66
 
 ## TODO
-* Get list of `configure` options
+* Q: What is the term when using an anon class as a callback?
+* A:
+
+* Get STDIN example
+
+* Q: When using FFI, does PHP send C pointers to the C library? How does that work?
+
+* Swoole installation failed: missing libbrotlienc
+
+
+* Q: Do you have a list of `configure` options
+* A: See: https://www.php.net/manual/en/configure.about.php
+
+* Q: Is there a general reference for Doctrine attributes?
+* A: See: https://www.doctrine-project.org/projects/doctrine-orm/en/2.14/reference/attributes-reference.html
 
 ## Homework
-For Wednesday 5/Thursday 6 Jun (depending on timezone!)
+For the week 9 June
+* [Optional] Lab: New Extension
+* [Optional] Lab: ZendPHP for AWS
+
+For the week of 2 June
 * [Optional] Lab: Custom PHP
 * [Optional] Lab: Built-in Web Server
-* Lab: JIT
-* Lab: FFI
+* [Optional] Lab: OpCache and JIT
+* [Optional] Lab: Existing Extension
+* [Optional] Lab: FFI
 
 ## Class Notes
 Object Relational Mapping
@@ -20,6 +38,10 @@ Relative DateTime Formats
 * https://www.php.net/manual/en/datetime.formats.php#datetime.formats.relative
 Example of a working "Event" system
 * https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/events.html
+Installing PHP from source on Windows
+* See: https://wiki.php.net/internals/windows/stepbystepbuild
+Attributes
+* https://www.php.net/Attributes
 
 ## General Lab Notes
 * Lab Code:
