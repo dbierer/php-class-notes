@@ -1,15 +1,59 @@
 http://localhost:8883/#/2/66
 
 ## TODO
-* Q: What is the term when using an anon class as a callback?
-* A:
+* Q: What is the complexity of `SplHeap`? Is it faster to insert and then sort later?
+* A: TBD
+* A: See: https://arkadiuszkondas.com/binary-heap-implementation-in-php/
+* A: Example test code:
+```
+<?php
+// array
+define('MAX', 100_000);
+$start = microtime(true);
+$array = [];
+for ($i = 0; $i <= MAX; $i++){
+	$array[random_int(1, MAX)] = 'Test' . $i;
+}
+sort($array);
+echo "Array:\n";
+echo 'Time   : ' . microtime(true) - $start . PHP_EOL;
+echo 'Memory : ' . memory_get_peak_usage() / 1024 / 1024;
+echo PHP_EOL;
 
-* Get STDIN example
+// SplMinHeap
+$start = microtime(true);
+$heap = new \SplMinHeap();
+for ($i = 0; $i <= MAX; $i++) {
+	$heap->insert([random_int(1, MAX) => 'Test' . $i]);
+}
+while ($heap->valid()){
+	// just iterate
+	$heap->next();
+}
+echo "SplMinHeap:\n";
+echo 'Time   : ' . microtime(true) - $start . PHP_EOL;
+echo 'Memory : ' . memory_get_peak_usage() / 1024 / 1024;
+echo PHP_EOL;
+```
+
+* Q: What is the term when using a PHP anonymous class as a callback?
+* A: TBD
+
+* Q: Do you have a working STDIN example?
+* A: Note that `STDIN` example in the course slides works for CLI, but not web-based.
+* A: See: https://stackoverflow.com/questions/21184962/use-of-undefined-constant-stdin-assumed-stdin-in-c-wamp-www-study-sayhello
 
 * Q: When using FFI, does PHP send C pointers to the C library? How does that work?
+* A: The answer is "yes" and "no". See: https://phpconference.com/blog/php-ffi-and-what-it-can-do-for-you/
+* A: Excellent discussion on using FFI: https://stackoverflow.com/questions/78195117/php-ffi-convert-php-array-to-c-pointers-array
+* A: Doc reference: https://www.php.net/manual/en/book.ffi.php
 
-* Swoole installation failed: missing libbrotlienc
-
+* Q: Why dod the Swoole installation fail with the message missing `libbrotlienc`
+* A: `libbrotlienc` is a general purposes lossless compression library.
+* A: Issue was solved by installing this library prior to extension installation:
+```
+sudo apt install libbrotli-dev
+```
 
 * Q: Do you have a list of `configure` options
 * A: See: https://www.php.net/manual/en/configure.about.php
@@ -493,6 +537,31 @@ $test = new Test('Fred', 'Flintstone', 'Caveman');
 foreach ($test as $item) echo $item . PHP_EOL;
 
 var_dump(iterator_to_array($test));
+```
+This shows using `IteratorAggregate` to pass through a data type hint of `iterable`
+```
+<?php
+class Test implements IteratorAggregate
+{
+	public $name = 'Fred';
+	public $addr = '123 Main Street';
+	public $status = 'OK';
+	public function getIterator()
+	{
+		return new ArrayIterator($this);
+	}
+}
+
+$test = new Test();
+
+function whatever(iterable $whatever)
+{
+	foreach ($whatever as $key => $value) {
+		echo $key . ':' . $value . PHP_EOL;
+	}
+}
+
+whatever($test);
 ```
 
 ## Anonymous Class
