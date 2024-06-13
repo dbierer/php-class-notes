@@ -1,8 +1,18 @@
-http://localhost:8883/#/2/66
+# PHP Architect -- June 2024
+
+http://localhost:8883/#/5
+http://localhost:8884/#/1/57
 
 ## TODO
+* Q: Where is the Visitor pattern being used? Why is it important?
+
+* Q: Source repo for Software Design Patterns discussion
+
 * Q: What is the complexity of `SplHeap`? Is it faster to insert and then sort later?
-* A: TBD
+* A: See: https://stackoverflow.com/questions/24282531/time-complexity-for-standard-php-library-spl-functions
+* A: See: https://docs.google.com/document/d/1lXVlde-qTx5ZzkZHKJQUqpiEyq--A8sdGakBZn6jIGM/edit#heading=h.g30ipfog36rz
+* A: See: https://stackoverflow.com/questions/43260889/what-is-o1-space-complexity
+* A: See: https://stackoverflow.com/questions/44485470/understanding-o1-vs-on-time-complexity-intuitively
 * A: See: https://arkadiuszkondas.com/binary-heap-implementation-in-php/
 * A: Example test code:
 ```
@@ -35,9 +45,6 @@ echo 'Time   : ' . microtime(true) - $start . PHP_EOL;
 echo 'Memory : ' . memory_get_peak_usage() / 1024 / 1024;
 echo PHP_EOL;
 ```
-
-* Q: What is the term when using a PHP anonymous class as a callback?
-* A: TBD
 
 * Q: Do you have a working STDIN example?
 * A: Note that `STDIN` example in the course slides works for CLI, but not web-based.
@@ -109,6 +116,38 @@ with JIT tracing: ~0.41
 ```
 Lab: Custom PHP
 * See next subheading below
+Lab: Existing Extension
+* Instructions to install Swoole:
+  * Notes from Matthew Weier O'Phinney, Zend Product Manager / Principal Engineer
+	* There's no way to pass additional flags when doing a compiled extension installation.
+	* The steps you need to take:
+	  * Make sure the dev package for the given PHP version is installed.
+      * Make sure any dev libraries you need to compile the given extension are installed.
+      * Grab the package for the extension from PECL or wherever they are providing it; DO NOT use the pecl tool itself, though.
+      * Unarchive the package.
+      * In the package root, run `/path/to/phpize-for-your-php-version`
+      * From there, you can run `./configure --with-php-config=/path/to/php-config-for-your-php-version --enable-openssl`, along with any other flags
+      * If that succeeds, run make​, followed by make install​.
+	* The path to `phpize` and `php-config` will vary based on your OS and PHP version, but are usually found in `/usr/bin/`​.
+  * The reason I suggest this path instead of using `PECL` is for a couple of reasons:
+	* It assumes there is only one PHP on the system. If there is, it's not a problem, but if you have more than one, the wrong `phpize` and/or `php-config` might be used.
+    * You cannot provide arguments to configure​ with `PECL`, either.
+* Example installation:
+```
+sudo apt install libbrotli-dev
+cd /tmp
+curl -L http://pecl.php.net/get/swoole -o swoole.tar.gz
+sudo ./configure \
+	--with-php-config=/usr/bin/php-config \
+	--enable-sockets \
+	--enable-openssl \
+	--enable-brotli \
+	--enable-swoole
+sudo make
+sudo make test
+sudo make install
+sudo zendphpctl ext enable swoole
+```
 
 Lab: New Extension
   * Lab needs additional work
@@ -125,16 +164,7 @@ Lab: Docker
 Lab: Docker Compose Labs
   * Have a look at the article on Orchestration: https://www.zend.com/blog/what-is-cloud-orchestration
 * Swoole Lab
-  * Just install the default package:
-```
-sudo apt install php8.3-swoole
-```
-  * Change "8.3" to the current PHP version
-  * From `php-iii-demos` run composer install:
-```
-php composer.phar self-update
-php composer.phar install --ignore-platform-reqs
-```
+
   * Run these three program under `src` and compare the time:
     * `normal.php`
     * `swoole.php`
