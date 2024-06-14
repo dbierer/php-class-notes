@@ -5,6 +5,9 @@ http://localhost:8884/#/1/57
 
 ## TODO
 * Q: Where is the Visitor pattern being used? Why is it important?
+* A: Response from MWOP: "The places it's commonly used are for trees and tree traversal, where the trees and leaves often have different types associated. The visitor pattern essentially allows these systems to adapt to those types, without requiring changes to the type system itself. When I did my site search, I created a visitor-style interface that allowed resources of different types to return a standard result type."
+* A: Here's an example usage: https://doeken.org/blog/visitor-pattern
+* A: MWOP also mentioned that this pattern is frequently used in search (e.g. the ElasticSearch PHP SDK, and libraries accessing Lucene or Solr, but these are yet to be confirmed.)
 
 * Q: Source repo for Software Design Patterns discussion
 
