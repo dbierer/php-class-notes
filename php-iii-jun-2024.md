@@ -1,7 +1,7 @@
 # PHP Architect -- June 2024
 
 http://localhost:8883/#/5
-http://localhost:8884/#/1/57
+http://localhost:8884/#/1/56
 
 ## TODO
 * Q: Where is the Visitor pattern being used? Why is it important?
@@ -1645,3 +1645,15 @@ $sequencer->top();
 
 
 ## ERRATA
+* http://localhost:8883/#/5/6
+* http://localhost:8883/#/5/7
+* http://localhost:8883/#/5/8
+* http://localhost:8883/#/5/9
+* http://localhost:8883/#/5/21
+* http://localhost:8883/#/5/28
+  * `docker` commands need to be run as `root` unless you assign this user to `sudoers` file
+* http://localhost:8883/#/5/47
+  * `docker-compose` commands need to be run as `root` unless you assign this user to `sudoers` file
+* http://localhost:8883/#/7/21
+  * `/path/to/middleware` s/be `/home/vagrant/Zend/middleware`
+  * `localhost:0.0.0.0:9999` s/be `localhost:9999`
