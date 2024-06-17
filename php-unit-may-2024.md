@@ -23,10 +23,6 @@ The API simulation and data is located here:
 ```
 
 ## Errata
-* http://localhost:8888/#/8/25
-  * 'Here was have a User object' ???
-* http://localhost:8888/#/10/6
-  * `cd /path/to/completed/api` s/be /home/vagrant`
 * Correct paths in the last lab
   * API simulator is located in `/home/vagrant/Zend/api` *not* under "/completed/api"
   * Also make sure `setup()` and `teardown()` declare return type `void`
