@@ -4,12 +4,35 @@ http://localhost:8883/#/5
 http://localhost:8884/#/1/56
 
 ## TODO
+* Q: Are there any good examples of using PHP 8.1 Fibers?
+
+* Q: How does Swoole Coroutine "go()" functions work?
+* A: Just one time; if you need it to repeat, you need to implement a loop yourself
+* A: Doc ref: TBD
+
+* Q: Do you have examples of the software design patterns in PHP?
+* A: See: https://refactoring.guru/design-patterns
+  * Has examples in multiple programming languages, including PHP
+  * Visitor pattern: https://refactoring.guru/design-patterns/visitor
+* A: Also see: https://hackernoon.com/real-world-examples-of-using-design-patterns-in-modern-php
+
+* Q: Is there a better example of Active Object?
+* A: Still researching
+
 * Q: Where is the Visitor pattern being used? Why is it important?
-* A: Response from MWOP: "The places it's commonly used are for trees and tree traversal, where the trees and leaves often have different types associated. The visitor pattern essentially allows these systems to adapt to those types, without requiring changes to the type system itself. When I did my site search, I created a visitor-style interface that allowed resources of different types to return a standard result type."
+* A: Response from MWOP: "The places it's commonly used are for trees and tree traversal,
+	where the trees and leaves often have different types associated.
+	The visitor pattern essentially allows these systems to adapt to those types,
+	without requiring changes to the type system itself. When I did my site search,
+	I created a visitor-style interface that allowed resources of different types to return a standard result type."
 * A: Here's an example usage: https://doeken.org/blog/visitor-pattern
-* A: MWOP also mentioned that this pattern is frequently used in search (e.g. the ElasticSearch PHP SDK, and libraries accessing Lucene or Solr, but these are yet to be confirmed.)
+* A: Here's another example: https://refactoring.guru/design-patterns/visitor/php/example
+* A: MWOP also mentioned that this pattern is frequently used in search
+	(e.g. the ElasticSearch PHP SDK, and libraries accessing Lucene or Solr, but these are yet to be confirmed.)
+
 
 * Q: Source repo for Software Design Patterns discussion
+* A: Uploaded via Zoom last week
 
 * Q: What is the complexity of `SplHeap`? Is it faster to insert and then sort later?
 * A: See: https://stackoverflow.com/questions/24282531/time-complexity-for-standard-php-library-spl-functions
@@ -96,6 +119,9 @@ Installing PHP from source on Windows
 * See: https://wiki.php.net/internals/windows/stepbystepbuild
 Attributes
 * https://www.php.net/Attributes
+Phing
+* Docs: https://www.phing.info/guide/hlhtml/
+* `build.xml` example: https://github.com/phingofficial/phing/blob/main/docs/example/build.xml
 
 ## General Lab Notes
 * Lab Code:
@@ -1660,3 +1686,4 @@ $sequencer->top();
 * http://localhost:8883/#/7/21
   * `/path/to/middleware` s/be `/home/vagrant/Zend/middleware`
   * `localhost:0.0.0.0:9999` s/be `localhost:9999`
+* Provide a better example of Active Object
