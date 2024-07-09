@@ -8,6 +8,7 @@ For Weds 10 Jul 2024
 * Lab: Namespace: Have a look at the OrderApp in the course VM.
   * Identify what namespaces are used
   * How does the OrderApp do its autoloading?
+* Lab: Create a Class
 
 ## VM Notes
 The vagrant setup process can take up to 1 or 2 hours depending on your network connection.
@@ -32,30 +33,6 @@ Try the following:
 * If that doesn't work, and you're sitting at the command prompt, try the following:
 ```
 vagrant up --provision
-```
-
-### 502 Bad Gateway
-If you're getting this message from the browser inside the VM, do the following:
-* Open up a command prompt (CTL+ALT+T)
-* Check your PHP version: `php -v`
-  * Make a note of the number (e.g. "8.3")
-* Switch to "root": `sudo -i`
-* Open this file with "nano": `nano /etc/php/$PHP_VER-zend/fpm/pool.d/www.conf`
-  * Substitute the PHP version in place of "$PHP_VER"
-* Make these changes:
-```
-; Replace this line:
-listen = /run/php/php$PHP_VER-zend-fpm.sock
-; With this:
-listen = 0.0.0.0:9000
-```
-* Restart PHP-FPM
-```
-/etc/init.d/php$PHP_VER-zend-fpm restart
-```
-* Restart nginx
-```
-/etc/init.d/nginx restart
 ```
 
 ### Housekeeping
@@ -84,13 +61,10 @@ sudo rm -r /var/crash*
 Constants
 * Predefined: https://www.php.net/manual/en/reserved.constants.php
 * Magic: https://www.php.net/manual/en/language.constants.magic.php
-
-Code examples: https://github.com/dbierer/classic_php_examples
-PHP Road Map: https://wiki.php.net/rfc
+Code examples:
+* https://github.com/dbierer/classic_php_examples
 Where it all started:
 * Seminal work: "Design Patterns: Elements of Reusable Object-Oriented Software"
-PHP Road Map:
-* https://wiki.php.net/rfc
 Coding Standards: PSR-1 and PSR-12
 * https://www.php-fig.org/psr/
 ZendPHP Info
@@ -344,6 +318,45 @@ echo $test2->getName();
 
 var_dump($test1, $test2);
 ```
+You can pre-assign values when using constructor argument promotion:
+```
+<?php
+class UserEntity
+{
+	public DateTime $date;
+    public function __construct(public string $firstName = '', public string $lastName = '')
+    {
+		$this->date = new DateTime();
+    }
+}
+$user[] = new UserEntity('Jack' , 'Ryan');
+$user[] = new UserEntity('Monte' , 'Python');
+$user[] = new UserEntity('Uhoh');
+
+var_dump($user);
+
+// example output for last element:
+/*
+ *  [2]=>
+  object(UserEntity)#5 (3) {
+    ["date"]=>
+    object(DateTime)#6 (3) {
+      ["date"]=>
+      string(26) "2024-07-08 12:44:37.215814"
+      ["timezone_type"]=>
+      int(3)
+      ["timezone"]=>
+      string(3) "UTC"
+    }
+    ["firstName"]=>
+    string(4) "Uhoh"
+    ["lastName"]=>
+    string(0) ""
+  }
+}
+*/
+```
+
 Creation of dynamic properties is now deprecated (soon to be removed)
 ```
 <?php
@@ -2493,6 +2506,30 @@ Configuration for DI services
 DI Factory
 * See: https://github.com/zendtech/Laminas-Level-2-Attendee/blob/master/onlinemarket.complete/module/Model/src/Adapter/Factory/PrimaryAdapterFactory.php
 * See: https://github.com/zendtech/Laminas-Level-2-Attendee/blob/master/onlinemarket.complete/module/Model/src/Model/Factory/CityCodesModelFactory.php
+
+### 502 Bad Gateway
+If you're getting this message from the browser inside the VM, do the following:
+* Open up a command prompt (CTL+ALT+T)
+* Check your PHP version: `php -v`
+  * Make a note of the number (e.g. "8.3")
+* Switch to "root": `sudo -i`
+* Open this file with "nano": `nano /etc/php/$PHP_VER-zend/fpm/pool.d/www.conf`
+  * Substitute the PHP version in place of "$PHP_VER"
+* Make these changes:
+```
+; Replace this line:
+listen = /run/php/php$PHP_VER-zend-fpm.sock
+; With this:
+listen = 0.0.0.0:9000
+```
+* Restart PHP-FPM
+```
+/etc/init.d/php$PHP_VER-zend-fpm restart
+```
+* Restart nginx
+```
+/etc/init.d/nginx restart
+```
 
 ## Q & A
 * Q: Can you use the keyword "new" in property or const definition in 8.1?
