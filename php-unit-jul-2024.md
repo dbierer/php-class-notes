@@ -6,6 +6,7 @@
  * http://www.thegrumpyprogrammer.com/
  * https://grumpy-learning.com/
 * Find attribute use to ignore a test that's not complete
+* How do you mock a static method?
 
 ## Homework
 * Set up your source code for running the labs
@@ -21,6 +22,9 @@ If not using th VM:
 * Run `composer update` (or `composer.phar update`)
 
 ## Class Notes
+What about 0?
+* (from Eduard) https://www.youtube.com/watch?v=1MKFLCu_9bc
+
 Data Providers:
 * The provider method needs to be declared `static`
 * Need to add a `use` statement when using PHP 8 attribute notation
@@ -38,6 +42,8 @@ composer require phpspec/prophecy
 * Dependency Injection
   * See PSR-11: https://www.php-fig.org/psr/psr-11/
   * Also Martin Fowler's website
+* Mock static method
+  * (from Dmitry) https://www.thecoderscamp.com/phpunit-mock-static-method/
 
 ### Code Kata IV
 The API simulation and data is located here:
