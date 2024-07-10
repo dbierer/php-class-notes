@@ -1,14 +1,36 @@
 # PHP II - Jul 2024
 
 ## To Do
+* Export to find `Stringable` interface???
 
 ## Homework
+For Fri 12 Jul 2024
+* Lab: Create an Extensible Super Class
+Complete the following:
+* Using the code created in the previous exercise, create an extensible superclass definition. Set the properties and methods that subclasses will need.
+* Create one or more subclasses that extend the superclass with constants, properties and methods specific to the subclass.
+* Instantiate a couple of objects from the subclasses and execute the methods producing some output.
+* Lab: Magic Methods
+Complete the following:
+* Using the code from the previous exercises, add four magic methods, one of which is the magic constructor.
+* The magic constructor should accepts parameters and set those parameters into the object on instantiation.
+* Create an index.php file.
+* Load, or autoload, the created classes.
+* Instantiate object instances, and exercise the magic methods implemented.
+
 For Weds 10 Jul 2024
 * Install the course VM (or equivalent)
 * Lab: Namespace: Have a look at the OrderApp in the course VM.
   * Identify what namespaces are used
   * How does the OrderApp do its autoloading?
 * Lab: Create a Class
+* Location of the database in the ZIP file:
+  * User: "vagrant"
+  * Password: "vagrant"
+  * DB name: "phpcourse"
+```
+/path/orderapp/data/sql/phpcourse.sql
+```
 
 ## VM Notes
 The vagrant setup process can take up to 1 or 2 hours depending on your network connection.
@@ -356,6 +378,25 @@ var_dump($user);
 }
 */
 ```
+`Private` properties are not supposed to be visible to a child class ... however ...
+```
+<?php
+class Test
+{
+	private string $name = 'Fred';
+	public function getName()
+	{
+		return $this->name;
+	}
+}
+
+class Child extends Test {}
+
+$child = new Child();
+echo $child->getName();
+
+// actual output: "Fred"
+```
 
 Creation of dynamic properties is now deprecated (soon to be removed)
 ```
@@ -471,7 +512,7 @@ class GuestUser extends UserEntity {
 
 Practical anonymous class example:
 * https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_spl_filteriterator_anon_class.php
-* Example of returning data in object form with 2 different rendering methods: JSON or array
+Example of returning data in object form with 2 different rendering methods: JSON or array
 ```
 <?php
 
@@ -505,6 +546,45 @@ echo $user1->getData()->getJson();
 echo PHP_EOL;
 var_dump($user2->getData()->getArrayCopy());
 ```
+Difference between `stdClass` and an Anonymous class:
+```
+<?php
+$obj = new stdClass();
+$obj->name = 'Fred';
+$obj->status = 'OK';
+
+var_dump($obj);
+
+$anon = new class('Fred', 'OK') {
+	public function __construct(public string $name, public string $status) {}
+	public function isOK()
+	{
+		return ($this->status === 'OK');
+	}
+};
+
+var_dump($anon);
+echo ($anon->isOK()) ? 'ALL OK' : 'NOT OK';
+
+// actual output:
+
+/*
+ * object(stdClass)#1 (2) {
+  ["name"]=>
+  string(4) "Fred"
+  ["status"]=>
+  string(2) "OK"
+}
+object(class@anonymous)#2 (2) {
+  ["name"]=>
+  string(4) "Fred"
+  ["status"]=>
+  string(2) "OK"
+}
+ALL OK
+*/
+```
+
 Example of overriding a method:
 ```
 <?php
@@ -2759,3 +2839,7 @@ PHP Fatal error:  Type of OrderPacked::$ordernumber must not be defined (as in c
 * Update section: needs to go up to 8.4
 * http://localhost:8882/#/6/3
   * commandss
+* http://localhost:8882/#/3/38
+  * Anon class section should *follow* Inheritance
+* http://localhost:8882/#/3/46
+  * What's up with this slide? Readonly properties???
