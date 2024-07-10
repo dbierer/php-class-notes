@@ -7,7 +7,18 @@
  * https://grumpy-learning.com/
 * Find attribute use to ignore a test that's not complete
 * How do you mock a static method?
-
+  * (from Dmitry) https://www.thecoderscamp.com/phpunit-mock-static-method/
+  * Have a look at this as well: https://docs.phpunit.de/en/11.2/fixtures.html#global-state
+  * Note regarding built-in mock builder (https://docs.phpunit.de/en/11.2/test-doubles.html#test-doubles):
+```
+Please note that final, private, and static methods cannot be doubled.
+They are ignored by PHPUnit’s test double functionality and retain their
+original behavior except for static methods which will be replaced by a
+method throwing an exception.
+```
+  * Suggested approaches:
+    * Use the anonymous class approach to simulate the static call
+    * Use this library: https://github.com/Codeception/AspectMock
 ## Homework
 * Set up your source code for running the labs
 * Lab: Code Kata I (FizzBuzz)
