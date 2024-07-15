@@ -1,16 +1,19 @@
 # Class Notes: PHP Unit - July 2024
 
 ## TODO
+* Add classes `WidgetStorage` and `WidgetStorageTest` to `sandbox` and `completed` folders
+
+* Q: Do the mock supporting classes allow you to limit how many times a mock method is called?
+* A: Yes: see: https://docs.phpunit.de/en/11.2/test-doubles.html#configuring-mock-objects
+* A: For Prophecy you can use `shouldBeCalledTimes()` to specify a number of times it can be called
+
 * Q: What about code coverage?
 * A: See: https://docs.phpunit.de/en/11.2/code-coverage.html
 
 * Q: Are there any BDD test frameworks for PHP?
+* A: See: https://docs.behat.org/en/latest/
 * A: See: https://codeception.com/
 * A: See: https://kahlan.github.io/docs/
-
-* Q: What is the link to Chris Hartjes (author of this course) website?
-* A: http://www.thegrumpyprogrammer.com/
-* A: https://grumpy-learning.com/
 
 * Q: How do you ignore ignore a test that's not complete?
 * A: Use the `markTestIncomplete()` method
@@ -35,6 +38,10 @@ method throwing an exception.
 * A: Suggested approaches:
   * Use the anonymous class approach to simulate the static call
   * Use this library: https://github.com/Codeception/AspectMock
+
+* Q: What is the link to Chris Hartjes (author of this course) website?
+* A: http://www.thegrumpyprogrammer.com/
+* A: https://grumpy-learning.com/
 
 ## Homework
 * Set up your source code for running the labs
