@@ -1,9 +1,35 @@
 # PHP II - Jul 2024
 
+http://localhost:8882/#/3/93
+
 ## To Do
-* Export to find `Stringable` interface???
+* Q: Export to find `Stringable` interface???
+* A: Use this syntax:
+```
+// assumes $obj defined `__toString()`
+echo (new ReflectionObject($obj));
+```
 
 ## Homework
+For Wed 17 Jul 2024
+* Lab: Abstract Classes
+	* Turn a superclass into an abstract class.
+	* In the abstract superclass, define an inheritable abstract method declaration that will instantiate an object of another class, and returns it.
+	* Extend the abstract superclass with a concrete subclass implementing the inherited abstract method.
+	* Instantiate a subclass instance.
+	* Call the method and retrieve the object it builds.
+* Lab: Interfaces
+	* Create an object interface with two methods.
+	* Implement the interface in your superclass.
+	* Add some code to the index.php file that calls one of the superclass methods implemented.
+* Lab: Type Hinting
+	* Create a new class with some properties and methods.
+	* Add a constructor.
+	* Type hint in the constructor for the interface created in the last exercise.
+	* Instantiate an object from one of your previous subclasses.
+	* Add it as a dependent object to the new object created in step one, and store it.
+
+Lab is completed.
 For Fri 12 Jul 2024
 * Lab: Create an Extensible Super Class
 Complete the following:
@@ -1182,6 +1208,7 @@ echo $test->fname . ' ' . $test->lname
 Other examples of magic methods:
 * https://github.com/dbierer/classic_php_examples/tree/master/oop
 * Look for `oop_magic*.php`
+* Unlimited getters and setters: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_magic_call_unlimited_getters_setters.php
 
 Three important magic methods not covered in the slides
 * `__invoke()`
@@ -2814,32 +2841,6 @@ PHP Fatal error:  Type of OrderPacked::$ordernumber must not be defined (as in c
 
 
 ## Change Request
-
-* http://localhost:8882/#/3/15
-  * Cannot have an active expression in the declaration at this point!
-* http://localhost:8882/#/3/26
-  * Add `get_object_vars()`
-* http://localhost:8882/#/3/32
-  * Inconsistent use of "super class" vs. "superclass" and also "sub class" or "subclass"
-* http://localhost:8882/#/3/69
-  * No need to declare this as abstract
-* http://localhost:8882/#/3/first-class-examples
-  * Don't keep using `parent::`
-  * Only incliude 1 example
-* http://localhost:8882/#/7/4
-  * s/be "matches any character" (not "and")
-* http://localhost:8882/#/7/5
-  * the discussion `\b` belongs in the slide on built-in char classes
-* http://localhost:8882/#/5/41
-  * Change the size of the params to 32 to match the database field size
-* http://localhost:8882/#/10/14 & 10/15
-  * Screenshot needs to be updated
-* http://localhost:8882/#/10/21
-  * Get rid of `class Test {`
-* Update section: needs to go up to 8.4
-* http://localhost:8882/#/6/3
-  * commandss
-* http://localhost:8882/#/3/38
-  * Anon class section should *follow* Inheritance
-* http://localhost:8882/#/3/46
-  * What's up with this slide? Readonly properties???
+* http://localhost:8882/#/3/84
+  * Add union types for return value
+  * Add `mixed` data type
