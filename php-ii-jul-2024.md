@@ -3,6 +3,8 @@
 http://localhost:8882/#/3/93
 
 ## To Do
+* Q: Get link to "Domain Driven Design" PDF
+
 * Q: Export to find `Stringable` interface???
 * A: Use this syntax:
 ```
@@ -11,6 +13,18 @@ echo (new ReflectionObject($obj));
 ```
 
 ## Homework
+For Thu 18 Jul 2024
+* Lab: Custom Exception Class
+* Lab: Traits
+Complete the following:
+In separate files, create two traits, each with two methods, one of the methods named the same in both traits.
+In another file, create a class that uses the two traits.
+Resolve the naming collision, and change the method visibilities.
+Instantiate an instance of the class and execute the trait methods.
+* OrderApp OOP Implementation
+  * Just poke around
+  * Let me know if you have questions
+
 For Wed 17 Jul 2024
 * Lab: Abstract Classes
 	* Turn a superclass into an abstract class.
@@ -1984,6 +1998,15 @@ echo PHP_EOL;
 
 var_dump($user);
 ```
+Nullsafe operator:
+```
+<?php
+// PHP 7:
+echo (empty($model->userEntity->addressEntity->country)) ? $model->userEntity->addressEntity->country : 'Unknown';
+
+// PHP 8:
+echo $model?->userEntity?->addressEntity?->country ?? 'Unknown';
+```
 
 ## PDO
 Example of a generic database class with built-in methods for INSERT, SELECT, UPDATE, DELETE
@@ -2844,3 +2867,9 @@ PHP Fatal error:  Type of OrderPacked::$ordernumber must not be defined (as in c
 * http://localhost:8882/#/3/84
   * Add union types for return value
   * Add `mixed` data type
+* http://localhost:8882/#/3/107
+  * Missing opening "{" in example
+* http://localhost:8882/#/3/112
+  * Traits can also redefine the method as well as visibility
+* http://localhost:8882/#/3/119
+  * Strange displacement of the single quote
