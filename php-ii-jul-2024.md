@@ -3,7 +3,11 @@
 http://localhost:8882/#/3/93
 
 ## To Do
+* Q: Get reference to Doctrine attribute usage
+* A:
+
 * Q: Get link to "Domain Driven Design" PDF
+* A: https://www.infoq.com/minibooks/domain-driven-design-quickly/
 
 * Q: Export to find `Stringable` interface???
 * A: Use this syntax:
@@ -13,6 +17,11 @@ echo (new ReflectionObject($obj));
 ```
 
 ## Homework
+For Fri 19 Jul 2024
+* Lab: Prepared Statements
+* Lab: Stored Procedures
+* Lab: Transactions
+
 For Thu 18 Jul 2024
 * Lab: Custom Exception Class
 * Lab: Traits
@@ -2123,6 +2132,34 @@ $stmt->execute($data);
 ```
 Example of `PDO::FETCH_CLASS` mode:
 * See: https://github.com/dbierer/classic_php_examples/blob/master/db/db_pdo_fetch_class.php
+```
+<?php
+class User
+{
+	public function getFullName()
+	{
+		return $this->firstname . ' ' . $this->lastname;
+	}
+}
+
+$db = include 'config.php';
+try {
+    // Get the connection instance
+    $pdo = new PDO($db['dsn'], $db['dbusr'], $db['dbpwd'], $db['opts']);
+    // Set error mode attribute
+    // $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // Statements ...
+    $sql = 'SELECT id, firstname, lastname FROM customers';
+    $stmt = $pdo->query($sql);
+    $stmt->setFetchMode(PDO::FETCH_CLASS, 'User');
+    while ($obj = $stmt->fetch()) {
+		echo $obj->getFullName() . PHP_EOL;
+		var_dump($obj);
+	}
+} catch (PDOException $e ){
+    // Handle exception...
+}
+```
 * Other examples: https://github.com/dbierer/classic_php_examples/tree/master/db
 ```
 <?php
@@ -2255,6 +2292,16 @@ if (preg_match($patt, $text, $match)) {
 &lt;html&gt;&lt;body&gt;&lt;p&gt;Something&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://zend.com/&quot;&gt;Click Here&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
 The URL is: https://zend.com/
  */
+```
+Does 2 stage operation: finds the contents between "body" tags, and then the H1 tags within the body:
+```
+<?php
+$txt = file_get_contents('test.html');
+$txt = str_replace("\n", ' ', $txt);
+$pat1 = '/<body>(.*?)<\/body>/';
+preg_match($pat1, $txt, $matches);
+$pat2 = '/<h1>(.*?)<\/h1>/i';
+var_dump(preg_split($pat2, $matches[1]));
 ```
 Matches a Canadian postal code
 ```
@@ -2873,3 +2920,7 @@ PHP Fatal error:  Type of OrderPacked::$ordernumber must not be defined (as in c
   * Traits can also redefine the method as well as visibility
 * http://localhost:8882/#/3/119
   * Strange displacement of the single quote
+* http://localhost:8882/#/7/12
+  * The "/" has to be escaped for this to work
+* http://localhost:8882/#/10/16
+  * Also mention nginx
