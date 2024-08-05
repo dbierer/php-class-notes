@@ -3,13 +3,13 @@
 ## TODO
 
 ## Homework
-For Thursday 23 May 2024
+For Thursday 7 Aug 2024
 * Lab: ZendPHP Installation Lab
 * Lab: PHP-FPM Installation and Configuration Lab
 * Lab: ZendHQ Installation Lab
 
 ## Class Notes
-Make sure you obtain a real or demo ZendHQ license before doing the labs.
+IMPORTANT: Make sure you obtain a real or demo ZendHQ license before doing the ZendHQ lab!
 
 Here's the corrected nginx configuration for the Mezzio app:
 ```
@@ -81,29 +81,4 @@ server {
 ```
 
 ## Errata
-
-ZendHQ Lab
-
-* Make it clear how to run the GUI
-* Mention from CLI you will see GTK error messages
-x* Switch refs from 10.10.??? to localhost
-* Need to restart the zendhqd after Lab: Change the Login Token
-* Confirm that zendhqd runs under systctl, if so, change lab instructions
-* Make sure the PHP zendhq extension config is mentioned in the labs
-
-* http://localhost:9999/#/6/8
-  * Screenshots are all the same
-
-* Rework lab creating a series of simple PHP programs that cause specific problems
-
-* Consider moving PHP version back to 8.2 or 8.1 so that plugins are available
-
-* http://localhost:9999/#/8/10
-  * Are all these still active?
-
-* http://localhost:9999/#/10/3
-  * Update supported versions
-
-* http://localhost:9999/#/10/7
-  * Remove
 
