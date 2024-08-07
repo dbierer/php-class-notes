@@ -1,14 +1,46 @@
 # ZendPHP/ZendHQ Class Notes -- August 2024
 
 ## TODO
+
+* Q: Get instructions for installing extensions outside of the list of currently supported ones
+* A: Here are the instructions:
+```
+ The steps you need to take:
+
+    Make sure the dev package for the given PHP version is installed.
+    Make sure any dev libraries you need to compile the given extension are installed.
+    Grab the package for the extension from PECL or wherever they are providing it; DO NOT use the pecl tool itself, though.
+    Unarchive the package.
+    In the package root, run /path/to/phpize-for-your-php-version
+    From there, you can run `./configure --with-php-config=/path/to/php-config-for-your-php-version`, along with any other 
+    If that succeeds, run make​, followed by make install​.
+
+The path to phpize and php-config will vary based on your OS and PHP version, but are usually found in /usr/bin/​.
+
+The reason I suggest this path instead of using PECL is for a few reasons:
+
+    It assumes there is only one PHP on the system. If there is, it's not a problem, but if you have more than one, 
+    the wrong phpize and/or php-config might be used. You cannot provide arguments to configure​ with PECL, either.
+    
+```
+
 * Q: What does the `zendphpctl completions` subcommand do?
 * A:
 
-* Q: Get instructions for installing extensions outside of the list of currently supported ones
-
 * Q: Is the Z-Ray browser bar available with ZendHQ?
+* A:
 
 * Q: With the ZendHQ license, can it be installed on multiple containers?
+* A:
+
+* Q: If installing PHP using zendphpctl, does it sync with the OS package management? If so, will ZendPHP get updated along with the other OS packages?
+* A:
+
+* Q: Why is PHP-FPM tied to the PHP version? Isn't it just a gateway between the web server and the PHP installation?
+* A:
+
+* Q: Can you set a wildcard on function errors? (E.g. `preg.*?`)
+* A:
 
 
 ## Homework
@@ -95,6 +127,7 @@ composer install --ignore-platform-reqs
 * Q: When you add plugins, can you assign RBAC permissions?
 
 * Q: Does the ZRay token convert to a cookie?
+* A: Yes. The first time it's a URL param. Subsequent requests to the same site result in a cookie being automatically sent.
 
 * Q: Can you set a wildcard on function errors? (E.g. `preg.*?`)
 
