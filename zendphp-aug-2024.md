@@ -1,6 +1,15 @@
 # ZendPHP/ZendHQ Class Notes -- August 2024
 
 ## TODO
+* Q: What does the `zendphpctl completions` subcommand do?
+* A:
+
+* Q: Get instructions for installing extensions outside of the list of currently supported ones
+
+* Q: Is the Z-Ray browser bar available with ZendHQ?
+
+* Q: With the ZendHQ license, can it be installed on multiple containers?
+
 
 ## Homework
 For Thursday 7 Aug 2024
@@ -38,7 +47,41 @@ server {
 }
 ```
 
-
+## Lab Notes
+ZendPHP Installation
+* If you want to install the YAML extension
+  * Here's the prereq:
+```
+sudo apt install libyaml-dev
+```
+ZendHQ Installtion Lab
+* Lab: Set Up the Demo App
+  * Add the `--ignore-platform-reqs` flag if using PHP 8.3
+```
+composer install --ignore-platform-reqs
+```
+* Lab: Start the Service
+  * If you get a message that port 10091 is already in use check to see if `zendhqd` is already running:
+```
+# ps -ax |grep zendhqd
+```
+  * If so, try to stop using the run system:
+```
+# /etc/init.d/zendhqd stop
+```
+  * If that doesn't work, make a note of the process (which we'll call `ZENDHQD_PID`)
+  * Kill the process:
+```
+# kill ZENDHQD_PID
+```
+* Lab: Install the ZendHQ PHP Extension
+  * Review the extension configuration
+  * No changes are needed for this lab
+```
+# nano /etc/php/8.3-zend/fpm/conf.d/90-zendhq.ini
+```
+* Lab: Install the ZendHQ GUI
+  * To run the GUI from inside the VM you can also use the GUI file browser, locate the extracted binary, and double click
 ## Q & A
 * Q: Is `zendphp-vhost.sh` available outside the cloud?
 
@@ -82,3 +125,8 @@ server {
 
 ## Errata
 
+* http://localhost:8884/#/3/12
+http://localhost:8884/#/3/17
+  * not `php-set-default` (no initial dash)
+* http://localhost:8884/#/5/11
+  * For RHEL/Oracle etc: $PHP_VER will have no dot and no dash (e.g. PHP 8.3 would be php83zend)
