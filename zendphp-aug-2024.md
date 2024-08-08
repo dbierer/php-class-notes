@@ -25,19 +25,23 @@ The reason I suggest this path instead of using PECL is for a few reasons:
 ```
 
 * Q: What does the `zendphpctl completions` subcommand do?
-* A:
-
+* A: If you run `eval "$(zendphpctl completions)"` in your shell, it will evaluate the completions table from the command allowing you to use your Tab key to complete commands. So if you type zendphpctl php and then a Tab, it will show you what subcommands are available; for subcommands, it shows you the available options and arguments as well.
+ 
 * Q: Is the Z-Ray browser bar available with ZendHQ?
-* A:
-
+* A: No; Z-Ray is available only via ZendHQ. This is actually for security purposes. Even if an attacker was able to get your Z-Ray session token, they would not be able to view any information in Z-Ray unless they could also connect to ZendHQ.
+  * (Additionally, it fixes some display issues that would happen when we injected a bar into the returned HTML, and also allows us to provide more data and a larger view for that data than we did with the browser bar.)
+ 
 * Q: With the ZendHQ license, can it be installed on multiple containers?
-* A:
-
+* A: Technically, yes.
+ 
 * Q: If installing PHP using zendphpctl, does it sync with the OS package management? If so, will ZendPHP get updated along with the other OS packages?
-* A:
-
+* A: `zendphpctl` actually invokes the OS package manager. Generally, you use it for initial installation, and then use the package manager to keep ZendPHP updated.
+ 
 * Q: Why is PHP-FPM tied to the PHP version? Isn't it just a gateway between the web server and the PHP installation?
-* A:
+* A: FastCGI is the gateway protocol, and allows a web server to communicate with a FastCGI server. 
+  * The FastCGI server itself is usually tied to the runtime, and takes care of spawning workers, relaying requests to them, and relaying the responses back to the webserver. PHP-FPM is the PHP FastCGI Process Manager, and is the server process that handles the incoming requests. 
+  * For PHP, such server processes are implemented as PHP Server APIs (SAPI), which are always tied to the specific PHP version.
+  * You see this in similar technologies such as WSGI - the protocol is open, but the implementations are runtime specific, and tied to the specific runtime version.
 
 * Q: Can you set a wildcard on function errors? (E.g. `preg.*?`)
 * A:
