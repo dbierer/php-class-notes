@@ -1,6 +1,22 @@
 # ZendPHP/ZendHQ Class Notes -- August 2024
 
 ## TODO
+* Q: Example using the build script for ZendPHP Docker images
+
+* Q: When creating a job for an application, when the application scales across multiple nodes, is there a way to ensure the job only runs once?
+
+* Q: What's the best way to do Z-Ray monitoring when doing AJAX requests?
+* A:
+
+* Q: Is there a mechanism to keep the \*.db files under control?
+
+* Q: Is there any provision for excluding or setting separate rules for specific URLs? It would be nice to avoid pages where we know it will be of slow execution.
+
+* Q: Related: is there any way to limit Z-Ray to a specific URL path instead any request from that domain?
+
+* Q: Why does the token not change?
+* A:
+
 
 * Q: Get instructions for installing extensions outside of the list of currently supported ones
 * A: Here are the instructions:
@@ -12,16 +28,16 @@
     Grab the package for the extension from PECL or wherever they are providing it; DO NOT use the pecl tool itself, though.
     Unarchive the package.
     In the package root, run /path/to/phpize-for-your-php-version
-    From there, you can run `./configure --with-php-config=/path/to/php-config-for-your-php-version`, along with any other 
+    From there, you can run `./configure --with-php-config=/path/to/php-config-for-your-php-version`, along with any other
     If that succeeds, run make​, followed by make install​.
 
 The path to phpize and php-config will vary based on your OS and PHP version, but are usually found in /usr/bin/​.
 
 The reason I suggest this path instead of using PECL is for a few reasons:
 
-    It assumes there is only one PHP on the system. If there is, it's not a problem, but if you have more than one, 
+    It assumes there is only one PHP on the system. If there is, it's not a problem, but if you have more than one,
     the wrong phpize and/or php-config might be used. You cannot provide arguments to configure​ with PECL, either.
-    
+
 ```
 
 * Q: What does the `zendphpctl completions` subcommand do?
@@ -79,6 +95,8 @@ server {
 }
 ```
 
+## Z-Ray
+* If you anchor your initial request to the
 ## Lab Notes
 ZendPHP Installation
 * If you want to install the YAML extension
@@ -86,7 +104,7 @@ ZendPHP Installation
 ```
 sudo apt install libyaml-dev
 ```
-ZendHQ Installtion Lab
+ZendHQ Installation Lab
 * Lab: Set Up the Demo App
   * Add the `--ignore-platform-reqs` flag if using PHP 8.3
 ```
@@ -163,3 +181,11 @@ http://localhost:8884/#/3/17
   * not `php-set-default` (no initial dash)
 * http://localhost:8884/#/5/11
   * For RHEL/Oracle etc: $PHP_VER will have no dot and no dash (e.g. PHP 8.3 would be php83zend)
+* User assigned only rights to "mon" is able to alter configuration
+* http://localhost:8884/#/6/8
+  * Screens show different areas of error
+  * Link goes to the same for all of them
+* http://localhost:8884/#/6/45
+  * Based on the VM not Alpine
+* http://localhost:8884/#/9/22
+  * capabiities
