@@ -69,6 +69,11 @@ For Thursday 7 Aug 2024
 * Lab: PHP-FPM Installation and Configuration Lab
 * Lab: ZendHQ Installation Lab
 
+## VM Installation Notes
+Had a problem with VirtualBox 7.x and vagrant 2.4.x
+* Uninstalled 2.4.x and installed 2.3.7
+* Works OK now
+
 ## Class Notes
 IMPORTANT: Make sure you obtain a real or demo ZendHQ license before doing the ZendHQ lab!
 
