@@ -8,7 +8,10 @@ http://localhost:8882/#/3/93
 
 
 ## Homework
-For Fri 19 Jul 2024
+For Wed 11 Sep 2024
+* Lab: Namespace
+* Lab: Create a Class
+
 
 ## Class Notes
 Example of `use` and `as`
