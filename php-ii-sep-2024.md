@@ -1,13 +1,23 @@
 # PHP II - Sep 2024
 
-http://localhost:8882/#/3/93
+http://localhost:8882/#/3/111
 
 ## To Do
+* Q: Are there any PHP challenges websites you can recommend? (i.e. interview questions)
+  * Example: https://leetcode.com/problemset/
+* A: TBD
+
 * Tell Heidi not to send the Vagrantfile link in initial course welcome email
 * Geany needs to be installed in the VM setup script
 
 
 ## Homework
+For Mon 16 Sep 2024
+* Lab: Abstract Classes
+* Lab: Interfaces
+* Lab: Type Hinting
+* Lab: Build Custom Exception Class
+
 For Fri 13 Sep 2024
 * Lab: Create an Extensible Super Class
 * Lab: Magic Methods
@@ -2892,4 +2902,7 @@ PHP Fatal error:  Type of OrderPacked::$ordernumber must not be defined (as in c
 * http://localhost:8882/#/3/33
   * Instead of "A super class method with two subclasses calling the parent method:"
   * s/be: "A super class method with two subclasses that redefine the parent `__construct()` method:"
-  
+* http://localhost:8882/#/3/83
+  * Need to mention that `?string` === `null | string`
+* http://localhost:8882/#/3/85
+  * This slide should go into the Static section
