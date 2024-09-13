@@ -8,6 +8,10 @@ http://localhost:8882/#/3/93
 
 
 ## Homework
+For Fri 13 Sep 2024
+* Lab: Create an Extensible Super Class
+* Lab: Magic Methods
+
 For Wed 11 Sep 2024
 * Lab: Namespace
 * Lab: Create a Class
@@ -16,6 +20,28 @@ For Wed 11 Sep 2024
 ## Class Notes
 Example of `use` and `as`
 * See:  https://github.com/laravel/framework/blob/11.x/src/Illuminate/Database/Query/Builder.php
+
+### `readonly` properties
+Allows dynamic one-time assignment 
+* Usually in `__construct()`
+Example:
+```
+<?php
+	
+class UserEntity
+{
+    public function __construct(public readonly int $id, public string $firstName)
+    {
+    }
+}
+$user = new UserEntity(101, 'Fred');
+echo $user->firstName . ' has id ' . $user->id . PHP_EOL;
+$user->firstName = 'George';
+// PHP Fatal error:  Uncaught Error: Cannot modify readonly property UserEntity::$id
+$user->id = 102;
+echo $user->firstName . ' has id ' . $user->id . PHP_EOL;
+// Fatal error: Uncaught Error: Cannot modify readonly property UserEntity::$id in C:\Users\ASUS\Desktop\test.php:13
+```
 
 
 ### Updates
@@ -528,12 +554,11 @@ class UserEntity {
     }
 }
 
-$user1 = new UserEntity('Jack' , 'Ryan');
-$user2 = new UserEntity('Monte' , 'Python');
+$user = new UserEntity('Jack' , 'Ryan');
 
-echo $user1->getData()->getJson();
+echo $user->getData()->getJson();
 echo PHP_EOL;
-var_dump($user2->getData()->getArrayCopy());
+var_dump($user->getData()->getArrayCopy());
 ```
 Difference between `stdClass` and an Anonymous class:
 ```
@@ -653,7 +678,7 @@ class UserEntity {
 
     public function __toString(): string {
         return get_class($this);
-        // return json_encode(get_object_vars($this), TRUE);
+        // return json_encode(get_object_vars($this));
     }
 }
 
@@ -2864,3 +2889,7 @@ PHP Fatal error:  Type of OrderPacked::$ordernumber must not be defined (as in c
   * The "/" has to be escaped for this to work
 * http://localhost:8882/#/10/16
   * Also mention nginx
+* http://localhost:8882/#/3/33
+  * Instead of "A super class method with two subclasses calling the parent method:"
+  * s/be: "A super class method with two subclasses that redefine the parent `__construct()` method:"
+  
