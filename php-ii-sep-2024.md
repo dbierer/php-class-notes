@@ -3,15 +3,31 @@
 http://localhost:8882/#/3/111
 
 ## To Do
+* Q: How does Laravel async compare with ReactPHP?
+* A: TBD
+
+* Q: What version of PHP introduced nullsafe operators?
+* A: PHP 8.0
+  * See: https://wiki.php.net/rfc/nullsafe_operator	
 * Q: Are there any PHP challenges websites you can recommend? (i.e. interview questions)
   * Example: https://leetcode.com/problemset/
-* A: TBD
+* A: Here are a few:
+  * https://edabit.com/challenges/php
+  * https://www.w3resource.com/php-exercises/challenges/1/index.php
+  * https://www.geeksforgeeks.org/php-exercises-practice-questions-and-solutions/
+  * https://www.w3schools.com/PHP/php_exercises.asp
 
 * Tell Heidi not to send the Vagrantfile link in initial course welcome email
 * Geany needs to be installed in the VM setup script
 
 
 ## Homework
+For Tue 08 Oct 2024
+* Lab: Traits
+* Lab: Prepared Statements
+* Lab: Stored Procedure
+* Lab: Transaction
+
 For Mon 16 Sep 2024
 * Lab: Abstract Classes
 * Lab: Interfaces
@@ -2886,19 +2902,6 @@ PHP Fatal error:  Type of OrderPacked::$ordernumber must not be defined (as in c
 
 
 ## Change Request
-* http://localhost:8882/#/3/84
-  * Add union types for return value
-  * Add `mixed` data type
-* http://localhost:8882/#/3/107
-  * Missing opening "{" in example
-* http://localhost:8882/#/3/112
-  * Traits can also redefine the method as well as visibility
-* http://localhost:8882/#/3/119
-  * Strange displacement of the single quote
-* http://localhost:8882/#/7/12
-  * The "/" has to be escaped for this to work
-* http://localhost:8882/#/10/16
-  * Also mention nginx
 * http://localhost:8882/#/3/33
   * Instead of "A super class method with two subclasses calling the parent method:"
   * s/be: "A super class method with two subclasses that redefine the parent `__construct()` method:"
@@ -2906,3 +2909,6 @@ PHP Fatal error:  Type of OrderPacked::$ordernumber must not be defined (as in c
   * Need to mention that `?string` === `null | string`
 * http://localhost:8882/#/3/85
   * This slide should go into the Static section
+* http://localhost:8882/#/4/2
+  * S/be "Foundation" not "Fundamentals"
+  
