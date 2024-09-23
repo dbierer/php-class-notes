@@ -2,16 +2,12 @@
 
 ## TODO
 ## Homework
-For the week 9 June
-* [Optional] Lab: New Extension
-* [Optional] Lab: ZendPHP for AWS
-
-For the week of 2 June
-* [Optional] Lab: Custom PHP
-* [Optional] Lab: Built-in Web Server
-* [Optional] Lab: OpCache and JIT
-* [Optional] Lab: Existing Extension
-* [Optional] Lab: FFI
+For the week of 23 Sep
+* Lab: Custom PHP
+* Lab: Built-in Web Server
+* Lab: OpCache and JIT
+* Lab: Existing Extension
+* Lab: FFI
 
 ## Class Notes
 Object Relational Mapping
