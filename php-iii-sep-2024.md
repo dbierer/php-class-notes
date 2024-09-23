@@ -1,13 +1,18 @@
 # PHP Architect -- Sep 2024
 
+http://localhost:8883/#/2/40
+
 ## TODO
+* Example of Doctrine annotations
+* Has Laravel switched to using Attributes?
+
+
 ## Homework
 For the week of 23 Sep
 * Lab: Custom PHP
 * Lab: Built-in Web Server
 * Lab: OpCache and JIT
 * Lab: Existing Extension
-* Lab: FFI
 
 ## Class Notes
 Object Relational Mapping
