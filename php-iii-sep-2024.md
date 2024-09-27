@@ -101,14 +101,17 @@ Lab: New Extension
   * Lab needs additional work
   * If you follow the instructions here exactly, "test1()" works, but "test2()" does not
     * https://www.zend.com/resources/php-extensions/building-and-installing-php-extension
+
 Lab: Adding Middleware
   * Take the code from the slides
   * Add a middleware request handler that implements an update (HTTP "PATCH")
+
 Lab: Docker
   * Need to add the `-f` flag to the `ln` command in the `Dockerfile`
 ```
     ln -s -f /usr/bin/php$PHP_VER /usr/bin/php
 ```
+
 Lab: Docker Compose Labs
   * Have a look at the article on Orchestration: https://www.zend.com/blog/what-is-cloud-orchestration
 * Swoole Lab
