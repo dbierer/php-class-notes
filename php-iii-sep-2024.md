@@ -5,9 +5,14 @@ http://localhost:8883/#/2/40
 ## TODO
 * Example of Doctrine annotations
 * Has Laravel switched to using Attributes?
-
+* Find out why unable to install Swoole in the VM
 
 ## Homework
+For Friday 27 Sep
+* Lab: FFI
+* Lab: New Extension [Optional]
+* Lab: ZendPHP for AWS [optional]
+
 For the week of 23 Sep
 * Lab: Custom PHP
 * Lab: Built-in Web Server
@@ -84,6 +89,12 @@ sudo make
 sudo make test
 sudo make install
 sudo zendphpctl ext enable swoole
+```
+
+Lab: Custom Extension Installation
+* You can use `zendphpctl` for this purpose
+```
+sudo zendphpctl ext install swoole
 ```
 
 Lab: New Extension
@@ -1671,16 +1682,16 @@ sudo apt install libbrotli-dev
 
 
 ## ERRATA
-* http://localhost:8883/#/5/6
-* http://localhost:8883/#/5/7
-* http://localhost:8883/#/5/8
-* http://localhost:8883/#/5/9
-* http://localhost:8883/#/5/21
-* http://localhost:8883/#/5/28
-  * `docker` commands need to be run as `root` unless you assign this user to `sudoers` file
-* http://localhost:8883/#/5/47
-  * `docker-compose` commands need to be run as `root` unless you assign this user to `sudoers` file
-* http://localhost:8883/#/7/21
-  * `/path/to/middleware` s/be `/home/vagrant/Zend/middleware`
-  * `localhost:0.0.0.0:9999` s/be `localhost:9999`
 * Provide a better example of Active Object
+* For the compile from source lab
+  * need to mention that you have to either clone or download the ZIP of php-src
+  * also need to give instructions to set the PHP version back to the default
+* For the PHP Extensions lab
+  * The VM uses ZendPHP so please show how to use `zendphpctl` to install exts
+* http://localhost:8883/#/2/63
+  * s/be up to 8.3
+* http://localhost:8883/#/2/72
+  * Installing PHP via `zendphpctl`:
+```
+sudo zendphpctl php install X.Y
+```
