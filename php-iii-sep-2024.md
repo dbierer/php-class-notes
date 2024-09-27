@@ -1,11 +1,19 @@
 # PHP Architect -- Sep 2024
 
-http://localhost:8883/#/2/40
+http://localhost:8883/#/4/21
 
 ## TODO
+* Q: Are there any good places that give examples or challenges regarding design patterns?
+
 * Example of Doctrine annotations
 * Has Laravel switched to using Attributes?
 * Find out why unable to install Swoole in the VM
+
+* Q: Is `Carbon` (from Laravel) an exmple of the Decorator pattern?
+```
+Carbon::now()->format('Y-m-d H:i:s'
+```
+  * https://carbon.nesbot.com/laravel/
 
 ## Homework
 For Friday 27 Sep
@@ -20,6 +28,17 @@ For the week of 23 Sep
 * Lab: Existing Extension
 
 ## Class Notes
+Design Approaches
+* BDD
+  * Example: https://docs.behat.org/en/latest/
+* AI Driven Design
+  * Example: https://v0.dev/chat
+  * Example: ChatGPT
+* Dependency Injection
+  * https://martinfowler.com/articles/injection.html
+* Hydrator Example
+  * Use this: https://docs.laminas.dev/laminas-hydrator/v4/quick-start/
+  
 Object Relational Mapping
 * https://www.doctrine-project.org/
 Example of Active Record (database design)
@@ -1698,3 +1717,8 @@ sudo apt install libbrotli-dev
 ```
 sudo zendphpctl php install X.Y
 ```
+* http://localhost:8883/#/3/35
+  * Hydrator example should go here: https://docs.laminas.dev/laminas-hydrator/v4/quick-start/
+  * Use the exisiting link as example of Strategy Pattern
+* http://localhost:8883/#/4/6
+  * s/be `echo $date->format('l, M d Y H:i:s');`
