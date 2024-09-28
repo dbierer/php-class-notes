@@ -95,9 +95,14 @@ Lab: Existing Extension
     * You cannot provide arguments to configure​ with `PECL`, either.
 * Example installation:
 ```
+# NOTE: version was 5.1.4
+# Change the the current version
+export VERSION=5.1.4
 sudo apt install libbrotli-dev
 cd /tmp
 curl -L http://pecl.php.net/get/swoole -o swoole.tar.gz
+tar -xvf swoole.tar.gz
+cd swoole-$VERSION
 sudo ./configure \
 	--with-php-config=/usr/bin/php-config \
 	--enable-sockets \
