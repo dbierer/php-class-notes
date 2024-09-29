@@ -103,8 +103,9 @@ cd /tmp
 curl -L http://pecl.php.net/get/swoole -o swoole.tar.gz
 tar -xvf swoole.tar.gz
 cd swoole-$VERSION
+phpize
 sudo ./configure \
-	--with-php-config=/usr/bin/php-config \
+	--with-php-config=/usr/local/bin/php-config \
 	--enable-sockets \
 	--enable-openssl \
 	--enable-brotli \
