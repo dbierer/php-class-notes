@@ -98,14 +98,14 @@ Lab: Existing Extension
 # NOTE: version was 5.1.4
 # Change the the current version
 export VERSION=5.1.4
-sudo apt install libbrotli-dev
+sudo apt install libbrotli-dev php8.3-dev
 cd /tmp
 curl -L http://pecl.php.net/get/swoole -o swoole.tar.gz
 tar -xvf swoole.tar.gz
 cd swoole-$VERSION
 phpize
 sudo ./configure \
-	--with-php-config=/usr/local/bin/php-config \
+	--with-php-config=/usr/bin/php-config \
 	--enable-sockets \
 	--enable-openssl \
 	--enable-brotli \
@@ -113,6 +113,10 @@ sudo ./configure \
 sudo make
 sudo make test
 sudo make install
+sudo find / -name swoole.so -ls
+# Write down the location which we'll call LOCATION
+cp $LOCATION/swoole.so /usr/lib/php/8.3-zend
+sudo echo "extension=swoole.so" > /etc/php/8.3-zend/mods-available
 sudo zendphpctl ext enable swoole
 ```
 
