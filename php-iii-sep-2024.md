@@ -115,15 +115,20 @@ sudo make test
 sudo make install
 sudo find / -name swoole.so -ls
 # Write down the location which we'll call LOCATION
-cp $LOCATION/swoole.so /usr/lib/php/8.3-zend
-sudo echo "extension=swoole.so" > /etc/php/8.3-zend/mods-available
+sudo cp $LOCATION/swoole.so /usr/lib/php/8.3-zend
+```
+* Create an ini file under `mods-available`
+```
+sudo nano /etc/php/8.3-zend/mods-available/swoole.ini
+```
+* Add the following and save (CTL+X)
+```
+;priority=20
+extension=swoole.so
+```
+* Enable the extension using `zendphpctl`
+```
 sudo zendphpctl ext enable swoole
-```
-
-Lab: Custom Extension Installation
-* You can use `zendphpctl` for this purpose
-```
-sudo zendphpctl ext install swoole
 ```
 
 Lab: New Extension
