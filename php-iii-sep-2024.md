@@ -3,6 +3,17 @@
 http://localhost:8883/#/4/21
 
 ## TODO
+* Q: Are there any tools to assist with a PHP update (e.g. 5.6 to 8.4)?
+
+
+* Q: Does PHP 8 automatically introduce efficiencies when passing arrays into functions?
+
+* Q: Can you provide a good example that shows memory efficiency of ArrayObject vs. array
+* A: 
+
+* Q: What is the `configure` flag needed to put the PHP *.so files in the right place?
+* A: TBD
+
 * Q: Are there any good places that give examples or challenges regarding design patterns?
 
 * Q: Any examples of Doctrine attributes usage?
@@ -144,6 +155,11 @@ sudo zendphpctl ext enable swoole
 ```
 
 ### Lab: New Extension
+NOTE: you need to change `test1` to `hello_info` and `test2` to `hello_shout` in 3 places
+* hello.c
+* hello.stub.php
+* hello_arginfo.h
+
 Once your C code is working, to build the extension, run the following sequence of commands:
 ```
 $ cd /path/to/NAME_OF_EXT
@@ -1761,7 +1777,8 @@ sudo apt install libbrotli-dev
 
 
 
-## ERRATA
+## Change Requests
+* Attributes need to be  covered some place (Foundations?)
 * Provide a better example of Active Object
 * For the compile from source lab
   * need to mention that you have to either clone or download the ZIP of php-src
@@ -1780,3 +1797,7 @@ sudo zendphpctl php install X.Y
   * Use the exisiting link as example of Strategy Pattern
 * http://localhost:8883/#/4/6
   * s/be `echo $date->format('l, M d Y H:i:s');`
+* http://localhost:8883/#/4/25
+  * This slide is out of place!
+* http://localhost:8883/#/4/38
+  * `$token` needs to be declared
