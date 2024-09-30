@@ -58,7 +58,7 @@ Phing
 ## General Lab Notes
 * Lab Code:
   * Source code is located here: `https://opensource.unlikelysource.com/zend-training/php-iii/course_projects.zip`
-* Lab: OpCache and JIT
+### Lab: OpCache and JIT
     * CLI utility to reset JIT:
     * https://github.com/dbierer/PHP-8-Programming-Tips-Tricks-and-Best-Practices/blob/main/ch10/php8_jit_reset.php
     * Move `/home/vagrant/Zend/JIT/mandelbrot.php` to `/home/vagrant/Zend/sandbox/mandelbrot.php`
@@ -75,9 +75,10 @@ with  opcache: ~2.5
 with JIT function: ~0.75
 with JIT tracing: ~0.41
 ```
-Lab: Custom PHP
+### Lab: Custom PHP
 * See next subheading below
-Lab: Existing Extension
+
+### Lab: Existing Extension
 * Instructions to install Swoole:
   * Notes from Matthew Weier O'Phinney, Zend Product Manager / Principal Engineer
 	* There's no way to pass additional flags when doing a compiled extension installation.
@@ -131,22 +132,53 @@ extension=swoole.so
 sudo zendphpctl ext enable swoole
 ```
 
-Lab: New Extension
-  * Lab needs additional work
-  * If you follow the instructions here exactly, "test1()" works, but "test2()" does not
-    * https://www.zend.com/resources/php-extensions/building-and-installing-php-extension
+### Lab: New Extension
+Once your C code is working, to build the extension, run the following sequence of commands:
+```
+$ cd /path/to/NAME_OF_EXT
+$ phpize
+$ ./configure
+$ sudo make
+$ sudo make install
+```
+* Be sure to make a note of where the NAME_OF_EXT.so file is located (most likely somewhere under /usr/lib/php).
+* You must then move the *.so file to the correct location for your PHP installation. Example:
+```
+$ sudo -i
+# cp /usr/lib/php/20230831/hello.so /usr/lib/php/8.3-zend/hello.so
+```
+* To enable the extension, create a *.ini file for your new extension under the mods-available folder. Here's an example of /etc/php/8.3-zend/mods-available/hello.ini
+```
+; configuration for the php hello module
+; priority=30
+extension=hello.so
+```
+* You can then create a symbolic link between the mods-available ini file and the conf.d directory used by your PHP installation. Here's an example:
+```
+# ln -s /etc/php/8.3-zend/mods-available/hello.ini \
+    /etc/php/8.3-zend/fpm/conf.d/30-hello.ini
+```
+* or using zendphpctl:
+```
+# zendphpctl ext enable hello
+```
+* To confirm the extension is active, from the command line:
+```
+$ php -m |grep NAME_OF_EXT
+$ php -r "echo hello_info();"
+```
 
-Lab: Adding Middleware
-  * Take the code from the slides
-  * Add a middleware request handler that implements an update (HTTP "PATCH")
+### Lab: Adding Middleware
+* Take the code from the slides
+* Add a middleware request handler that implements an update (HTTP "PATCH")
 
-Lab: Docker
+### Lab: Docker
   * Need to add the `-f` flag to the `ln` command in the `Dockerfile`
 ```
     ln -s -f /usr/bin/php$PHP_VER /usr/bin/php
 ```
 
-Lab: Docker Compose Labs
+### Lab: Docker Compose Labs
   * Have a look at the article on Orchestration: https://www.zend.com/blog/what-is-cloud-orchestration
 * Swoole Lab
 
@@ -155,7 +187,7 @@ Lab: Docker Compose Labs
     * `swoole.php`
     * `react.php`
 
-API Tools Lab
+### API Tools Lab
 * If you install it in another directory other than the one in the lab, you can do this:
 ```
 cd path/to/api/tools
