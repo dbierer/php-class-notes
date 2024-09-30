@@ -1,6 +1,6 @@
 # PHP Architect -- Sep 2024
 
-http://localhost:8883/#/4/21
+http://localhost:8883/#/5
 
 ## TODO
 * Q: Are there any tools to assist with a PHP update (e.g. 5.6 to 8.4)?
@@ -940,6 +940,71 @@ echo 'Email :' . $user['email'] . PHP_EOL;
 echo 'City  :' . $user['city'] . PHP_EOL;
 echo 'Status:' . $user['status'] . PHP_EOL;
 ```
+### Type Hints and Interfaces
+This example shows the flexibility between using class or interface as type hint
+```
+<?php
+interface GetNameInterface
+{
+	public function getName();
+}
+	
+class Test implements GetNameInterface
+{
+	public string $name = 'TEST';
+	public function getName()
+	{
+		return $this->name;
+	}
+}
+
+class SonOfTest extends Test {}
+
+class GrandChildOfTest extends SonOfTest {};
+
+// this works if using the Interface as a type hint
+class Something  implements GetNameInterface
+{
+	public function getName()
+	{
+		return __CLASS__;
+	}
+}
+
+function whatever(GetNameInterface $test)
+{
+	return $test->getName() . PHP_EOL;
+}
+
+// now try this:
+/*
+function whatever(Test $test)
+{
+	return $test->getName() . PHP_EOL;
+}
+*/
+
+// finally try this:
+/*
+function whatever(GetNameInterface $test)
+{
+	return $test->getName() . PHP_EOL;
+}
+*/
+
+$test1 = new Test();
+$test2 = new SonOfTest();
+$test3 = new GrandChildOfTest();
+$test4 = new Something();
+
+
+echo whatever($test3);
+echo whatever($test2);
+echo whatever($test1);
+echo whatever($test4);
+
+```
+
 ### Iterators
 `ArrayIterator` example
 ```
