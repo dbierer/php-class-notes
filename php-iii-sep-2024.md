@@ -5,15 +5,26 @@ http://localhost:8883/#/4/21
 ## TODO
 * Q: Are there any good places that give examples or challenges regarding design patterns?
 
-* Example of Doctrine annotations
-* Has Laravel switched to using Attributes?
-* Find out why unable to install Swoole in the VM
+* Q: Any examples of Doctrine attributes usage?
+* A: See: https://www.php.net/manual/en/language.attributes.overview.php
+* A: See: https://www.doctrine-project.org/projects/doctrine-orm/en/3.2/reference/attributes-reference.html
+
+* Q: What about Laravel entity classes?
+* A: Laravel calls entity classes "Models"
+* A: See: https://laravel.com/docs/11.x/eloquent#introduction
+
+* Q: Why were you unable to install Swoole in the VM?
+* A: The paths created by the custom installation interfered with the ZendPHP paths.
+* A: Solution: revert to the original VM image and install Swoole directly from source (See Lab Notes below)
 
 * Q: Is `Carbon` (from Laravel) an exmple of the Decorator pattern?
 ```
 Carbon::now()->format('Y-m-d H:i:s'
 ```
   * https://carbon.nesbot.com/laravel/
+* A: Yes -- this is a form of the Decorator pattern
+* A: This article gives a good example of the Decorator pattern and Laravel:
+  * https://dev.to/ahmedash95/design-patterns-in-php-decorator-with-laravel-5hk6
 
 ## Homework
 For Friday 27 Sep
