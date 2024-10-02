@@ -3,12 +3,12 @@
 http://localhost:8883/#/5
 
 ## TODO
-* Q: Are there any good places that give examples or challenges regarding design patterns?
+* Q: Is there any compelling reason to use `SplObjectStorage` rather a simple array?
 
-* Q: Does PHP 8 automatically introduce efficiencies when passing arrays into functions?
+* Q: Code challenge: insert a value into the *middle* of an array, and have it be in the correct index order
 
-* Q: What is the `configure` flag needed to put the PHP *.so files in the right place?
-* A: TBD
+* Q: Reference to Composer autoloader?
+
 
 * Q: Are there any tools to assist with a PHP update (e.g. 5.6 to 8.4)?
 * A: For a list of tools start here: 
@@ -21,6 +21,13 @@ http://localhost:8883/#/5
 
 * Q: Can you provide a good example that shows memory efficiency of ArrayObject vs. array
 * A: See: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_spl_fixed_arr_compared_with_array_and_array_object.php
+
+* Q: Are there any good places that give examples or challenges regarding design patterns?
+
+* Q: Does PHP 8 automatically introduce efficiencies when passing arrays into functions?
+
+* Q: What is the `configure` flag needed to put the PHP *.so files in the right place?
+* A: TBD
 
 * Q: Any examples of Doctrine attributes usage?
 * A: See: https://www.php.net/manual/en/language.attributes.overview.php
@@ -1735,7 +1742,7 @@ $list =[
 ];
  $sequencer = new class() extends SplHeap {
 	    // Set the sequence
-    public function compare($arr1, $arr2)
+    public function compare($arr1, $arr2) : int
     {
         // Do the comparison using the spaceship operator
         return key($arr2) <=> key($arr1);
@@ -1872,3 +1879,8 @@ sudo zendphpctl php install X.Y
   * This slide is out of place!
 * http://localhost:8883/#/4/38
   * `$token` needs to be declared
+* http://localhost:8883/#/5/9
+  * As of PHP 8 `compare()` must have return value of `int` otherwise Deprecation notice appears
+* http://localhost:8883/#/5/13
+  * Missing '$' in front of `priority`
+  
