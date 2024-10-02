@@ -3,18 +3,22 @@
 http://localhost:8883/#/5
 
 ## TODO
-* Q: Are there any tools to assist with a PHP update (e.g. 5.6 to 8.4)?
-
+* Q: Are there any good places that give examples or challenges regarding design patterns?
 
 * Q: Does PHP 8 automatically introduce efficiencies when passing arrays into functions?
-
-* Q: Can you provide a good example that shows memory efficiency of ArrayObject vs. array
-* A: 
 
 * Q: What is the `configure` flag needed to put the PHP *.so files in the right place?
 * A: TBD
 
-* Q: Are there any good places that give examples or challenges regarding design patterns?
+* Q: Are there any tools to assist with a PHP update (e.g. 5.6 to 8.4)?
+* A: For a list of tools start here: https://www.atatus.com/blog/tools-to-check-php8-compatibility/
+* A: Also have a look at these articles for guidance on this:
+  * https://www.zend.com/blog/upgrade-php#how-to-upgrade-php-versions
+  * https://www.zend.com/webinars/modernizing-legacy-web-apps-strategies-seamless-journey
+  * https://www.zend.com/resources/planning-php-migration
+
+* Q: Can you provide a good example that shows memory efficiency of ArrayObject vs. array
+* A: See: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_spl_fixed_arr_compared_with_array_and_array_object.php
 
 * Q: Any examples of Doctrine attributes usage?
 * A: See: https://www.php.net/manual/en/language.attributes.overview.php
