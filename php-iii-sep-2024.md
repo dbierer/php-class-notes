@@ -11,7 +11,9 @@ http://localhost:8883/#/5
 * A: TBD
 
 * Q: Are there any tools to assist with a PHP update (e.g. 5.6 to 8.4)?
-* A: For a list of tools start here: https://www.atatus.com/blog/tools-to-check-php8-compatibility/
+* A: For a list of tools start here: 
+    * https://www.atatus.com/blog/tools-to-check-php8-compatibility/
+* A: Also have a look at this tool: https://github.com/rectorphp/rector
 * A: Also have a look at these articles for guidance on this:
   * https://www.zend.com/blog/upgrade-php#how-to-upgrade-php-versions
   * https://www.zend.com/webinars/modernizing-legacy-web-apps-strategies-seamless-journey
