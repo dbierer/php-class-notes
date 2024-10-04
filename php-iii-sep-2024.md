@@ -1,8 +1,31 @@
 # PHP Architect -- Sep 2024
 
-http://localhost:8883/#/5
+http://localhost:8883/#/8/6
+
+## Homework
+For Monday 7 Oct 
+* Lab: Docker Image Build
+* Lab: Commit the Image
+* Labs: Docker Compose Labs
+  * Do all the labs in this section
+* Labs: REST Service Development Lab
+  * Do all the labs in this section
+For Friday 27 Sep
+* Lab: FFI
+* Lab: New Extension [Optional]
+* Lab: ZendPHP for AWS [optional]
+
+For the week of 23 Sep
+* Lab: Custom PHP
+* Lab: Built-in Web Server
+* Lab: OpCache and JIT
+* Lab: Existing Extension
 
 ## TODO
+* Q: Find a reference to IP subnets / subnet masks
+* A:
+
+
 * Q: Code challenge: insert a value into the *middle* of a numeric array, and have it be in the correct index order
 * A: https://github.com/dbierer/classic_php_examples/blob/master/basics/array_code_challenge_insert_in_middle.php
 
@@ -52,18 +75,6 @@ Carbon::now()->format('Y-m-d H:i:s'
 * A: Yes -- this is a form of the Decorator pattern
 * A: This article gives a good example of the Decorator pattern and Laravel:
   * https://dev.to/ahmedash95/design-patterns-in-php-decorator-with-laravel-5hk6
-
-## Homework
-For Friday 27 Sep
-* Lab: FFI
-* Lab: New Extension [Optional]
-* Lab: ZendPHP for AWS [optional]
-
-For the week of 23 Sep
-* Lab: Custom PHP
-* Lab: Built-in Web Server
-* Lab: OpCache and JIT
-* Lab: Existing Extension
 
 ## Class Notes
 Design Approaches
@@ -222,8 +233,18 @@ $ php -r "echo hello_info();"
 ```
 
 ### Lab: Docker Compose Labs
-  * Have a look at the article on Orchestration: https://www.zend.com/blog/what-is-cloud-orchestration
-* Swoole Lab
+* Have a look at the article on Orchestration: https://www.zend.com/blog/what-is-cloud-orchestration
+* In the `docker-compose.yml` file, for the nginx service, under `volumes`, add this key:
+  * NOTE: indent to the same level as `volumes`
+```
+      ports:
+      - 8888:80
+```
+* VM isn't set up for routing to network 10
+* Use `localhost:8888` in place of `10.20.10.10`
+
+
+### Swoole Lab
 
   * Run these three program under `src` and compare the time:
     * `normal.php`
@@ -236,6 +257,7 @@ $ php -r "echo hello_info();"
 cd path/to/api/tools
 php -S 0.0.0.0:8080 -t public public/index.php
 ```
+* Name of the database is `php3` in the VM
 
 ## Custom PHP Lab Notes
 
@@ -1481,6 +1503,21 @@ var_dump(parse_url($url));
 */
 
 ```
+Different ways to get an extension from a file path:
+```
+<?php
+$path = '/some/path/to/images/some_file.jpg';
+
+var_dump(pathinfo($path));
+
+$ext = [];
+$ext[] = pathinfo($path, PATHINFO_EXTENSION);
+$ext[] = substr($path, -3);
+$ext[] = array_pop(explode('.', $path));
+$ext[] = (new SplFileInfo($path))->getExtension();
+
+var_dump($ext);
+```
 
 ## Middleware
 * Low level example: https://github.com/dbierer/strat_post
@@ -1886,4 +1923,9 @@ sudo zendphpctl php install X.Y
   * As of PHP 8 `compare()` must have return value of `int` otherwise Deprecation notice appears
 * http://localhost:8883/#/5/13
   * Missing '$' in front of `priority`
+* http://localhost:8883/#/6/47
+  * VM isn't set up for routing to network 10
+  * Use `localhost:8888` in place of `10.20.10.10`
+* http://localhost:8883/#/7/2
+  * Need a better seed array example with just flat values
   
