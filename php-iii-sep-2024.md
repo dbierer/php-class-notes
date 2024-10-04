@@ -3,12 +3,15 @@
 http://localhost:8883/#/5
 
 ## TODO
+* Q: Code challenge: insert a value into the *middle* of a numeric array, and have it be in the correct index order
+* A: https://github.com/dbierer/classic_php_examples/blob/master/basics/array_code_challenge_insert_in_middle.php
+
 * Q: Is there any compelling reason to use `SplObjectStorage` rather a simple array?
+* A: Excellent discussion here: https://stackoverflow.com/questions/8520241/associative-array-versus-splobjectstorage
+* A: Also see benchmark: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_splobjectstorage_vs_array.php
 
-* Q: Code challenge: insert a value into the *middle* of an array, and have it be in the correct index order
-
-* Q: Reference to Composer autoloader?
-
+* Q: Do you have a reference for using the Composer autoloader?
+* A: See: https://getcomposer.org/doc/01-basic-usage.md#autoloading
 
 * Q: Are there any tools to assist with a PHP update (e.g. 5.6 to 8.4)?
 * A: For a list of tools start here: 
