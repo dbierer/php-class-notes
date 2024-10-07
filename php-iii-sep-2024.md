@@ -10,6 +10,7 @@ For Monday 7 Oct
   * Do all the labs in this section
 * Labs: REST Service Development Lab
   * Do all the labs in this section
+
 For Friday 27 Sep
 * Lab: FFI
 * Lab: New Extension [Optional]
@@ -22,9 +23,18 @@ For the week of 23 Sep
 * Lab: Existing Extension
 
 ## TODO
-* Q: Find a reference to IP subnets / subnet masks
-* A:
+* Q: Do you have a good reference to IP subnets / subnet masks?
+* A: Good article on the subject here: 
+  * https://www.freecodecamp.org/news/subnet-cheat-sheet-24-subnet-mask-30-26-27-29-and-other-ip-address-cidr-network-references/
 
+* Q: Are there any good places that give examples or challenges regarding design patterns?
+* A: TBD
+
+* Q: Does PHP 8 automatically introduce efficiencies when passing arrays into functions?
+* A: TBD
+
+* Q: What is the `configure` flag needed to put the PHP *.so files in the right place?
+* A: List of core PHP `configure` options: https://www.php.net/manual/en/configure.about.php
 
 * Q: Code challenge: insert a value into the *middle* of a numeric array, and have it be in the correct index order
 * A: https://github.com/dbierer/classic_php_examples/blob/master/basics/array_code_challenge_insert_in_middle.php
@@ -47,13 +57,6 @@ For the week of 23 Sep
 
 * Q: Can you provide a good example that shows memory efficiency of ArrayObject vs. array
 * A: See: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_spl_fixed_arr_compared_with_array_and_array_object.php
-
-* Q: Are there any good places that give examples or challenges regarding design patterns?
-
-* Q: Does PHP 8 automatically introduce efficiencies when passing arrays into functions?
-
-* Q: What is the `configure` flag needed to put the PHP *.so files in the right place?
-* A: TBD
 
 * Q: Any examples of Doctrine attributes usage?
 * A: See: https://www.php.net/manual/en/language.attributes.overview.php
