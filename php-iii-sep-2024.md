@@ -1928,4 +1928,15 @@ sudo zendphpctl php install X.Y
   * Use `localhost:8888` in place of `10.20.10.10`
 * http://localhost:8883/#/7/2
   * Need a better seed array example with just flat values
+* Docker Compose Labs
+  * In the `docker-compose.yml` file, for the nginx service, under `volumes`, add this key:
+  * NOTE: indent to the same level as `volumes`
+```
+      ports:
+      - 8888:80
+```
+  * VM isn't set up for routing to network 10
+  * Use `localhost:8888` in place of `10.20.10.10`
+* API Tools Lab
+  * Name of the database is `php3` in the VM
   
