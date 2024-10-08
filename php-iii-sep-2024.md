@@ -23,6 +23,9 @@ For the week of 23 Sep
 * Lab: Existing Extension
 
 ## TODO
+* Q: Is the link to Jenkins/Alpine correct?
+* A: 
+
 * Q: Do you have a good reference to IP subnets / subnet masks?
 * A: Good article on the subject here: 
   * https://www.freecodecamp.org/news/subnet-cheat-sheet-24-subnet-mask-30-26-27-29-and-other-ip-address-cidr-network-references/
@@ -106,6 +109,10 @@ Attributes
 Phing
 * Docs: https://www.phing.info/guide/hlhtml/
 * `build.xml` example: https://github.com/phingofficial/phing/blob/main/docs/example/build.xml
+CI/CD Configuration tools
+* Puppet: https://puppet.com/
+* Ansible: https://www.ansible.com/
+* Chef: https://www.chef.io/solutions/configuration-management
 
 ## General Lab Notes
 * Lab Code:
@@ -1246,6 +1253,7 @@ Found 15 packages matching phpunit
 ```
 
 * If you're using OOP, consider using `Symfony\Console`
+
 ## Stream Wrapper Example
 `runStreamDb.php`:
 ```
@@ -1525,7 +1533,10 @@ var_dump($ext);
 ## Middleware
 * Low level example: https://github.com/dbierer/strat_post
 * Example using Mezzio:
-  * https://github.com/zendtech/ZendPHP-Attendee/blob/master/Basic_Installation_Alpine/mezzio/config/pipeline.php
+  * https://github.com/zendtech/ZendPHP-Attendee/blob/master/Basic_Installation/mezzio/config/pipeline.php
+* Laravel and Middleware:
+  *https://laravel.com/docs/11.x/middleware
+  
 ## Async
 * Good article on async programming: https://www.zend.com/blog/using-swoole-and-mezzio
 
