@@ -1,8 +1,13 @@
 # PHP II - Sep 2024
 
-http://localhost:8882/#/5/36
+http://localhost:8882/#/7
 
 ## To Do
+* Q: Why didn't the e-tag example work in the VM?
+
+* Q: For the `ActiveRecord` example, change from `Product` to `User`
+  * https://github.com/dbierer/classic_php_examples/blob/master/db/db_active_record_example.php
+
 * Q: How does Laravel async compare with ReactPHP?
 * A: TBD
 
@@ -2911,4 +2916,9 @@ PHP Fatal error:  Type of OrderPacked::$ordernumber must not be defined (as in c
   * This slide should go into the Static section
 * http://localhost:8882/#/4/2
   * S/be "Foundation" not "Fundamentals"
-  
+* Stored Procedure Lab:
+  * The SQL statement doesn't work
+  * Closing `)` put on a new line
+  * For params, missing `IN`
+* http://localhost:8882/#/6/4
+  * Should switch `$inner` and `$outer` for a better demo
