@@ -3,13 +3,8 @@
 http://localhost:8882/#/7
 
 ## To Do
-* Q: Why didn't the e-tag example work in the VM?
-
 * Q: For the `ActiveRecord` example, change from `Product` to `User`
   * https://github.com/dbierer/classic_php_examples/blob/master/db/db_active_record_example.php
-
-* Q: How does Laravel async compare with ReactPHP?
-* A: TBD
 
 * Q: What version of PHP introduced nullsafe operators?
 * A: PHP 8.0
@@ -2670,6 +2665,10 @@ SOAP example:
 * https://github.com/dbierer/classic_php_examples/blob/master/web/soap_client.php
 Example of sending JSON request to Authorize.net
 * https://github.com/AuthorizeNet/sample-code-php/tree/master
+Example of a request for city in Brazil:
+```
+echo file_get_contents('https://api.unlikelysource.com/api?city=Mococa&state=SP&country=BR');
+```
 
 ## Dependency Injection
 Great overview of the DI design pattern:
@@ -2922,3 +2921,9 @@ PHP Fatal error:  Type of OrderPacked::$ordernumber must not be defined (as in c
   * For params, missing `IN`
 * http://localhost:8882/#/6/4
   * Should switch `$inner` and `$outer` for a better demo
+* http://localhost:8882/#/10/9
+  * Need to put `htmlspecialchars()` as a wrapper for `print_r()`:
+    htmlspecialchars(print_r($goodtogo));
+* http://localhost:8882/#/10/21
+  * Language update needs to be updated
+
