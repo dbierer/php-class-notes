@@ -270,7 +270,6 @@ php -S 0.0.0.0:8080 -t public public/index.php
 * Name of the database is `php3` in the VM
 
 ## Custom PHP Lab Notes
-
 * Clone from github
 * Switch to branch target version of PHP (e.g. 7.4.11)
 ```
@@ -309,6 +308,7 @@ git checkout php-PHP_VER
     --with-readline \
     --with-sodium
 ```
+To switch versions use `update-alternatives --config php` (see below for more info)
 
 ### Dependency errors:
 ```
@@ -462,7 +462,79 @@ sudo apt install -y libbz2-dev  libpng-dev zlib1g-dev libsodium-dev \
                     libreadline-dev libcurl4-openssl-dev libbz2-dev
 ```
 
-To switch versions use `update-alternatives --config php` (see below for more info)
+### Installing a built-in extension from source
+See: https://gist.github.com/Amar-Chaudhari/d0c9f08d0b9d9d17528fe9805fc6cef3
+Example using Alpine Linux 
+* Installs GMP extension from source
+* Install dependencies:
+```
+# apk add gmp gmp-dev
+```
+* Run `php-ize` to create `configure` for the extension
+```
+# cd /opt/php-src/ext/gmp
+# /usr/local/php8/bin/phpize
+```
+* Run `configure`
+```
+# ./configure --prefix=/usr/local/php8 --with-php-config=/usr/local/php8/bin --with-gmp
+```
+* Run `make` to create the `*.so` file
+```
+# make
+php8:/opt/php-src/ext/gmp# make
+/bin/sh /opt/php-src/ext/gmp/libtool --tag=CC --mode=compile cc -I. -I/opt/php-src/ext/gmp -I/usr/local/php8/include/php -I/usr/local/php8/include/php/main -I/usr/local/php8/include/php/TSRM -I/usr/local/php8/include/php/Zend -I/usr/local/php8/include/php/ext -I/usr/local/php8/include/php/ext/date/lib  -DHAVE_CONFIG_H  -g -O2 -D_GNU_SOURCE   -DZEND_ENABLE_STATIC_TSRMLS_CACHE=1 -DZEND_COMPILE_DL_EXT=1 -c /opt/php-src/ext/gmp/gmp.c -o gmp.lo  -MMD -MF gmp.dep -MT gmp.lo
+mkdir .libs
+ cc -I. -I/opt/php-src/ext/gmp -I/usr/local/php8/include/php -I/usr/local/php8/include/php/main -I/usr/local/php8/include/php/TSRM -I/usr/local/php8/include/php/Zend -I/usr/local/php8/include/php/ext -I/usr/local/php8/include/php/ext/date/lib -DHAVE_CONFIG_H -g -O2 -D_GNU_SOURCE -DZEND_ENABLE_STATIC_TSRMLS_CACHE=1 -DZEND_COMPILE_DL_EXT=1 -c /opt/php-src/ext/gmp/gmp.c -MMD -MF gmp.dep -MT gmp.lo  -fPIC -DPIC -o .libs/gmp.o
+/bin/sh /opt/php-src/ext/gmp/libtool --tag=CC --mode=link cc -shared -I/usr/local/php8/include/php -I/usr/local/php8/include/php/main -I/usr/local/php8/include/php/TSRM -I/usr/local/php8/include/php/Zend -I/usr/local/php8/include/php/ext -I/usr/local/php8/include/php/ext/date/lib  -DHAVE_CONFIG_H  -g -O2 -D_GNU_SOURCE    -o gmp.la -export-dynamic -avoid-version -prefer-pic -module -rpath /opt/php-src/ext/gmp/modules  gmp.lo -lgmp
+cc -shared  .libs/gmp.o  -lgmp  -Wl,-soname -Wl,gmp.so -o .libs/gmp.so
+creating gmp.la
+(cd .libs && rm -f gmp.la && ln -s ../gmp.la gmp.la)
+/bin/sh /opt/php-src/ext/gmp/libtool --tag=CC --mode=install cp ./gmp.la /opt/php-src/ext/gmp/modules
+cp ./.libs/gmp.so /opt/php-src/ext/gmp/modules/gmp.so
+cp ./.libs/gmp.lai /opt/php-src/ext/gmp/modules/gmp.la
+PATH="$PATH:/sbin" ldconfig -n /opt/php-src/ext/gmp/modules
+----------------------------------------------------------------------
+Libraries have been installed in:
+   /opt/php-src/ext/gmp/modules
+
+If you ever happen to want to link against installed libraries
+in a given directory, LIBDIR, you must either use libtool, and
+specify the full pathname of the library, or use the `-LLIBDIR'
+flag during linking and do at least one of the following:
+   - add LIBDIR to the `LD_LIBRARY_PATH' environment variable
+     during execution
+   - add LIBDIR to the `LD_RUN_PATH' environment variable
+     during linking
+   - use the `-Wl,--rpath -Wl,LIBDIR' linker flag
+
+See any operating system documentation about shared libraries for
+more information, such as the ld(1) and ld.so(8) manual pages.
+----------------------------------------------------------------------
+
+Build complete.
+Don't forget to run 'make test'.
+```
+* Copy the `*.so` file to the right place:
+```
+# php -i |grep extension_dir
+extension_dir => /usr/local/php8/lib/php/extensions/no-debug-non-zts-20230901 => /usr/local/php8/lib/php/extensions/no-debug-non-zts-20230901
+# cp modules/gmp.so /usr/local/php8/lib/php/extensions/no-debug-non-zts-20230901
+```
+* Find out where to create "additional" ini files:
+```
+# php -i |grep additional
+Scan this dir for additional .ini files => /usr/local/php8/etc/conf.d
+```
+* Enable the extension
+```
+# echo "extension=gmp.so" > /usr/local/php8/etc/conf.d/gmp.ini
+```
+* Check to make sure it's loaded:
+```
+# php -m |grep gmp
+gmp
+```
 
 ## Jenkins Lab:
 Instructions for Jenkins using the official Docker image
