@@ -8,11 +8,22 @@ https://github.com/dbierer/php-class-notes/blob/master/php-arch-2025-05.md
   * Adding PHP run to build process
 * Check on status and paid/free of PHP-FPM course
 * Get link to "cache-control" header for browser caching
+* Find option to set "prefix"
+* When running JIT or OpCache CLI: where does it cache???
+* What does `phpize` do?
+* Confirm whether or not the extension load order makes a difference
 
 ## Class Notes
 To open a terminal window: `CTL + ALT + T`
 
 ## Homework
+Labs for Fri 16 May 2025
+* Lab: Existing Extension
+  * NOTE: current VM PHP version is 8.4
+* Lab: FFI
+* Lab: Custom Extension (optional)
+* Lab: ZendPHP on the Cloud (optional)
+
 Labs for Wed 14 May 2025
 * Setup the VM using materials provided in class
 * Lab: Custom PHP Lab
@@ -225,3 +236,13 @@ To switch versions use `update-alternatives --config php` (see below for more in
 * http://localhost:8883/#/2/20
 http://localhost:8883/#/2/25
   * use target=_blank
+* Custom PHP Lab
+  * Don't bother with `configure` options: just use the defaults
+    * BUT ... make  you tell the attendees where the files will go
+    * Add an instruction to make a snapshot
+  * Missing a step:
+```
+cd /tmp
+git clone https://github.com/php/php-src
+```
+* There is no "I/O" section in the 1st module!
