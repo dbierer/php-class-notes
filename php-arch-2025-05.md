@@ -31,6 +31,65 @@ Labs for Wed 14 May 2025
 * Lab: OpCache and JIT
 
 # Lab Notes
+### Custom Extension Lab
+You can find `phpize` here: `/usr/bin/phpize`
+
+### Existing Extension Lab
+As the VM is running ZendPHP we'll need to install this from source!
+From Matthew Weir O'Phinney:
+* Instructions to install Swoole:
+  * Notes from Matthew Weier O'Phinney, Zend Product Manager / Principal Engineer
+	* There's no way to pass additional flags when doing a compiled extension installation.
+	* The steps you need to take:
+	  * Make sure the dev package for the given PHP version is installed.
+      * Make sure any dev libraries you need to compile the given extension are installed.
+      * Grab the package for the extension from PECL or wherever they are providing it; DO NOT use the pecl tool itself, though.
+      * Unarchive the package.
+      * In the package root, run `/path/to/phpize-for-your-php-version`
+      * From there, you can run `./configure --with-php-config=/path/to/php-config-for-your-php-version --enable-openssl`, along with any other flags
+      * If that succeeds, run make​, followed by make install​.
+	* The path to `phpize` and `php-config` will vary based on your OS and PHP version, but are usually found in `/usr/bin/`​.
+  * The reason I suggest this path instead of using `PECL` is for a couple of reasons:
+	* It assumes there is only one PHP on the system. If there is, it's not a problem, but if you have more than one, the wrong `phpize` and/or `php-config` might be used.
+    * You cannot provide arguments to configure​ with `PECL`, either.
+* Example installation:
+```
+# NOTE: version was 5.1.4
+# Change the the current version
+export VERSION=5.1.4
+sudo apt install libbrotli-dev php8.4-dev
+cd /tmp
+curl -L http://pecl.php.net/get/swoole -o swoole.tar.gz
+tar -xvf swoole.tar.gz
+cd swoole-$VERSION
+phpize
+sudo ./configure \
+	--with-php-config=/usr/bin/php-config \
+	--enable-sockets \
+	--enable-openssl \
+	--enable-brotli \
+	--enable-swoole
+sudo make
+sudo make test
+sudo make install
+sudo find / -name swoole.so -ls
+# Write down the location which we'll call LOCATION
+sudo cp $LOCATION/swoole.so /usr/lib/php/8.4-zend
+```
+* Create an ini file under `mods-available`
+```
+sudo nano /etc/php/8.4-zend/mods-available/swoole.ini
+```
+* Add the following and save (CTL+X)
+```
+;priority=20
+extension=swoole.so
+```
+* Enable the extension using `zendphpctl`
+```
+sudo zendphpctl ext enable swoole
+```
+
 ### Custom PHP Lab
 * Take a snapshot of the VM before 
 * Add suggested dependencies 
