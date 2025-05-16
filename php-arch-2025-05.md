@@ -4,14 +4,16 @@ https://github.com/dbierer/php-class-notes/blob/master/php-arch-2025-05.md
 
 
 ## TO DO
-* Add additional VM setup notes
-  * Adding PHP run to build process
 * Check on status and paid/free of PHP-FPM course
 * Get link to "cache-control" header for browser caching
 * Find option to set "prefix"
 * When running JIT or OpCache CLI: where does it cache???
-* What does `phpize` do?
 * Confirm whether or not the extension load order makes a difference
+* Confirm if we can use `zendphpctl` for the Swoole ext and have the future labs work
+
+* Q: What does `phpize` do?
+* A: Prepares a build environment where PECL cannot be used
+* A: See: https://www.php.net/manual/en/install.pecl.phpize.php
 
 ## Class Notes
 To open a terminal window: `CTL + ALT + T`
@@ -35,6 +37,11 @@ Labs for Wed 14 May 2025
 You can find `phpize` here: `/usr/bin/phpize`
 
 ### Existing Extension Lab
+Use this command:
+```
+sudo zendphpctl ext install swoole
+```
+
 As the VM is running ZendPHP we'll need to install this from source!
 From Matthew Weir O'Phinney:
 * Instructions to install Swoole:
@@ -305,3 +312,7 @@ cd /tmp
 git clone https://github.com/php/php-src
 ```
 * There is no "I/O" section in the 1st module!
+* RE: the Existing Extension Lab:
+  * Either move the PHP version to a community source
+  * Or ... rewrite to accommodate ZendPHP
+  
