@@ -4,12 +4,27 @@ https://github.com/dbierer/php-class-notes/blob/master/php-arch-2025-05.md
 
 
 ## TO DO
-* Check on status and paid/free of PHP-FPM course
-* Get link to "cache-control" header for browser caching
-* Find option to set "prefix"
-* When running JIT or OpCache CLI: where does it cache???
-* Confirm whether or not the extension load order makes a difference
-* Confirm if we can use `zendphpctl` for the Swoole ext and have the future labs work
+
+## Q & A
+* Q: Is there a PHP-FPM course?
+* A: See: https://training.zend.com/learn/courses/526/php-focus-boost-website-performance-with-php-fpm-nginx-and-apache
+* A: It's $475 and lasts 1 day (3 hours) -- but not yet on the schedule
+
+* Q: Do you have a  link to "cache-control" header for browser caching?
+* A: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control
+
+* Q: What is the option to set the target location for a custom PHP installation?
+* A: When running `configure` add the `--prefix=/path/to/target` option
+
+* Q: When running JIT or OpCache CLI: where does it cache???
+* A: Still researching
+
+* Q: I noticed that the symlinks for PHP extensions have a load priority. Does the extension load order makes a difference?
+* A: Still researching
+
+* Q: Can we use `zendphpctl` for the Swoole ext and have the future labs work?
+* A: Yes ... but extra options (including OpenSSL support) are not enabled by default
+* A: Follow the instructions below for custom extension installation
 
 * Q: What does `phpize` do?
 * A: Prepares a build environment where PECL cannot be used
