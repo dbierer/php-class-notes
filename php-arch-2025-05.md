@@ -1,9 +1,12 @@
 # PHP Architect
 Class Notes May 2025
 https://github.com/dbierer/php-class-notes/blob/master/php-arch-2025-05.md
+http://localhost:8883/#/4/70
 
 
 ## TO DO
+* Look up the example showing memory efficiency vis a vis Generators
+* Also find the example that demonstrates `getReturn()`
 
 ## Q & A
 * Q: Is there a PHP-FPM course?
@@ -16,12 +19,6 @@ https://github.com/dbierer/php-class-notes/blob/master/php-arch-2025-05.md
 * Q: What is the option to set the target location for a custom PHP installation?
 * A: When running `configure` add the `--prefix=/path/to/target` option
 
-* Q: When running JIT or OpCache CLI: where does it cache???
-* A: Still researching
-
-* Q: I noticed that the symlinks for PHP extensions have a load priority. Does the extension load order makes a difference?
-* A: Still researching
-
 * Q: Can we use `zendphpctl` for the Swoole ext and have the future labs work?
 * A: Yes ... but extra options (including OpenSSL support) are not enabled by default
 * A: Follow the instructions below for custom extension installation
@@ -30,8 +27,77 @@ https://github.com/dbierer/php-class-notes/blob/master/php-arch-2025-05.md
 * A: Prepares a build environment where PECL cannot be used
 * A: See: https://www.php.net/manual/en/install.pecl.phpize.php
 
+* Q: When running JIT or OpCache CLI: where does it cache???
+* A: Still researching
+
+* Q: I noticed that the symlinks for PHP extensions have a load priority. Does the extension load order makes a difference?
+* A: Still researching
+
+
 ## Class Notes
 To open a terminal window: `CTL + ALT + T`
+
+* Objects are "naturally" iterable:
+```
+<?php
+class Test
+{
+	public function __construct(
+		public string $a,
+		public string $b,
+		public string $c) {}
+}
+$test = new Test(111,222,333);
+foreach ($test as $key => $val) {
+	echo $key . ':' . $val . PHP_EOL;
+}
+```
+* You can also use an obscure array syntax for objects that don't define `__invoke()`
+```
+<?php
+class Test
+{
+	public function show(iterable $arr)
+	{
+		$txt = '';
+		foreach ($arr as $key => $val) {
+			$txt .= $key . ':' . $val . PHP_EOL;
+		}
+		return $txt;
+	}
+}
+
+function whatever(callable $obj, iterable $arr) 
+{
+	echo $obj($arr);
+}
+	
+$arr = ['A' => 111, 'B' => 222, 'C' => 333];
+$test = new Test();
+whatever([$test ,'show'], $arr);
+// output:
+/*
+A:111
+B:222
+C:333
+*/
+```
+* Property hooks can be used with PHP 8 constructor property promotion:
+  * See: https://www.php.net/manual/en/language.oop5.property-hooks.php
+```
+class User 
+{
+    public function __construct(
+		public string $name {
+			get => ucwords($this->name);
+			// Notice the "magic" variable $value:
+			set => strtolower($value);
+		}
+	) 
+	{}
+}    
+```
+
 
 ## Homework
 Labs for Fri 16 May 2025
@@ -330,4 +396,9 @@ git clone https://github.com/php/php-src
 * RE: the Existing Extension Lab:
   * Either move the PHP version to a community source
   * Or ... rewrite to accommodate ZendPHP
+* http://localhost:8883/#/4/47
+  * There is no previous lab for this!
+* http://localhost:8883/#/4/50
+  * You can use property hooks in constructor arg promotion
+
   
