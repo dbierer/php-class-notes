@@ -7,8 +7,19 @@ http://localhost:8883/#/4/70
 ## TO DO
 * Look up the example showing memory efficiency vis a vis Generators
 * Also find the example that demonstrates `getReturn()`
+* What's the primary use case for Closure::fromCallable() or $obj->method(...) ?
+* RE: http://localhost:8883/#/4/126 -- why would you use Lazy Objects on objects already initialized?
 
 ## Q & A
+* Q: When running JIT or OpCache CLI: where does it cache???
+* A: JIT might help CLI ops because of its efficient compiler, however OpCache won't help for CLI ops. 
+  * The option is mainly available for CLI ops for the purposes of debugging and testing
+  * See: https://stackoverflow.com/questions/25044817/zend-opcache-opcache-enable-cli-1-or-0-what-does-it-do
+
+* Q: I noticed that the symlinks for PHP extensions have a load priority. Does the extension load order makes a difference?
+* A: Here's a good explanation of why the load order might be important:
+* A: See: https://wiki.php.net/rfc/extensions_load_order
+
 * Q: Is there a PHP-FPM course?
 * A: See: https://training.zend.com/learn/courses/526/php-focus-boost-website-performance-with-php-fpm-nginx-and-apache
 * A: It's $475 and lasts 1 day (3 hours) -- but not yet on the schedule
@@ -27,11 +38,52 @@ http://localhost:8883/#/4/70
 * A: Prepares a build environment where PECL cannot be used
 * A: See: https://www.php.net/manual/en/install.pecl.phpize.php
 
-* Q: When running JIT or OpCache CLI: where does it cache???
-* A: Still researching
+* Q: Do you have examples using `SplHeap`?
+* A: See: https://doeken.org/blog/heaps-explained-in-php
 
-* Q: I noticed that the symlinks for PHP extensions have a load priority. Does the extension load order makes a difference?
-* A: Still researching
+* Q: What is the difference between `SplMinHeap` and `SplMaxHeap`?
+* A: See: https://stackoverflow.com/questions/47254521/whats-the-difference-between-splheap-splminheap-splmaxheap-and-splpriorityque
+* A: See: https://www.php.net/manual/en/splminheap.compare.php
+* A: See: https://www.php.net/manual/en/splmaxheap.compare.php
+* A: If you wish to override `compare()` use `SplHeap`
+
+* Q: Do you have an `SplHeap` example that has the priority as a key instead of what's shown in the slides?
+* A: Here's the rewritten version:
+```
+<?php
+$list =[
+	1 => 'Comm check',
+	4 => 'Fuel load check',
+	3 => 'Batteries at max check',
+	9 => 'Space suit check',
+	6 => 'Landing struts retracted check',
+];
+ $sequencer = new class() extends SplHeap {
+	    // Set the sequence
+    public function compare($arr1, $arr2) : int
+    {
+        // Do the comparison using the spaceship operator
+        return key($arr2) <=> key($arr1);
+    }
+};
+foreach($list as $priority => $item) {
+    $sequencer->insert([$priority => $item]);
+}
+$sequencer->top();
+ while($sequencer->valid()) {
+	printf("%02d : %s\n", key($sequencer->current()), current($sequencer->current()));
+    $sequencer->next();
+}
+```
+
+* Q: Is there any compelling reason to use `SplObjectStorage` rather a simple array?
+* A: Excellent discussion here: https://stackoverflow.com/questions/8520241/associative-array-versus-splobjectstorage
+* A: Also see benchmark: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_splobjectstorage_vs_array.php
+
+* Q: Example of `SplObjectStorage` used as a service container
+* A: See: https://github.com/dbierer/classic_php_examples/blob/master/oop/spl_obj_storage_as_service_manager.php
+* A: See: https://github.com/dbierer/classic_php_examples/blob/master/oop/App/Service/Manager.php
+
 
 
 ## Class Notes
@@ -400,5 +452,7 @@ git clone https://github.com/php/php-src
   * There is no previous lab for this!
 * http://localhost:8883/#/4/50
   * You can use property hooks in constructor arg promotion
-
-  
+* http://localhost:8883/#/4/81
+  * Maybe consolidate this with Type Hints section
+* http://localhost:8883/#/4/129
+  * Didn't mention DateTime
