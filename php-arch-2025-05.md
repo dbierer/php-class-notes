@@ -5,12 +5,28 @@ http://localhost:8883/#/4/70
 
 
 ## TO DO
-* Look up the example showing memory efficiency vis a vis Generators
-* Also find the example that demonstrates `getReturn()`
-* What's the primary use case for Closure::fromCallable() or $obj->method(...) ?
-* RE: http://localhost:8883/#/4/126 -- why would you use Lazy Objects on objects already initialized?
+
 
 ## Q & A
+* Q: Why create a Lazy Object for an already existing object? 
+* A: The only time this is done is when an existing object might need to be "rebuilt" with new property values.
+  * One of the new `ReflectionClass::resetAsLazy*()` is used, which effectively "deconstructs" the object and re-establishes is as either a lazy ghost or lazy proxy.
+* A: See: https://wiki.php.net/rfc/lazy-objects
+* A: See: https://www.php.net/manual/en/language.oop5.lazy-objects.php
+
+* Q: What's the primary use case for Closure::fromCallable() or $obj->method(...) ?
+* A: There are three uses for converting callables into closures:
+  * Better API control for classes
+  * Easier error detection and static analysis
+  * Performance
+* A: See: https://wiki.php.net/rfc/closurefromcallable
+
+* Q: Do you have an example that demonstrates `getReturn()`?
+* A: See class notes below on "Generators"
+
+* Q: Do you have an example showing memory efficiency vis a vis Generators?
+* A: See class notes below on "Generators"
+
 * Q: When running JIT or OpCache CLI: where does it cache???
 * A: JIT might help CLI ops because of its efficient compiler, however OpCache won't help for CLI ops. 
   * The option is mainly available for CLI ops for the purposes of debugging and testing
@@ -87,6 +103,56 @@ $sequencer->top();
 
 
 ## Class Notes
+### Generators
+Example that demonstrates memory savings using a Generator
+```
+<?php
+$arr = range(1,100000);
+function test(array $arr)
+{
+	$result = [];
+	foreach ($arr as $item)
+		$result[] = $item * 1.08;
+	return $result;
+}
+
+foreach (test($arr) as $item) echo $item . ' ';
+echo 'Peak Memory: ' . memory_get_peak_usage(); // Peak Memory: 4,596,064
+
+function test2(array $arr)
+{
+	foreach ($arr as $item)
+		yield $item * 1.08;
+}
+
+foreach (test2($arr) as $item) echo $item . ' ';
+echo 'Peak Memory: ' . memory_get_peak_usage(); // Peak Memory: 2,494,824
+```
+Extracting a return value from a Generator
+* The iteration must be complete
+* Use `getReturn()` to extract the return value
+```
+<?php
+$arr = range(1,100000);
+
+function test2(array $arr)
+{
+	$sum = 0;
+	foreach ($arr as $item) {
+		$new = $item * 1.08;
+		yield $new;
+		$sum += $new;
+	}
+	return $sum;
+}
+
+$gen = test2($arr);
+foreach ($gen as $item) echo $item . ' ';
+echo PHP_EOL;
+echo $gen->getReturn();
+```
+
+### Other Notes
 To open a terminal window: `CTL + ALT + T`
 
 * Objects are "naturally" iterable:
@@ -456,3 +522,5 @@ git clone https://github.com/php/php-src
   * Maybe consolidate this with Type Hints section
 * http://localhost:8883/#/4/129
   * Didn't mention DateTime
+* http://localhost:8883/#/4/126
+  * why would you use Lazy Objects on objects already initialized?
