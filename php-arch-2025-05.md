@@ -1,12 +1,15 @@
 # PHP Architect
 Class Notes May 2025
 https://github.com/dbierer/php-class-notes/blob/master/php-arch-2025-05.md
-http://localhost:8883/#/4/70
 
 
 ## TO DO
-* Find good example of FilterIterator
-* What's wrong with this?
+* Q: Do you have documentation for HAL+JSON?
+* A: 
+
+* Q: Can you please show me a good example of FilterIterator?
+* A: See: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_spl_filteriterator_anon_class.php
+* Q: What's wrong with this?
 ```
 <?php	
 $dirIt = new RecursiveDirectoryIterator(__DIR__);
@@ -27,8 +30,12 @@ while($filter->valid()){
     //var_dump($current);
 }
 ```
+* A: Still checking
 
 ## Homework
+Other homework
+* Laminas API Tools: https://api-tools.getlaminas.org/
+
 Labs for Mon 26 May 2025
 * Lab: All Docker Labs
   * Change PHP version to "84"
@@ -302,6 +309,30 @@ function ipsum()
 {
     $output = "Lorem Ipsum:\n";
     return (new Ipsum())();
+}
+```
+Change `Zend/php-examples/src/ModAsync/src/App/Lorem.php` as follows:
+```
+<?php
+namespace App\Lorem;
+class Ipsum
+{
+    const API_URL = 'https://fakerapi.it/api/v2/texts?_quantity=1&_characters=500';
+    public static function getHtml(array &$msg = []) : string
+    {
+		$html = '<p>Invalid Response</p>' . PHP_EOL;
+        $response = file_get_contents(self::API_URL);
+        $arr = json_decode(trim($response), TRUE);
+        if (isset($arr['status']) && $arr['status'] === 'OK') {
+			$data = $arr['data'][0] ?? [];
+			$html = '<table>' . PHP_EOL;
+			foreach ($data as $key => $value) {
+				$html .= '<tr><th>' . $key . '</th><td>' . $value . '</td></tr>' . PHP_EOL;
+			}
+			$html .= '</table>' . PHP_EOL;
+		}
+		return $html;
+    }
 }
 ```
 
@@ -627,4 +658,11 @@ function ipsum()
     return (new Ipsum())();
 }
 ```
-
+* http://localhost:8883/#/7/2
+  * Already discussed in 2 slides
+* http://localhost:8883/#/7/7
+  * This URL is no longer valie
+  * For now, use this: `https://fakerapi.it/api/v2/texts?_quantity=1&_characters=500`
+* http://localhost:8883/#/8/23
+  * The example in the VM doesn't exactly match the final code in the lab
+* Async - channels - array to string conversion error
