@@ -5,6 +5,54 @@ http://localhost:8883/#/4/70
 
 
 ## TO DO
+* Find good example of FilterIterator
+* What's wrong with this?
+```
+<?php	
+$dirIt = new RecursiveDirectoryIterator(__DIR__);
+$filter = new class ($dirIt) extends FilterIterator {
+	public function accept() : bool
+	{
+		$obj = $this->current();
+		return $obj->getExtension() === 'png';
+	}
+};
+ 
+while($filter->valid()){
+    $current = $dirIt->current();
+ 
+    if($current->isFile()) echo $current->getFileInfo() . PHP_EOL;
+ 
+    $dirIt->next();
+    //var_dump($current);
+}
+```
+
+## Homework
+Labs for Mon 26 May 2025
+* Lab: All Docker Labs
+  * Change PHP version to "84"
+* Lab: All Docker Compose Labs
+  * Change PHP version to "84"
+  * In the `docker-compose.yml` file, add this line to the "service" definition for the nginx container:
+```
+      ports:
+      - 8080:80
+```
+  * Instead of acessing from the browser using 10.20.10.10 use localhost:8080 instead
+  
+Labs for Fri 16 May 2025
+* Lab: Existing Extension
+  * NOTE: current VM PHP version is 8.4
+* Lab: FFI
+* Lab: Custom Extension (optional)
+* Lab: ZendPHP on the Cloud (optional)
+
+Labs for Wed 14 May 2025
+* Setup the VM using materials provided in class
+* Lab: Custom PHP Lab
+* Lab: Built-in Web Server
+* Lab: OpCache and JIT
 
 
 ## Q & A
@@ -103,6 +151,12 @@ $sequencer->top();
 
 
 ## Class Notes
+### SPL
+`SplSubject`,`SplObserver`, and `SplObjectStorage` used to implement Subject/Observer pattern:
+* See: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_subject_observer_storage_object.php
+`SplFixedArray` example:
+* https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_spl_fixed_arr_compared_with_array_and_array_object.php
+
 ### Generators
 Example that demonstrates memory savings using a Generator
 ```
@@ -127,7 +181,17 @@ function test2(array $arr)
 
 foreach (test2($arr) as $item) echo $item . ' ';
 echo 'Peak Memory: ' . memory_get_peak_usage(); // Peak Memory: 2,494,824
+
+// test()
+// Peak Memory: 8782912
+// Time Used  : 2.1432847976685
+
+// test2()
+// Peak Memory: 4589232
+// Time Used  : 2.2050850391388
+
 ```
+* Results might be something like this:
 Extracting a return value from a Generator
 * The iteration must be complete
 * Use `getReturn()` to extract the return value
@@ -217,21 +281,30 @@ class User
 ```
 
 
-## Homework
-Labs for Fri 16 May 2025
-* Lab: Existing Extension
-  * NOTE: current VM PHP version is 8.4
-* Lab: FFI
-* Lab: Custom Extension (optional)
-* Lab: ZendPHP on the Cloud (optional)
-
-Labs for Wed 14 May 2025
-* Setup the VM using materials provided in class
-* Lab: Custom PHP Lab
-* Lab: Built-in Web Server
-* Lab: OpCache and JIT
-
 # Lab Notes
+### Async Lab:
+Change `Zend/async/src/App/Lorem.php` as follows:
+```
+<?php
+namespace App\Lorem;
+class Ipsum
+{
+    const API_URL = 'https://fakerapi.it/api/v2/texts?_quantity=1&_characters=500';
+    public function __invoke(array &$msg = []) : string
+    {
+        return file_get_contents(self::API_URL);
+    }
+}
+```
+In `Zend/async/src/lib.php` change the "Ipsum" service as follows:
+```
+function ipsum()
+{
+    $output = "Lorem Ipsum:\n";
+    return (new Ipsum())();
+}
+```
+
 ### Custom Extension Lab
 You can find `phpize` here: `/usr/bin/phpize`
 
@@ -262,8 +335,8 @@ From Matthew Weir O'Phinney:
 ```
 # NOTE: version was 5.1.4
 # Change the the current version
-export VERSION=5.1.4
-sudo apt install libbrotli-dev php8.4-dev
+export VERSION=6.0.2
+sudo apt install libbrotli-dev php8.4-zend-dev
 cd /tmp
 curl -L http://pecl.php.net/get/swoole -o swoole.tar.gz
 tar -xvf swoole.tar.gz
@@ -524,3 +597,34 @@ git clone https://github.com/php/php-src
   * Didn't mention DateTime
 * http://localhost:8883/#/4/126
   * why would you use Lazy Objects on objects already initialized?
+* http://localhost:8883/#/6/11
+  * "it's"
+* http://localhost:8883/#/6/32
+  * _blank missing in link
+* http://localhost:8883/#/6/42
+  * Need to add port mapping to 8080
+* http://localhost:8883/#/6/46
+  * Alter the access instructions to `http://localhost:8080`
+* Changes to Async lab:
+  * Change `Zend/async/src/App/Lorem.php` as follows:
+```
+<?php
+namespace App\Lorem;
+class Ipsum
+{
+    const API_URL = 'https://fakerapi.it/api/v2/texts?_quantity=1&_characters=500';
+    public function __invoke(array &$msg = []) : string
+    {
+        return file_get_contents(self::API_URL);
+    }
+}
+```
+  * in `Zend/async/src/lib.php` change the "Ipsum" service as follows:
+```
+function ipsum()
+{
+    $output = "Lorem Ipsum:\n";
+    return (new Ipsum())();
+}
+```
+
