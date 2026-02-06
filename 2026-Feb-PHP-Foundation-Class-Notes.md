@@ -1,6 +1,5 @@
 # Class Notes -- PHP Foundation -- Feb 2026
-http://localhost:8881/#/5
-
+Latest slide: http://localhost:8881/#/5/41
 # TODO
 * Find a good example using `match` with multiple statements as a return value
 
@@ -28,6 +27,9 @@ echo $oneInt . PHP_EOL . $twoInt . PHP_EOL . $threeInt;
 ```
  
 # Homework
+Mon 9 Feb 2026
+* No homework -- have a good weekend!
+
 Fri 6 Feb 2026
 * Lab: Array Key Value Access
 * Lab: Array Last Value Access
