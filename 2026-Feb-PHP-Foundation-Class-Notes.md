@@ -312,8 +312,136 @@ Email <input type="email" name="email" />
 </body>
 </html>
 ```
+* Homework
+```
+<?php
+$username = '';
+$email = '';
+$password = '';
+if (!empty($_POST)) {
+	$username = $_POST['username'] ?? '';
+	$email = $_POST['email'] ?? '';
+	$password = $_POST['password'] ?? '';
+}
+$required = 'required';
+$maxUser = 20;
+$maxEmail = 50;
+$maxPassword = 30;
+?>
+<form
+method ="post"
+action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>"
+>
+<label for="username"> Username:</label>
+<input
+type = "text"
+id = "username"
+name = "username"
+value = "<?php echo htmlspecialchars($username);?>"
+<?php echo $required;?>
+/>
+<br>
+<label for = "email">Email Address:</label>
+<input
+type = "email"
+id = "email"
+name = "email"
+value = "<?php echo htmlspecialchars($email);?>"
+maxlength = "<?php echo $maxEmail; ?>"
+<?php echo $required;?>
+/>
+<br>
+<label for = "password">Password:</label>
+<input
+type = "password"
+id = "password"
+name = "password"
+maxlength = "<?php echo $maxPassword;?>"
+<?php echo $required;?> 
+/>
+<br>
+<input
+type="submit"
+name = "submitBtn"
+value = "Login"
+/>
+</form>
+```
+* Lab: Using PHP to generate HTML 
+```
+<?php
+$username = '';
+$email = '';
+$password = '';
+if (!empty($_POST)) {
+	$username = $_POST['username'] ?? '';
+	$email = $_POST['email'] ?? '';
+	$password = $_POST['password'] ?? '';
+}
+$required = 'required';
+$maxUser = 20;
+$maxEmail = 50;
+$maxPassword = 30;
+
+$form = '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF']) . '">';
+$form .= '<label for="username">Username:</label>';
+$form .= '<input type="text" id="username" name="username" ';
+$form .= 'value="' . htmlspecialchars($username) . '" ';
+$form .= 'maxlength="' . $maxUser . '" ' . $required . '>';
+$form .= '<br><br>';
+$form .= '<label for="email">Email Address:</label>';
+$form .= '<input type="email" id="email" name="email" ';
+$form .= 'value="' . htmlspecialchars($email) . '" ';
+$form .= 'maxlength="' . $maxEmail . '" ' . $required . '>';
+$form .= '<br><br>';
+$form .= '<label for="password">Password:</label>';
+$form .= '<input type="password" id="password" name="password" ';
+$form .= 'maxlength="' . $maxPass . '" ' . $required . '>';
+$form .= '<br><br>';
+$form .= '<input type="submit" name="submitBtn" value="Login">';
+$form .= '</form>';
+echo $form;
+phpinfo(INFO_VARIABLES);
+```
+* Last Web Lab:
+```
+// instead of this:
+$username = trim(filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS));
+// try this:
+$username = trim(strip_tags($_POST['username']));
+```
+* How to do a redirect:
+```
+<?php
+$action = strip_tags($_GET['action'] ?? 'normal');
+if ($action === 'reset') {
+	header('Location: https://zend.com');
+	exit;
+}
+echo '<h1>Normal</h1>';
+```
+* Example using `mysqli_affected_rows()`
+```
+function saveOrder($conn, array $data) {
+    // Build a query
+    $query = vsprintf("UPDATE orders SET date='%d', status='%s',
+        amount='%d', description='%s' WHERE id='%d'", $data);
  
+    // Execute the query returning boolean true on success
+    $result = mysqli_query($conn, $query);
+    return mysqli_affected_rows($conn);
+}
+ 
+$config = require_once __DIR__ . '/../../orderapp/config/config.php';
+$conn = mysqli_connect($config['db']['dsn'], $config['db']['username'],
+        $config['db']['password'], $config['db']['database']);
+ 
+$data = [time(), 'open', 500, 'big office chair', 8];
+echo saveOrder($conn, $data) ? 'Data updated' : 'Data not updated';
+```
+
 # Change Requests
 http://localhost:8881/#/3/6 -- link problem
 http://localhost:8881/#/4/52 -- why use "&" ???
 http://localhost:8881/#/5/7 -- not working?
+http://localhost:8881/#/10/6 -- nothing said!
