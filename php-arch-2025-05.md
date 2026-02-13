@@ -62,100 +62,6 @@ Labs for Wed 14 May 2025
 * Lab: OpCache and JIT
 
 
-## Q & A
-* Q: Why create a Lazy Object for an already existing object? 
-* A: The only time this is done is when an existing object might need to be "rebuilt" with new property values.
-  * One of the new `ReflectionClass::resetAsLazy*()` is used, which effectively "deconstructs" the object and re-establishes is as either a lazy ghost or lazy proxy.
-* A: See: https://wiki.php.net/rfc/lazy-objects
-* A: See: https://www.php.net/manual/en/language.oop5.lazy-objects.php
-
-* Q: What's the primary use case for Closure::fromCallable() or $obj->method(...) ?
-* A: There are three uses for converting callables into closures:
-  * Better API control for classes
-  * Easier error detection and static analysis
-  * Performance
-* A: See: https://wiki.php.net/rfc/closurefromcallable
-
-* Q: Do you have an example that demonstrates `getReturn()`?
-* A: See class notes below on "Generators"
-
-* Q: Do you have an example showing memory efficiency vis a vis Generators?
-* A: See class notes below on "Generators"
-
-* Q: When running JIT or OpCache CLI: where does it cache???
-* A: JIT might help CLI ops because of its efficient compiler, however OpCache won't help for CLI ops. 
-  * The option is mainly available for CLI ops for the purposes of debugging and testing
-  * See: https://stackoverflow.com/questions/25044817/zend-opcache-opcache-enable-cli-1-or-0-what-does-it-do
-
-* Q: I noticed that the symlinks for PHP extensions have a load priority. Does the extension load order makes a difference?
-* A: Here's a good explanation of why the load order might be important:
-* A: See: https://wiki.php.net/rfc/extensions_load_order
-
-* Q: Is there a PHP-FPM course?
-* A: See: https://training.zend.com/learn/courses/526/php-focus-boost-website-performance-with-php-fpm-nginx-and-apache
-* A: It's $475 and lasts 1 day (3 hours) -- but not yet on the schedule
-
-* Q: Do you have a  link to "cache-control" header for browser caching?
-* A: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control
-
-* Q: What is the option to set the target location for a custom PHP installation?
-* A: When running `configure` add the `--prefix=/path/to/target` option
-
-* Q: Can we use `zendphpctl` for the Swoole ext and have the future labs work?
-* A: Yes ... but extra options (including OpenSSL support) are not enabled by default
-* A: Follow the instructions below for custom extension installation
-
-* Q: What does `phpize` do?
-* A: Prepares a build environment where PECL cannot be used
-* A: See: https://www.php.net/manual/en/install.pecl.phpize.php
-
-* Q: Do you have examples using `SplHeap`?
-* A: See: https://doeken.org/blog/heaps-explained-in-php
-
-* Q: What is the difference between `SplMinHeap` and `SplMaxHeap`?
-* A: See: https://stackoverflow.com/questions/47254521/whats-the-difference-between-splheap-splminheap-splmaxheap-and-splpriorityque
-* A: See: https://www.php.net/manual/en/splminheap.compare.php
-* A: See: https://www.php.net/manual/en/splmaxheap.compare.php
-* A: If you wish to override `compare()` use `SplHeap`
-
-* Q: Do you have an `SplHeap` example that has the priority as a key instead of what's shown in the slides?
-* A: Here's the rewritten version:
-```
-<?php
-$list =[
-	1 => 'Comm check',
-	4 => 'Fuel load check',
-	3 => 'Batteries at max check',
-	9 => 'Space suit check',
-	6 => 'Landing struts retracted check',
-];
- $sequencer = new class() extends SplHeap {
-	    // Set the sequence
-    public function compare($arr1, $arr2) : int
-    {
-        // Do the comparison using the spaceship operator
-        return key($arr2) <=> key($arr1);
-    }
-};
-foreach($list as $priority => $item) {
-    $sequencer->insert([$priority => $item]);
-}
-$sequencer->top();
- while($sequencer->valid()) {
-	printf("%02d : %s\n", key($sequencer->current()), current($sequencer->current()));
-    $sequencer->next();
-}
-```
-
-* Q: Is there any compelling reason to use `SplObjectStorage` rather a simple array?
-* A: Excellent discussion here: https://stackoverflow.com/questions/8520241/associative-array-versus-splobjectstorage
-* A: Also see benchmark: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_splobjectstorage_vs_array.php
-
-* Q: Example of `SplObjectStorage` used as a service container
-* A: See: https://github.com/dbierer/classic_php_examples/blob/master/oop/spl_obj_storage_as_service_manager.php
-* A: See: https://github.com/dbierer/classic_php_examples/blob/master/oop/App/Service/Manager.php
-
-
 
 ## Class Notes
 ### SPL
@@ -597,15 +503,106 @@ sudo apt install -y libbz2-dev  libpng-dev zlib1g-dev libsodium-dev \
 
 To switch versions use `update-alternatives --config php` (see below for more info)
 
+## Q & A
+* Q: Why create a Lazy Object for an already existing object? 
+* A: The only time this is done is when an existing object might need to be "rebuilt" with new property values.
+  * One of the new `ReflectionClass::resetAsLazy*()` is used, which effectively "deconstructs" the object and re-establishes is as either a lazy ghost or lazy proxy.
+* A: See: https://wiki.php.net/rfc/lazy-objects
+* A: See: https://www.php.net/manual/en/language.oop5.lazy-objects.php
 
+* Q: What's the primary use case for Closure::fromCallable() or $obj->method(...) ?
+* A: There are three uses for converting callables into closures:
+  * Better API control for classes
+  * Easier error detection and static analysis
+  * Performance
+* A: See: https://wiki.php.net/rfc/closurefromcallable
+
+* Q: Do you have an example that demonstrates `getReturn()`?
+* A: See class notes below on "Generators"
+
+* Q: Do you have an example showing memory efficiency vis a vis Generators?
+* A: See class notes below on "Generators"
+
+* Q: When running JIT or OpCache CLI: where does it cache???
+* A: JIT might help CLI ops because of its efficient compiler, however OpCache won't help for CLI ops. 
+  * The option is mainly available for CLI ops for the purposes of debugging and testing
+  * See: https://stackoverflow.com/questions/25044817/zend-opcache-opcache-enable-cli-1-or-0-what-does-it-do
+
+* Q: I noticed that the symlinks for PHP extensions have a load priority. Does the extension load order makes a difference?
+* A: Here's a good explanation of why the load order might be important:
+* A: See: https://wiki.php.net/rfc/extensions_load_order
+
+* Q: Is there a PHP-FPM course?
+* A: See: https://training.zend.com/learn/courses/526/php-focus-boost-website-performance-with-php-fpm-nginx-and-apache
+* A: It's $475 and lasts 1 day (3 hours) -- but not yet on the schedule
+
+* Q: Do you have a  link to "cache-control" header for browser caching?
+* A: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control
+
+* Q: What is the option to set the target location for a custom PHP installation?
+* A: When running `configure` add the `--prefix=/path/to/target` option
+
+* Q: Can we use `zendphpctl` for the Swoole ext and have the future labs work?
+* A: Yes ... but extra options (including OpenSSL support) are not enabled by default
+* A: Follow the instructions below for custom extension installation
+
+* Q: What does `phpize` do?
+* A: Prepares a build environment where PECL cannot be used
+* A: See: https://www.php.net/manual/en/install.pecl.phpize.php
+
+* Q: Do you have examples using `SplHeap`?
+* A: See: https://doeken.org/blog/heaps-explained-in-php
+
+* Q: What is the difference between `SplMinHeap` and `SplMaxHeap`?
+* A: See: https://stackoverflow.com/questions/47254521/whats-the-difference-between-splheap-splminheap-splmaxheap-and-splpriorityque
+* A: See: https://www.php.net/manual/en/splminheap.compare.php
+* A: See: https://www.php.net/manual/en/splmaxheap.compare.php
+* A: If you wish to override `compare()` use `SplHeap`
+
+* Q: Do you have an `SplHeap` example that has the priority as a key instead of what's shown in the slides?
+* A: Here's the rewritten version:
+```
+<?php
+$list =[
+	1 => 'Comm check',
+	4 => 'Fuel load check',
+	3 => 'Batteries at max check',
+	9 => 'Space suit check',
+	6 => 'Landing struts retracted check',
+];
+ $sequencer = new class() extends SplHeap {
+	    // Set the sequence
+    public function compare($arr1, $arr2) : int
+    {
+        // Do the comparison using the spaceship operator
+        return key($arr2) <=> key($arr1);
+    }
+};
+foreach($list as $priority => $item) {
+    $sequencer->insert([$priority => $item]);
+}
+$sequencer->top();
+ while($sequencer->valid()) {
+	printf("%02d : %s\n", key($sequencer->current()), current($sequencer->current()));
+    $sequencer->next();
+}
+```
+
+* Q: Is there any compelling reason to use `SplObjectStorage` rather a simple array?
+* A: Excellent discussion here: https://stackoverflow.com/questions/8520241/associative-array-versus-splobjectstorage
+* A: Also see benchmark: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_splobjectstorage_vs_array.php
+
+* Q: Example of `SplObjectStorage` used as a service container
+* A: See: https://github.com/dbierer/classic_php_examples/blob/master/oop/spl_obj_storage_as_service_manager.php
+* A: See: https://github.com/dbierer/classic_php_examples/blob/master/oop/App/Service/Manager.php
 
 ## Change Request
-* http://localhost:8883/#/2/11
+* http://localhost:8883/#/2/11 [ok]
   * No ";"
-* http://localhost:8883/#/2/20
-http://localhost:8883/#/2/25
+* http://localhost:8883/#/2/20 [ok]
+* http://localhost:8883/#/2/25 [ok]
   * use target=_blank
-* Custom PHP Lab
+* Custom PHP Lab [ok]
   * Don't bother with `configure` options: just use the defaults
     * BUT ... make  you tell the attendees where the files will go
     * Add an instruction to make a snapshot
@@ -614,8 +611,8 @@ http://localhost:8883/#/2/25
 cd /tmp
 git clone https://github.com/php/php-src
 ```
-* There is no "I/O" section in the 1st module!
-* RE: the Existing Extension Lab:
+* There is no "I/O" section in the 1st module! [ok]
+* RE: the Existing Extension Lab: [ok]
   * Either move the PHP version to a community source
   * Or ... rewrite to accommodate ZendPHP
 * http://localhost:8883/#/4/47
@@ -636,7 +633,7 @@ git clone https://github.com/php/php-src
   * Need to add port mapping to 8080
 * http://localhost:8883/#/6/46
   * Alter the access instructions to `http://localhost:8080`
-* Changes to Async lab:
+* Changes to Async lab: [ok]
   * Change `Zend/async/src/App/Lorem.php` as follows:
 ```
 <?php

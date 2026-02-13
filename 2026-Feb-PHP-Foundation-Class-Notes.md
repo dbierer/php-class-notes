@@ -3,8 +3,12 @@ http://localhost:8881/#/5
 
 # TODO
 * Find a good example using `match` with multiple statements as a return value
-* Class on OOP file handling -- in course yet or not?
+  * https://github.com/dbierer/classic_php_examples/blob/master/basics/match_with_callbacks.php
 * Provide examples of using cookies and sessions
+  * https://github.com/dbierer/classic_php_examples/blob/master/web/cookie_counter.php
+  * https://github.com/dbierer/classic_php_examples/blob/master/web/session_counter.php
+* Class on OOP file handling -- in course yet or not?
+  * https://training.zend.com/learn/courses/625/php-free-oop-file-handling
 
 # Homework
 Fri 13 Feb 2026
