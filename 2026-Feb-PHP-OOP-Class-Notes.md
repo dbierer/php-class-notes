@@ -1,13 +1,10 @@
 # Class Notes -- PHP OOP -- Feb 2026
 
-## To Do
-
-* Tell Heidi not to send the Vagrantfile link in initial course welcome email
-* Geany needs to be installed in the VM setup script
-
-
 ## Homework
 For Wed 19 Feb 2026
+* Lab: Install the course VM using files provided by instructor
+* Lab: Namespace
+* Lab: Create a Class
 
 For Fri 21 Feb 2026
 
@@ -17,6 +14,60 @@ For Wed 26 Feb 2026
 
 For Fri 28 Feb 2026
 
+
+## To Do
+
+* Other examples of asym visibility
+* Explain this:
+```
+<?php
+class User
+{
+    const TABLE = 'user';
+    // public for get / private for set
+    private public(set) string $status = '';
+    public function __construct(
+        public string $first, 
+        public string $last,
+        string $status) 
+    {
+        $this->status = $status;
+    }
+}
+ /*
+  * PHP Fatal error:  Visibility of property User::$status must not be weaker than set visibility in /home/vagrant/Zend/sandbox/public/test.php on line 6
+*/
+```
+* Example of `get_object_vars()`
+```
+<?php
+class UserEntity
+{
+    public function __construct(
+        public string $firstName,	
+        public string $lastName,
+        protected DateTime $time = new DateTime()
+    ) {}
+    public function getJson()
+    {
+		return json_encode(get_object_vars($this));
+	}
+}
+$user = new UserEntity('Jack' , 'Ryan');
+
+var_dump(get_object_vars($user));
+echo $user->getJson();
+
+/*
+array(2) {
+  ["firstName"]=>
+  string(4) "Jack"
+  ["lastName"]=>
+  string(4) "Ryan"
+}
+{"firstName":"Jack","lastName":"Ryan","time":{"date":"2026-02-16 16:55:05.734000","timezone_type":3,"timezone":"UTC"}}
+*/
+```
 
 ## VM Notes
 
@@ -2892,4 +2943,4 @@ PHP Fatal error:  Type of OrderPacked::$ordernumber must not be defined (as in c
   * https://www.w3schools.com/PHP/php_exercises.asp
 
 ## Change Request
-
+http://localhost:8882/#/2/27 -- looks incomplete
