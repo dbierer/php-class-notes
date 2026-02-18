@@ -7,6 +7,10 @@ For Wed 19 Feb 2026
 * Lab: Create a Class
 
 For Fri 21 Feb 2026
+* Lab: Create an Extensible Super Class
+* Lab: Magic Methods
+* Lab: Abstract Classes
+* Lab: Interfaces
 
 For Mon 24 Feb 2026
 
@@ -16,7 +20,10 @@ For Fri 28 Feb 2026
 
 
 ## To Do
-
+* Find example of Delegator design pattern
+* Find internal PHP class marked `final`
+  * See: https://www.php.net/error
+  * Certain methods are marked `final`
 * Other examples of asym visibility
 * Explain this:
 ```
