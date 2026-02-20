@@ -1,10 +1,9 @@
 # Class Notes -- PHP OOP -- Feb 2026
 
 ## Homework
-For Wed 19 Feb 2026
-* Lab: Install the course VM using files provided by instructor
-* Lab: Namespace
-* Lab: Create a Class
+For Tue 25 Feb 2026
+* Lab: Build Custom Exception Class
+* Lab: Traits
 
 For Fri 21 Feb 2026
 * Lab: Create an Extensible Super Class
@@ -12,7 +11,11 @@ For Fri 21 Feb 2026
 * Lab: Abstract Classes
 * Lab: Interfaces
 
-For Mon 24 Feb 2026
+For Wed 19 Feb 2026
+* Lab: Install the course VM using files provided by instructor
+* Lab: Namespace
+* Lab: Create a Class
+
 
 For Wed 26 Feb 2026
 
@@ -20,6 +23,7 @@ For Fri 28 Feb 2026
 
 
 ## To Do
+* https://www.php.net/ValueError -- doesn't make sense
 * Find example of Delegator design pattern
 * Find internal PHP class marked `final`
   * See: https://www.php.net/error
@@ -1965,6 +1969,34 @@ Other examples of `static` and `traits`
 * https://github.com/dbierer/classic_php_examples/tree/master/oop/*static*.php
 * https://github.com/dbierer/classic_php_examples/tree/master/oop/*trait*.php
 
+Rewritten example from slides:
+```
+<?php
+trait GroundVehicleTrait
+{
+    public function getType() { return 'Ground'; }
+}
+ 
+trait AirVehicleTrait
+{
+    public function getType() { return 'Air'; }
+}
+ 
+class Vehicle
+{
+    use GroundVehicleTrait, AirVehicleTrait {
+        GroundVehicleTrait::getType insteadof AirVehicleTrait;
+        AirVehicleTrait::getType as getAirType;
+    }
+}
+
+$vehicle = new Vehicle();
+echo $vehicle->getType();
+echo PHP_EOL;
+echo $vehicle->getAirType();
+echo PHP_EOL;
+```
+
 Simple Trait example
 ```
 <?php
@@ -2029,6 +2061,44 @@ echo PHP_EOL;
 
 var_dump($user);
 ```
+Clone example:
+```
+<?php
+class A
+{
+	public function __construct(
+		public string $first = '',
+		public string $last  = '') 
+	{
+		echo __METHOD__;
+	}
+	public function __clone()
+	{
+		echo __METHOD__;
+	}
+}
+
+$a = new A('Fred', 'Flintstone');
+$b = clone $a;
+$b->first = 'Wilma';
+var_dump($a, $b);
+/*
+A::__constructA::__cloneobject(A)#1 (2) {
+  ["first"]=>
+  string(4) "Fred"
+  ["last"]=>
+  string(10) "Flintstone"
+}
+object(A)#2 (2) {
+  ["first"]=>
+  string(5) "Wilma"
+  ["last"]=>
+  string(10) "Flintstone"
+}
+*/
+
+```
+
 Nullsafe operator:
 ```
 <?php
@@ -2951,3 +3021,7 @@ PHP Fatal error:  Type of OrderPacked::$ordernumber must not be defined (as in c
 
 ## Change Request
 http://localhost:8882/#/2/27 -- looks incomplete
+http://localhost:8882/#/2/88 -- -<
+http://localhost:8882/#/2/103 -- Class + code doesn't work -- duplicate "type"
+http://localhost:8882/#/2/122 -- add Anonymous classes
+RE: OrderApp: maybe update the version of jQuery
