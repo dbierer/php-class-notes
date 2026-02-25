@@ -1,6 +1,10 @@
 # Class Notes -- PHP OOP -- Feb 2026
 
 ## Homework
+For Fri 27 Feb 2026
+* Lab: Validate an Email Address
+* Lab: Composer with OrderApp
+
 For Wed 25 Feb 2026
 * Lab: Prepared Statements
 * Lab: Stored Procedure
@@ -21,24 +25,21 @@ For Wed 19 Feb 2026
 * Lab: Namespace
 * Lab: Create a Class
 
-For Fri 27 Feb 2026
-
 
 ## To Do
-* Working `ETag` browser cache example:
+* Working example of `ETag` approach at browser cache manipulation:
 ```
 <?php
-// Current file modification time: apparently prepending "W/" is needed for Firefox
+// Current file modification time; prepending "W/" is a recent protocol update
 $etag = 'W/"' . filemtime(__FILE__) . '"';
 // Check to see if the browser's etag matches the file modification time
 $browser_etag = ($_SERVER['HTTP_IF_NONE_MATCH'] ?? '');
 if ($browser_etag === $etag) {
-    // We don't need to do anything except send a 304 response and exit
+    // We don't need to do anything except send a 'Not modified' response and exit
     http_response_code(304);
     exit();
 }
- 
-// If the browser lacks an etag for this page, or
+ // If the browser lacks an etag for this page, or
 // the file has subsequently been modified
 // we need to regenerate output
 header('ETag: ' . $etag);
@@ -46,25 +47,14 @@ echo '<h1>TEST</h1>';
 phpinfo(INFO_VARIABLES);
 ```
 
-* Q: Is it OK to send headers after output?
-* A: According to traditional usage, you should set headers *before* output
-* A: See: https://www.php.net/manual/en/function.header.php
-* A: See: https://stackoverflow.com/questions/8028957/how-to-fix-headers-already-sent-error-in-php
-
-* Q: For named placeholders when using `PDO::prepare()`, can the label be alphanumeric or just alpha?
-* A: The first character should be an alpha character or underscore. Following characters can be alphanumeric or underscore
-
-* Q: What's the difference between the PHP PDO class and Pdo\MySql class.
-* A: The PHP PDO class is a database abstraction layer providing a unified interface to work with multiple database types (MySQL, PostgreSQL, SQLite, etc.) using drivers. 
-* A: The Pdo\MySql class (introduced in PHP 8.4) is a MySQL-specific subclass of PDO, offering direct MySQL-tailored functionality without requiring a separate driver string.
-
-* Q: Find internal PHP class marked `final`
-* A: See: https://www.php.net/error
-  * Certain methods are marked `final`
-
+* Ques: is it OK to send headers after output?
+* For named placeholders, can the label be alphanumeric or just alpha?
+* Research new classes such as Pdo\Mysql
 * https://www.php.net/ValueError -- doesn't make sense
 * Find example of Delegator design pattern
-
+* Find internal PHP class marked `final`
+  * See: https://www.php.net/error
+  * Certain methods are marked `final`
 * Other examples of asym visibility
 * Explain this:
 ```
@@ -2434,6 +2424,20 @@ Official list of email headers:
 * https://www.iana.org/assignments/message-headers/message-headers.xhtml
 
 ## Regex
+Simple example that finds the contents of `<h1>` and `<p>` tags:
+```
+<?php
+$str  = '<h1>What</h1><p>In this article we refer to a class file, TableClass.php</p><p>This is another paragraph</p>';
+$patt = '!<h1>(.*?)</h1><p>(.*?)</p>!';
+if (preg_match($patt, $str, $match)) {
+	echo 'Match Found';
+} else {
+	echo 'No Match';
+}
+echo PHP_EOL;
+
+var_dump($match);
+```
 Simple example finds all files that start with "Test" and end with "php"
 ```
 <?php
@@ -2500,7 +2504,6 @@ preg_match($patt, $text, $match);
 var_dump($match);
 
 ```
-
 Alternatives to finding chars at beginning or end of a string:
 ```
 <?php
@@ -3121,3 +3124,4 @@ http://localhost:8882/#/2/103 -- Class + code doesn't work -- duplicate "type"
 http://localhost:8882/#/2/122 -- add Anonymous classes
 RE: OrderApp: maybe update the version of jQuery
 http://localhost:8882/#/4/42 -- ORM not Domain Model
+http://localhost:8882/#/7/14 -- update this
