@@ -1,7 +1,12 @@
 # Class Notes -- PHP OOP -- Feb 2026
 
 ## Homework
-For Tue 25 Feb 2026
+For Wed 25 Feb 2026
+* Lab: Prepared Statements
+* Lab: Stored Procedure
+* Lab: Transaction
+
+For Tue 24 Feb 2026
 * Lab: Build Custom Exception Class
 * Lab: Traits
 
@@ -16,18 +21,50 @@ For Wed 19 Feb 2026
 * Lab: Namespace
 * Lab: Create a Class
 
-
-For Wed 26 Feb 2026
-
-For Fri 28 Feb 2026
+For Fri 27 Feb 2026
 
 
 ## To Do
+* Working `ETag` browser cache example:
+```
+<?php
+// Current file modification time: apparently prepending "W/" is needed for Firefox
+$etag = 'W/"' . filemtime(__FILE__) . '"';
+// Check to see if the browser's etag matches the file modification time
+$browser_etag = ($_SERVER['HTTP_IF_NONE_MATCH'] ?? '');
+if ($browser_etag === $etag) {
+    // We don't need to do anything except send a 304 response and exit
+    http_response_code(304);
+    exit();
+}
+ 
+// If the browser lacks an etag for this page, or
+// the file has subsequently been modified
+// we need to regenerate output
+header('ETag: ' . $etag);
+echo '<h1>TEST</h1>';
+phpinfo(INFO_VARIABLES);
+```
+
+* Q: Is it OK to send headers after output?
+* A: According to traditional usage, you should set headers *before* output
+* A: See: https://www.php.net/manual/en/function.header.php
+* A: See: https://stackoverflow.com/questions/8028957/how-to-fix-headers-already-sent-error-in-php
+
+* Q: For named placeholders when using `PDO::prepare()`, can the label be alphanumeric or just alpha?
+* A: The first character should be an alpha character or underscore. Following characters can be alphanumeric or underscore
+
+* Q: What's the difference between the PHP PDO class and Pdo\MySql class.
+* A: The PHP PDO class is a database abstraction layer providing a unified interface to work with multiple database types (MySQL, PostgreSQL, SQLite, etc.) using drivers. 
+* A: The Pdo\MySql class (introduced in PHP 8.4) is a MySQL-specific subclass of PDO, offering direct MySQL-tailored functionality without requiring a separate driver string.
+
+* Q: Find internal PHP class marked `final`
+* A: See: https://www.php.net/error
+  * Certain methods are marked `final`
+
 * https://www.php.net/ValueError -- doesn't make sense
 * Find example of Delegator design pattern
-* Find internal PHP class marked `final`
-  * See: https://www.php.net/error
-  * Certain methods are marked `final`
+
 * Other examples of asym visibility
 * Explain this:
 ```
@@ -1843,6 +1880,64 @@ class Convert
 $conv = new Convert();
 var_dump($conv->toArray('xyz.csv'));
 ```
+Basic SELECT with a while() loop:
+```
+<?php
+try {
+
+	$pdo = new PDO('mysql:host=127.0.0.1;dbname=phpcourse', 'vagrant', 'vagrant');
+
+    // Execute a one-off SQL statement and get a statement object
+    $stmt = $pdo->query('SELECT * FROM customers');
+	echo 'Query produced ' . $stmt->rowCount() . ' rows' . PHP_EOL;
+ 
+    // Returns an associative array indexed by column name
+    while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+		vprintf('%4d | %10s | %s' . PHP_EOL, $row);
+	}
+} catch (Throwable $e){
+    //Handle error
+    echo $e->getMessage();
+}
+
+// results:
+/*
+   1 |     George | Stevenson
+   2 |      Janet | Levitz
+   3 |      Jason | Flores
+   4 |      Susan | Chu
+   5 |     Thomas | White
+
+*/
+```
+INSERT with confirmation:
+```
+<?php
+try {
+
+	$pdo = new PDO('mysql:host=127.0.0.1;dbname=phpcourse', 'vagrant', 'vagrant');
+    $sql  = "INSERT INTO orders (date,status,amount,description,customer)
+        VALUES ('" . time() . "','active','200','cool backpack','4')";
+    $stmt = $pdo->query($sql);
+    $id = $pdo->lastInsertId(); // Get last insert ID
+ 
+    // Retrieve the update
+    if (!empty($id) && !empty($stmt) && $stmt->rowCount() > 0) {
+        $stmt = $pdo->query( 'SELECT * FROM orders WHERE id = ' . $id );
+ 
+        // Get the new entry by associative array
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+ 
+        print_r( $result );
+    } else {
+        throw new Exception('Insert unsuccessful');
+    }
+} catch (Throwable $e){
+    // Handle error
+    // Respond to client
+    echo $e->getMessage();
+}
+```
 
 Exception / Error example:
 * See: https://www.php.net/manual/en/language.exceptions.php
@@ -3025,3 +3120,4 @@ http://localhost:8882/#/2/88 -- -<
 http://localhost:8882/#/2/103 -- Class + code doesn't work -- duplicate "type"
 http://localhost:8882/#/2/122 -- add Anonymous classes
 RE: OrderApp: maybe update the version of jQuery
+http://localhost:8882/#/4/42 -- ORM not Domain Model
