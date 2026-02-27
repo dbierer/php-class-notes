@@ -29,6 +29,7 @@ For Fri 27 Feb 2026
 
 
 ## To Do
+* Official email regex?
 * Working `ETag` browser cache example:
 ```
 <?php
@@ -3159,3 +3160,4 @@ http://localhost:8882/#/2/122 -- add Anonymous classes
 RE: OrderApp: maybe update the version of jQuery
 http://localhost:8882/#/4/42 -- ORM not Domain Model
 http://localhost:8882/#/7/14 -- update this
+VM: SOAP ext + YAML ext missing
