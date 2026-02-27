@@ -62,11 +62,31 @@ phpinfo(INFO_VARIABLES);
 * A: See: https://www.php.net/error
   * Certain methods are marked `final`
 
-* https://www.php.net/ValueError -- doesn't make sense
-* Find example of Delegator design pattern
+* Q: Do you have an example of the Delegator design pattern?
+* A: See: https://github.com/DesignPatternsPHP/DesignPatternsPHP/tree/main
+* A: See: https://en.wikipedia.org/wiki/Delegation_pattern
 
-* Other examples of asym visibility
-* Explain this:
+* Q: https://www.php.net/ValueError -- doesn't make sense
+* A: See: https://php.watch/versions/8.0/ValueError
+```
+<?php
+$errs = [
+    function () { return strpos('s', 'small', 16); },
+    function () { return range(1, 2, 0); },
+    function () { return array_rand(array(), 0); },
+];
+foreach ($errs as $func) {
+    try {
+        $func();
+    } catch (Throwable $t) {
+        echo $t . PHP_EOL;
+    }
+}
+```
+
+
+Asymmetric visibility
+* Note that the visiblity for reads (i.e. "get") must not be more restrictive than writes (i.e. "set")
 ```
 <?php
 class User
