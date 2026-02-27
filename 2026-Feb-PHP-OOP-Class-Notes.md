@@ -1,6 +1,10 @@
 # Class Notes -- PHP OOP -- Feb 2026
 
 ## Homework
+For Fri 27 Feb 2026
+* Lab: Validate an Email Address
+* Lab: Composer with OrderApp
+
 For Wed 25 Feb 2026
 * Lab: Prepared Statements
 * Lab: Stored Procedure
@@ -46,22 +50,6 @@ echo '<h1>TEST</h1>';
 phpinfo(INFO_VARIABLES);
 ```
 
-* Q: Is it OK to send headers after output?
-* A: According to traditional usage, you should set headers *before* output
-* A: See: https://www.php.net/manual/en/function.header.php
-* A: See: https://stackoverflow.com/questions/8028957/how-to-fix-headers-already-sent-error-in-php
-
-* Q: For named placeholders when using `PDO::prepare()`, can the label be alphanumeric or just alpha?
-* A: The first character should be an alpha character or underscore. Following characters can be alphanumeric or underscore
-
-* Q: What's the difference between the PHP PDO class and Pdo\MySql class.
-* A: The PHP PDO class is a database abstraction layer providing a unified interface to work with multiple database types (MySQL, PostgreSQL, SQLite, etc.) using drivers. 
-* A: The Pdo\MySql class (introduced in PHP 8.4) is a MySQL-specific subclass of PDO, offering direct MySQL-tailored functionality without requiring a separate driver string.
-
-* Q: Find internal PHP class marked `final`
-* A: See: https://www.php.net/error
-  * Certain methods are marked `final`
-
 * Q: Do you have an example of the Delegator design pattern?
 * A: See: https://github.com/DesignPatternsPHP/DesignPatternsPHP/tree/main
 * A: See: https://en.wikipedia.org/wiki/Delegation_pattern
@@ -83,7 +71,36 @@ foreach ($errs as $func) {
     }
 }
 ```
+* Q: Is it OK to send headers after output?
+* A: According to traditional usage, you should set headers *before* output
+* A: See: https://www.php.net/manual/en/function.header.php
+* A: See: https://stackoverflow.com/questions/8028957/how-to-fix-headers-already-sent-error-in-php
+```
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
+// stops buffering
+ob_end_clean();
+
+header('Test-1: TEST1');
+echo '<br />' . __FILE__ . ':' . __LINE__;
+
+// returns a Warning:
+header('Test-2: TEST2');
+echo '<br />' . __FILE__ . ':' . __LINE__;
+```
+
+* Q: For named placeholders when using `PDO::prepare()`, can the label be alphanumeric or just alpha?
+* A: The first character should be an alpha character or underscore. Following characters can be alphanumeric or underscore
+
+* Q: What's the difference between the PHP PDO class and Pdo\MySql class.
+* A: The PHP PDO class is a database abstraction layer providing a unified interface to work with multiple database types (MySQL, PostgreSQL, SQLite, etc.) using drivers. 
+* A: The Pdo\MySql class (introduced in PHP 8.4) is a MySQL-specific subclass of PDO, offering direct MySQL-tailored functionality without requiring a separate driver string.
+
+* Q: Find internal PHP class marked `final`
+* A: See: https://www.php.net/error
+  * Certain methods are marked `final`
 
 Asymmetric visibility
 * Note that the visiblity for reads (i.e. "get") must not be more restrictive than writes (i.e. "set")
@@ -3141,3 +3158,4 @@ http://localhost:8882/#/2/103 -- Class + code doesn't work -- duplicate "type"
 http://localhost:8882/#/2/122 -- add Anonymous classes
 RE: OrderApp: maybe update the version of jQuery
 http://localhost:8882/#/4/42 -- ORM not Domain Model
+http://localhost:8882/#/7/14 -- update this
