@@ -4,16 +4,25 @@ Class Notes March 2026
 
 
 ## TO DO
+* Why can't I run PHP as shell script?
 
 ## Homework
 Wed 4 Mar 2026
 * Lab: VM Setup
+* Lab: Built-in Web Server
+* Lab: OpCache and JIT
+* Lab: Existing Extension
 
 ## VM Setup
 After running `vagrant up`, run the software-updater to get the latest Ubuntu 24.04 updates
 * This will resolve the screen flicker issue
 
 ## Class Notes
+### PECL
+PECL is the tradtional way of installing external extensions from pecl.php.net.
+This is being replaced by "pie"
+* See: https://github.com/php/pie
+
 ### SPL
 `SplSubject`,`SplObserver`, and `SplObjectStorage` used to implement Subject/Observer pattern:
 * See: https://github.com/dbierer/classic_php_examples/blob/master/oop/oop_subject_observer_storage_object.php
