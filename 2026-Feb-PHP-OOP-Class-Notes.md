@@ -3153,11 +3153,11 @@ PHP Fatal error:  Type of OrderPacked::$ordernumber must not be defined (as in c
   * https://www.w3schools.com/PHP/php_exercises.asp
 
 ## Change Request
-http://localhost:8882/#/2/27 -- looks incomplete
-http://localhost:8882/#/2/88 -- -<
-http://localhost:8882/#/2/103 -- Class + code doesn't work -- duplicate "type"
-http://localhost:8882/#/2/122 -- add Anonymous classes
-RE: OrderApp: maybe update the version of jQuery
-http://localhost:8882/#/4/42 -- ORM not Domain Model
-http://localhost:8882/#/7/14 -- update this
-VM: SOAP ext + YAML ext missing
+* http://localhost:8882/#/2/27 -- looks incomplete
+* http://localhost:8882/#/2/88 -- -<
+* http://localhost:8882/#/2/103 -- Class + code doesn't work -- duplicate "type"
+* http://localhost:8882/#/2/122 -- add Anonymous classes
+* http://localhost:8882/#/4/42 -- ORM not Domain Model
+* http://localhost:8882/#/7/14 -- update this
+* VM: SOAP ext + YAML ext missing
+* RE: OrderApp: maybe update the version of jQuery
