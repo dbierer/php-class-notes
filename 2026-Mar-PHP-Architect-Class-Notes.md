@@ -4,13 +4,21 @@ Class Notes March 2026
 
 
 ## TO DO
-* Why can't I run PHP as shell script?
+* Locate link to Github repo with classic design patterns.
+* https://cursor.com/
+* https://refactoring.guru/
+
 
 ## Homework
+Fri 6 Mar 2026
+* Lab: FFI
+* Lab: New Extension
+
 Wed 4 Mar 2026
 * Lab: VM Setup
 * Lab: Built-in Web Server
 * Lab: OpCache and JIT
+* Lab: Custom PHP
 * Lab: Existing Extension
 
 ## VM Setup
@@ -154,63 +162,28 @@ class User
 
 
 # Lab Notes
-### Async Lab:
-Change `Zend/async/src/App/Lorem.php` as follows:
+## OPcache and JIT
+* For the most radical result copy `mandelbrot.php` to `/home/vagrant/Zend/sandbox/public`
+* Run with this URL: `http://sandbox/mandelbrot.php`
+* Be sure to restart PHP-FPM when you change the `/etc/php/8.4-zend/fpm/php.ini` file settings
 ```
-<?php
-namespace App\Lorem;
-class Ipsum
-{
-    const API_URL = 'https://fakerapi.it/api/v2/texts?_quantity=1&_characters=500';
-    public function __invoke(array &$msg = []) : string
-    {
-        return file_get_contents(self::API_URL);
-    }
-}
-```
-In `Zend/async/src/lib.php` change the "Ipsum" service as follows:
-```
-function ipsum()
-{
-    $output = "Lorem Ipsum:\n";
-    return (new Ipsum())();
-}
-```
-Change `Zend/php-examples/src/ModAsync/src/App/Lorem.php` as follows:
-```
-<?php
-namespace App\Lorem;
-class Ipsum
-{
-    const API_URL = 'https://fakerapi.it/api/v2/texts?_quantity=1&_characters=500';
-    public static function getHtml(array &$msg = []) : string
-    {
-		$html = '<p>Invalid Response</p>' . PHP_EOL;
-        $response = file_get_contents(self::API_URL);
-        $arr = json_decode(trim($response), TRUE);
-        if (isset($arr['status']) && $arr['status'] === 'OK') {
-			$data = $arr['data'][0] ?? [];
-			$html = '<table>' . PHP_EOL;
-			foreach ($data as $key => $value) {
-				$html .= '<tr><th>' . $key . '</th><td>' . $value . '</td></tr>' . PHP_EOL;
-			}
-			$html .= '</table>' . PHP_EOL;
-		}
-		return $html;
-    }
-}
+sudo /etc/init.d/php8.4-zend-fpm restart
 ```
 
-### Custom Extension Lab
-You can find `phpize` here: `/usr/bin/phpize`
-
-### Existing Extension Lab
-Use this command:
+## Existing Extension Lab
+* You can find `phpize` here: `/usr/bin/phpize`
+* Replacement for PECL: 
+  * See: https://github.com/php/pie
+* You can install the Swoole as follows:
+```
+sudo pie install swoole/swoole --with-phpize-path=/usr/bin/phpize
+```
+OR: Use this command:
 ```
 sudo zendphpctl ext install swoole
 ```
+OR: install from source:
 
-As the VM is running ZendPHP we'll need to install this from source!
 From Matthew Weir O'Phinney:
 * Instructions to install Swoole:
   * Notes from Matthew Weier O'Phinney, Zend Product Manager / Principal Engineer
@@ -265,7 +238,7 @@ extension=swoole.so
 sudo zendphpctl ext enable swoole
 ```
 
-### Custom PHP Lab
+## Custom PHP Lab
 * Take a snapshot of the VM before 
 * Add suggested dependencies 
 * Add suggestion "configure" options
@@ -276,6 +249,10 @@ git checkout php-PHP_VER
 ```
 * Follow the instructions
 * Be sure to install the pre-requisites!
+* When running `buildconf` you might have to use the `--force` option:
+```
+./buildconf --force
+```
 * Suggested `./configure` options (place this all on one line):
 ```
 ./configure  \
@@ -355,8 +332,14 @@ sudo apt install -y pkg-config build-essential autoconf bison re2c \
 ```
 Installed other potential dependencies based upon the `configure` options:
 ```
-sudo apt install -y libbz2-dev  libpng-dev zlib1g-dev libsodium-dev \
-                    libreadline-dev libcurl4-openssl-dev libbz2-dev
+sudo apt install -y libbz2-dev \
+	libpng-dev \
+	zlib1g-dev \
+	libsodium-dev \
+    libreadline-dev \
+    libcurl4-openssl-dev \
+    libbz2-dev \
+    libzip-dev
 ```
 Again, since this is a fresh version of Ubuntu, other errors arose:
 ```
@@ -461,6 +444,55 @@ sudo apt install -y libbz2-dev  libpng-dev zlib1g-dev libsodium-dev \
 ```
 
 To switch versions use `update-alternatives --config php` (see below for more info)
+
+### Async Lab:
+Change `Zend/async/src/App/Lorem.php` as follows:
+```
+<?php
+namespace App\Lorem;
+class Ipsum
+{
+    const API_URL = 'https://fakerapi.it/api/v2/texts?_quantity=1&_characters=500';
+    public function __invoke(array &$msg = []) : string
+    {
+        return file_get_contents(self::API_URL);
+    }
+}
+```
+In `Zend/async/src/lib.php` change the "Ipsum" service as follows:
+```
+function ipsum()
+{
+    $output = "Lorem Ipsum:\n";
+    return (new Ipsum())();
+}
+```
+Change `Zend/php-examples/src/ModAsync/src/App/Lorem.php` as follows:
+```
+<?php
+namespace App\Lorem;
+class Ipsum
+{
+    const API_URL = 'https://fakerapi.it/api/v2/texts?_quantity=1&_characters=500';
+    public static function getHtml(array &$msg = []) : string
+    {
+		$html = '<p>Invalid Response</p>' . PHP_EOL;
+        $response = file_get_contents(self::API_URL);
+        $arr = json_decode(trim($response), TRUE);
+        if (isset($arr['status']) && $arr['status'] === 'OK') {
+			$data = $arr['data'][0] ?? [];
+			$html = '<table>' . PHP_EOL;
+			foreach ($data as $key => $value) {
+				$html .= '<tr><th>' . $key . '</th><td>' . $value . '</td></tr>' . PHP_EOL;
+			}
+			$html .= '</table>' . PHP_EOL;
+		}
+		return $html;
+    }
+}
+```
+## Custom Extension Lab
+
 
 ## Q & A
 * Q: Why create a Lazy Object for an already existing object? 
