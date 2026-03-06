@@ -4,9 +4,12 @@ Class Notes March 2026
 
 
 ## TO DO
-* Locate link to Github repo with classic design patterns.
-* https://cursor.com/
-* https://refactoring.guru/
+* Q: Github repo with classic design patterns.
+* A: See: https://github.com/DesignPatternsPHP/DesignPatternsPHP/tree/main
+
+* Q: Websites to boost code development
+* A: See: https://cursor.com/
+* A: See: https://refactoring.guru/
 
 
 ## Homework
