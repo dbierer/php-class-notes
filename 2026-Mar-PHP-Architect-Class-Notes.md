@@ -4,6 +4,85 @@ Class Notes March 2026
 
 
 ## TO DO
+* Q: Do you have an example of using `declare(strict_types=1)`?
+
+* Q: Do you have a link to the Domain Model PDF?
+
+* Q: Why does this not work?
+```
+<?php
+class Main
+{
+    protected function __construct() {}
+    protected static $instance = NULL;
+    public static function getInstance() : static
+    {
+        if (empty(static::$instance)) {
+            static::$instance = new static();
+        }
+        return static::$instance;
+    }
+}
+
+class ChildOfMain extends Main {}
+
+class GrandChildofMain extends ChildOfMain {}
+
+$arr = [
+    Main::getInstance(),
+    ChildOfMain::getInstance(),
+    GrandChildofMain::getInstance()
+];
+
+
+var_dump($arr);
+
+```
+
+* Q: Example of using `static` to indicate return type of a class at different hierarchical levels
+```
+<?php
+class Main
+{
+    protected function __construct() {}
+    public static function getInstance() : static
+    {
+        return new static();
+    }
+}
+
+class ChildOfMain extends Main {}
+
+class GrandChildofMain extends ChildOfMain {}
+
+$arr = [
+    Main::getInstance(),
+    ChildOfMain::getInstance(),
+    GrandChildofMain::getInstance()
+];
+
+
+var_dump($arr);
+
+// actual output:
+/*
+array(3) {
+  [0]=>
+  object(Main)#1 (0) {
+  }
+  [1]=>
+  object(ChildOfMain)#2 (0) {
+  }
+  [2]=>
+  object(GrandChildofMain)#3 (0) {
+  }
+}
+*/
+
+```
+
+
+
 * Q: Github repo with classic design patterns.
 * A: See: https://github.com/DesignPatternsPHP/DesignPatternsPHP/tree/main
 
@@ -595,3 +674,9 @@ $sequencer->top();
 
 
 ## Change Request
+
+http://localhost:8883/#/3/30:
+https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/architecture.html
+
+http://localhost:8883/#/3/38
+https://www.doctrine-project.org/projects/doctrine-orm/en/latest/tutorials/getting-started.html#entity-repositories
