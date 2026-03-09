@@ -2,8 +2,32 @@
 Class Notes March 2026
 
 
+## Homework
+Wed 11 Mar 2026
+* Lab: Type Hinting
+
+Fri 6 Mar 2026
+* Lab: FFI
+* Lab: New Extension
+
+Wed 4 Mar 2026
+* Lab: VM Setup
+* Lab: Built-in Web Server
+* Lab: OpCache and JIT
+* Lab: Custom PHP
+* Lab: Existing Extension
+
 
 ## TO DO
+* Q: Roadmap for the PHP language?
+* A: See: https://wiki.php.net/rfc
+
+* Q: What is asymmetric visibility?
+* A: See: https://wiki.php.net/rfc/static-aviz
+
+* Q: What is available for international date/time?
+* A: See: https://www.php.net/manual/en/class.intldateformatter.php
+
 * Q: Do you have an example of using `declare(strict_types=1)`?
 
 * Q: Do you have a link to the Domain Model PDF?
@@ -90,18 +114,6 @@ array(3) {
 * A: See: https://cursor.com/
 * A: See: https://refactoring.guru/
 
-
-## Homework
-Fri 6 Mar 2026
-* Lab: FFI
-* Lab: New Extension
-
-Wed 4 Mar 2026
-* Lab: VM Setup
-* Lab: Built-in Web Server
-* Lab: OpCache and JIT
-* Lab: Custom PHP
-* Lab: Existing Extension
 
 ## VM Setup
 After running `vagrant up`, run the software-updater to get the latest Ubuntu 24.04 updates
@@ -680,3 +692,13 @@ https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/archi
 
 http://localhost:8883/#/3/38
 https://www.doctrine-project.org/projects/doctrine-orm/en/latest/tutorials/getting-started.html#entity-repositories
+
+http://localhost:8883/#/4/69
+-- left out a mention of getReturn()
+
+http://localhost:8883/#/4/73
+Auto creation of $token is deprecated
+
+http://localhost:8883/#/4/85
+Duplicate?
+
