@@ -29,8 +29,11 @@ Wed 4 Mar 2026
 * A: See: https://www.php.net/manual/en/class.intldateformatter.php
 
 * Q: Do you have an example of using `declare(strict_types=1)`?
+* A: See: https://github.com/dbierer/classic_php_examples/blob/master/basics/type_hinting_strict.php
 
-* Q: Do you have a link to the Domain Model PDF?
+* Q: Do you have a link to the Domain Driven Design PDF?
+* A: See: https://dn710106.ca.archive.org/0/items/ebooks_202003/Eric%20Evans/Domain-driven%20Design%20%281503%29/Domain-Driven%20Design_%20Tackling%20Complexity%20in%20the%20Heart%20of%20Software.pdf
+* A: See also: https://martinfowler.com/bliki/DomainDrivenDesign.html
 
 * Q: Why does this not work?
 ```
