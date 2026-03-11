@@ -3,6 +3,14 @@ Class Notes March 2026
 
 
 ## Homework
+Fri 13 Mar 2026
+* Lab: all Docker Image Labs
+  * Note: new dir: `/home/vagrant/Zend/docker_labs/Docker`
+* Lab: Commit the Image [optional]
+* Lab: Docker Compose Labs
+  * Do all labs for this
+  * Note: new dir: `/home/vagrant/Zend/docker_labs/Docker-Compose`
+
 Wed 11 Mar 2026
 * Lab: Type Hinting
 
@@ -19,6 +27,9 @@ Wed 4 Mar 2026
 
 
 ## TO DO
+* Q: Link to the OOP File Handling free course?
+
+
 * Q: Roadmap for the PHP language?
 * A: See: https://wiki.php.net/rfc
 
@@ -705,3 +716,14 @@ Auto creation of $token is deprecated
 http://localhost:8883/#/4/85
 Duplicate?
 
+http://localhost:8883/#/5/35
+attach() is deprecated
+
+http://localhost:8883/#/6/14
+new dir: `/home/vagrant/Zend/docker_labs/Docker`
+
+http://localhost:8883/#/6/31
+"php3" is now "php-examples"
+
+http://localhost:8883/#/6/36
+new dir: `/home/vagrant/Zend/docker_labs/Docker-Compose`
