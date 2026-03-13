@@ -3,6 +3,9 @@ Class Notes March 2026
 
 
 ## Homework
+Unknown Date
+* Lab: 	Laminas API Tools [optional]
+
 Fri 13 Mar 2026
 * Lab: all Docker Image Labs
   * Note: new dir: `/home/vagrant/Zend/docker_labs/Docker`
@@ -553,6 +556,9 @@ sudo apt install -y libbz2-dev  libpng-dev zlib1g-dev libsodium-dev \
 
 To switch versions use `update-alternatives --config php` (see below for more info)
 
+### API Tools
+see: api-tools.getlaminas.org
+
 ### Async Lab:
 Change `Zend/async/src/App/Lorem.php` as follows:
 ```
@@ -727,3 +733,12 @@ http://localhost:8883/#/6/31
 
 http://localhost:8883/#/6/36
 new dir: `/home/vagrant/Zend/docker_labs/Docker-Compose`
+
+http://localhost:8883/#/7/2
+port is wrong
+
+http://localhost:8883/#/7/7
+already mentioned request_parse_body()
+
+http://localhost:8883/#/8/22
+doesn't work
