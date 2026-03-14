@@ -287,7 +287,10 @@ sudo /etc/init.d/php8.4-zend-fpm restart
   * See: https://github.com/php/pie
 * You can install the Swoole as follows:
 ```
-sudo pie install swoole/swoole --with-phpize-path=/usr/bin/phpize
+sudo pie install swoole/swoole \
+	--with-phpize-path=/usr/bin/phpize \
+	--with-php-config=/usr/bin/php-config \
+	--with-php-path=/usr/bin/php
 ```
 OR: Use this command:
 ```
@@ -311,16 +314,15 @@ From Matthew Weir O'Phinney:
   * The reason I suggest this path instead of using `PECL` is for a couple of reasons:
 	* It assumes there is only one PHP on the system. If there is, it's not a problem, but if you have more than one, the wrong `phpize` and/or `php-config` might be used.
     * You cannot provide arguments to configure​ with `PECL`, either.
-* Example installation:
+* Example manual installation:
 ```
-# NOTE: version was 5.1.4
-# Change the the current version
-export VERSION=6.0.2
-sudo apt install libbrotli-dev php8.4-zend-dev
 cd /tmp
-curl -L http://pecl.php.net/get/swoole -o swoole.tar.gz
-tar -xvf swoole.tar.gz
-cd swoole-$VERSION
+export PHP_VER=8.4
+export SWOOLE_VER=6.1.6
+sudo apt install libbrotli-dev
+wget https://pecl.php.net/get/swoole-$SWOOLE_VER.tgz
+tar -xzvf ./swoole-$SWOOLE_VER.tgz
+cd swoole-$SWOOLE_VER
 phpize
 sudo ./configure \
 	--with-php-config=/usr/bin/php-config \
@@ -332,16 +334,19 @@ sudo make
 sudo make test
 sudo make install
 sudo find / -name swoole.so -ls
-# Write down the location which we'll call LOCATION
-sudo cp $LOCATION/swoole.so /usr/lib/php/8.4-zend
+# Write down the location which we'll call $LOCATION
+# Installing shared extensions:     /usr/lib/php/20230831/
+# Installing header files:          /usr/include/php/20230831/
+export LOCATION=/usr/lib/php/20230831/
+sudo cp $LOCATION/swoole.so /usr/lib/php/$PHP_VER-zend
 ```
 * Create an ini file under `mods-available`
 ```
-sudo nano /etc/php/8.4-zend/mods-available/swoole.ini
+sudo nano /etc/php/$PHP_VER-zend/mods-available/swoole.ini
 ```
 * Add the following and save (CTL+X)
 ```
-;priority=20
+;priority=30
 extension=swoole.so
 ```
 * Enable the extension using `zendphpctl`
