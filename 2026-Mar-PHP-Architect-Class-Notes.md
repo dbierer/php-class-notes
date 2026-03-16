@@ -5,7 +5,9 @@ Class Notes March 2026
 ## Homework
 Unknown Date
 * Lab: 	Laminas API Tools [optional]
-
+  * See: dotkernal.org
+* Lab: Swoole
+  * Was able to install Swoole on PHP 8.3
 Fri 13 Mar 2026
 * Lab: all Docker Image Labs
   * Note: new dir: `/home/vagrant/Zend/docker_labs/Docker`
@@ -30,8 +32,11 @@ Wed 4 Mar 2026
 
 
 ## TO DO
-* Q: Link to the OOP File Handling free course?
+* Q: Link to the free OOP File Handling free course?
+* A: https://training.zend.com/learn/courses/625/php-free-oop-file-handling
 
+* Q: Link to the free PHP Objects: Object Oriented Programming Software Patterns On Demand course
+* A: https://training.zend.com/learn/courses/316/php-objects-object-oriented-programming-software-patterns-on-demand/lessons/921:79/php-objects-object-oriented-programming-software-design-patterns
 
 * Q: Roadmap for the PHP language?
 * A: See: https://wiki.php.net/rfc
@@ -49,38 +54,8 @@ Wed 4 Mar 2026
 * A: See: https://dn710106.ca.archive.org/0/items/ebooks_202003/Eric%20Evans/Domain-driven%20Design%20%281503%29/Domain-Driven%20Design_%20Tackling%20Complexity%20in%20the%20Heart%20of%20Software.pdf
 * A: See also: https://martinfowler.com/bliki/DomainDrivenDesign.html
 
-* Q: Why does this not work?
-```
-<?php
-class Main
-{
-    protected function __construct() {}
-    protected static $instance = NULL;
-    public static function getInstance() : static
-    {
-        if (empty(static::$instance)) {
-            static::$instance = new static();
-        }
-        return static::$instance;
-    }
-}
-
-class ChildOfMain extends Main {}
-
-class GrandChildofMain extends ChildOfMain {}
-
-$arr = [
-    Main::getInstance(),
-    ChildOfMain::getInstance(),
-    GrandChildofMain::getInstance()
-];
-
-
-var_dump($arr);
-
-```
-
 * Q: Example of using `static` to indicate return type of a class at different hierarchical levels
+* A: Have a look at this example:
 ```
 <?php
 class Main
@@ -121,8 +96,6 @@ array(3) {
 */
 
 ```
-
-
 
 * Q: Github repo with classic design patterns.
 * A: See: https://github.com/DesignPatternsPHP/DesignPatternsPHP/tree/main
